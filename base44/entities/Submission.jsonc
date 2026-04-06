@@ -1,0 +1,47 @@
+{
+  "name": "Submission",
+  "type": "object",
+  "properties": {
+    "lesson_id": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string"
+    },
+    "text_response": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "graded"
+      ],
+      "default": "pending"
+    },
+    "grade": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "submitted_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "lesson_id",
+    "student_id"
+  ]
+}

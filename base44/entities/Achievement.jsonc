@@ -1,0 +1,44 @@
+{
+  "name": "Achievement",
+  "type": "object",
+  "properties": {
+    "student_id": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "badge",
+        "certificate",
+        "milestone"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "course_title": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "earned_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "student_id",
+    "type",
+    "title"
+  ]
+}

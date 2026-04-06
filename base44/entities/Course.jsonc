@@ -1,0 +1,86 @@
+{
+  "name": "Course",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "skill_area": {
+      "type": "string",
+      "enum": [
+        "3D Printing",
+        "Prompt Engineering",
+        "AI Literacy",
+        "Robotics",
+        "Coding",
+        "Digital Creativity",
+        "Other"
+      ]
+    },
+    "grade_levels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "duration_hours": {
+      "type": "number"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    "learning_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "materials_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "teacher_id": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "total_lessons": {
+      "type": "number",
+      "default": 0
+    },
+    "enrolled_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "skill_area"
+  ]
+}

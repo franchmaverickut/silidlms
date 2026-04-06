@@ -1,0 +1,62 @@
+{
+  "name": "Lesson",
+  "type": "object",
+  "properties": {
+    "module_id": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "reading",
+        "video",
+        "quiz",
+        "activity",
+        "project"
+      ]
+    },
+    "content": {
+      "type": "string"
+    },
+    "video_url": {
+      "type": "string"
+    },
+    "duration_minutes": {
+      "type": "number"
+    },
+    "order": {
+      "type": "number"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "quiz_data": {
+      "type": "string"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "module_id",
+    "course_id",
+    "title",
+    "type"
+  ]
+}

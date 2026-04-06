@@ -1,0 +1,26 @@
+{
+  "name": "Module",
+  "type": "object",
+  "properties": {
+    "course_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number"
+    },
+    "total_lessons": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "course_id",
+    "title"
+  ]
+}

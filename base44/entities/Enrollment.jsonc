@@ -1,0 +1,52 @@
+{
+  "name": "Enrollment",
+  "type": "object",
+  "properties": {
+    "course_id": {
+      "type": "string"
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "student_email": {
+      "type": "string"
+    },
+    "progress_percent": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_lessons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "dropped"
+      ],
+      "default": "active"
+    },
+    "grade_level": {
+      "type": "string"
+    },
+    "enrolled_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "course_id",
+    "student_id"
+  ]
+}
