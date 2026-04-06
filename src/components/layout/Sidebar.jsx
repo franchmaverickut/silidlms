@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, BookOpen, Users, Settings, GraduationCap,
-  Trophy, Megaphone, ChevronRight, LogOut, Zap
+  Trophy, Megaphone, ChevronRight, LogOut
 } from "lucide-react";
 
 const navItems = {
@@ -34,14 +34,8 @@ export default function Sidebar({ user }) {
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar flex flex-col z-40 shadow-2xl">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-6 border-b border-sidebar-border">
-        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-          <Zap className="w-5 h-5 text-white" />
-        </div>
-        <div>
-          <span className="text-sidebar-foreground font-poppins font-bold text-lg leading-none">Silid</span>
-          <span className="text-primary font-poppins font-bold text-lg leading-none">LMS</span>
-        </div>
+      <div className="flex items-center px-5 py-5 border-b border-sidebar-border">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/91c0dc902_IMG_3183.png" alt="SilidLMS" className="h-10 w-auto" />
       </div>
 
       {/* User info */}
