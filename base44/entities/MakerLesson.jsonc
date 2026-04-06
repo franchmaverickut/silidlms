@@ -1,0 +1,183 @@
+{
+  "name": "MakerLesson",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "skill_area": {
+      "type": "string",
+      "enum": [
+        "3D Printing",
+        "Robotics",
+        "Prompt Engineering",
+        "Coding",
+        "Electronics",
+        "Digital Creativity",
+        "Other"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "Beginner",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    "estimated_minutes": {
+      "type": "number"
+    },
+    "grade_levels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "thumbnail_url": {
+      "type": "string"
+    },
+    "hero_image_url": {
+      "type": "string"
+    },
+    "gallery_images": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "video_url": {
+      "type": "string"
+    },
+    "model_3d_url": {
+      "type": "string"
+    },
+    "overview_html": {
+      "type": "string"
+    },
+    "learning_objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "material",
+              "electronic",
+              "tool",
+              "other"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "model_3d_url": {
+            "type": "string"
+          },
+          "tip": {
+            "type": "string"
+          },
+          "warning": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "size_kb": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "submission_prompt": {
+      "type": "string"
+    },
+    "reflection_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "teacher_id": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "title",
+    "skill_area"
+  ]
+}

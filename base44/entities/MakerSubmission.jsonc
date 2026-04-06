@@ -1,0 +1,60 @@
+{
+  "name": "MakerSubmission",
+  "type": "object",
+  "properties": {
+    "lesson_id": {
+      "type": "string"
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "completed_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reflection_answers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "submitted",
+        "reviewed",
+        "graded"
+      ],
+      "default": "in_progress"
+    },
+    "grade": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "string"
+    },
+    "submitted_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "lesson_id",
+    "student_id"
+  ]
+}

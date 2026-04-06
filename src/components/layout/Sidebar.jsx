@@ -2,24 +2,27 @@ import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
   LayoutDashboard, BookOpen, Users, Settings, GraduationCap,
-  Trophy, Megaphone, ChevronRight, LogOut
+  Trophy, Megaphone, ChevronRight, LogOut, Wrench
 } from "lucide-react";
 
 const navItems = {
   student: [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
     { icon: BookOpen, label: "My Courses", path: "/courses" },
+    { icon: Wrench, label: "Maker Lessons", path: "/maker" },
     { icon: Trophy, label: "Achievements", path: "/achievements" },
   ],
   teacher: [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
     { icon: BookOpen, label: "Courses", path: "/courses" },
+    { icon: Wrench, label: "Maker Lessons", path: "/maker" },
     { icon: Users, label: "My Classes", path: "/teacher" },
     { icon: GraduationCap, label: "Submissions", path: "/submissions" },
   ],
   admin: [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
     { icon: BookOpen, label: "Courses", path: "/courses" },
+    { icon: Wrench, label: "Maker Lessons", path: "/maker" },
     { icon: Users, label: "Users", path: "/admin" },
     { icon: Megaphone, label: "Announcements", path: "/announcements" },
     { icon: Settings, label: "Settings", path: "/admin" },

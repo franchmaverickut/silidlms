@@ -18,6 +18,9 @@ import TeacherDashboard from '@/pages/TeacherDashboard';
 import Submissions from '@/pages/Submissions';
 import Achievements from '@/pages/Achievements';
 import AdminPanel from '@/pages/AdminPanel';
+import MakerLessons from '@/pages/MakerLessons';
+import MakerLessonViewer from '@/pages/MakerLessonViewer';
+import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -56,6 +59,10 @@ const AuthenticatedApp = () => {
         <Route path="/submissions" element={<Submissions />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/maker" element={<MakerLessons />} />
+        <Route path="/maker/new" element={<MakerLessonBuilder />} />
+        <Route path="/maker/:id" element={<MakerLessonViewer />} />
+        <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
