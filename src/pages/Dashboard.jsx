@@ -20,10 +20,10 @@ export default function Dashboard() {
   useEffect(() => {
     const load = async () => {
       const [c, a, ann, ach] = await Promise.all([
-        base44.entities.Course.filter({ status: "published" }, "-created_date", 6),
-        user ? base44.entities.Enrollment.filter({ student_id: user.id }, "-created_date", 10) : [],
-        base44.entities.Announcement.list("-created_date", 5),
-        user ? base44.entities.Achievement.filter({ student_id: user.id }, "-earned_date", 5) : [],
+        base44.entities.Course.filter({ status: "published" }, "-created_date", 6).catch(() => []),
+        user ? base44.entities.Enrollment.filter({ student_id: user.id }, "-created_date", 10).catch(() => []) : [],
+        base44.entities.Announcement.list("-created_date", 5).catch(() => []),
+        user ? base44.entities.Achievement.filter({ student_id: user.id }, "-earned_date", 5).catch(() => []) : [],
       ]);
       setCourses(c);
       setEnrollments(a);
