@@ -16,7 +16,10 @@ export default function MakerLessons() {
   const [skillFilter, setSkillFilter] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  const isTeacher = user?.role === "teacher" || user?.role === "admin";
+  // Normalize role to lowercase for consistent comparison regardless of platform casing
+  const role = user?.role?.toLowerCase();
+  const isTeacher = role === "teacher" || role === "admin";
+  console.log('ROLE:', user?.role, '| isTeacher:', isTeacher);
 
   useEffect(() => {
     const load = async () => {

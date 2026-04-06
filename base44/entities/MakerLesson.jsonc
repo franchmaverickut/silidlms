@@ -46,6 +46,11 @@
       ],
       "default": "draft"
     },
+    "is_seed_data": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, this is a sample/demo lesson and should not be deleted in bulk operations"
+    },
     "thumbnail_url": {
       "type": "string"
     },

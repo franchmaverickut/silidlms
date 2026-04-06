@@ -74,12 +74,15 @@ export default function MakerLessonBuilder() {
   const update = (field, value) => setLesson(prev => ({ ...prev, [field]: value }));
 
   const handleSave = async (status) => {
+    // Guard: never allow saving/overwriting is_seed_data flag via the builder
     setSaving(true);
-    const data = status ? { ...lesson, status } : lesson;
+    const { is_seed_data, ...editableData } = lesson;
+    const data = status ? { ...editableData, status } : editableData;
     if (isNew) {
       const created = await base44.entities.MakerLesson.create({
         ...data,
         teacher_id: user?.id,
+        is_seed_data: false,
       });
       toast({ title: "Lesson created!" });
       navigate(`/maker/${created.id}/edit`, { replace: true });

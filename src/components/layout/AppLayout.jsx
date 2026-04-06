@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { useAuth } from "@/lib/AuthContext";
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 
 export default function AppLayout() {
-  const [user, setUser] = useState(null);
+  // Use the single source of truth for user/role from AuthContext
+  const { user } = useAuth();
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  console.log('ROLE:', user?.role);
 
   return (
     <div className="flex min-h-screen bg-background">
