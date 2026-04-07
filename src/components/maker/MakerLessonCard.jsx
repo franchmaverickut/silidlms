@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Clock, Layers, ChevronRight, Cpu, Printer, Bot, Code2, Zap, Palette, BookOpen, Pencil } from "lucide-react";
+import { Clock, Layers, ChevronRight, Cpu, Printer, Bot, Code2, Zap, Palette, BookOpen, Pencil, Trash2, Globe, Lock } from "lucide-react";
 
 const skillIcons = {
   "3D Printing": Printer,
@@ -28,10 +28,19 @@ const skillColors = {
   "Other": "bg-gray-100 text-gray-700",
 };
 
-export default function MakerLessonCard({ lesson, progress, isTeacher }) {
+export default function MakerLessonCard({ lesson, progress, isTeacher, onDelete }) {
   const SkillIcon = skillIcons[lesson.skill_area] || BookOpen;
   const skillColor = skillColors[lesson.skill_area] || skillColors["Other"];
   const diffColor = difficultyColors[lesson.difficulty] || difficultyColors["Beginner"];
+  const isPublished = lesson.status === "published";
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (confirm(`Delete "${lesson.title}"? This cannot be undone.`)) {
+      onDelete(lesson.id);
+    }
+  };
 
   return (
     <Link to={`/maker/${lesson.id}`}>
@@ -54,13 +63,40 @@ export default function MakerLessonCard({ lesson, progress, isTeacher }) {
               {lesson.skill_area}
             </span>
           </div>
-          {lesson.difficulty && (
-            <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 flex gap-1.5">
+            {lesson.difficulty && (
               <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${diffColor}`}>
                 {lesson.difficulty}
               </span>
+            )}
+          </div>
+
+          {/* Teacher action bar */}
+          {isTeacher && (
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-3 py-2 bg-black/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className={`flex items-center gap-1 text-xs font-semibold ${isPublished ? "text-green-300" : "text-amber-300"}`}>
+                {isPublished ? <Globe size={11} /> : <Lock size={11} />}
+                {isPublished ? "Published" : "Draft"}
+              </span>
+              <div className="flex items-center gap-2">
+                <Link
+                  to={`/maker/${lesson.id}/edit`}
+                  onClick={e => e.stopPropagation()}
+                  className="text-white/80 hover:text-white text-xs flex items-center gap-1 transition-colors"
+                >
+                  <Pencil size={12} /> Edit
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="text-red-300 hover:text-red-200 transition-colors"
+                  title="Delete lesson"
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
             </div>
           )}
+
           {progress !== undefined && (
             <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-black/10">
               <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
@@ -70,9 +106,21 @@ export default function MakerLessonCard({ lesson, progress, isTeacher }) {
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="font-poppins font-semibold text-foreground text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-            {lesson.title}
-          </h3>
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-poppins font-semibold text-foreground text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors flex-1">
+              {lesson.title}
+            </h3>
+            {/* Status pill (always visible for teachers) */}
+            {isTeacher && (
+              <span className={`flex-shrink-0 flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${
+                isPublished ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+              }`}>
+                {isPublished ? <Globe size={10} /> : <Lock size={10} />}
+                {isPublished ? "Published" : "Draft"}
+              </span>
+            )}
+          </div>
+
           {lesson.description && (
             <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{lesson.description}</p>
           )}
@@ -90,14 +138,7 @@ export default function MakerLessonCard({ lesson, progress, isTeacher }) {
             )}
           </div>
 
-          <div className="flex items-center justify-between mt-3">
-            {progress !== undefined ? (
-              <span className="text-xs text-primary font-semibold">{progress}% complete</span>
-            ) : (
-              <span className="text-xs text-muted-foreground">
-                {lesson.status === "published" ? "Ready to build" : lesson.status}
-              </span>
-            )}
+          <div className="flex items-center justify-end mt-3">
             {isTeacher ? (
               <Link
                 to={`/maker/${lesson.id}/edit`}
@@ -107,9 +148,14 @@ export default function MakerLessonCard({ lesson, progress, isTeacher }) {
                 <Pencil size={12} /> Edit
               </Link>
             ) : (
-              <span className="text-primary text-xs font-semibold flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
-                Start Build <ChevronRight size={13} />
-              </span>
+              <>
+                {progress !== undefined && (
+                  <span className="text-xs text-primary font-semibold mr-auto">{progress}% complete</span>
+                )}
+                <span className="text-primary text-xs font-semibold flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
+                  Start Build <ChevronRight size={13} />
+                </span>
+              </>
             )}
           </div>
         </div>

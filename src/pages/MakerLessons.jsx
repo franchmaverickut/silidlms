@@ -43,6 +43,11 @@ export default function MakerLessons() {
     return Math.round(((sub.completed_steps?.length || 0) / lesson.steps.length) * 100);
   };
 
+  const handleDelete = async (lessonId) => {
+    await base44.entities.MakerLesson.delete(lessonId);
+    setLessons(prev => prev.filter(l => l.id !== lessonId));
+  };
+
   const filtered = lessons.filter(l => {
     const matchSearch = l.title.toLowerCase().includes(search.toLowerCase()) ||
       l.description?.toLowerCase().includes(search.toLowerCase());
@@ -122,7 +127,7 @@ export default function MakerLessons() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map(lesson => (
-            <MakerLessonCard key={lesson.id} lesson={lesson} progress={getProgress(lesson.id)} isTeacher={isTeacher} />
+            <MakerLessonCard key={lesson.id} lesson={lesson} progress={getProgress(lesson.id)} isTeacher={isTeacher} onDelete={handleDelete} />
           ))}
         </div>
       )}
