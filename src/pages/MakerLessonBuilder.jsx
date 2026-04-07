@@ -487,12 +487,12 @@ export default function MakerLessonBuilder() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-poppins font-bold text-sm">Downloadable Files</h3>
               <div className="flex gap-2">
-                <label className="cursor-pointer">
-                  <Button variant="outline" size="sm" className="gap-1 text-xs rounded-lg pointer-events-none" disabled={uploadingFile}>
+                <label className={`cursor-pointer ${uploadingFile ? "opacity-60 pointer-events-none" : ""}`}>
+                  <div className="inline-flex items-center gap-1 text-xs rounded-lg border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3 py-1 font-medium">
                     {uploadingFile ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
                     {uploadingFile ? "Uploading..." : "Upload File"}
-                  </Button>
-                  <input type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf" className="hidden" onChange={handleFileUpload} disabled={uploadingFile} />
+                  </div>
+                  <input type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf,.f3d" className="hidden" onChange={handleFileUpload} disabled={uploadingFile} />
                 </label>
                 <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg"><Plus size={12} /> Add URL</Button>
               </div>
