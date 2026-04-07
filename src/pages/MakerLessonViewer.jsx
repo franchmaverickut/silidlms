@@ -343,7 +343,9 @@ export default function MakerLessonViewer() {
                         {item.image_url ? (
                           <img src={item.image_url} alt={item.name} className="w-10 h-10 rounded-lg object-cover border border-border/60 flex-shrink-0" />
                         ) : (
-                          <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                          <div className="w-10 h-10 rounded-lg bg-muted border border-border/60 flex items-center justify-center flex-shrink-0">
+                            <Package size={16} className="text-muted-foreground/40" />
+                          </div>
                         )}
                         <span className="font-medium text-sm flex-1">{item.name}</span>
                         {item.quantity && (
