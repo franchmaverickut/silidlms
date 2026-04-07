@@ -340,7 +340,11 @@ export default function MakerLessonViewer() {
                   <div className="space-y-2">
                     {items.map((item, i) => (
                       <div key={i} className="flex items-center gap-3 py-2.5 px-3 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors">
-                        <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                        {item.image_url ? (
+                          <img src={item.image_url} alt={item.name} className="w-10 h-10 rounded-lg object-cover border border-border/60 flex-shrink-0" />
+                        ) : (
+                          <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                        )}
                         <span className="font-medium text-sm flex-1">{item.name}</span>
                         {item.quantity && (
                           <span className="text-xs text-muted-foreground bg-background px-2 py-0.5 rounded-full border">{item.quantity}</span>

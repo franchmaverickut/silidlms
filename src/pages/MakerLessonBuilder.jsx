@@ -423,7 +423,7 @@ export default function MakerLessonBuilder() {
               <div className="col-span-2">Qty</div>
               <div className="col-span-3">Category</div>
               <div className="col-span-2">Notes</div>
-              <div className="col-span-1"></div>
+              <div className="col-span-1 text-center">Del</div>
             </div>
             <MaterialEditor materials={lesson.materials || []} onChange={mats => update("materials", mats)} />
           </Card>
