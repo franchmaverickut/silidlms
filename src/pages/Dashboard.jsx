@@ -4,10 +4,34 @@ import { base44 } from "@/api/base44Client";
 import { BookOpen, Trophy, TrendingUp, Star, ArrowRight, Megaphone, Pin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import StatsCard from "@/components/dashboard/StatsCard";
 import CourseCard from "@/components/courses/CourseCard";
-import { format } from "date-fns";
+import StreakCounter from "@/components/dashboard/StreakCounter";
+import GamifiedProgress from "@/components/dashboard/GamifiedProgress";
+import BadgeUnlockSystem from "@/components/dashboard/BadgeUnlockSystem";
+import { format, differenceInDays } from "date-fns";
+
+function calculateStreak(enrollments) {
+  // Derive streak from enrollment updated_date activity
+  // Simple heuristic: count how many of the last N days had any activity
+  if (!enrollments.length) return 0;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let streak = 0;
+  for (let i = 0; i < 30; i++) {
+    const day = new Date(today);
+    day.setDate(today.getDate() - i);
+    const nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    const hadActivity = enrollments.some(e => {
+      const d = new Date(e.updated_date);
+      return d >= day && d < nextDay;
+    });
+    if (hadActivity) streak++;
+    else if (i > 0) break; // gap breaks streak
+  }
+  return streak;
+}
 
 export default function Dashboard() {
   const { user } = useOutletContext();
@@ -15,20 +39,24 @@ export default function Dashboard() {
   const [enrollments, setEnrollments] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [completedLessons, setCompletedLessons] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const [c, a, ann, ach] = await Promise.all([
+      const [c, enr, ann, ach] = await Promise.all([
         base44.entities.Course.filter({ status: "published" }, "-created_date", 6).catch(() => []),
-        user ? base44.entities.Enrollment.filter({ student_id: user.id }, "-created_date", 10).catch(() => []) : [],
+        user ? base44.entities.Enrollment.filter({ student_id: user.id }, "-created_date", 20).catch(() => []) : [],
         base44.entities.Announcement.list("-created_date", 5).catch(() => []),
-        user ? base44.entities.Achievement.filter({ student_id: user.id }, "-earned_date", 5).catch(() => []) : [],
+        user ? base44.entities.Achievement.filter({ student_id: user.id }, "-earned_date", 20).catch(() => []) : [],
       ]);
       setCourses(c);
-      setEnrollments(a);
+      setEnrollments(enr);
       setAnnouncements(ann);
       setAchievements(ach);
+      // Total completed lessons across all enrollments
+      const total = enr.reduce((sum, e) => sum + (e.completed_lessons?.length || 0), 0);
+      setCompletedLessons(total);
       setLoading(false);
     };
     if (user !== null) load();
@@ -38,6 +66,7 @@ export default function Dashboard() {
   const isStudent = role === "student";
   const inProgressEnrollments = enrollments.filter(e => e.status === "active" && e.progress_percent < 100);
   const completedEnrollments = enrollments.filter(e => e.status === "completed" || e.progress_percent === 100);
+  const streak = calculateStreak(enrollments);
 
   const greet = () => {
     const h = new Date().getHours();
@@ -68,6 +97,11 @@ export default function Dashboard() {
               ? `You have ${inProgressEnrollments.length} course${inProgressEnrollments.length !== 1 ? "s" : ""} in progress. Keep going!`
               : "Manage your classes and track student progress."}
           </p>
+          {isStudent && streak > 0 && (
+            <div className="mt-2 inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-semibold">
+              🔥 {streak}-day streak!
+            </div>
+          )}
           {isStudent && (
             <Link to="/courses">
               <Button className="mt-4 bg-white text-primary hover:bg-orange-50 font-semibold text-sm rounded-xl">
@@ -90,39 +124,12 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Courses section */}
         <div className="lg:col-span-2 space-y-4">
+          {/* Streak counter — students only */}
+          {isStudent && <StreakCounter streak={streak} />}
+
+          {/* In-progress courses with gamified color progress bars */}
           {isStudent && inProgressEnrollments.length > 0 && (
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="font-poppins font-bold text-foreground text-lg">Continue Learning</h2>
-                <Link to="/courses" className="text-primary text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all">
-                  View all <ArrowRight size={14} />
-                </Link>
-              </div>
-              <div className="space-y-3">
-                {inProgressEnrollments.slice(0, 3).map(enrollment => {
-                  const course = courses.find(c => c.id === enrollment.course_id);
-                  if (!course) return null;
-                  return (
-                    <Link key={enrollment.id} to={`/courses/${course.id}`}>
-                      <Card className="p-4 border-border/60 hover:border-primary/30 hover:shadow-sm transition-all cursor-pointer flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <BookOpen className="text-primary" size={20} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-poppins font-semibold text-sm text-foreground truncate">{course.title}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">{course.skill_area}</p>
-                          <div className="mt-2">
-                            <Progress value={enrollment.progress_percent || 0} className="h-1.5" />
-                            <p className="text-xs text-primary font-medium mt-1">{enrollment.progress_percent || 0}% complete</p>
-                          </div>
-                        </div>
-                        <ArrowRight size={16} className="text-muted-foreground flex-shrink-0" />
-                      </Card>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
+            <GamifiedProgress enrollments={inProgressEnrollments} courses={courses} />
           )}
 
           {/* Recommended / Featured Courses */}
@@ -184,38 +191,13 @@ export default function Dashboard() {
             )}
           </Card>
 
-          {/* Recent Achievements */}
+          {/* Badge unlock system — students only */}
           {isStudent && (
-            <Card className="p-5 border-border/60 shadow-sm">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-lg bg-amber-100 flex items-center justify-center">
-                  <Trophy size={14} className="text-amber-600" />
-                </div>
-                <h3 className="font-poppins font-semibold text-sm text-foreground">Recent Badges</h3>
-              </div>
-              {achievements.length === 0 ? (
-                <div className="text-center py-4">
-                  <Trophy className="w-8 h-8 text-muted-foreground/20 mx-auto mb-2" />
-                  <p className="text-muted-foreground text-xs">Complete lessons to earn badges!</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-3 gap-2">
-                  {achievements.slice(0, 6).map(ach => (
-                    <div key={ach.id} className="flex flex-col items-center gap-1 p-2 rounded-xl bg-muted/50 hover:bg-primary/5 transition-colors">
-                      <span className="text-2xl">{ach.icon || "🏅"}</span>
-                      <p className="text-xs text-center text-muted-foreground leading-tight line-clamp-2">{ach.title}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {achievements.length > 0 && (
-                <Link to="/achievements">
-                  <Button variant="outline" size="sm" className="w-full mt-3 text-xs rounded-xl">
-                    View All Achievements
-                  </Button>
-                </Link>
-              )}
-            </Card>
+            <BadgeUnlockSystem
+              achievements={achievements}
+              completedLessons={completedLessons}
+              completedCourses={completedEnrollments.length}
+            />
           )}
         </div>
       </div>
