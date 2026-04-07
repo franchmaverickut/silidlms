@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Clock, Users, BookOpen } from "lucide-react";
+import { Clock, Users, BookOpen, Pencil, Trash2, Globe, Lock } from "lucide-react";
 
 const skillColors = {
   "3D Printing": "bg-orange-100 text-orange-700",
@@ -14,8 +13,17 @@ const skillColors = {
   "Other": "bg-gray-100 text-gray-700",
 };
 
-export default function CourseCard({ course, progress, showProgress = false }) {
+export default function CourseCard({ course, progress, showProgress = false, canManage = false, onDelete }) {
   const colorClass = skillColors[course.skill_area] || skillColors["Other"];
+  const isPublished = course.status === "published";
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (confirm(`Delete "${course.title}"? This cannot be undone.`)) {
+      onDelete(course.id);
+    }
+  };
 
   return (
     <Link to={`/courses/${course.id}`}>
@@ -41,13 +49,50 @@ export default function CourseCard({ course, progress, showProgress = false }) {
               </span>
             </div>
           )}
+
+          {/* Teacher action bar on hover */}
+          {canManage && (
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-3 py-2 bg-black/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className={`flex items-center gap-1 text-xs font-semibold ${isPublished ? "text-green-300" : "text-amber-300"}`}>
+                {isPublished ? <Globe size={11} /> : <Lock size={11} />}
+                {isPublished ? "Published" : course.status === "archived" ? "Archived" : "Draft"}
+              </span>
+              <div className="flex items-center gap-2">
+                <Link
+                  to={`/courses/${course.id}/edit`}
+                  onClick={e => e.stopPropagation()}
+                  className="text-white/80 hover:text-white text-xs flex items-center gap-1 transition-colors"
+                >
+                  <Pencil size={12} /> Edit
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="text-red-300 hover:text-red-200 transition-colors"
+                  title="Delete course"
+                >
+                  <Trash2 size={13} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Content */}
         <div className="p-4">
-          <h3 className="font-poppins font-semibold text-foreground text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-            {course.title}
-          </h3>
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-poppins font-semibold text-foreground text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors flex-1">
+              {course.title}
+            </h3>
+            {canManage && (
+              <span className={`flex-shrink-0 flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${
+                isPublished ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700"
+              }`}>
+                {isPublished ? <Globe size={10} /> : <Lock size={10} />}
+                {isPublished ? "Published" : course.status === "archived" ? "Archived" : "Draft"}
+              </span>
+            )}
+          </div>
+
           {course.description && (
             <p className="text-xs text-muted-foreground mt-1.5 line-clamp-2">{course.description}</p>
           )}
@@ -80,7 +125,19 @@ export default function CourseCard({ course, progress, showProgress = false }) {
             </div>
           )}
 
-          {course.grade_levels?.length > 0 && (
+          {canManage && (
+            <div className="flex justify-end mt-3">
+              <Link
+                to={`/courses/${course.id}/edit`}
+                onClick={e => e.stopPropagation()}
+                className="text-muted-foreground hover:text-primary text-xs font-semibold flex items-center gap-1 transition-colors"
+              >
+                <Pencil size={12} /> Edit
+              </Link>
+            </div>
+          )}
+
+          {course.grade_levels?.length > 0 && !canManage && (
             <div className="flex flex-wrap gap-1 mt-3">
               {course.grade_levels.slice(0, 3).map(g => (
                 <span key={g} className="px-2 py-0.5 bg-muted text-muted-foreground text-xs rounded-full">{g}</span>

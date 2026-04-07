@@ -50,6 +50,11 @@ export default function Courses() {
 
   const isEnrolled = (courseId) => enrollments.some(e => e.course_id === courseId);
 
+  const handleDelete = async (courseId) => {
+    await base44.entities.Course.delete(courseId);
+    setCourses(prev => prev.filter(c => c.id !== courseId));
+  };
+
   if (loading) return (
     <div className="flex items-center justify-center py-24">
       <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
@@ -142,6 +147,8 @@ export default function Courses() {
               course={course}
               progress={getProgress(course.id)}
               showProgress={isEnrolled(course.id)}
+              canManage={canManage}
+              onDelete={handleDelete}
             />
           ))}
         </div>
