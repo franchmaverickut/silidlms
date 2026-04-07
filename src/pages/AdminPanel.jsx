@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Users, BookOpen, GraduationCap, BarChart3, Shield, Megaphone, Plus, Loader2, Trash2, Pin } from "lucide-react";
+import {
+  Users, BookOpen, GraduationCap, BarChart3, Megaphone,
+  Plus, Loader2, Trash2, Pin, ShieldAlert, RefreshCw
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,23 +24,24 @@ export default function AdminPanel() {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [savingAnn, setSavingAnn] = useState(false);
+  const [cleaning, setCleaning] = useState(null); // track which cleanup is running
   const [newAnn, setNewAnn] = useState({ title: "", content: "", is_pinned: false });
 
+  const loadAll = async () => {
+    const [u, c, e, a] = await Promise.all([
+      base44.entities.User.list("-created_date", 100),
+      base44.entities.Course.list("-created_date", 100),
+      base44.entities.Enrollment.list("-created_date", 200),
+      base44.entities.Announcement.list("-created_date", 20),
+    ]);
+    setUsers(u);
+    setCourses(c);
+    setEnrollments(e);
+    setAnnouncements(a);
+  };
+
   useEffect(() => {
-    const load = async () => {
-      const [u, c, e, a] = await Promise.all([
-        base44.entities.User.list("-created_date", 100),
-        base44.entities.Course.list("-created_date", 100),
-        base44.entities.Enrollment.list("-created_date", 200),
-        base44.entities.Announcement.list("-created_date", 20),
-      ]);
-      setUsers(u);
-      setCourses(c);
-      setEnrollments(e);
-      setAnnouncements(a);
-      setLoading(false);
-    };
-    load();
+    loadAll().finally(() => setLoading(false));
   }, []);
 
   const postAnnouncement = async () => {
@@ -66,6 +70,56 @@ export default function AdminPanel() {
     toast({ title: "Role updated!" });
   };
 
+  // --- Cleanup actions ---
+  const clearAllEnrollments = async () => {
+    if (!window.confirm("Delete ALL student enrollments? This cannot be undone.")) return;
+    setCleaning("enrollments");
+    for (const e of enrollments) {
+      await base44.entities.Enrollment.delete(e.id);
+    }
+    // Also reset enrolled_count on all courses
+    for (const c of courses) {
+      if (c.enrolled_count > 0) {
+        await base44.entities.Course.update(c.id, { enrolled_count: 0 });
+      }
+    }
+    await loadAll();
+    setCleaning(null);
+    toast({ title: "All enrollments cleared." });
+  };
+
+  const clearMakerLessons = async () => {
+    if (!window.confirm("Delete all non-seed Maker Lessons and their submissions? Seed/demo lessons are protected.")) return;
+    setCleaning("maker");
+    const [lessons, submissions] = await Promise.all([
+      base44.entities.MakerLesson.list("-created_date", 200),
+      base44.entities.MakerSubmission.list("-created_date", 500),
+    ]);
+    const deletableLessons = lessons.filter(l => !l.is_seed_data);
+    const deletableIds = new Set(deletableLessons.map(l => l.id));
+    for (const s of submissions) {
+      if (deletableIds.has(s.lesson_id)) await base44.entities.MakerSubmission.delete(s.id);
+    }
+    for (const l of deletableLessons) {
+      await base44.entities.MakerLesson.delete(l.id);
+    }
+    toast({ title: `Deleted ${deletableLessons.length} maker lesson(s). Seed lessons preserved.` });
+    setCleaning(null);
+  };
+
+  const clearAllSubmissions = async () => {
+    if (!window.confirm("Delete ALL course submissions and maker submissions? This cannot be undone.")) return;
+    setCleaning("submissions");
+    const [courseSubs, makerSubs] = await Promise.all([
+      base44.entities.Submission.list("-created_date", 500),
+      base44.entities.MakerSubmission.list("-created_date", 500),
+    ]);
+    for (const s of courseSubs) await base44.entities.Submission.delete(s.id);
+    for (const s of makerSubs) await base44.entities.MakerSubmission.delete(s.id);
+    toast({ title: `Cleared ${courseSubs.length + makerSubs.length} submission(s).` });
+    setCleaning(null);
+  };
+
   const publishedCourses = courses.filter(c => c.status === "published").length;
   const totalStudents = users.filter(u => u.role === "student" || !u.role).length;
   const completionRate = enrollments.length
@@ -80,9 +134,14 @@ export default function AdminPanel() {
 
   return (
     <div className="space-y-7">
-      <div>
-        <h1 className="font-poppins font-bold text-2xl text-foreground">Admin Panel</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">Manage users, content, and platform analytics</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-poppins font-bold text-2xl text-foreground">Admin Panel</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">Manage users, content, and platform analytics</p>
+        </div>
+        <Button variant="outline" size="sm" className="gap-2 text-xs rounded-xl" onClick={() => loadAll()}>
+          <RefreshCw size={13} /> Refresh
+        </Button>
       </div>
 
       {/* Stats */}
@@ -98,6 +157,7 @@ export default function AdminPanel() {
           <TabsTrigger value="users" className="gap-1.5"><Users size={13} /> Users</TabsTrigger>
           <TabsTrigger value="courses" className="gap-1.5"><BookOpen size={13} /> Courses</TabsTrigger>
           <TabsTrigger value="announcements" className="gap-1.5"><Megaphone size={13} /> Announcements</TabsTrigger>
+          <TabsTrigger value="cleanup" className="gap-1.5 text-destructive data-[state=active]:text-destructive"><ShieldAlert size={13} /> Cleanup</TabsTrigger>
         </TabsList>
 
         {/* Users Tab */}
@@ -105,6 +165,7 @@ export default function AdminPanel() {
           <Card className="border-border/60 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-border/50 flex items-center justify-between">
               <p className="font-poppins font-semibold text-sm">{users.length} Users</p>
+              <p className="text-xs text-muted-foreground">{totalStudents} students · {users.filter(u => u.role === "teacher").length} teachers · {users.filter(u => u.role === "admin").length} admins</p>
             </div>
             <div className="divide-y divide-border/40">
               {users.map(u => (
@@ -132,27 +193,37 @@ export default function AdminPanel() {
           </Card>
         </TabsContent>
 
-        {/* Courses Tab */}
+        {/* Courses Tab — admin view only, no enrollment state */}
         <TabsContent value="courses" className="mt-5">
           <Card className="border-border/60 shadow-sm overflow-hidden">
             <div className="p-4 border-b border-border/50">
               <p className="font-poppins font-semibold text-sm">{courses.length} Courses</p>
             </div>
             <div className="divide-y divide-border/40">
-              {courses.map(course => (
-                <div key={course.id} className="flex items-center gap-4 px-4 py-3 hover:bg-muted/20 transition-colors">
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <BookOpen size={15} className="text-primary" />
+              {courses.map(course => {
+                const courseEnrollments = enrollments.filter(e => e.course_id === course.id);
+                const completed = courseEnrollments.filter(e => e.status === "completed").length;
+                return (
+                  <div key={course.id} className="flex items-center gap-4 px-4 py-3 hover:bg-muted/20 transition-colors">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <BookOpen size={15} className="text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">{course.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {course.skill_area} · {courseEnrollments.length} enrolled · {completed} completed
+                      </p>
+                    </div>
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                      course.status === "published" ? "bg-secondary/15 text-secondary" :
+                      course.status === "archived" ? "bg-muted text-muted-foreground" :
+                      "bg-amber-100 text-amber-700"
+                    }`}>
+                      {course.status}
+                    </span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">{course.title}</p>
-                    <p className="text-xs text-muted-foreground">{course.skill_area} • {enrollments.filter(e => e.course_id === course.id).length} enrolled</p>
-                  </div>
-                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${course.status === "published" ? "bg-secondary/15 text-secondary" : course.status === "archived" ? "bg-muted text-muted-foreground" : "bg-amber-100 text-amber-700"}`}>
-                    {course.status}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         </TabsContent>
@@ -207,7 +278,60 @@ export default function AdminPanel() {
             ))}
           </div>
         </TabsContent>
+
+        {/* Cleanup Tab */}
+        <TabsContent value="cleanup" className="mt-5 space-y-4">
+          <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/5 text-sm text-destructive font-medium flex items-center gap-2">
+            <ShieldAlert size={16} />
+            These actions are irreversible. Seed and system data is always protected.
+          </div>
+
+          <div className="space-y-3">
+            <CleanupAction
+              title="Clear All Enrollments"
+              description={`Remove all ${enrollments.length} student enrollment records and reset course enrollment counts.`}
+              onConfirm={clearAllEnrollments}
+              loading={cleaning === "enrollments"}
+              disabled={!!cleaning || enrollments.length === 0}
+            />
+            <CleanupAction
+              title="Clear Non-Seed Maker Lessons"
+              description="Delete all teacher-created Maker Lessons and their submissions. Demo/seed lessons are protected and will not be removed."
+              onConfirm={clearMakerLessons}
+              loading={cleaning === "maker"}
+              disabled={!!cleaning}
+            />
+            <CleanupAction
+              title="Clear All Submissions"
+              description="Delete all course and maker project submissions platform-wide."
+              onConfirm={clearAllSubmissions}
+              loading={cleaning === "submissions"}
+              disabled={!!cleaning}
+            />
+          </div>
+        </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function CleanupAction({ title, description, onConfirm, loading, disabled }) {
+  return (
+    <Card className="p-4 border-border/60 shadow-sm flex items-center gap-4">
+      <div className="flex-1">
+        <p className="font-poppins font-semibold text-sm text-foreground">{title}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+      </div>
+      <Button
+        variant="destructive"
+        size="sm"
+        className="rounded-xl gap-1.5 text-xs flex-shrink-0"
+        onClick={onConfirm}
+        disabled={disabled}
+      >
+        {loading ? <Loader2 size={12} className="animate-spin" /> : <Trash2 size={12} />}
+        {loading ? "Clearing..." : "Clear"}
+      </Button>
+    </Card>
   );
 }
