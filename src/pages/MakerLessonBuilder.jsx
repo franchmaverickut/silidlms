@@ -61,6 +61,7 @@ export default function MakerLessonBuilder() {
   const [uploadingHero, setUploadingHero] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const fileUploadRef = useRef(null);
 
   useEffect(() => {
@@ -135,15 +136,26 @@ export default function MakerLessonBuilder() {
 
   const deleteStep = (i) => update("steps", lesson.steps.filter((_, idx) => idx !== i));
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const uploadFiles = async (files) => {
+    if (!files || files.length === 0) return;
     setUploadingFile(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    const ext = file.name.split(".").pop().toUpperCase();
-    const size_kb = Math.round(file.size / 1024);
-    update("files", [...(lesson.files || []), { name: file.name, url: file_url, type: ext, size_kb }]);
+    const newEntries = [];
+    for (const file of Array.from(files)) {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const ext = file.name.split(".").pop().toUpperCase();
+      const size_kb = Math.round(file.size / 1024);
+      newEntries.push({ name: file.name, url: file_url, type: ext, size_kb });
+    }
+    update("files", [...(lesson.files || []), ...newEntries]);
     setUploadingFile(false);
+  };
+
+  const handleFileUpload = (e) => uploadFiles(e.target.files);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    uploadFiles(e.dataTransfer.files);
   };
 
   const addFile = () => update("files", [...(lesson.files || []), { name: "", url: "", type: "", size_kb: 0 }]);
@@ -484,42 +496,60 @@ export default function MakerLessonBuilder() {
 
         {/* Files */}
         <TabsContent value="files" className="mt-5 space-y-4">
-          <Card className="p-5 border-border/60 shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-poppins font-bold text-sm">Downloadable Files</h3>
-              <div className="flex gap-2">
-                <input ref={fileUploadRef} type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf,.f3d" className="hidden" onChange={handleFileUpload} />
-                <Button variant="outline" size="sm" className="gap-1 text-xs rounded-lg" disabled={uploadingFile} onClick={() => fileUploadRef.current?.click()}>
-                  {uploadingFile ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                  {uploadingFile ? "Uploading..." : "Upload File"}
-                </Button>
-                <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg"><Plus size={12} /> Add URL</Button>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {(lesson.files || []).map((file, i) => (
-                <div key={i} className="grid grid-cols-12 gap-2 items-center">
-                  <div className="col-span-4">
-                    <Input value={file.name} onChange={e => updateFile(i, "name", e.target.value)} placeholder="File name" className="rounded-xl text-sm" />
-                  </div>
-                  <div className="col-span-4">
-                    <Input value={file.url} onChange={e => updateFile(i, "url", e.target.value)} placeholder="URL (direct link)" className="rounded-xl text-sm" />
-                  </div>
-                  <div className="col-span-2">
-                    <Input value={file.type} onChange={e => updateFile(i, "type", e.target.value)} placeholder="STL, PDF..." className="rounded-xl text-sm" />
-                  </div>
-                  <div className="col-span-1">
-                    <Input type="number" value={file.size_kb || ""} onChange={e => updateFile(i, "size_kb", Number(e.target.value))} placeholder="KB" className="rounded-xl text-sm" />
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <button onClick={() => deleteFile(i)} className="text-muted-foreground hover:text-destructive"><Trash2 size={14} /></button>
-                  </div>
+          <Card className="p-5 border-border/60 shadow-sm space-y-4">
+            <h3 className="font-poppins font-bold text-sm">Downloadable Files</h3>
+
+            {/* Drag & Drop Zone */}
+            <input ref={fileUploadRef} type="file" multiple accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf,.f3d" className="hidden" onChange={handleFileUpload} />
+            <div
+              onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={handleDrop}
+              onClick={() => !uploadingFile && fileUploadRef.current?.click()}
+              className={`relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 ${
+                isDragging
+                  ? "border-primary bg-primary/5 scale-[1.01]"
+                  : "border-border/60 hover:border-primary/40 hover:bg-muted/30"
+              } ${uploadingFile ? "pointer-events-none opacity-70" : ""}`}
+            >
+              {uploadingFile ? (
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 size={28} className="animate-spin text-primary" />
+                  <p className="text-sm font-semibold text-primary">Uploading...</p>
                 </div>
-              ))}
-              {(lesson.files || []).length === 0 && (
-                <p className="text-xs text-muted-foreground text-center py-4">No files added yet.</p>
+              ) : (
+                <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                  <Upload size={28} className={isDragging ? "text-primary" : ""} />
+                  <p className="text-sm font-semibold">Drop files here or click to browse</p>
+                  <p className="text-xs">STL, GLB, PDF, ZIP, images supported • Multiple files at once</p>
+                </div>
               )}
             </div>
+
+            {/* File list */}
+            {(lesson.files || []).length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-muted-foreground">{lesson.files.length} file{lesson.files.length !== 1 ? "s" : ""} added</p>
+                {lesson.files.map((file, i) => (
+                  <div key={i} className="flex items-center gap-3 px-3 py-2.5 bg-muted/40 rounded-xl">
+                    <div className="flex-1 min-w-0">
+                      <Input value={file.name} onChange={e => updateFile(i, "name", e.target.value)} placeholder="File name" className="rounded-lg text-xs h-7 bg-background" />
+                    </div>
+                    <div className="w-20 flex-shrink-0">
+                      <Input value={file.type} onChange={e => updateFile(i, "type", e.target.value)} placeholder="Type" className="rounded-lg text-xs h-7 bg-background" />
+                    </div>
+                    <span className="text-xs text-muted-foreground flex-shrink-0">
+                      {file.size_kb < 1024 ? `${file.size_kb} KB` : `${(file.size_kb / 1024).toFixed(1)} MB`}
+                    </span>
+                    <button onClick={() => deleteFile(i)} className="text-muted-foreground hover:text-destructive flex-shrink-0"><Trash2 size={14} /></button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg w-full border border-dashed border-border/60">
+              <Plus size={12} /> Add file by URL
+            </Button>
           </Card>
         </TabsContent>
 
