@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
@@ -61,6 +61,7 @@ export default function MakerLessonBuilder() {
   const [uploadingHero, setUploadingHero] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const fileUploadRef = useRef(null);
 
   useEffect(() => {
     if (!isNew) {
@@ -487,13 +488,11 @@ export default function MakerLessonBuilder() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-poppins font-bold text-sm">Downloadable Files</h3>
               <div className="flex gap-2">
-                <label className={`cursor-pointer ${uploadingFile ? "opacity-60 pointer-events-none" : ""}`}>
-                  <div className="inline-flex items-center gap-1 text-xs rounded-lg border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3 py-1 font-medium">
-                    {uploadingFile ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                    {uploadingFile ? "Uploading..." : "Upload File"}
-                  </div>
-                  <input type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf,.f3d" className="hidden" onChange={handleFileUpload} disabled={uploadingFile} />
-                </label>
+                <input ref={fileUploadRef} type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf,.f3d" className="hidden" onChange={handleFileUpload} />
+                <Button variant="outline" size="sm" className="gap-1 text-xs rounded-lg" disabled={uploadingFile} onClick={() => fileUploadRef.current?.click()}>
+                  {uploadingFile ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                  {uploadingFile ? "Uploading..." : "Upload File"}
+                </Button>
                 <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg"><Plus size={12} /> Add URL</Button>
               </div>
             </div>
