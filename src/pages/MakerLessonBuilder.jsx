@@ -60,6 +60,7 @@ export default function MakerLessonBuilder() {
   const [uploadingThumb, setUploadingThumb] = useState(false);
   const [uploadingHero, setUploadingHero] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [uploadingFile, setUploadingFile] = useState(false);
 
   useEffect(() => {
     if (!isNew) {
@@ -131,6 +132,17 @@ export default function MakerLessonBuilder() {
   };
 
   const deleteStep = (i) => update("steps", lesson.steps.filter((_, idx) => idx !== i));
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingFile(true);
+    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const ext = file.name.split(".").pop().toUpperCase();
+    const size_kb = Math.round(file.size / 1024);
+    update("files", [...(lesson.files || []), { name: file.name, url: file_url, type: ext, size_kb }]);
+    setUploadingFile(false);
+  };
 
   const addFile = () => update("files", [...(lesson.files || []), { name: "", url: "", type: "", size_kb: 0 }]);
   const updateFile = (i, field, val) => {
@@ -473,7 +485,16 @@ export default function MakerLessonBuilder() {
           <Card className="p-5 border-border/60 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-poppins font-bold text-sm">Downloadable Files</h3>
-              <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg"><Plus size={12} /> Add File</Button>
+              <div className="flex gap-2">
+                <label className="cursor-pointer">
+                  <Button variant="outline" size="sm" className="gap-1 text-xs rounded-lg pointer-events-none" disabled={uploadingFile}>
+                    {uploadingFile ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                    {uploadingFile ? "Uploading..." : "Upload File"}
+                  </Button>
+                  <input type="file" accept=".stl,.glb,.pdf,.zip,.png,.jpg,.jpeg,.gltf" className="hidden" onChange={handleFileUpload} disabled={uploadingFile} />
+                </label>
+                <Button variant="ghost" size="sm" onClick={addFile} className="gap-1 text-xs rounded-lg"><Plus size={12} /> Add URL</Button>
+              </div>
             </div>
             <div className="space-y-3">
               {(lesson.files || []).map((file, i) => (
