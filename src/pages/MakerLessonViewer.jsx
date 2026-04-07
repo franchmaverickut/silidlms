@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Clock, Layers, ChevronLeft, Play, Box, Download, FileText,
   Image as ImageIcon, Wrench, Cpu, Package, ListChecks, Upload,
-  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File, X
+  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File, X, Pencil
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -148,9 +148,18 @@ export default function MakerLessonViewer() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-16">
       {/* Back */}
-      <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-        <ChevronLeft size={16} /> Back to Maker Lessons
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <ChevronLeft size={16} /> Back to Maker Lessons
+        </Link>
+        {(user?.role === "admin" || user?.role === "teacher") && (
+          <Link to={`/maker/${id}/edit`}>
+            <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
+              <Pencil size={12} /> Edit Lesson
+            </Button>
+          </Link>
+        )}
+      </div>
 
       {/* Hero */}
       <div className="relative rounded-3xl overflow-hidden min-h-[280px] bg-gradient-to-br from-primary to-orange-400 shadow-xl shadow-primary/20">

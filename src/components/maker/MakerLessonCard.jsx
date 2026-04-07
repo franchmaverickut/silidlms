@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Clock, Layers, ChevronRight, Cpu, Printer, Bot, Code2, Zap, Palette, BookOpen } from "lucide-react";
+import { Clock, Layers, ChevronRight, Cpu, Printer, Bot, Code2, Zap, Palette, BookOpen, Pencil } from "lucide-react";
 
 const skillIcons = {
   "3D Printing": Printer,
@@ -28,7 +28,7 @@ const skillColors = {
   "Other": "bg-gray-100 text-gray-700",
 };
 
-export default function MakerLessonCard({ lesson, progress }) {
+export default function MakerLessonCard({ lesson, progress, isTeacher }) {
   const SkillIcon = skillIcons[lesson.skill_area] || BookOpen;
   const skillColor = skillColors[lesson.skill_area] || skillColors["Other"];
   const diffColor = difficultyColors[lesson.difficulty] || difficultyColors["Beginner"];
@@ -98,9 +98,19 @@ export default function MakerLessonCard({ lesson, progress }) {
                 {lesson.status === "published" ? "Ready to build" : lesson.status}
               </span>
             )}
-            <span className="text-primary text-xs font-semibold flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
-              Start Build <ChevronRight size={13} />
-            </span>
+            {isTeacher ? (
+              <Link
+                to={`/maker/${lesson.id}/edit`}
+                onClick={e => e.stopPropagation()}
+                className="text-muted-foreground hover:text-primary text-xs font-semibold flex items-center gap-1 transition-colors"
+              >
+                <Pencil size={12} /> Edit
+              </Link>
+            ) : (
+              <span className="text-primary text-xs font-semibold flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
+                Start Build <ChevronRight size={13} />
+              </span>
+            )}
           </div>
         </div>
       </Card>

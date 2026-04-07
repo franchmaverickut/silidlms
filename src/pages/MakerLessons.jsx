@@ -122,7 +122,7 @@ export default function MakerLessons() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map(lesson => (
-            <MakerLessonCard key={lesson.id} lesson={lesson} progress={getProgress(lesson.id)} />
+            <MakerLessonCard key={lesson.id} lesson={lesson} progress={getProgress(lesson.id)} isTeacher={isTeacher} />
           ))}
         </div>
       )}
