@@ -3,35 +3,12 @@ import * as THREE from "three";
 import { RotateCcw, ZoomIn, ZoomOut, Move3d } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-function loadSTL(url) {
-  return fetch(url)
-    .then(r => r.arrayBuffer())
-    .then(buffer => {
-      // Binary STL parser
-      const view = new DataView(buffer);
-      const numTriangles = view.getUint32(80, true);
-      const geometry = new THREE.BufferGeometry();
-      const positions = new Float32Array(numTriangles * 9);
-      const normals = new Float32Array(numTriangles * 9);
-      let offset = 84;
-      for (let i = 0; i < numTriangles; i++) {
-        const nx = view.getFloat32(offset, true); offset += 4;
-        const ny = view.getFloat32(offset, true); offset += 4;
-        const nz = view.getFloat32(offset, true); offset += 4;
-        for (let v = 0; v < 3; v++) {
-          const bi = i * 9 + v * 3;
-          positions[bi] = view.getFloat32(offset, true); offset += 4;
-          positions[bi + 1] = view.getFloat32(offset, true); offset += 4;
-          positions[bi + 2] = view.getFloat32(offset, true); offset += 4;
-          normals[bi] = nx; normals[bi + 1] = ny; normals[bi + 2] = nz;
-        }
-        offset += 2; // attribute byte count
-      }
-      geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-      geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
-      geometry.computeBoundingBox();
-      return geometry;
+function loadSTLWithLoader(url) {
+  return import("three/examples/jsm/loaders/STLLoader.js").then(({ STLLoader }) => {
+    return new Promise((resolve, reject) => {
+      new STLLoader().load(url, resolve, undefined, reject);
     });
+  });
 }
 
 export default function STLViewer({ url, height = 320, className = "" }) {
@@ -160,7 +137,7 @@ export default function STLViewer({ url, height = 320, className = "" }) {
         }, undefined, () => setError("Failed to load model"));
       });
     } else {
-      loadSTL(url).then(addGeometry).catch(() => setError("Failed to load STL"));
+      loadSTLWithLoader(url).then(addGeometry).catch(() => setError("Failed to load STL. Check the file URL is publicly accessible."));
     }
 
     // Animation loop
