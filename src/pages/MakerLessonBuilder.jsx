@@ -64,9 +64,10 @@ export default function MakerLessonBuilder() {
 
   useEffect(() => {
     if (!isNew) {
-      base44.entities.MakerLesson.filter({ id }, "-created_date", 1)
-        .then(results => {
-          if (results[0]) setLesson(results[0]);
+      base44.entities.MakerLesson.list("-created_date", 200)
+        .then(all => {
+          const found = all.find(l => l.id === id);
+          if (found) setLesson(found);
           setLoading(false);
         });
     }

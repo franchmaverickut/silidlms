@@ -57,7 +57,7 @@ export default function MakerLessonViewer() {
   useEffect(() => {
     const load = async () => {
       const [l, subs] = await Promise.all([
-        base44.entities.MakerLesson.filter({ id }, "-created_date", 1).catch(() => []),
+        base44.entities.MakerLesson.list("-created_date", 200).then(all => all.filter(l => l.id === id)).catch(() => []),
         user ? base44.entities.MakerSubmission.filter({ lesson_id: id, student_id: user.id }, "-created_date", 1).catch(() => []) : [],
       ]);
       const lessonData = l[0] || null;
