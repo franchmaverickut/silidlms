@@ -48,7 +48,7 @@ export default function STLViewer({ url, height = 320, className = "" }) {
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf8f7f5);
+    scene.background = new THREE.Color(0xd0d0d0);
 
     // Camera
     const camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 10000);
@@ -139,7 +139,7 @@ export default function STLViewer({ url, height = 320, className = "" }) {
       spherical.radius = r * 2.8;
       updateCamera();
       grid.position.y = -(r * 0.8);
-      const mat = new THREE.MeshPhongMaterial({ color: 0xf97316, specular: 0xffd0a0, shininess: 40 });
+      const mat = new THREE.MeshPhongMaterial({ color: 0x888888, specular: 0xbbbbbb, shininess: 80 });
       mesh = new THREE.Mesh(geometry, mat);
       scene.add(mesh);
       setLoading(false);

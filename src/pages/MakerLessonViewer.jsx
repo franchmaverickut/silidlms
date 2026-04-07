@@ -4,8 +4,9 @@ import { base44 } from "@/api/base44Client";
 import {
   Clock, Layers, ChevronLeft, Play, Box, Download, FileText,
   Image as ImageIcon, Wrench, Cpu, Package, ListChecks, Upload,
-  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File
+  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File, X
 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,6 +52,7 @@ export default function MakerLessonViewer() {
   const [outputFiles, setOutputFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef(null);
+  const [viewerUrl, setViewerUrl] = useState(null);
 
   useEffect(() => {
     const load = async () => {
@@ -422,6 +424,7 @@ export default function MakerLessonViewer() {
             <Card className="divide-y divide-border/40 border-border/60 shadow-sm overflow-hidden">
               {lesson.files.map((file, i) => {
                 const FIcon = fileIcon(file.type);
+                const is3D = file.type?.toLowerCase().includes("stl") || file.type?.toLowerCase().includes("glb");
                 return (
                   <div key={i} className="flex items-center gap-4 px-5 py-4 hover:bg-muted/20 transition-colors">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -433,13 +436,20 @@ export default function MakerLessonViewer() {
                         {file.type?.toUpperCase()} {file.size_kb && `• ${file.size_kb < 1024 ? `${file.size_kb} KB` : `${(file.size_kb / 1024).toFixed(1)} MB`}`}
                       </p>
                     </div>
-                    {file.url && (
-                      <a href={file.url} target="_blank" rel="noopener noreferrer" download>
-                        <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
-                          <Download size={12} /> Download
+                    <div className="flex gap-2">
+                      {is3D && file.url && (
+                        <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs" onClick={() => setViewerUrl(file.url)}>
+                          <Box size={12} /> View in 3D
                         </Button>
-                      </a>
-                    )}
+                      )}
+                      {file.url && (
+                        <a href={file.url} target="_blank" rel="noopener noreferrer" download>
+                          <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
+                            <Download size={12} /> Download
+                          </Button>
+                        </a>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -546,6 +556,18 @@ export default function MakerLessonViewer() {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* 3D Viewer Modal */}
+      <Dialog open={!!viewerUrl} onOpenChange={open => !open && setViewerUrl(null)}>
+        <DialogContent className="max-w-3xl p-0 overflow-hidden">
+          <DialogHeader className="px-5 py-3 border-b border-border/60">
+            <DialogTitle className="text-sm font-poppins font-bold flex items-center gap-2">
+              <Box size={15} className="text-primary" /> 3D Model Viewer
+            </DialogTitle>
+          </DialogHeader>
+          {viewerUrl && <STLViewer url={viewerUrl} height={480} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
