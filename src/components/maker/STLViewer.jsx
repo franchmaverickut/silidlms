@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Move3d, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { base44 } from "@/api/base44Client";
 
 export default function STLViewer({ url, height = 320, className = "" }) {
   const mountRef = useRef(null);
@@ -101,10 +102,13 @@ export default function STLViewer({ url, height = 320, className = "" }) {
       el.addEventListener("wheel", onWheel, { passive: false });
       el.addEventListener("contextmenu", onContextMenu);
 
-      // Load STL — use a CORS proxy for GitHub raw URLs
+      // For GitHub/external URLs, route through our backend proxy to avoid CORS
+      const needsProxy = url.includes("raw.githubusercontent.com") || url.includes("github.com");
       let loadUrl = url;
-      if (url.includes("raw.githubusercontent.com") || url.includes("github.com")) {
-        loadUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+      if (needsProxy) {
+        const res = await base44.functions.invoke("proxyStl", { url });
+        const blob = new Blob([res.data], { type: "model/stl" });
+        loadUrl = URL.createObjectURL(blob);
       }
 
       new STLLoader().load(
