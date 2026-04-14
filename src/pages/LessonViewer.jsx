@@ -10,7 +10,6 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import QuizPlayer from "@/components/lesson/QuizPlayer";
 
 export default function LessonViewer() {
   const { id } = useParams();
@@ -29,21 +28,21 @@ export default function LessonViewer() {
 
   useEffect(() => {
     const load = async () => {
-      // Fetch lesson first to get course_id, then batch everything else
       const l = await base44.entities.Lesson.filter({ id });
       const lessonData = l[0];
-      if (!lessonData) { setLoading(false); return; }
       setLesson(lessonData);
-
-      const [all, enrArr, subArr] = await Promise.all([
-        base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
-        user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : Promise.resolve([]),
-        user ? base44.entities.Submission.filter({ lesson_id: id, student_id: user.id }) : Promise.resolve([]),
-      ]);
-
-      setAllLessons(all);
-      if (enrArr[0]) setEnrollment(enrArr[0]);
-      if (subArr[0]) { setSubmission(subArr[0]); setTextResponse(subArr[0].text_response || ""); }
+      if (lessonData) {
+        const [all, enr] = await Promise.all([
+          base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
+          user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : [],
+        ]);
+        setAllLessons(all);
+        if (enr[0]) {
+          setEnrollment(enr[0]);
+          const sub = await base44.entities.Submission.filter({ lesson_id: id, student_id: user?.id });
+          if (sub[0]) { setSubmission(sub[0]); setTextResponse(sub[0].text_response || ""); }
+        }
+      }
       setLoading(false);
     };
     if (user !== null) load();
@@ -198,20 +197,13 @@ export default function LessonViewer() {
         </Card>
       )}
 
-      {/* Rich Text Content */}
+      {/* Content */}
       {lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
-          <div
-            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
-            style={{ padding: 0 }}
-            dangerouslySetInnerHTML={{ __html: lesson.content }}
-          />
+          <div className="prose prose-sm max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap text-sm">
+            {lesson.content}
+          </div>
         </Card>
-      )}
-
-      {/* Quiz */}
-      {lesson.type === "quiz" && lesson.quiz_data && (
-        <QuizPlayer quizData={lesson.quiz_data} />
       )}
 
       {/* Materials */}
