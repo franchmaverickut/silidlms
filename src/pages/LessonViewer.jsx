@@ -29,21 +29,21 @@ export default function LessonViewer() {
 
   useEffect(() => {
     const load = async () => {
+      // Fetch lesson first to get course_id, then batch everything else
       const l = await base44.entities.Lesson.filter({ id });
       const lessonData = l[0];
+      if (!lessonData) { setLoading(false); return; }
       setLesson(lessonData);
-      if (lessonData) {
-        const [all, enr] = await Promise.all([
-          base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
-          user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : [],
-        ]);
-        setAllLessons(all);
-        if (enr[0]) {
-          setEnrollment(enr[0]);
-          const sub = await base44.entities.Submission.filter({ lesson_id: id, student_id: user?.id });
-          if (sub[0]) { setSubmission(sub[0]); setTextResponse(sub[0].text_response || ""); }
-        }
-      }
+
+      const [all, enrArr, subArr] = await Promise.all([
+        base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
+        user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : Promise.resolve([]),
+        user ? base44.entities.Submission.filter({ lesson_id: id, student_id: user.id }) : Promise.resolve([]),
+      ]);
+
+      setAllLessons(all);
+      if (enrArr[0]) setEnrollment(enrArr[0]);
+      if (subArr[0]) { setSubmission(subArr[0]); setTextResponse(subArr[0].text_response || ""); }
       setLoading(false);
     };
     if (user !== null) load();
