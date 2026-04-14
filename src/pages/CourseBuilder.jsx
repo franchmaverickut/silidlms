@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
+import ReactQuill from "react-quill";
+import QuizBuilder from "@/components/lesson/QuizBuilder";
 
 const LESSON_TYPES = ["reading", "video", "quiz", "activity", "project"];
 
@@ -210,16 +212,42 @@ export default function CourseBuilder() {
                         <Input
                           value={lesson.video_url || ""}
                           onChange={e => updateLesson(lesson.id, { video_url: e.target.value })}
-                          placeholder="Video URL (YouTube embed URL)"
+                          placeholder="YouTube embed URL (e.g. https://www.youtube.com/embed/...)"
                           className="text-sm"
                         />
                       )}
-                      <Textarea
-                        value={lesson.content || ""}
-                        onChange={e => updateLesson(lesson.id, { content: e.target.value })}
-                        placeholder="Lesson content, instructions, or description..."
-                        className="min-h-[120px] text-sm"
-                      />
+                      {lesson.type === "quiz" ? (
+                        <div className="space-y-2">
+                          <p className="text-xs font-semibold text-muted-foreground">Quiz Questions</p>
+                          <QuizBuilder
+                            value={lesson.quiz_data || ""}
+                            onChange={val => updateLesson(lesson.id, { quiz_data: val })}
+                          />
+                        </div>
+                      ) : (
+                        <div className="space-y-1">
+                          <p className="text-xs font-semibold text-muted-foreground">Lesson Content (rich text, supports embeds)</p>
+                          <div className="rounded-xl overflow-hidden border border-border/60">
+                            <ReactQuill
+                              theme="snow"
+                              value={lesson.content || ""}
+                              onChange={val => updateLesson(lesson.id, { content: val })}
+                              modules={{
+                                toolbar: [
+                                  [{ header: [1, 2, 3, false] }],
+                                  ["bold", "italic", "underline", "strike"],
+                                  [{ list: "ordered" }, { list: "bullet" }],
+                                  ["link", "image", "video"],
+                                  ["blockquote", "code-block"],
+                                  ["clean"],
+                                ],
+                              }}
+                              className="bg-background text-sm"
+                              style={{ minHeight: 180 }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

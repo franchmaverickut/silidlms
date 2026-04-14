@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import QuizPlayer from "@/components/lesson/QuizPlayer";
 
 export default function LessonViewer() {
   const { id } = useParams();
@@ -197,13 +198,20 @@ export default function LessonViewer() {
         </Card>
       )}
 
-      {/* Content */}
+      {/* Rich Text Content */}
       {lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
-          <div className="prose prose-sm max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap text-sm">
-            {lesson.content}
-          </div>
+          <div
+            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
+            style={{ padding: 0 }}
+            dangerouslySetInnerHTML={{ __html: lesson.content }}
+          />
         </Card>
+      )}
+
+      {/* Quiz */}
+      {lesson.type === "quiz" && lesson.quiz_data && (
+        <QuizPlayer quizData={lesson.quiz_data} />
       )}
 
       {/* Materials */}
