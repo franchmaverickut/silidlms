@@ -27,25 +27,31 @@ export default function LessonViewer() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (user === null) return; // wait for auth to resolve
+    let cancelled = false;
     const load = async () => {
       const l = await base44.entities.Lesson.filter({ id });
+      if (cancelled) return;
       const lessonData = l[0];
       setLesson(lessonData);
       if (lessonData) {
-        const [all, enr] = await Promise.all([
+        const [all, enrList] = await Promise.all([
           base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
-          user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : [],
+          user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : Promise.resolve([]),
         ]);
+        if (cancelled) return;
         setAllLessons(all);
-        if (enr[0]) {
-          setEnrollment(enr[0]);
+        if (enrList[0]) {
+          setEnrollment(enrList[0]);
           const sub = await base44.entities.Submission.filter({ lesson_id: id, student_id: user?.id });
+          if (cancelled) return;
           if (sub[0]) { setSubmission(sub[0]); setTextResponse(sub[0].text_response || ""); }
         }
       }
       setLoading(false);
     };
-    if (user !== null) load();
+    load();
+    return () => { cancelled = true; };
   }, [id, user]);
 
   const handleMarkComplete = async () => {
@@ -197,12 +203,14 @@ export default function LessonViewer() {
         </Card>
       )}
 
-      {/* Content */}
+      {/* Rich Text Content */}
       {lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
-          <div className="prose prose-sm max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap text-sm">
-            {lesson.content}
-          </div>
+          <div
+            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
+            style={{ padding: 0 }}
+            dangerouslySetInnerHTML={{ __html: lesson.content }}
+          />
         </Card>
       )}
 
