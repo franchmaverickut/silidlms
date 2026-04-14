@@ -21,7 +21,6 @@ import AdminPanel from '@/pages/AdminPanel';
 import MakerLessons from '@/pages/MakerLessons';
 import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
-import Grade1Lesson from '@/pages/Grade1Lesson';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -64,7 +63,6 @@ const AuthenticatedApp = () => {
         <Route path="/maker/new" element={<MakerLessonBuilder />} />
         <Route path="/maker/:id" element={<MakerLessonViewer />} />
         <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
-        <Route path="/lessons/grade1" element={<Grade1Lesson />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

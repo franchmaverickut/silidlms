@@ -119,19 +119,10 @@ export default function StepEditor({ step, index, onChange, onDelete }) {
             </label>
             <Input
               value={step.model_3d_url || ""}
-              onChange={e => {
-                const val = e.target.value.trim();
-                // Only accept plain URLs starting with http
-                if (val === "" || val.startsWith("http")) {
-                  update("model_3d_url", val);
-                }
-              }}
+              onChange={e => update("model_3d_url", e.target.value)}
               placeholder="https://... .stl or .glb"
               className="rounded-xl text-sm"
             />
-            {step.model_3d_url && !step.model_3d_url.startsWith("http") && (
-              <p className="text-xs text-destructive mt-1">Please enter a valid URL starting with https://</p>
-            )}
           </div>
         </div>
       )}
