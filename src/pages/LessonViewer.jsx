@@ -36,7 +36,7 @@ export default function LessonViewer() {
       setLesson(lessonData);
       if (lessonData) {
         const [all, enrList] = await Promise.all([
-          base44.entities.Lesson.filter({ course_id: lessonData.course_id }, "order"),
+          base44.entities.Lesson.filter({ course_id: lessonData.course_id, module_id: lessonData.module_id }, "order"),
           user ? base44.entities.Enrollment.filter({ course_id: lessonData.course_id, student_id: user.id }) : Promise.resolve([]),
         ]);
         if (cancelled) return;
