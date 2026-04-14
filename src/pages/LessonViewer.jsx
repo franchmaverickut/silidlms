@@ -28,8 +28,8 @@ export default function LessonViewer() {
 
   useEffect(() => {
     const load = async () => {
-      const all = await base44.entities.Lesson.list();
-      const lessonData = all.find(l => l.id === id);
+      const l = await base44.entities.Lesson.filter({ id });
+      const lessonData = l[0];
       setLesson(lessonData);
       if (lessonData) {
         const [all, enr] = await Promise.all([

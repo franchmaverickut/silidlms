@@ -430,10 +430,18 @@ export default function MakerLessonBuilder() {
             <h3 className="font-poppins font-bold text-sm flex items-center gap-2"><Box size={15} className="text-primary" /> 3D Model</h3>
             <Input
               value={lesson.model_3d_url}
-              onChange={e => update("model_3d_url", e.target.value)}
-              placeholder="Direct URL to .stl or .glb file"
+              onChange={e => {
+                const val = e.target.value.trim();
+                if (val === "" || val.startsWith("http")) {
+                  update("model_3d_url", val);
+                }
+              }}
+              placeholder="Direct URL to .stl or .glb file (https://...)"
               className="rounded-xl text-sm"
             />
+            {lesson.model_3d_url && !lesson.model_3d_url.startsWith("http") && (
+              <p className="text-xs text-destructive mt-1">Please enter a valid URL starting with https://</p>
+            )}
             {lesson.model_3d_url && (
               <STLViewer url={lesson.model_3d_url} height={280} />
             )}
