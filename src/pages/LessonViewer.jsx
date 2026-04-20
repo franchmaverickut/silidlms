@@ -205,12 +205,146 @@ export default function LessonViewer() {
 
       {/* Rich Text Content */}
       {lesson.content && (
-        <Card className="p-6 border-border/60 shadow-sm">
+        <Card className="p-6 border-border/60 shadow-sm overflow-hidden">
+          <style>{`
+            /* Flip cards */
+            .rev-card { perspective: 600px; width: 120px; height: 120px; cursor: pointer; display: inline-block; margin: 6px; }
+            .rev-card .rev-front, .rev-card .rev-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; text-align: center; transition: transform 0.5s; }
+            .rev-card { position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+            .rev-card .rev-front { background: #f0f4ff; border: 2px solid #c7d2fe; }
+            .rev-card .rev-back { background: #4F46E5; color: white; transform: rotateY(180deg); }
+            .rev-card.flipped { transform: rotateY(180deg); }
+            .rev-hint { font-size: 10px; color: #6366f1; margin-top: 4px; }
+            .rev-name { font-weight: 800; font-size: 13px; margin-bottom: 4px; }
+            .rev-desc { font-size: 11px; opacity: .9; }
+            .reveal-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
+
+            /* Drag & drop */
+            .drag-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; min-height: 44px; padding: 10px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 10px; }
+            .chip { padding: 8px 16px; background: #4F46E5; color: white; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: grab; user-select: none; }
+            .chip:active { cursor: grabbing; opacity: .8; }
+            .drop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-bottom: 20px; }
+            .drop-zone { border: 2px dashed #94a3b8; border-radius: 12px; padding: 12px 8px; min-height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: all .2s; background: #f8fafc; }
+            .drop-zone.over { border-color: #6366f1; background: #eef2ff; }
+            .drop-zone.correct { border-color: #22c55e; background: #dcfce7; }
+            .drop-zone.wrong { border-color: #ef4444; background: #fee2e2; }
+            .drop-label { font-size: 11px; color: #64748b; font-weight: 600; }
+
+            /* Quiz */
+            .section-label { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #6366f1; margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 2px solid #e0e7ff; }
+            .qcard { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+            .qnum { font-size: 11px; font-weight: 800; color: #6366f1; margin-bottom: 6px; }
+            .qtext { font-weight: 700; font-size: 14px; color: #1e1b4b; margin-bottom: 12px; }
+            .qopts { display: flex; flex-wrap: wrap; gap: 8px; }
+            .qopt { padding: 8px 14px; border: 2px solid #c7d2fe; border-radius: 8px; background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; color: #312e81; }
+            .qopt:hover:not(:disabled) { border-color: #6366f1; background: #eef2ff; }
+            .qopt.correct { background: #dcfce7; border-color: #22c55e; color: #166534; }
+            .qopt.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+            .qfb { font-size: 12px; font-weight: 700; margin-top: 8px; min-height: 18px; }
+            .score-box { background: linear-gradient(135deg,#4F46E5,#7c3aed); color: white; border-radius: 16px; padding: 24px; text-align: center; margin-top: 16px; }
+            .score-stars { font-size: 28px; margin-bottom: 8px; }
+            .score-val { font-size: 22px; font-weight: 900; }
+            .score-msg { font-size: 13px; opacity: .85; margin-top: 4px; }
+            .retry-btn { margin-top: 14px; padding: 8px 22px; background: white; color: #4F46E5; border: none; border-radius: 20px; font-weight: 800; font-size: 13px; cursor: pointer; }
+            .done-banner { background: linear-gradient(135deg,#22c55e,#16a34a); color: white; border-radius: 14px; padding: 20px 24px; text-align: center; margin-top: 24px; }
+            .done-banner h3 { margin: 0 0 6px; font-size: 1.2rem; font-weight: 800; }
+            .done-banner p { margin: 0; opacity: .9; font-size: 13px; }
+            .reading-block { display: flex; gap: 16px; align-items: flex-start; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+            .reading-icon { flex-shrink: 0; }
+            .reading-heading { font-weight: 800; font-size: 14px; color: #1e1b4b; margin-bottom: 4px; }
+            .reading-body { font-size: 13px; color: #475569; line-height: 1.6; }
+            .wrap { padding: 4px 0; }
+          `}</style>
           <div
-            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
+            className="lesson-html-content"
             style={{ padding: 0 }}
             dangerouslySetInnerHTML={{ __html: lesson.content }}
           />
+          <script dangerouslySetInnerHTML={{ __html: `
+            (function() {
+              // Quiz handler
+              window.qans = function(cardId, btn, isCorrect) {
+                var card = document.getElementById(cardId);
+                if (!card) return;
+                var opts = card.querySelectorAll('.qopt');
+                opts.forEach(function(o) { o.disabled = true; });
+                btn.classList.add(isCorrect ? 'correct' : 'wrong');
+                if (!isCorrect) {
+                  opts.forEach(function(o) {
+                    if (o.onclick && o.onclick.toString().includes(',true)')) o.classList.add('correct');
+                  });
+                }
+                var fb = document.getElementById(cardId + '-fb');
+                if (fb) { fb.textContent = isCorrect ? '✅ Correct!' : '❌ Not quite — try again next time!'; fb.style.color = isCorrect ? '#166534' : '#991b1b'; }
+                // Check if all questions in the quiz are answered
+                var wrapId = cardId.replace(/q(\\d+)_\\d+/, 'quiz-wrap-$1');
+                var wrap = document.getElementById(wrapId);
+                if (wrap) {
+                  var allCards = wrap.querySelectorAll('.qcard');
+                  var allAnswered = true;
+                  allCards.forEach(function(c) {
+                    var btns = c.querySelectorAll('.qopt');
+                    var answered = false;
+                    btns.forEach(function(b) { if (b.disabled) answered = true; });
+                    if (!answered) allAnswered = false;
+                  });
+                  if (allAnswered) {
+                    var numMatch = wrapId.match(/quiz-wrap-(\\d+)/);
+                    if (numMatch) showScore(numMatch[1], allCards.length);
+                  }
+                }
+              };
+
+              function showScore(n, total) {
+                var scoreBox = document.getElementById('score-' + n);
+                if (!scoreBox) return;
+                var correct = 0;
+                var wrap = document.getElementById('quiz-wrap-' + n);
+                if (wrap) {
+                  wrap.querySelectorAll('.qopt.correct').forEach(function() { correct++; });
+                }
+                var pct = Math.round((correct / total) * 100);
+                var stars = pct === 100 ? '⭐⭐⭐' : pct >= 66 ? '⭐⭐' : '⭐';
+                document.getElementById('stars-' + n).textContent = stars;
+                document.getElementById('sval-' + n).textContent = correct + ' / ' + total + ' correct (' + pct + '%)';
+                var msgEl = document.getElementById('smsg-' + n);
+                if (msgEl) msgEl.textContent = pct === 100 ? 'Perfect score! Amazing work! 🎉' : pct >= 66 ? 'Great job! Keep it up!' : 'Good try! Review and try again.';
+                scoreBox.style.display = 'block';
+              }
+
+              window.retryQuiz = function(n, total) {
+                var wrap = document.getElementById('quiz-wrap-' + n);
+                if (!wrap) return;
+                wrap.querySelectorAll('.qopt').forEach(function(btn) {
+                  btn.disabled = false;
+                  btn.classList.remove('correct', 'wrong');
+                });
+                wrap.querySelectorAll('.qfb').forEach(function(fb) { fb.textContent = ''; });
+                var scoreBox = document.getElementById('score-' + n);
+                if (scoreBox) scoreBox.style.display = 'none';
+              };
+
+              // Drag & drop
+              var draggedVal = null;
+              document.addEventListener('dragstart', function(e) {
+                if (e.target.classList.contains('chip')) { draggedVal = e.target.dataset.val; e.target.style.opacity = '.5'; }
+              });
+              document.addEventListener('dragend', function(e) {
+                if (e.target.classList.contains('chip')) e.target.style.opacity = '1';
+              });
+              window.dov = function(e) { e.preventDefault(); e.currentTarget.classList.add('over'); };
+              window.dlv = function(e) { e.currentTarget.classList.remove('over'); };
+              window.dop = function(e) {
+                e.preventDefault();
+                var zone = e.currentTarget;
+                zone.classList.remove('over');
+                if (!draggedVal) return;
+                var correct = zone.dataset.answer === draggedVal;
+                zone.classList.add(correct ? 'correct' : 'wrong');
+                setTimeout(function() { if (!correct) zone.classList.remove('wrong'); }, 800);
+              };
+            })();
+          ` }} />
         </Card>
       )}
 
