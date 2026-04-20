@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useOutletContext, useNavigate, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
+import Grade1MakerLesson from "@/components/lesson/Grade1MakerLesson";
 import {
   ArrowLeft, ArrowRight, CheckCircle, FileText, Play,
   Zap, BookOpen, Upload, Loader2
@@ -133,6 +135,41 @@ export default function LessonViewer() {
   );
 
   if (!lesson) return <div className="text-center py-24 text-muted-foreground">Lesson not found.</div>;
+
+  // ── Native interactive renderer for Grade 1 Maker lessons ───────────────
+  const isGrade1Maker = GRADE1_MAKER_LESSONS.some(l => l.id === id);
+  if (isGrade1Maker) {
+    return (
+      <div className="max-w-4xl">
+        {/* Back */}
+        <button onClick={() => navigate(`/courses/${lesson.course_id}`)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors mb-4">
+          <ArrowLeft size={16} /> Back to Course
+        </button>
+        <Grade1MakerLesson
+          lessonId={id}
+          enrollment={enrollment}
+          allLessons={allLessons}
+          user={user}
+          onComplete={handleMarkComplete}
+        />
+        {/* Nav */}
+        <div className="flex items-center justify-between pt-4 max-w-2xl mx-auto">
+          <Button variant="outline" disabled={!allLessons[allLessons.findIndex(l => l.id === id) - 1]} onClick={() => navigate(`/lessons/${allLessons[allLessons.findIndex(l => l.id === id) - 1]?.id}`)} className="gap-2 rounded-xl">
+            <ArrowLeft size={15} /> Previous
+          </Button>
+          {allLessons[allLessons.findIndex(l => l.id === id) + 1] ? (
+            <Button onClick={() => navigate(`/lessons/${allLessons[allLessons.findIndex(l => l.id === id) + 1].id}`)} className="bg-primary text-white rounded-xl gap-2">
+              Next <ArrowRight size={15} />
+            </Button>
+          ) : (
+            <Link to={`/courses/${lesson.course_id}`}>
+              <Button className="bg-primary text-white rounded-xl gap-2">Back to Course <ArrowRight size={15} /></Button>
+            </Link>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const currentIndex = allLessons.findIndex(l => l.id === id);
   const prevLesson = allLessons[currentIndex - 1];
