@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import {
   RevealCard, DragDropActivity, Quiz,
   SectionLabel, ReadingBlock, LessonHeader, DoneBanner,
+  CalloutBlock, SketchComponentsGrid,
 } from "./InteractiveLessonViewer";
 import { GRADE1_MAKER_LESSONS } from "./lessonData";
 import { GRADE2_MAKER_LESSONS } from "./lessonDataGrade2";
@@ -39,11 +40,34 @@ export default function Grade1MakerLesson({ lessonId, enrollment, allLessons, us
         accentColor={accentColor}
       />
 
+      {/* Hero Banner Image */}
+      {lessonData.heroBannerImage && (
+        <div className="relative rounded-2xl overflow-hidden mb-2">
+          <img src={lessonData.heroBannerImage} alt={lessonData.title} className="w-full h-52 object-cover" loading="lazy" />
+          {lessonData.heroBannerCaption && (
+            <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs px-4 py-2 text-center">{lessonData.heroBannerCaption}</div>
+          )}
+        </div>
+      )}
+
       {/* Learn */}
       <SectionLabel accentColor={accentColor}>Learn — read and understand</SectionLabel>
       {lessonData.readings.map((r, i) => (
-        <ReadingBlock key={i} svgIcon={r.svgIcon} heading={r.heading} body={r.body} accentColor={accentColor} />
+        <ReadingBlock key={i} svgIcon={r.svgIcon} heading={r.heading} body={r.body} accentColor={accentColor} emphasis={r.emphasis} vocab={r.vocab} image={r.image} />
       ))}
+
+      {/* Callouts */}
+      {lessonData.callouts?.map((c, i) => (
+        <CalloutBlock key={i} type={c.type} icon={c.icon} title={c.title} text={c.text} accentColor={accentColor} />
+      ))}
+
+      {/* Sketch Components */}
+      {lessonData.sketchComponents && (
+        <>
+          <SectionLabel accentColor={accentColor}>Sketch components — label each of these in your sketches</SectionLabel>
+          <SketchComponentsGrid components={lessonData.sketchComponents} accentColor={accentColor} />
+        </>
+      )}
 
       {/* Reveal Cards */}
       <SectionLabel accentColor={accentColor}>{lessonData.revealLabel}</SectionLabel>
@@ -54,6 +78,7 @@ export default function Grade1MakerLesson({ lessonId, enrollment, allLessons, us
             frontSvg={card.frontSvg}
             name={card.name}
             desc={card.desc}
+            detail={card.detail}
             accentColor={accentColor}
           />
         ))}

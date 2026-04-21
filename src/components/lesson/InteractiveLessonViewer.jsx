@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 
 // ─── Flip Card ──────────────────────────────────────────────────────────────
-export function RevealCard({ frontSvg, hint, name, desc, accentColor }) {
+export function RevealCard({ frontSvg, hint, name, desc, detail, accentColor }) {
   const [flipped, setFlipped] = useState(false);
   return (
     <div
@@ -43,6 +43,7 @@ export function RevealCard({ frontSvg, hint, name, desc, accentColor }) {
         >
           <div className="font-bold text-sm" style={{ color: accentColor }}>{name}</div>
           <div className="text-xs text-gray-600 leading-relaxed">{desc}</div>
+          {detail && <div className="text-xs text-gray-500 leading-relaxed mt-1 italic">{detail}</div>}
         </div>
       </div>
     </div>
@@ -341,16 +342,65 @@ export function SectionLabel({ children, accentColor }) {
 }
 
 // ─── Reading Block ────────────────────────────────────────────────────────────
-export function ReadingBlock({ svgIcon, heading, body, accentColor }) {
+export function ReadingBlock({ svgIcon, heading, body, accentColor, emphasis, vocab, image }) {
   return (
-    <div className="flex items-start gap-4 bg-white rounded-xl border border-gray-100 p-4 shadow-sm mb-3">
-      <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center">
-        <div dangerouslySetInnerHTML={{ __html: svgIcon }} />
+    <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm mb-3">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center">
+          <div dangerouslySetInnerHTML={{ __html: svgIcon }} />
+        </div>
+        <div className="flex-1">
+          <div style={{ color: accentColor }} className="font-black text-sm mb-1">{heading}</div>
+          <div className="text-sm text-gray-700 leading-relaxed">{body}</div>
+          {emphasis && (
+            <div className="mt-3 flex items-start gap-2 rounded-lg p-2.5" style={{ background: accentColor + "15", borderLeft: `3px solid ${accentColor}` }}>
+              <span className="text-xs font-black flex-shrink-0" style={{ color: accentColor }}>{emphasis.label}</span>
+              <span className="text-xs text-gray-700">{emphasis.text}</span>
+            </div>
+          )}
+          {vocab && vocab.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {vocab.map((v, i) => (
+                <span key={i} className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ background: accentColor + "20", color: accentColor }}>{v}</span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+      {image && (
+        <img src={image} alt={heading} className="mt-3 w-full rounded-lg object-cover max-h-52" loading="lazy" />
+      )}
+    </div>
+  );
+}
+
+// ─── Callout Block ────────────────────────────────────────────────────────────
+export function CalloutBlock({ type, icon, title, text, accentColor }) {
+  const isKey = type === "key";
+  const bg = isKey ? accentColor + "15" : "#f0fdf4";
+  const border = isKey ? accentColor : "#22c55e";
+  return (
+    <div className="flex items-start gap-4 rounded-xl border-2 p-4 mb-3" style={{ background: bg, borderColor: border }}>
+      <div className="flex-shrink-0" dangerouslySetInnerHTML={{ __html: icon }} />
       <div>
-        <div style={{ color: accentColor }} className="font-black text-sm mb-1">{heading}</div>
-        <div className="text-sm text-gray-700 leading-relaxed">{body}</div>
+        <div className="font-black text-sm mb-1" style={{ color: isKey ? accentColor : "#166534" }}>{title}</div>
+        <div className="text-sm leading-relaxed" style={{ color: isKey ? "#374151" : "#166534" }}>{text}</div>
       </div>
+    </div>
+  );
+}
+
+// ─── Sketch Components Grid ───────────────────────────────────────────────────
+export function SketchComponentsGrid({ components, accentColor }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 mb-3">
+      {components.map((c, i) => (
+        <div key={i} className="flex flex-col items-center gap-2 bg-white rounded-xl border border-gray-100 p-4 shadow-sm text-center">
+          <div dangerouslySetInnerHTML={{ __html: c.svgIcon }} />
+          <div className="font-bold text-xs" style={{ color: accentColor }}>{c.title}</div>
+          <div className="text-xs text-gray-600 leading-relaxed">{c.text}</div>
+        </div>
+      ))}
     </div>
   );
 }
