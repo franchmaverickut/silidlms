@@ -71,8 +71,7 @@ function ModuleAccordion({ module, lessons }) {
 }
 
 export default function PublicCourseViewer() {
-  const params = useParams();
-  const id = params.id || window.location.pathname.split("/share/course/")[1]?.split("/")[0];
+  const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
   const [lessons, setLessons] = useState([]);
@@ -80,6 +79,7 @@ export default function PublicCourseViewer() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (!id || id === ':id') return;
     const load = async () => {
       const [course, mods, lsns] = await Promise.all([
         base44.entities.Course.get(id),
