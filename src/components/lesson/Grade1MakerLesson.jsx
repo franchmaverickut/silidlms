@@ -6,8 +6,9 @@ import {
 } from "./InteractiveLessonViewer";
 import { GRADE1_MAKER_LESSONS } from "./lessonData";
 import { GRADE2_MAKER_LESSONS } from "./lessonDataGrade2";
+import { GRADE3_MAKER_LESSONS } from "./lessonDataGrade3";
 
-const ALL_LESSONS = [...GRADE1_MAKER_LESSONS, ...GRADE2_MAKER_LESSONS];
+const ALL_LESSONS = [...GRADE1_MAKER_LESSONS, ...GRADE2_MAKER_LESSONS, ...GRADE3_MAKER_LESSONS];
 
 export default function Grade1MakerLesson({ lessonId, enrollment, allLessons, user, onComplete }) {
   const lessonData = useMemo(() =>
