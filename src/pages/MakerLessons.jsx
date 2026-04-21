@@ -108,6 +108,32 @@ export default function MakerLessons() {
         </div>
       </div>
 
+      {/* Featured Projects — Static */}
+      {(skillFilter === "All" || skillFilter === "3D Printing") && !search && (
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Featured Projects</p>
+          <Link to="/maker/spinning-tops" className="block group">
+            <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
+              <img
+                src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png"
+                alt="Spinning Tops"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+              <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                <div className="flex gap-2 mb-2">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-purple-600 text-white">Project</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white">Basic</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
+                </div>
+                <h3 className="font-poppins font-bold text-lg text-white">Spinning Tops</h3>
+                <p className="text-white/70 text-xs">Design & 3D print a spinning top — spin for as long as possible!</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      )}
+
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-16 border border-dashed rounded-2xl">
