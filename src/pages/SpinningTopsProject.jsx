@@ -129,8 +129,9 @@ export default function SpinningTopsProject() {
           <iframe
             src="https://www.youtube.com/embed/QxMQbzMihzA"
             className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
             title="Spinning Top Intro"
           />
         </div>
@@ -185,8 +186,9 @@ export default function SpinningTopsProject() {
           <iframe
             src="https://www.youtube.com/embed/QxMQbzMihzA"
             className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
             title="Tinkercad Tutorial"
           />
         </div>
