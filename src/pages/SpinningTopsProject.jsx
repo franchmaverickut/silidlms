@@ -120,23 +120,6 @@ export default function SpinningTopsProject() {
         </div>
       </div>
 
-      {/* Intro Video */}
-      <Card className="p-5 border-border/60 shadow-sm">
-        <h3 className="font-poppins font-bold text-sm mb-3 flex items-center gap-2">
-          <Play size={15} className="text-purple-600" /> Intro Video
-        </h3>
-        <div className="rounded-2xl overflow-hidden aspect-video bg-black">
-          <iframe
-            src="https://www.youtube.com/embed/QxMQbzMihzA"
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            title="Spinning Top Intro"
-          />
-        </div>
-      </Card>
-
       {/* Project Info */}
       <Section title="Project Overview" icon="📋" defaultOpen={true}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
