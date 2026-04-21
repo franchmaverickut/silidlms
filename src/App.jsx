@@ -22,6 +22,7 @@ import MakerLessons from '@/pages/MakerLessons';
 import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 import SpinningTopsProject from '@/pages/SpinningTopsProject';
+import PublicCourseViewer from '@/pages/PublicCourseViewer';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
         <Route path="/maker/spinning-tops" element={<SpinningTopsProject />} />
       </Route>
+      <Route path="/share/course/:id" element={<PublicCourseViewer />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
