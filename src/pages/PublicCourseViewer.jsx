@@ -80,13 +80,13 @@ export default function PublicCourseViewer() {
 
   useEffect(() => {
     const load = async () => {
-      const [courses, mods, lsns] = await Promise.all([
-        base44.entities.Course.filter({ id }),
+      const [course, mods, lsns] = await Promise.all([
+        base44.entities.Course.get(id),
         base44.entities.Module.filter({ course_id: id }, "order"),
         base44.entities.Lesson.filter({ course_id: id }, "order"),
       ]);
-      if (!courses[0]) { setNotFound(true); setLoading(false); return; }
-      setCourse(courses[0]);
+      if (!course) { setNotFound(true); setLoading(false); return; }
+      setCourse(course);
       setModules(mods);
       setLessons(lsns);
       setLoading(false);
