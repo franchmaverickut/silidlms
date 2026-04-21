@@ -52,70 +52,107 @@ export function RevealCard({ frontSvg, hint, name, desc, accentColor }) {
 // ─── Drag-and-Drop ──────────────────────────────────────────────────────────
 export function DragDropActivity({ chips, zones, accentColor }) {
   const [bank, setBank] = useState(() => chips.map((c, i) => ({ ...c, uid: `chip-${i}` })));
-  const [placed, setPlaced] = useState({}); // zoneIndex → { uid, val, correct }
+  const [placed, setPlaced] = useState({}); // zoneIndex → chip
   const [feedback, setFeedback] = useState({}); // zoneIndex → "correct"|"wrong"
-  const [dragging, setDragging] = useState(null); // uid
+  const [selected, setSelected] = useState(null); // uid of selected chip
 
-  const handleDragStart = (uid) => setDragging(uid);
-  const handleDrop = (zoneIdx) => {
-    if (!dragging) return;
-    const chip = bank.find(c => c.uid === dragging);
+  const handleChipClick = (uid) => {
+    setSelected(prev => prev === uid ? null : uid);
+  };
+
+  const handleZoneClick = (zoneIdx) => {
+    if (!selected) return;
+    const chip = bank.find(c => c.uid === selected);
     if (!chip) return;
     const correct = chip.val === zones[zoneIdx].answer;
     setFeedback(f => ({ ...f, [zoneIdx]: correct ? "correct" : "wrong" }));
     if (correct) {
       setPlaced(p => ({ ...p, [zoneIdx]: { ...chip, correct: true } }));
-      setBank(b => b.filter(c => c.uid !== dragging));
+      setBank(b => b.filter(c => c.uid !== selected));
     } else {
       setTimeout(() => setFeedback(f => { const n = { ...f }; delete n[zoneIdx]; return n; }), 900);
     }
-    setDragging(null);
+    setSelected(null);
   };
+
+  const reset = () => {
+    setBank(chips.map((c, i) => ({ ...c, uid: `chip-${i}` })));
+    setPlaced({});
+    setFeedback({});
+    setSelected(null);
+  };
+
+  const allPlaced = Object.keys(placed).length === zones.length && zones.every((_, i) => placed[i]?.correct);
 
   return (
     <div className="space-y-4">
+      {/* Instruction hint */}
+      <p className="text-xs text-gray-500 italic">
+        {selected ? "Now tap a zone to place it ↓" : "Tap a label to select it, then tap a zone to match →"}
+      </p>
+
       {/* Bank */}
       <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-xl border border-dashed border-gray-300 min-h-[48px]">
         {bank.map(chip => (
-          <div
+          <button
             key={chip.uid}
-            draggable
-            onDragStart={() => handleDragStart(chip.uid)}
-            style={{ background: accentColor, cursor: "grab" }}
-            className="px-3 py-1.5 rounded-full text-white text-xs font-bold select-none shadow-sm active:opacity-70"
+            onClick={() => handleChipClick(chip.uid)}
+            style={{
+              background: selected === chip.uid ? "#fff" : accentColor,
+              color: selected === chip.uid ? accentColor : "#fff",
+              border: `2px solid ${accentColor}`,
+              transform: selected === chip.uid ? "scale(1.08)" : "scale(1)",
+              boxShadow: selected === chip.uid ? `0 0 0 3px ${accentColor}44` : "none",
+              transition: "all 0.15s",
+            }}
+            className="px-3 py-1.5 rounded-full text-xs font-bold select-none"
           >
             {chip.label}
-          </div>
+          </button>
         ))}
-        {bank.length === 0 && <span className="text-xs text-gray-400 self-center">All chips placed!</span>}
+        {bank.length === 0 && !allPlaced && <span className="text-xs text-gray-400 self-center">All chips placed!</span>}
+        {allPlaced && (
+          <span className="text-xs font-bold self-center" style={{ color: accentColor }}>
+            🎉 All correct!
+          </span>
+        )}
       </div>
+
       {/* Zones */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {zones.map((zone, i) => {
           const fb = feedback[i];
           const pl = placed[i];
+          const isTarget = !!selected && !pl;
           return (
-            <div
+            <button
               key={i}
-              onDragOver={e => e.preventDefault()}
-              onDrop={() => handleDrop(i)}
-              className="flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 min-h-[90px] transition-colors"
+              onClick={() => handleZoneClick(i)}
+              disabled={!!pl}
+              className="flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 min-h-[90px] transition-all w-full text-left"
               style={{
-                borderColor: fb === "correct" ? "#22c55e" : fb === "wrong" ? "#ef4444" : "#e5e7eb",
-                background: fb === "correct" ? "#f0fdf4" : fb === "wrong" ? "#fef2f2" : "#fff",
+                borderColor: fb === "correct" ? "#22c55e" : fb === "wrong" ? "#ef4444" : isTarget ? accentColor : "#e5e7eb",
+                background: fb === "correct" ? "#f0fdf4" : fb === "wrong" ? "#fef2f2" : isTarget ? `${accentColor}08` : "#fff",
+                cursor: pl ? "default" : selected ? "pointer" : "default",
+                transform: isTarget ? "scale(1.03)" : "scale(1)",
               }}
             >
               <div dangerouslySetInnerHTML={{ __html: zone.svgContent }} />
-              <div className="text-xs text-gray-500 font-semibold">{zone.label}</div>
+              <div className="text-xs text-gray-500 font-semibold text-center">{zone.label}</div>
               {pl && (
                 <div style={{ background: accentColor }} className="px-2 py-0.5 rounded-full text-white text-xs font-bold">
                   ✓ {pl.val}
                 </div>
               )}
-            </div>
+            </button>
           );
         })}
       </div>
+
+      {/* Reset */}
+      {Object.keys(placed).length > 0 && (
+        <button onClick={reset} className="text-xs text-gray-400 underline">Reset activity</button>
+      )}
     </div>
   );
 }
