@@ -71,7 +71,8 @@ function ModuleAccordion({ module, lessons }) {
 }
 
 export default function PublicCourseViewer() {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params.id || window.location.pathname.split("/share/course/")[1]?.split("/")[0];
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
   const [lessons, setLessons] = useState([]);
