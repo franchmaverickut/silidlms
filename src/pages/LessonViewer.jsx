@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useOutletContext, useNavigate, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
+import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
 import Grade1MakerLesson from "@/components/lesson/Grade1MakerLesson";
 import {
   ArrowLeft, ArrowRight, CheckCircle, FileText, Play,
@@ -136,8 +137,9 @@ export default function LessonViewer() {
 
   if (!lesson) return <div className="text-center py-24 text-muted-foreground">Lesson not found.</div>;
 
-  // ── Native interactive renderer for Grade 1 Maker lessons ───────────────
-  const isGrade1Maker = GRADE1_MAKER_LESSONS.some(l => l.id === id);
+  // ── Native interactive renderer for Grade 1 & 2 Maker lessons ──────────
+  const ALL_INTERACTIVE = [...GRADE1_MAKER_LESSONS, ...GRADE2_MAKER_LESSONS];
+  const isGrade1Maker = ALL_INTERACTIVE.some(l => l.id === id);
   if (isGrade1Maker) {
     return (
       <div className="max-w-4xl">

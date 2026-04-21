@@ -5,10 +5,13 @@ import {
   SectionLabel, ReadingBlock, LessonHeader, DoneBanner,
 } from "./InteractiveLessonViewer";
 import { GRADE1_MAKER_LESSONS } from "./lessonData";
+import { GRADE2_MAKER_LESSONS } from "./lessonDataGrade2";
+
+const ALL_LESSONS = [...GRADE1_MAKER_LESSONS, ...GRADE2_MAKER_LESSONS];
 
 export default function Grade1MakerLesson({ lessonId, enrollment, allLessons, user, onComplete }) {
   const lessonData = useMemo(() =>
-    GRADE1_MAKER_LESSONS.find(l => l.id === lessonId),
+    ALL_LESSONS.find(l => l.id === lessonId),
     [lessonId]
   );
 
