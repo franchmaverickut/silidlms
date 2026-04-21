@@ -67,7 +67,6 @@ const AuthenticatedApp = () => {
         <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
         <Route path="/maker/spinning-tops" element={<SpinningTopsProject />} />
       </Route>
-      <Route path="/share/course/:id" element={<PublicCourseViewer />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -78,7 +77,10 @@ function App() {
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <Router>
-          <AuthenticatedApp />
+          <Routes>
+            <Route path="/share/course/:id" element={<PublicCourseViewer />} />
+            <Route path="*" element={<AuthenticatedApp />} />
+          </Routes>
         </Router>
         <Toaster />
       </QueryClientProvider>
