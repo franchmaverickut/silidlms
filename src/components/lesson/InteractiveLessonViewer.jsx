@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 
 // ─── Flip Card ──────────────────────────────────────────────────────────────
 export function RevealCard({ frontSvg, hint, name, desc, accentColor }) {
@@ -52,27 +52,80 @@ export function RevealCard({ frontSvg, hint, name, desc, accentColor }) {
 // ─── Drag-and-Drop ──────────────────────────────────────────────────────────
 export function DragDropActivity({ chips, zones, accentColor }) {
   const [bank, setBank] = useState(() => chips.map((c, i) => ({ ...c, uid: `chip-${i}` })));
-  const [placed, setPlaced] = useState({}); // zoneIndex → chip
-  const [feedback, setFeedback] = useState({}); // zoneIndex → "correct"|"wrong"
-  const [selected, setSelected] = useState(null); // uid of selected chip
+  const [placed, setPlaced] = useState({});
+  const [feedback, setFeedback] = useState({});
+  const [selected, setSelected] = useState(null);
+  const [dragging, setDragging] = useState(null); // { uid, x, y } for floating ghost
+  const containerRef = useRef(null);
+  const zoneRefs = useRef([]);
+  const ghostRef = useRef(null);
+  const pointerDownTarget = useRef(null); // track if pointer moved (drag vs tap)
 
-  const handleChipClick = (uid) => {
-    setSelected(prev => prev === uid ? null : uid);
-  };
-
-  const handleZoneClick = (zoneIdx) => {
-    if (!selected) return;
-    const chip = bank.find(c => c.uid === selected);
-    if (!chip) return;
+  const placeChip = useCallback((uid, zoneIdx, bankRef) => {
+    const chip = bankRef.find(c => c.uid === uid);
+    if (!chip || placed[zoneIdx]) return;
     const correct = chip.val === zones[zoneIdx].answer;
     setFeedback(f => ({ ...f, [zoneIdx]: correct ? "correct" : "wrong" }));
     if (correct) {
       setPlaced(p => ({ ...p, [zoneIdx]: { ...chip, correct: true } }));
-      setBank(b => b.filter(c => c.uid !== selected));
+      setBank(b => b.filter(c => c.uid !== uid));
     } else {
       setTimeout(() => setFeedback(f => { const n = { ...f }; delete n[zoneIdx]; return n; }), 900);
     }
     setSelected(null);
+  }, [zones, placed]);
+
+  // --- Tap-to-place (works on all devices) ---
+  const handleChipClick = (uid) => {
+    if (dragging) return;
+    setSelected(prev => prev === uid ? null : uid);
+  };
+
+  const handleZoneClick = (zoneIdx) => {
+    if (dragging || !selected) return;
+    placeChip(selected, zoneIdx, bank);
+  };
+
+  // --- Pointer-based drag (mouse + touch/iPad) ---
+  const getZoneUnderPoint = (x, y) => {
+    for (let i = 0; i < zoneRefs.current.length; i++) {
+      const el = zoneRefs.current[i];
+      if (!el) continue;
+      const rect = el.getBoundingClientRect();
+      if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) return i;
+    }
+    return -1;
+  };
+
+  const onPointerDown = (e, uid) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    pointerDownTarget.current = { uid, moved: false, startX: e.clientX, startY: e.clientY };
+    setDragging({ uid, x: e.clientX, y: e.clientY });
+    setSelected(null);
+  };
+
+  const onPointerMove = (e) => {
+    if (!dragging) return;
+    const dx = Math.abs(e.clientX - pointerDownTarget.current.startX);
+    const dy = Math.abs(e.clientY - pointerDownTarget.current.startY);
+    if (dx > 5 || dy > 5) pointerDownTarget.current.moved = true;
+    setDragging(d => ({ ...d, x: e.clientX, y: e.clientY }));
+  };
+
+  const onPointerUp = (e) => {
+    if (!dragging) return;
+    const { uid, moved } = pointerDownTarget.current;
+    if (!moved) {
+      // treat as tap — toggle select
+      setDragging(null);
+      setSelected(prev => prev === uid ? null : uid);
+      return;
+    }
+    const zoneIdx = getZoneUnderPoint(e.clientX, e.clientY);
+    setDragging(null);
+    if (zoneIdx >= 0) {
+      placeChip(uid, zoneIdx, bank);
+    }
   };
 
   const reset = () => {
@@ -80,42 +133,46 @@ export function DragDropActivity({ chips, zones, accentColor }) {
     setPlaced({});
     setFeedback({});
     setSelected(null);
+    setDragging(null);
   };
 
   const allPlaced = Object.keys(placed).length === zones.length && zones.every((_, i) => placed[i]?.correct);
+  const hoverZone = dragging ? getZoneUnderPoint(dragging.x, dragging.y) : -1;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative" ref={containerRef}>
       {/* Instruction hint */}
-      <p className="text-xs text-gray-500 italic">
-        {selected ? "Now tap a zone to place it ↓" : "Tap a label to select it, then tap a zone to match →"}
+      <p className="text-xs text-gray-500 italic select-none">
+        {selected ? "Tap a zone below to place it ↓" : dragging ? "Drop on a zone ↓" : "Drag or tap a label, then drop/tap on a zone"}
       </p>
 
       {/* Bank */}
-      <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-xl border border-dashed border-gray-300 min-h-[48px]">
+      <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-xl border border-dashed border-gray-300 min-h-[52px]">
         {bank.map(chip => (
-          <button
+          <div
             key={chip.uid}
+            onPointerDown={(e) => onPointerDown(e, chip.uid)}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
             onClick={() => handleChipClick(chip.uid)}
             style={{
-              background: selected === chip.uid ? "#fff" : accentColor,
+              background: selected === chip.uid ? "#fff" : dragging?.uid === chip.uid ? `${accentColor}66` : accentColor,
               color: selected === chip.uid ? accentColor : "#fff",
               border: `2px solid ${accentColor}`,
-              transform: selected === chip.uid ? "scale(1.08)" : "scale(1)",
+              transform: selected === chip.uid ? "scale(1.08)" : dragging?.uid === chip.uid ? "scale(0.9)" : "scale(1)",
               boxShadow: selected === chip.uid ? `0 0 0 3px ${accentColor}44` : "none",
-              transition: "all 0.15s",
+              transition: "all 0.12s",
+              touchAction: "none",
+              cursor: "grab",
+              userSelect: "none",
             }}
-            className="px-3 py-1.5 rounded-full text-xs font-bold select-none"
+            className="px-3 py-1.5 rounded-full text-xs font-bold"
           >
             {chip.label}
-          </button>
+          </div>
         ))}
-        {bank.length === 0 && !allPlaced && <span className="text-xs text-gray-400 self-center">All chips placed!</span>}
-        {allPlaced && (
-          <span className="text-xs font-bold self-center" style={{ color: accentColor }}>
-            🎉 All correct!
-          </span>
-        )}
+        {bank.length === 0 && !allPlaced && <span className="text-xs text-gray-400 self-center">All placed!</span>}
+        {allPlaced && <span className="text-xs font-bold self-center" style={{ color: accentColor }}>🎉 All correct!</span>}
       </div>
 
       {/* Zones */}
@@ -123,18 +180,18 @@ export function DragDropActivity({ chips, zones, accentColor }) {
         {zones.map((zone, i) => {
           const fb = feedback[i];
           const pl = placed[i];
+          const isHovered = hoverZone === i && !pl;
           const isTarget = !!selected && !pl;
           return (
-            <button
+            <div
               key={i}
+              ref={el => zoneRefs.current[i] = el}
               onClick={() => handleZoneClick(i)}
-              disabled={!!pl}
-              className="flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 min-h-[90px] transition-all w-full text-left"
+              className="flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 min-h-[90px] transition-all cursor-pointer select-none"
               style={{
-                borderColor: fb === "correct" ? "#22c55e" : fb === "wrong" ? "#ef4444" : isTarget ? accentColor : "#e5e7eb",
-                background: fb === "correct" ? "#f0fdf4" : fb === "wrong" ? "#fef2f2" : isTarget ? `${accentColor}08` : "#fff",
-                cursor: pl ? "default" : selected ? "pointer" : "default",
-                transform: isTarget ? "scale(1.03)" : "scale(1)",
+                borderColor: fb === "correct" ? "#22c55e" : fb === "wrong" ? "#ef4444" : isHovered || isTarget ? accentColor : "#e5e7eb",
+                background: fb === "correct" ? "#f0fdf4" : fb === "wrong" ? "#fef2f2" : isHovered ? `${accentColor}15` : isTarget ? `${accentColor}08` : "#fff",
+                transform: isHovered ? "scale(1.05)" : isTarget ? "scale(1.02)" : "scale(1)",
               }}
             >
               <div dangerouslySetInnerHTML={{ __html: zone.svgContent }} />
@@ -144,10 +201,33 @@ export function DragDropActivity({ chips, zones, accentColor }) {
                   ✓ {pl.val}
                 </div>
               )}
-            </button>
+            </div>
           );
         })}
       </div>
+
+      {/* Floating ghost chip while dragging */}
+      {dragging && (
+        <div
+          ref={ghostRef}
+          style={{
+            position: "fixed",
+            left: dragging.x - 40,
+            top: dragging.y - 16,
+            background: accentColor,
+            color: "#fff",
+            border: `2px solid ${accentColor}`,
+            pointerEvents: "none",
+            zIndex: 9999,
+            opacity: 0.9,
+            transform: "scale(1.1)",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.2)",
+          }}
+          className="px-3 py-1.5 rounded-full text-xs font-bold"
+        >
+          {bank.find(c => c.uid === dragging.uid)?.label}
+        </div>
+      )}
 
       {/* Reset */}
       {Object.keys(placed).length > 0 && (
