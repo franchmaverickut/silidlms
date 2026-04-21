@@ -239,7 +239,14 @@ export default function LessonViewer() {
       {lesson.video_url && (
         <Card className="overflow-hidden border-border/60">
           <div className="aspect-video bg-black">
-            <iframe src={lesson.video_url} className="w-full h-full" allowFullScreen title={lesson.title} />
+            <iframe
+              src={lesson.video_url}
+              className="w-full h-full"
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title={lesson.title}
+            />
           </div>
         </Card>
       )}
