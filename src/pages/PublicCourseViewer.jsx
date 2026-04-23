@@ -86,12 +86,8 @@ export default function PublicCourseViewer() {
     }
     const load = async () => {
       try {
-        const [courseData, mods, lsns] = await Promise.all([
-          base44.entities.Course.get(id),
-          base44.entities.Module.filter({ course_id: id }, "order"),
-          base44.entities.Lesson.filter({ course_id: id }, "order"),
-        ]);
-        if (!courseData) { setNotFound(true); setLoading(false); return; }
+        const res = await base44.functions.invoke('getPublicCourse', { course_id: id });
+        const { course: courseData, modules: mods, lessons: lsns } = res.data;
         setCourse(courseData);
         setModules(mods);
         setLessons(lsns);
