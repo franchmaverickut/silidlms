@@ -3,7 +3,7 @@ import { useParams, useOutletContext, Link, useNavigate } from "react-router-dom
 import { base44 } from "@/api/base44Client";
 import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle, Lock, Play,
-  FileText, Zap, ChevronDown, ChevronRight, Plus, Edit, Trash2
+  FileText, Zap, ChevronDown, ChevronRight, Plus, Edit, Trash2, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -146,11 +146,23 @@ export default function CourseDetail() {
               </div>
             )}
             {canManage && (
-              <Link to={`/courses/${id}/edit`}>
-                <Button className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20">
-                  <Edit size={15} /> Edit Course
+              <div className="flex gap-2 flex-wrap">
+                <Link to={`/courses/${id}/edit`}>
+                  <Button className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20">
+                    <Edit size={15} /> Edit Course
+                  </Button>
+                </Link>
+                <Button
+                  className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20"
+                  onClick={() => {
+                    const url = `${window.location.origin}/share/course/${id}`;
+                    navigator.clipboard.writeText(url);
+                    toast({ title: "Share link copied!", description: url });
+                  }}
+                >
+                  <Share2 size={15} /> Copy Share Link
                 </Button>
-              </Link>
+              </div>
             )}
           </div>
         </div>
