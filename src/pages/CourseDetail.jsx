@@ -31,6 +31,7 @@ export default function CourseDetail() {
   const canManage = role === "teacher" || role === "admin";
 
   useEffect(() => {
+    if (!id || id === ':id') return;
     const load = async () => {
       const [c, m, l] = await Promise.all([
         base44.entities.Course.filter({ id }),
