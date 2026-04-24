@@ -22,6 +22,7 @@ import MakerLessons from '@/pages/MakerLessons';
 import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 import SpinningTopsProject from '@/pages/SpinningTopsProject';
+import EmojiTokensProject from '@/pages/EmojiTokensProject';
 import PublicCourseViewer from '@/pages/PublicCourseViewer';
 import PublicMakerLessonViewer from '@/pages/PublicMakerLessonViewer';
 
@@ -67,6 +68,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/:id" element={<MakerLessonViewer />} />
         <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
         <Route path="/maker/spinning-tops" element={<SpinningTopsProject />} />
+        <Route path="/maker/emoji-tokens" element={<EmojiTokensProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

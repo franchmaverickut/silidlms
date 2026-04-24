@@ -137,6 +137,27 @@ export default function MakerLessons() {
             </div>
           </Link>
 
+          {/* Emoji Tokens */}
+          <Link to="/maker/emoji-tokens" className="block group">
+            <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
+              <img
+                src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/4dc8cba41_EmojiTokenCover.png"
+                alt="Emoji Tokens"
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+              <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                <div className="flex gap-2 mb-2">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-yellow-500 text-white">Project</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white">Basic</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
+                </div>
+                <h3 className="font-poppins font-bold text-lg text-white">Emoji Tokens</h3>
+                <p className="text-white/70 text-xs">Design & 3D print emoji tokens for a feedback or communication system.</p>
+              </div>
+            </div>
+          </Link>
+
           {/* Community Feature Projects */}
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
