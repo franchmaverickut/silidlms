@@ -23,6 +23,7 @@ import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 import SpinningTopsProject from '@/pages/SpinningTopsProject';
 import EmojiTokensProject from '@/pages/EmojiTokensProject';
+import RubberBandCarProject from '@/pages/RubberBandCarProject';
 import PublicCourseViewer from '@/pages/PublicCourseViewer';
 import PublicMakerLessonViewer from '@/pages/PublicMakerLessonViewer';
 
@@ -69,6 +70,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/:id/edit" element={<MakerLessonBuilder />} />
         <Route path="/maker/spinning-tops" element={<SpinningTopsProject />} />
         <Route path="/maker/emoji-tokens" element={<EmojiTokensProject />} />
+        <Route path="/maker/rubber-band-car" element={<RubberBandCarProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
