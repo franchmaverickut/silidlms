@@ -110,10 +110,10 @@ export default function MakerLessons() {
         </div>
       </div>
 
-      {/* Featured Projects — Static */}
+      {/* STEM Projects — Static */}
       {(skillFilter === "All" || skillFilter === "3D Printing") && !search && (
-        <div>
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-3">Featured Projects</p>
+        <div className="space-y-4">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">STEM Projects</p>
           <Link to="/maker/spinning-tops" className="block group">
             <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
               <img
@@ -133,6 +133,41 @@ export default function MakerLessons() {
               </div>
             </div>
           </Link>
+
+          {/* Community Feature Projects */}
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* RC Car */}
+            <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 opacity-80">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-900" />
+              <div className="relative z-10 p-5 h-full flex flex-col justify-between">
+                <div className="flex gap-2">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-500 text-white">Robotics</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">Community</span>
+                </div>
+                <div>
+                  <h3 className="font-poppins font-bold text-base text-white">RC Car</h3>
+                  <p className="text-white/60 text-xs mt-0.5">3D print and build a remote-controlled car from scratch.</p>
+                  <span className="inline-block mt-2 text-xs text-white/40 font-semibold">Coming soon</span>
+                </div>
+              </div>
+            </div>
+            {/* uArm */}
+            <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 opacity-80">
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
+              <div className="relative z-10 p-5 h-full flex flex-col justify-between">
+                <div className="flex gap-2">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-500 text-white">Robotics</span>
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">Community</span>
+                </div>
+                <div>
+                  <h3 className="font-poppins font-bold text-base text-white">uArm</h3>
+                  <p className="text-white/60 text-xs mt-0.5">Build a miniature robotic arm using 3D printed parts.</p>
+                  <span className="inline-block mt-2 text-xs text-white/40 font-semibold">Coming soon</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
