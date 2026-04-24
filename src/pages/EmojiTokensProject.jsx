@@ -172,10 +172,11 @@ export default function EmojiTokensProject() {
         </p>
         <div className="rounded-2xl overflow-hidden aspect-video bg-black">
           <iframe
-            src="https://www.youtube.com/embed/KQrX50B5oe0"
+            src="https://www.youtube.com/embed/KQrX50B5oe0?origin=https://base44.app"
             className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
             title="Emoji Tokens Tinkercad Tutorial"
           />
         </div>
