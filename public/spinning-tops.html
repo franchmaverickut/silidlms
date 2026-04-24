@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spinning Tops — Maker Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f9f7f4; color: #1a1d2e; line-height: 1.6; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 780px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 300px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      margin-bottom: 28px;
+    }
+    .hero img.cover {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 10;
+      padding: 28px 32px 32px;
+      display: flex; flex-direction: column; gap: 14px;
+      min-height: 300px; justify-content: flex-end;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+    .tag-purple { background: #7C3AED; color: #fff; }
+    .tag-white  { background: rgba(255,255,255,0.2); color: #fff; backdrop-filter: blur(4px); }
+    .tag-green  { background: #16a34a; color: #fff; }
+    .hero h1 { font-size: clamp(28px, 6vw, 48px); font-weight: 800; color: #fff; line-height: 1.15; }
+    .hero p.subtitle { color: rgba(255,255,255,0.8); font-size: 14px; max-width: 500px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 20px; color: rgba(255,255,255,0.7); font-size: 13px; }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* Section card */
+    .section-card {
+      background: #fff; border: 1px solid #e8e2da; border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden;
+    }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; cursor: pointer; user-select: none;
+      background: #fff; border: none; width: 100%; text-align: left;
+    }
+    .section-header:hover { background: #faf8f5; }
+    .section-title { display: flex; align-items: center; gap: 10px; }
+    .section-title span.icon { font-size: 18px; }
+    .section-title span.label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: #1a1d2e; }
+    .chevron { color: #9ca3af; font-size: 18px; transition: transform 0.2s; display: inline-block; }
+    .chevron.open { transform: rotate(180deg); }
+    .section-body { padding: 20px 24px 24px; border-top: 1px solid #f0ebe3; display: none; }
+    .section-body.open { display: block; }
+
+    /* Info grid */
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    @media (max-width: 520px) { .info-grid { grid-template-columns: 1fr; } }
+    .info-card {
+      display: flex; gap: 12px; padding: 14px; border-radius: 12px;
+      background: rgba(0,0,0,0.03); border: 1px solid #ede8df;
+    }
+    .info-card .ico { font-size: 20px; flex-shrink: 0; }
+    .info-card .label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; color: #1a1d2e; margin-bottom: 3px; }
+    .info-card .text { font-size: 11px; color: #6b7280; line-height: 1.5; }
+
+    /* Design card */
+    .design-card {
+      display: flex; gap: 16px; padding: 14px; border-radius: 12px;
+      background: rgba(0,0,0,0.03); border: 1px solid #ede8df; margin-bottom: 10px;
+      align-items: flex-start;
+    }
+    .design-card img { width: 90px; height: 75px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .design-card .title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 4px; color: #1a1d2e; }
+    .design-card .desc { font-size: 11px; color: #6b7280; line-height: 1.5; }
+
+    /* Step card */
+    .step-card { border: 1px solid #e0d9cf; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 12px; }
+    .step-header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: rgba(0,0,0,0.03); border-bottom: 1px solid #ede8df; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: #7C3AED; color: #fff; font-size: 11px; font-weight: 700; font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-header .title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #1a1d2e; }
+    .step-body { padding: 20px; }
+    .step-body img { width: 100%; border-radius: 12px; object-fit: cover; max-height: 260px; margin-bottom: 12px; }
+    .step-body p { font-size: 13px; color: #374151; line-height: 1.6; }
+
+    /* Callout boxes */
+    .callout { border-radius: 12px; padding: 14px 16px; font-size: 12px; line-height: 1.6; margin-top: 12px; }
+    .callout-amber { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+    .callout-blue  { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+    .callout-purple { background: #f5f3ff; border: 1px solid #ddd6fe; color: #5b21b6; }
+    .callout strong { font-weight: 700; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      cursor: pointer; text-decoration: none; border: none;
+      font-family: 'Inter', sans-serif; transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-purple { background: #7C3AED; color: #fff; }
+    .btn-outline { background: transparent; color: #374151; border: 1px solid #d1cfc9; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+    /* Video */
+    .video-wrap { border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin: 12px 0; }
+    .video-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    /* Chart image */
+    .chart-img { width: 100%; border-radius: 12px; margin: 12px 0; }
+
+    /* Portfolio slides */
+    .slide-item { padding: 14px; border-radius: 12px; background: rgba(0,0,0,0.03); border: 1px solid #ede8df; margin-bottom: 10px; }
+    .slide-item .slide-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px; color: #7C3AED; margin-bottom: 8px; }
+    .slide-item ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .slide-item ul li { display: flex; gap: 8px; font-size: 12px; color: #6b7280; }
+    .slide-item ul li::before { content: "→"; color: #a78bfa; flex-shrink: 0; font-weight: 700; }
+
+    /* Bullet list */
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .bullet-list li { display: flex; gap: 8px; font-size: 12px; color: #6b7280; }
+    .bullet-list li::before { content: "•"; color: #7C3AED; flex-shrink: 0; font-weight: 900; }
+
+    /* Downloads card */
+    .downloads-card { background: #fff; border: 1px solid #e8e2da; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .downloads-card h3 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 14px; color: #1a1d2e; display: flex; align-items: center; gap: 6px; }
+    .download-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(0,0,0,0.03); border: 1px solid #ede8df; margin-bottom: 8px; }
+    .download-icon { width: 36px; height: 36px; border-radius: 10px; background: #f3f0ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+    .download-info { flex: 1; min-width: 0; }
+    .download-info .name { font-weight: 600; font-size: 13px; color: #1a1d2e; }
+    .download-info .desc { font-size: 11px; color: #6b7280; }
+
+    /* Section text */
+    .body-text { font-size: 13px; color: #6b7280; line-height: 1.7; margin-bottom: 12px; }
+    .intro-note { font-size: 12px; color: #6b7280; background: rgba(0,0,0,0.03); border: 1px solid #ede8df; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.6; }
+
+    /* Iterate step (step 6) */
+    .iterate-card { border: 1px solid #e0d9cf; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .iterate-header { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: rgba(0,0,0,0.03); border-bottom: 1px solid #ede8df; }
+    .iterate-body { padding: 20px; }
+    .iterate-body p { font-size: 13px; color: #374151; line-height: 1.6; margin-bottom: 12px; }
+
+    /* footer */
+    .footer { text-align: center; margin-top: 48px; font-size: 11px; color: #9ca3af; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <img class="cover" src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png" alt="Spinning Tops" />
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="tags">
+        <span class="tag tag-purple">Project</span>
+        <span class="tag tag-white">STEM</span>
+        <span class="tag tag-green">Basic</span>
+      </div>
+      <h1>Spinning Tops</h1>
+      <p class="subtitle">Design and 3D print a spinning top that spins for as long as possible!</p>
+      <div class="hero-meta">
+        <span>⏱ 4 hours (excl. print time)</span>
+        <span>📐 3 prototypes + 1 iteration</span>
+        <span>⭐ All skill levels</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Overview -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">📋</span>
+        <span class="label">Project Overview</span>
+      </div>
+      <span class="chevron open">▾</span>
+    </button>
+    <div class="section-body open">
+      <div class="info-grid">
+        <div class="info-card">
+          <span class="ico">✅</span>
+          <div>
+            <div class="label">Criteria &amp; Constraints</div>
+            <div class="text">The spinning top can be made up of a single component or multiple components but all must be entirely 3D printed.</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="ico">⭐</span>
+          <div>
+            <div class="label">Difficulty</div>
+            <div class="text">Basic — suitable for all those with foundational skills in 3D design and 3D printing.</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="ico">🕐</span>
+          <div>
+            <div class="label">Project Length</div>
+            <div class="text">~4 hours (excl. 3D printing time). Includes 3 prototypes + 1 improved version. Recommend 4 × 1 hour sessions.</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="ico">📁</span>
+          <div>
+            <div class="label">Project Portfolio</div>
+            <div class="text">Document your design process in a Google Slides portfolio. Use the template below as a starting point.</div>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-purple" href="https://docs.google.com/presentation/d/12wbyQ3o5kfmlh-J-ym5JcgduyLdIZHApZB5FXp9pCkE/edit?slide=id.g181c2cac75a_1_88#slide=id.g181c2cac75a_1_88" target="_blank" rel="noopener noreferrer">↗ Open Portfolio Template</a>
+    </div>
+  </div>
+
+  <!-- Design Considerations -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🔬</span>
+        <span class="label">Design Considerations</span>
+      </div>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="section-body">
+      <p class="body-text">The physics behind spinning tops is actually very complex! Rather than delving too deep into the science, this project is more focused on learning by making. You'll make initial design decisions, test them, and then improve through an iterative process.</p>
+
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/ea1807891_tipsize.png" alt="Tip Size" />
+        <div>
+          <div class="title">Tip Size</div>
+          <div class="desc">Will your spinning top spin on a tiny sharp tip or more of a blunt tip? A sharp tip will cause much less friction but could it affect the top's stability and augment the precession phase?</div>
+        </div>
+      </div>
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/de393d304_span.png" alt="Span" />
+        <div>
+          <div class="title">Span</div>
+          <div class="desc">How wide will the body of the spinning top span? A bigger span might encourage a stable, long spin but will the increased mass allow you to apply enough spinning force with your fingers?</div>
+        </div>
+      </div>
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/5bf9ecb2b_BodyShape.png" alt="Body Shape" />
+        <div>
+          <div class="title">Body Shape</div>
+          <div class="desc">Air resistance does play a part in slowing the top. Consider how you can streamline features to reduce drag.</div>
+        </div>
+      </div>
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/ad4b6e612_FlywheelPositioning.png" alt="Flywheel Positioning" />
+        <div>
+          <div class="title">Flywheel Positioning</div>
+          <div class="desc">The widest part is often referred to as the flywheel. Keeping it close to the tip ensures a solid low centre of gravity. However, if you don't launch on a vertical axis, the flywheel may touch the surface — bringing the top to a quick stop.</div>
+        </div>
+      </div>
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/b5dd6611c_HandleDesign.png" alt="Handle Design" />
+        <div>
+          <div class="title">Handle Design</div>
+          <div class="desc">The handle (or stem) is key to getting a good spin. If too small, you won't get a good grip. If too large, it may affect stability. Consider including a textured surface to enhance grip.</div>
+        </div>
+      </div>
+      <div class="design-card">
+        <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/34bbd4a96_Hmassdistribution.png" alt="Mass Distribution" />
+        <div>
+          <div class="title">Mass Distribution</div>
+          <div class="desc">The best spinning tops have equal distribution of mass around the central spinning axis. Ensure your design is symmetrical and avoid large decorative features that might add to the tilting effect.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tinkercad Tutorial -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🖥️</span>
+        <span class="label">Tinkercad Tutorial — Build the Example Model</span>
+      </div>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="section-body">
+      <p class="body-text">Follow this step-by-step tutorial to design a spinning top in Tinkercad. Select either the video or the text-based instructions — pick your preferred method of learning.</p>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/QxMQbzMihzA" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Tinkercad Tutorial"></iframe>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-outline" href="https://drive.google.com/open?id=1IWmE_Y7JxPqkin3j0zmLIsSca1-mij1i&usp=drive_fs" target="_blank" rel="noopener noreferrer">⬇ Download Example STL File</a>
+        <a class="btn btn-purple" href="https://youtu.be/QxMQbzMihzA" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a>
+      </div>
+      <div class="callout callout-amber" style="margin-top: 14px;">
+        <strong>💡 Tip:</strong> Even though the spinning top will be printed upside down, the surface area touching the print bed will still be small. If you have problems with bed adhesion, try using an adhesive on the bed or using a raft/brim in your slicing software.
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Analysis & Testing -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">📊</span>
+        <span class="label">Product Analysis &amp; Testing</span>
+      </div>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="section-body">
+      <p class="body-text">When you have your completed 3D print, test the spinning top using the <strong>Quantifiable Testing method</strong> — run a test that measures the performance of a product/prototype in a quantifiable way.</p>
+      <img class="chart-img" src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/3a64a0781_spin-duration-chart-3-1660x934jpg.png" alt="Spin Duration Chart" />
+      <div class="callout callout-blue">In addition to gathering data from your testing method, ensure you make notes on experiential and visual insights too. For example, how easy was the spinning top to grip? Did the top spin on a vertical axis?</div>
+      <div style="margin-top: 14px;">
+        <p style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; color: #1a1d2e; margin-bottom: 8px;">Portfolio — Product Analysis Slide</p>
+        <ul class="bullet-list">
+          <li>Log your test results by inputting the results into the chart. Feel free to amend the chart to suit the tests you ran.</li>
+          <li>Write a paragraph about your product testing and analysis. Include information about how you ran the test and what insights you gained.</li>
+          <li>Include an image or video of the product analysis phase.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Variation Models -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">🔄</span>
+        <span class="label">Feature Variation Models — Design Process</span>
+      </div>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="section-body">
+      <p class="body-text">Use your insights from product analysis to drive the design of a unique spinning top. The main activity is called <strong>Feature Variation Models</strong> — make and test multiple prototypes simultaneously to explore a specific design feature.</p>
+      <div class="intro-note">Make each model the same with the exception of 1 design feature, which is varied across the models. By making, testing and analysing multiple models at the same time, you save time and come to a decision on how best to design the feature you're exploring.</div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">1</span><span class="title">Example Model Diagram</span></div>
+        <div class="step-body">
+          <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/ff534ae8f_step1diagram.png" alt="Step 1" />
+          <p>Before you begin designing your own unique model, take a look at this scale drawing of the example spinning top you analysed in the previous section. Keep the drawing on hand as you move through the steps.</p>
+          <div class="btn-row"><a class="btn btn-outline" href="https://drive.google.com/open?id=16JA9wWJLH1riqN-6qDXr2sYXxhiCdLXy&usp=drive_fs" target="_blank" rel="noopener noreferrer">⬇ Download Scale Drawing</a></div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">2</span><span class="title">Base Model</span></div>
+        <div class="step-body">
+          <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/5a13f9c0d_step2basemodel.png" alt="Step 2" />
+          <p>Think carefully about what changes you'd make to the example spinning top to try and make it spin for a longer duration. Use everything you've learnt so far to drive your decisions. Create a basic drawing of your idea and annotate it with dimensions and notes.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">3</span><span class="title">Feature Variations</span></div>
+        <div class="step-body">
+          <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/0fae8ba23_step3featurevariation.png" alt="Step 3" />
+          <p>Consider 1 feature of the design that you'd like to experiment with. In the example, we're experimenting with the shape of the body but keeping the handle and tip the same. Generate 2 additional sketches/diagrams showing different options for this feature.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">4</span><span class="title">3D CAD</span></div>
+        <div class="step-body">
+          <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/e0b5627c2_step43dcad.png" alt="Step 4" />
+          <p>Generate 3D CAD models of your 3 feature variation ideas. Pay particular attention to their 3D printability — can they be oriented to minimise overhangs? Do the models have enough surface area to adhere to the print bed? Don't be afraid to modify and evolve your designs from your sketches.</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">5</span><span class="title">3D Printing</span></div>
+        <div class="step-body">
+          <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/cc871d7bf_step53dprinting.png" alt="Step 5" />
+          <p>3D print your designs. With spinning tops generally being small in scale, you should be able to 3D print all your feature variation models at once.</p>
+        </div>
+      </div>
+
+      <div class="iterate-card">
+        <div class="iterate-header"><span class="step-num">6</span><span class="title" style="font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;color:#1a1d2e;">Test + Iterate</span></div>
+        <div class="iterate-body">
+          <p>Take your 3D printed models and go through the quantifiable testing method again to analyse them. Select the most successful design and think about how you could improve this even more. Then generate 1 iteration of this as your final solution!</p>
+          <div class="callout callout-purple">
+            <strong>Quantifiable Testing Method</strong><br/>
+            Spin each top 3 times, record the spin duration each time, and calculate the average. Compare results across all feature variation models to identify the best design.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Guide -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="icon">📁</span>
+        <span class="label">Project Portfolio Guide</span>
+      </div>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="section-body">
+      <p class="body-text">The project will guide you in documenting your design process in a Google Slides portfolio format.</p>
+
+      <div class="slide-item">
+        <div class="slide-title">Title Slide</div>
+        <ul><li>Enter your full name and the date.</li><li>Go to 'File > Make a Copy' before editing.</li></ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">Inspiration Collage</div>
+        <ul><li>Create a collage of spinning top images from an online image search — include a wide variety of shapes and sizes.</li></ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">Design Considerations</div>
+        <ul><li>Already completed for you. Feel free to reword the paragraph in the past tense.</li></ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">Feature Variation Models</div>
+        <ul>
+          <li>Write a paragraph about your idea generation process.</li>
+          <li>Explain your initial base model and how it differed from the example.</li>
+          <li>Describe what feature variations you explored.</li>
+          <li>Include images of your sketches.</li>
+        </ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">3D CAD &amp; Printing</div>
+        <ul>
+          <li>Write about your 3D CAD process and include a screenshot.</li>
+          <li>If you made changes to your sketches, describe and explain them.</li>
+          <li>Describe the 3D printing process and any challenges.</li>
+        </ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">Feature Variation Results</div>
+        <ul>
+          <li>Write a paragraph about each feature variation model.</li>
+          <li>Include performance data from testing.</li>
+          <li>Include images or videos for each one.</li>
+        </ul>
+      </div>
+      <div class="slide-item">
+        <div class="slide-title">Final Solution</div>
+        <ul>
+          <li>Explain which feature variation you chose and why.</li>
+          <li>Describe what improvements you made.</li>
+          <li>Talk about its performance and suggest further changes.</li>
+          <li>Include 2 images/videos and a final high-resolution image.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <a class="btn btn-purple" style="width:100%;justify-content:center;" href="https://docs.google.com/presentation/d/12wbyQ3o5kfmlh-J-ym5JcgduyLdIZHApZB5FXp9pCkE/edit?slide=id.g181c2cac75a_1_88#slide=id.g181c2cac75a_1_88" target="_blank" rel="noopener noreferrer">↗ Open Portfolio Template in Google Slides</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Downloads -->
+  <div class="downloads-card">
+    <h3>⬇ Downloads &amp; Resources</h3>
+    <div class="download-item">
+      <div class="download-icon">📦</div>
+      <div class="download-info">
+        <div class="name">Example STL File</div>
+        <div class="desc">Use this if you had issues exporting from Tinkercad</div>
+      </div>
+      <a class="btn btn-outline" href="https://drive.google.com/open?id=1IWmE_Y7JxPqkin3j0zmLIsSca1-mij1i&usp=drive_fs" target="_blank" rel="noopener noreferrer">↗ Open</a>
+    </div>
+    <div class="download-item">
+      <div class="download-icon">📐</div>
+      <div class="download-info">
+        <div class="name">Scale Drawing (PDF)</div>
+        <div class="desc">Scale drawing of the example spinning top with dimensions</div>
+      </div>
+      <a class="btn btn-outline" href="https://drive.google.com/open?id=16JA9wWJLH1riqN-6qDXr2sYXxhiCdLXy&usp=drive_fs" target="_blank" rel="noopener noreferrer">↗ Open</a>
+    </div>
+    <div class="download-item">
+      <div class="download-icon">🎨</div>
+      <div class="download-info">
+        <div class="name">Portfolio Template</div>
+        <div class="desc">Google Slides portfolio template to document your design process</div>
+      </div>
+      <a class="btn btn-outline" href="https://docs.google.com/presentation/d/12wbyQ3o5kfmlh-J-ym5JcgduyLdIZHApZB5FXp9pCkE/edit?slide=id.g181c2cac75a_1_88#slide=id.g181c2cac75a_1_88" target="_blank" rel="noopener noreferrer">↗ Open</a>
+    </div>
+  </div>
+
+  <div class="footer">Powered by SilidLMS</div>
+</div>
+
+<script>
+  function toggleSection(btn) {
+    const body = btn.nextElementSibling;
+    const chevron = btn.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
