@@ -23,6 +23,7 @@ import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 import SpinningTopsProject from '@/pages/SpinningTopsProject';
 import PublicCourseViewer from '@/pages/PublicCourseViewer';
+import PublicMakerLessonViewer from '@/pages/PublicMakerLessonViewer';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +79,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/share/course/:id" element={<PublicCourseViewer />} />
+          <Route path="/share/maker/:id" element={<PublicMakerLessonViewer />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />

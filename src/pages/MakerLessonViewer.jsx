@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Clock, Layers, ChevronLeft, Play, Box, Download, FileText,
   Image as ImageIcon, Wrench, Cpu, Package, ListChecks, Upload,
-  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File, X, Pencil
+  CheckCircle2, Send, Star, AlertCircle, Printer, FileArchive, File, X, Pencil, Share2
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -152,13 +152,25 @@ export default function MakerLessonViewer() {
         <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
           <ChevronLeft size={16} /> Back to Maker Lessons
         </Link>
-        {(user?.role === "admin" || user?.role === "teacher") && (
-          <Link to={`/maker/${id}/edit`}>
-            <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
-              <Pencil size={12} /> Edit Lesson
-            </Button>
-          </Link>
-        )}
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs"
+            onClick={() => {
+              const url = `${window.location.origin}/share/maker/${id}`;
+              navigator.clipboard.writeText(url);
+              toast({ title: "Share link copied!", description: url });
+            }}
+          >
+            <Share2 size={12} /> Share
+          </Button>
+          {(user?.role === "admin" || user?.role === "teacher") && (
+            <Link to={`/maker/${id}/edit`}>
+              <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
+                <Pencil size={12} /> Edit Lesson
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Hero */}
