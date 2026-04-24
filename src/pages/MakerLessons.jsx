@@ -50,7 +50,10 @@ export default function MakerLessons() {
     setLessons(prev => prev.filter(l => l.id !== lessonId));
   };
 
+  const COMMUNITY_IDS = ["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"];
+
   const filtered = lessons.filter(l => {
+    if (COMMUNITY_IDS.includes(l.id)) return false;
     const matchSearch = l.title.toLowerCase().includes(search.toLowerCase()) ||
       l.description?.toLowerCase().includes(search.toLowerCase());
     const matchSkill = skillFilter === "All" || l.skill_area === skillFilter;
