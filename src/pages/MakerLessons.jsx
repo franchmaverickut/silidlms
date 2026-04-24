@@ -138,35 +138,43 @@ export default function MakerLessons() {
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* RC Car */}
-            <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 opacity-80">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-900" />
-              <div className="relative z-10 p-5 h-full flex flex-col justify-between">
-                <div className="flex gap-2">
-                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-500 text-white">Robotics</span>
-                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">Community</span>
-                </div>
-                <div>
-                  <h3 className="font-poppins font-bold text-base text-white">RC Car</h3>
-                  <p className="text-white/60 text-xs mt-0.5">3D print and build a remote-controlled car from scratch.</p>
-                  <span className="inline-block mt-2 text-xs text-white/40 font-semibold">Coming soon</span>
+            <Link to="/maker/69ddcb95e60c3666ca2a34f8" className="block group">
+              <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
+                <img
+                  src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/91c30fc60_CoverPhoto1.jpg"
+                  alt="3D Printed RC Car"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                  <div className="flex gap-2 mb-2">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-orange-500 text-white">3D Printing</span>
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-600 text-white">Advanced</span>
+                  </div>
+                  <h3 className="font-poppins font-bold text-base text-white">3D Printed RC Car</h3>
+                  <p className="text-white/70 text-xs">Design, print, and assemble a fully functional RC car.</p>
                 </div>
               </div>
-            </div>
+            </Link>
             {/* uArm */}
-            <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 opacity-80">
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
-              <div className="relative z-10 p-5 h-full flex flex-col justify-between">
-                <div className="flex gap-2">
-                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-500 text-white">Robotics</span>
-                  <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">Community</span>
-                </div>
-                <div>
-                  <h3 className="font-poppins font-bold text-base text-white">uArm</h3>
-                  <p className="text-white/60 text-xs mt-0.5">Build a miniature robotic arm using 3D printed parts.</p>
-                  <span className="inline-block mt-2 text-xs text-white/40 font-semibold">Coming soon</span>
+            <Link to="/maker/69ddcb95e60c3666ca2a34f9" className="block group">
+              <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
+                <img
+                  src="https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/8764ae1e8_IMG_0296.jpeg"
+                  alt="UArm Miniature Palletizing Robot Arm"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                  <div className="flex gap-2 mb-2">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white">Robotics</span>
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-600 text-white">Advanced</span>
+                  </div>
+                  <h3 className="font-poppins font-bold text-base text-white">UArm Palletizing Robot Arm</h3>
+                  <p className="text-white/70 text-xs">Build a miniature robotic arm with Arduino.</p>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       )}
