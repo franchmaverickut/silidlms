@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Design and Fabrication (3D Printing) – K–12 Curriculum</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f9f7f4; color: #1a1d2e; line-height: 1.6; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      border-radius: 20px;
+      padding: 40px 36px;
+      color: white;
+      margin-bottom: 32px;
+      box-shadow: 0 12px 40px rgba(249,115,22,0.3);
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .tag {
+      padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+    }
+    .tag-white { background: rgba(255,255,255,0.2); color: #fff; }
+    .tag-green { background: #16a34a; color: #fff; }
+    .hero h1 { font-size: clamp(22px, 4vw, 32px); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+    .hero p { color: rgba(255,255,255,0.85); font-size: 14px; margin-bottom: 20px; max-width: 640px; line-height: 1.7; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 20px; font-size: 13px; color: rgba(255,255,255,0.75); border-top: 1px solid rgba(255,255,255,0.2); padding-top: 16px; margin-top: 4px; }
+
+    /* Stats bar */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px; margin-bottom: 28px;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid #e8e2da; border-radius: 14px;
+      padding: 16px 18px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .stat-card .num { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 800; color: #f97316; }
+    .stat-card .lbl { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+    /* Objectives */
+    .objectives { background: #fff; border: 1px solid #e8e2da; border-radius: 16px; padding: 22px 24px; margin-bottom: 28px; }
+    .objectives h2 { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1a1d2e; }
+    .obj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 540px) { .obj-grid { grid-template-columns: 1fr; } }
+    .obj-item { display: flex; gap: 10px; font-size: 13px; color: #374151; align-items: flex-start; }
+    .obj-check { color: #f97316; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Materials */
+    .materials { background: #fff8f0; border: 1px solid #fed7aa; border-radius: 16px; padding: 20px 24px; margin-bottom: 28px; }
+    .materials h2 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #1a1d2e; }
+    .mat-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mat-item { background: #fff; border: 1px solid #fdba74; color: #9a3412; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+
+    /* Section accordion */
+    .section-card { background: #fff; border: 1px solid #e8e2da; border-radius: 16px; margin-bottom: 16px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .section-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; cursor: pointer; background: #fff; border: none; width: 100%; text-align: left; transition: background 0.15s; }
+    .section-header:hover { background: #faf8f5; }
+    .section-title { display: flex; align-items: center; gap: 12px; }
+    .stage-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+    .stage-maker { background: #fef3c7; color: #92400e; }
+    .stage-designer { background: #dbeafe; color: #1e40af; }
+    .stage-engineer { background: #d1fae5; color: #065f46; }
+    .stage-innovator { background: #ede9fe; color: #5b21b6; }
+    .stage-bootcamp { background: #f1f5f9; color: #475569; }
+    .section-label { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px; color: #1a1d2e; }
+    .section-sub { font-size: 12px; color: #6b7280; margin-top: 2px; }
+    .chevron { color: #9ca3af; font-size: 18px; transition: transform 0.2s; }
+    .chevron.open { transform: rotate(180deg); }
+    .section-body { border-top: 1px solid #f0ebe3; display: none; }
+    .section-body.open { display: block; }
+
+    /* Lessons list */
+    .lessons-list { list-style: none; }
+    .lesson-item { display: flex; align-items: center; gap: 14px; padding: 12px 22px; border-bottom: 1px solid #f5f0eb; transition: background 0.12s; }
+    .lesson-item:last-child { border-bottom: none; }
+    .lesson-item:hover { background: #faf8f5; }
+    .lesson-num { width: 26px; height: 26px; border-radius: 50%; background: #fff7ed; border: 1px solid #fed7aa; color: #f97316; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Poppins', sans-serif; }
+    .lesson-type-icon { font-size: 14px; flex-shrink: 0; width: 20px; text-align: center; }
+    .lesson-info { flex: 1; min-width: 0; }
+    .lesson-title { font-size: 13px; font-weight: 600; color: #1a1d2e; }
+    .lesson-meta { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+    .lesson-type-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px;
+      font-family: 'Poppins', sans-serif; flex-shrink: 0; text-transform: capitalize;
+    }
+    .type-reading { background: #dbeafe; color: #1e40af; }
+    .type-video { background: #f3e8ff; color: #6b21a8; }
+    .type-quiz { background: #ffedd5; color: #c2410c; }
+    .type-activity { background: #d1fae5; color: #065f46; }
+    .type-project { background: #e0f2fe; color: #0369a1; }
+    .lesson-duration { font-size: 11px; color: #9ca3af; flex-shrink: 0; display: flex; align-items: center; gap: 3px; }
+
+    /* Module count pill */
+    .lessons-count { font-size: 11px; color: #6b7280; padding: 4px 10px; background: #f5f0eb; border-radius: 999px; }
+
+    /* Footer */
+    .footer { text-align: center; margin-top: 48px; font-size: 11px; color: #9ca3af; }
+
+    /* Print */
+    @media print {
+      body { background: white; }
+      .section-body { display: block !important; }
+      .chevron { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tags">
+      <span class="tag tag-white">3D Printing</span>
+      <span class="tag tag-white">K–12 Curriculum</span>
+      <span class="tag tag-white">STEM</span>
+      <span class="tag tag-green">Beginner → Advanced</span>
+    </div>
+    <h1>3D Design and Fabrication (3D Printing)<br/>K–12 Curriculum</h1>
+    <p>A complete K–12 curriculum for 3D Design and Fabrication, organized across four skill stages: <strong>Maker</strong> (K–3), <strong>Designer</strong> (4–6), <strong>Engineer</strong> (7–9), and <strong>Innovator</strong> (10–12). Each grade includes 10 core topics with 40 lessons per year. Includes an optional Foundation Bootcamp for schools joining mid-program.</p>
+    <div class="hero-meta">
+      <span>⏱ 520 hours total</span>
+      <span>📚 13 modules</span>
+      <span>🏫 Kindergarten – Grade 12</span>
+      <span>🎯 4 skill stages</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card"><div class="num">13</div><div class="lbl">Grade Modules</div></div>
+    <div class="stat-card"><div class="num">520</div><div class="lbl">Total Hours</div></div>
+    <div class="stat-card"><div class="num">4</div><div class="lbl">Skill Stages</div></div>
+    <div class="stat-card"><div class="num">K–12</div><div class="lbl">Grade Range</div></div>
+    <div class="stat-card"><div class="num">40</div><div class="lbl">Lessons / Grade</div></div>
+  </div>
+
+  <!-- Learning Objectives -->
+  <div class="objectives">
+    <h2>🎯 Learning Objectives</h2>
+    <div class="obj-grid">
+      <div class="obj-item"><span class="obj-check">✅</span>Develop spatial thinking and 3D visualization skills from an early age</div>
+      <div class="obj-item"><span class="obj-check">✅</span>Progress through four structured skill stages: Maker, Designer, Engineer, and Innovator</div>
+      <div class="obj-item"><span class="obj-check">✅</span>Learn to design, prototype, and fabricate objects using 3D printing technology</div>
+      <div class="obj-item"><span class="obj-check">✅</span>Apply design thinking and engineering processes to real-world problems</div>
+      <div class="obj-item"><span class="obj-check">✅</span>Build confidence in digital fabrication through hands-on project-based learning</div>
+    </div>
+  </div>
+
+  <!-- Materials -->
+  <div class="materials">
+    <h2>🛠 Materials Required</h2>
+    <div class="mat-list">
+      <span class="mat-item">3D printer access</span>
+      <span class="mat-item">CAD software (e.g., Tinkercad, Fusion 360)</span>
+      <span class="mat-item">Computers or tablets</span>
+      <span class="mat-item">Modeling clay (early grades)</span>
+      <span class="mat-item">Basic building materials for prototyping</span>
+    </div>
+  </div>
+
+  <!-- Foundation Bootcamp -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-bootcamp">Optional</span>
+        <div>
+          <div class="section-label">Foundation Bootcamp</div>
+          <div class="section-sub">For schools joining mid-program (Grades 3–7) · 6–8 weeks · 8 lessons</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="lessons-count">8 lessons</span>
+        <span class="chevron">▾</span>
+      </div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item">
+          <span class="lesson-num">1</span><span class="lesson-type-icon">📖</span>
+          <div class="lesson-info"><div class="lesson-title">What Is 3D Printing?</div><div class="lesson-meta">Introduction to additive manufacturing</div></div>
+          <span class="lesson-type-badge type-reading">Reading</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">2</span><span class="lesson-type-icon">🎯</span>
+          <div class="lesson-info"><div class="lesson-title">Shapes and Spatial Thinking</div><div class="lesson-meta">2D shapes → 3D solids</div></div>
+          <span class="lesson-type-badge type-activity">Activity</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">3</span><span class="lesson-type-icon">📖</span>
+          <div class="lesson-info"><div class="lesson-title">Introduction to Design Thinking</div><div class="lesson-meta">Empathize, Define, Ideate, Prototype, Test</div></div>
+          <span class="lesson-type-badge type-reading">Reading</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">4</span><span class="lesson-type-icon">🎯</span>
+          <div class="lesson-info"><div class="lesson-title">Your First CAD Model</div><div class="lesson-meta">Tinkercad orientation and first object</div></div>
+          <span class="lesson-type-badge type-activity">Activity</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">5</span><span class="lesson-type-icon">📖</span>
+          <div class="lesson-info"><div class="lesson-title">3D Printer Basics and Safety</div><div class="lesson-meta">Parts, filament types, safe operation</div></div>
+          <span class="lesson-type-badge type-reading">Reading</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">6</span><span class="lesson-type-icon">🎯</span>
+          <div class="lesson-info"><div class="lesson-title">Slicing a Model</div><div class="lesson-meta">Intro to slicer software and print settings</div></div>
+          <span class="lesson-type-badge type-activity">Activity</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">7</span><span class="lesson-type-icon">⚡</span>
+          <div class="lesson-info"><div class="lesson-title">Bootcamp Knowledge Check</div><div class="lesson-meta">Shapes, design thinking, CAD basics quiz</div></div>
+          <span class="lesson-type-badge type-quiz">Quiz</span>
+        </li>
+        <li class="lesson-item">
+          <span class="lesson-num">8</span><span class="lesson-type-icon">🏆</span>
+          <div class="lesson-info"><div class="lesson-title">Bootcamp Capstone: Print Something Useful</div><div class="lesson-meta">Design, slice, and print a simple functional object</div></div>
+          <span class="lesson-type-badge type-project">Project</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── STAGE 1: MAKER (K–3) ── -->
+  <div style="margin: 24px 0 10px; display:flex; align-items:center; gap:10px">
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,#fef3c7,transparent)"></div>
+    <span style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">🟡 Stage 1: Maker — Kindergarten to Grade 3</span>
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,transparent,#fef3c7)"></div>
+  </div>
+  <p style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:20px">Focus: creativity, spatial thinking, and object understanding</p>
+
+  <!-- Kindergarten -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-maker">Maker</span>
+        <div>
+          <div class="section-label">Kindergarten – Stage 1: Maker</div>
+          <div class="section-sub">Ages 5–6 · 40 lessons · Creativity and spatial thinking</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="lessons-count">40 lessons</span>
+        <span class="chevron">▾</span>
+      </div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <!-- Topic 1 -->
+        <li class="lesson-item" style="background:#fffbeb">
+          <span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T1</span><span class="lesson-type-icon">📦</span>
+          <div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 1: Shapes in Everyday Objects</div><div class="lesson-meta">4 lessons · Circle, square, triangle, rectangle</div></div>
+        </li>
+        <li class="lesson-item"><span class="lesson-num">1</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Shapes in Everyday Objects</div><div class="lesson-meta">Shape Hunt — find shapes in the classroom</div></div><span class="lesson-type-badge type-activity">Activity</span><span class="lesson-duration">⏱ 45m</span></li>
+        <li class="lesson-item"><span class="lesson-num">2</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Learning About Circles</div><div class="lesson-meta">Properties of circles in real life</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">3</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Squares and Rectangles</div><div class="lesson-meta">Comparing sides and corners</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">4</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Shapes Quiz 1</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 2 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T2</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 2: Flat vs Solid (2D and 3D)</div><div class="lesson-meta">4 lessons · Understanding dimensionality</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">5</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Flat Shapes vs Solid Shapes</div><div class="lesson-meta">Introducing 3D solids from 2D shapes</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">6</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Sorting 2D and 3D Shapes</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">7</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Building with Blocks</div><div class="lesson-meta">Hands-on 3D shape exploration</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">8</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">2D vs 3D Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 3 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T3</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 3: Cubes, Spheres, and Cylinders</div><div class="lesson-meta">4 lessons · 3D solid identification</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">9</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Meet the Cube</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">10</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Meet the Sphere and Cylinder</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">11</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Solid Shape Sorting Activity</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">12</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">3D Solids Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 4 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T4</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 4: What Is a Maker?</div><div class="lesson-meta">4 lessons · Design thinking introduction</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">13</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Makers Build Things!</div><div class="lesson-meta">Who are makers and what do they make?</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">14</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Tools Makers Use</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">15</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Design a Dream Toy</div><div class="lesson-meta">Draw your own invention</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">16</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Makers Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 5 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T5</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 5: Clay Modeling Basics</div><div class="lesson-meta">4 lessons · Hands-on 3D making</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">17</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">From Flat to 3D with Clay</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">18</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Roll, Pinch, Squeeze!</div><div class="lesson-meta">Making shapes with modeling clay</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">19</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Build an Animal with Clay</div></div><span class="lesson-type-badge type-project">Project</span></li>
+        <li class="lesson-item"><span class="lesson-num">20</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Clay Modeling Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 6 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T6</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 6: Colors and Textures on Objects</div><div class="lesson-meta">4 lessons · Visual and tactile properties</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">21</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Objects Have Colors and Textures</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">22</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Texture Hunt Around the Room</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">23</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Design Your Own Colorful Object</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">24</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Colors and Textures Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 7 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T7</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 7: Building with Blocks</div><div class="lesson-meta">4 lessons · Structural thinking</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">25</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">How Buildings Stay Up</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">26</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Build the Tallest Tower!</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">27</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Bridge Challenge</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">28</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Structures Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 8 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T8</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 8: What Can 3D Printers Make?</div><div class="lesson-meta">4 lessons · Intro to 3D printing technology</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">29</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">3D Printers Make Things Layer by Layer</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">30</span><span class="lesson-type-icon">▶️</span><div class="lesson-info"><div class="lesson-title">Watch a 3D Printer in Action</div></div><span class="lesson-type-badge type-video">Video</span></li>
+        <li class="lesson-item"><span class="lesson-num">31</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">What Would You Print?</div><div class="lesson-meta">Design on paper what you'd love to 3D print</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">32</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">3D Printing Intro Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 9 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T9</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 9: Objects Around the Home</div><div class="lesson-meta">4 lessons · Function and design</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">33</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Everyday Objects Have a Purpose</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">34</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Sort Objects by Function</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">35</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Redesign a Household Object</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">36</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Objects Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <!-- Topic 10 -->
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 10: Kindergarten Capstone Project</div><div class="lesson-meta">4 lessons · Final project</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Capstone Planning: What Will I Make?</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">38</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Build Your Clay or Block Creation</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">39</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">Present Your Creation!</div></div><span class="lesson-type-badge type-project">Project</span></li>
+        <li class="lesson-item"><span class="lesson-num">40</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">End of Year Review Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Grade 1 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-maker">Maker</span>
+        <div>
+          <div class="section-label">Grade 1 – Stage 1: Maker</div>
+          <div class="section-sub">Ages 6–7 · 40 lessons · Shape recognition, 3D solids, design basics</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T1</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 1: 3D Shapes in the World</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">From 2D to 3D</div></div><span class="lesson-type-badge type-reading">Reading</span><span class="lesson-duration">⏱ 45m</span></li>
+        <li class="lesson-item"><span class="lesson-num">2</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">3D Shape Scavenger Hunt</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">3</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Faces, Edges, and Vertices</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">4</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">3D Shapes Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T2</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 2: Designing with Purpose</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">5</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Why Do Objects Have Their Shape?</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">6</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Function vs Decoration</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">7</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Draw Your Improved Object</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">8</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Design Purpose Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T3</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 3: Introduction to the Design Process</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">9</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">The 5-Step Design Process</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">10</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Identify a Problem in Your School</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">11</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Brainstorm and Sketch a Solution</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">12</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Design Process Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T4–T9</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topics 4–9: Building Materials, Clay Projects, Measuring, Patterns, Nature Designs, 3D Printing Overview</div><div class="lesson-meta">24 lessons · 4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">13–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">Continued topic lessons (Reading, Activity, Quiz format)</div><div class="lesson-meta">Each topic: intro reading → hands-on activity → design activity → quiz</div></div></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 10: Grade 1 Capstone Project</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Plan Your Maker Project</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">38</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Build Your Model</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">39</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">Present and Reflect</div></div><span class="lesson-type-badge type-project">Project</span></li>
+        <li class="lesson-item"><span class="lesson-num">40</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Grade 1 End of Year Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Grade 2 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-maker">Maker</span>
+        <div><div class="section-label">Grade 2 – Stage 1: Maker</div><div class="section-sub">Ages 7–8 · 40 lessons · Advanced spatial reasoning and first CAD exposure</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T1</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 1: Symmetry and Patterns</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">Lines of symmetry, patterns in nature, mirror images</div><div class="lesson-meta">Reading → Activity → Activity → Quiz</div></div></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T2</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 2: Maps and Scale Models</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">Top-down views, simple maps, scaling objects</div><div class="lesson-meta">Reading → Activity → Activity → Quiz</div></div></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T3</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 3: My First Digital Design</div><div class="lesson-meta">4 lessons · Tinkercad introduction</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">9</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Introduction to Tinkercad</div><div class="lesson-meta">Interface orientation and basic tools</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">10</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Place Your First Shape in Tinkercad</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">11</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">Color and Resize Shapes</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">12</span><span class="lesson-type-icon">⚡</span><div class="lesson-info"><div class="lesson-title">Tinkercad Basics Quiz</div></div><span class="lesson-type-badge type-quiz">Quiz</span></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T4–T9</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topics 4–9: Material Properties, Joints & Connections, Moving Parts, Printing Filaments, Product Design, Prototyping</div><div class="lesson-meta">24 lessons · 4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">13–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">Topic lessons in reading/activity/quiz format</div></div></li>
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">Topic 10: Grade 2 Capstone — Design & Print</div><div class="lesson-meta">4 lessons</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">Plan → Design in Tinkercad → Print → Present</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Grade 3 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-maker">Maker</span>
+        <div><div class="section-label">Grade 3 – Stage 1: Maker</div><div class="section-sub">Ages 8–9 · 40 lessons · CAD design thinking and first print projects</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#fffbeb"><span class="lesson-num" style="background:#fef3c7;border-color:#fbbf24;color:#92400e">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#92400e">10 Topics · 4 lessons each</div><div class="lesson-meta">Design Thinking · Technical Sketching · Object Analysis · CAD Primitives · Boolean Ops · Tolerances · Printing Parameters · Iterative Design · Product Analysis · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Design Thinking — Empathize &amp; Define</div><div class="lesson-meta">Problem identification, empathy mapping, user needs</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T2: Technical Sketching Basics</div><div class="lesson-meta">Front/side/top views, dimensions, orthographic drawing</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T3: SPAM Object Analysis</div><div class="lesson-meta">Size, Purpose, Appearance, Material</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–16</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T4: CAD Primitives in Tinkercad</div><div class="lesson-meta">Boxes, cylinders, spheres, cones</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">17–20</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T5: Boolean Operations</div><div class="lesson-meta">Group, ungroup, hole-making in Tinkercad</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">21–24</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T6: Design Constraints &amp; Tolerances</div><div class="lesson-meta">Fit, clearance, wall thickness</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">25–28</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T7: Print Settings &amp; Slicing</div><div class="lesson-meta">Layer height, infill, supports, orientation</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">29–32</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T8: Iterative Design</div><div class="lesson-meta">Test, evaluate, improve, reprint</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">33–36</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T9: Product Analysis</div><div class="lesson-meta">SCAMPER method for product improvement</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 3 Capstone</div><div class="lesson-meta">Full design cycle: empathize → design → print → evaluate</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── STAGE 2: DESIGNER (4–6) ── -->
+  <div style="margin: 28px 0 10px; display:flex; align-items:center; gap:10px">
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,#dbeafe,transparent)"></div>
+    <span style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:800;color:#1e40af;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">🔵 Stage 2: Designer — Grades 4 to 6</span>
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,transparent,#dbeafe)"></div>
+  </div>
+  <p style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:20px">Focus: digital modeling and beginner fabrication</p>
+
+  <!-- Grade 4 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-designer">Designer</span>
+        <div><div class="section-label">Grade 4 – Stage 2: Designer</div><div class="section-sub">Ages 9–10 · 40 lessons · CAD fundamentals and functional design</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#eff6ff"><span class="lesson-num" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#1e40af">10 Topics · 4 lessons each</div><div class="lesson-meta">CAD Interface · Primitive Modeling · Boolean Ops · Design Process · Tolerances · Slicer Settings · Print Quality · Multi-part Models · Product Redesign · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Professional CAD Interface Navigation</div><div class="lesson-meta">Tinkercad workspace, grid, workplane, camera controls</div></div><span class="lesson-type-badge type-reading">Reading</span><span class="lesson-duration">⏱ 45m</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: Advanced Primitive Manipulation</div><div class="lesson-meta">Align, mirror, group, precise dimensions</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T3: Boolean Operations</div><div class="lesson-meta">Subtraction (holes), union, complex assemblies</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–16</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T4: Structured Design Process</div><div class="lesson-meta">Brief → Research → Sketch → Model → Test → Refine</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">17–20</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T5: Dimensional Accuracy &amp; Tolerances</div><div class="lesson-meta">mm precision, measuring with calipers</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">21–24</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T6: Slicer Settings Deep Dive</div><div class="lesson-meta">Infill %, layer height, speed, temperature</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">25–28</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T7: Print Quality Troubleshooting</div><div class="lesson-meta">Warping, stringing, layer adhesion</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">29–32</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T8: Multi-part Assemblies</div><div class="lesson-meta">Snap fits, press fits, fasteners</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">33–36</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T9: Redesigning a Real Product</div><div class="lesson-meta">Reverse engineering and improvement</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 4 Capstone — Design Brief Project</div><div class="lesson-meta">End-to-end product design and fabrication</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Grade 5 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-designer">Designer</span>
+        <div><div class="section-label">Grade 5 – Stage 2: Designer</div><div class="section-sub">Ages 10–11 · 40 lessons · Complex modeling and user-centered design</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#eff6ff"><span class="lesson-num" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#1e40af">10 Topics · 4 lessons each</div><div class="lesson-meta">User Research · Sketching Techniques · Moving Parts · Ergonomics · Advanced Slicing · Post-Processing · Design for Assembly · Sustainability · Peer Review · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: User Research &amp; Empathy</div><div class="lesson-meta">Surveys, interviews, user personas</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: Advanced Sketching Techniques</div><div class="lesson-meta">Perspective drawing, annotated sketches, ideation grids</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T3: Moving Parts &amp; Hinges</div><div class="lesson-meta">Designing mechanical joints in CAD</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–16</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T4: Ergonomics in Design</div><div class="lesson-meta">Human factors, grip, comfort, accessibility</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">17–20</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T5: Advanced Slicing &amp; Supports</div><div class="lesson-meta">Tree supports, brim, raft, variable layer height</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">21–24</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T6: Post-Processing Techniques</div><div class="lesson-meta">Sanding, painting, priming 3D prints</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">25–28</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T7: Design for Assembly (DFA)</div><div class="lesson-meta">Modular designs, reducing part count</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">29–32</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T8: Sustainability &amp; Responsible Making</div><div class="lesson-meta">Material waste, recyclability, design lifetime</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">33–36</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T9: Peer Design Review</div><div class="lesson-meta">Critique, feedback, revision cycles</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 5 Capstone — User-Centered Product</div><div class="lesson-meta">Research → design → prototype → user test → present</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Grade 6 -->
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-designer">Designer</span>
+        <div><div class="section-label">Grade 6 – Stage 2: Designer</div><div class="section-sub">Ages 11–12 · 40 lessons · Professional workflow and multi-material concepts</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#eff6ff"><span class="lesson-num" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#1e40af">10 Topics · 4 lessons each</div><div class="lesson-meta">Professional CAD Workflow · Multi-material Design · Design Documentation · Intellectual Property · Reverse Engineering · Product Lifecycle · DFM · Portfolio Development · Community Projects · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Professional CAD Workflow</div><div class="lesson-meta">Version control, file naming, project organization</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: Multi-material Design Concepts</div><div class="lesson-meta">TPU flex, PLA, ABS combinations</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T3: Design Documentation</div><div class="lesson-meta">Technical drawings, spec sheets, BOMs</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–16</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T4: Intellectual Property &amp; Open Source</div><div class="lesson-meta">Creative Commons, patents, remix culture</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">17–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T5–T9: Reverse Engineering, Lifecycle, DFM, Portfolio, Community</div><div class="lesson-meta">4 lessons each · Reading / Activity / Activity / Quiz</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 6 Capstone — Community Impact Project</div><div class="lesson-meta">Solve a real community problem using 3D printing</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── STAGE 3: ENGINEER (7–9) ── -->
+  <div style="margin: 28px 0 10px; display:flex; align-items:center; gap:10px">
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,#d1fae5,transparent)"></div>
+    <span style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:800;color:#065f46;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">🟢 Stage 3: Engineer — Grades 7 to 9</span>
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,transparent,#d1fae5)"></div>
+  </div>
+  <p style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:20px">Focus: mechanical systems and functional prototypes</p>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-engineer">Engineer</span>
+        <div><div class="section-label">Grade 7 – Stage 3: Engineer</div><div class="section-sub">Ages 12–13 · 40 lessons · Parametric CAD and mechanical systems</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#ecfdf5"><span class="lesson-num" style="background:#d1fae5;border-color:#6ee7b7;color:#065f46">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#065f46">10 Topics · 4 lessons each</div><div class="lesson-meta">Parametric Design · Mechanical Joints · Gear Systems · Stress &amp; Materials · FDM Parameters · Functional Prototypes · Engineering Drawing · Design Reviews · Cross-disciplinary Projects · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Introduction to Parametric Design</div><div class="lesson-meta">Parameters, constraints, variables in Fusion 360 / Tinkercad</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: Mechanical Joints &amp; Connections</div><div class="lesson-meta">Hinges, pivots, living hinges, snap fits</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T3: Gear Systems &amp; Linkages</div><div class="lesson-meta">Spur gears, rack and pinion, four-bar linkages</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–16</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T4: Material Stress &amp; Properties</div><div class="lesson-meta">Tensile strength, flexibility, failure modes</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">17–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T5–T9: FDM Parameters, Functional Prototypes, Engineering Drawing, Design Reviews, Cross-disciplinary</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 7 Capstone — Mechanical Device</div><div class="lesson-meta">Design and 3D print a working mechanical assembly</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-engineer">Engineer</span>
+        <div><div class="section-label">Grade 8 – Stage 3: Engineer</div><div class="section-sub">Ages 13–14 · 40 lessons · Advanced engineering and multi-disciplinary design</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#ecfdf5"><span class="lesson-num" style="background:#d1fae5;border-color:#6ee7b7;color:#065f46">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#065f46">10 Topics · 4 lessons each</div><div class="lesson-meta">Electronics Integration · Arduino Mounts · Structural Analysis · Fluid Dynamics Basics · Composite Materials · DFM Advanced · Reverse Engineering · Simulation · Ethics in Engineering · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Integrating Electronics with 3D Prints</div><div class="lesson-meta">Arduino/Raspberry Pi enclosures, cable management</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: Mounting and Enclosure Design</div><div class="lesson-meta">PCB mounts, sensor housings, connectors</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T3: Structural Analysis Basics</div><div class="lesson-meta">Load bearing, FEA introduction, topology</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T4–T9: Fluid Dynamics, Composites, DFM, Reverse Engineering, Simulation, Ethics</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 8 Capstone — Electronics Enclosure System</div><div class="lesson-meta">Design a functional electronics housing with integrated print parts</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-engineer">Engineer</span>
+        <div><div class="section-label">Grade 9 – Stage 3: Engineer</div><div class="section-sub">Ages 14–15 · 40 lessons · Industry processes and professional engineering</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#ecfdf5"><span class="lesson-num" style="background:#d1fae5;border-color:#6ee7b7;color:#065f46">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#065f46">10 Topics · 4 lessons each</div><div class="lesson-meta">Industry 4.0 &amp; Digital Manufacturing · GD&amp;T · CAM Basics · Rapid Prototyping Methods · Quality Assurance · IP and Patents · Engineering Portfolio · Mentorship Models · Startup Mindset · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Industry 4.0 and Digital Manufacturing</div><div class="lesson-meta">Smart factories, IoT, digital twins</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T2–T9: GD&amp;T, CAM, Rapid Prototyping, QA, IP, Portfolio, Mentorship, Startup</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 9 Capstone — Engineering Portfolio Project</div><div class="lesson-meta">Documented end-to-end engineering project with professional deliverables</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── STAGE 4: INNOVATOR (10–12) ── -->
+  <div style="margin: 28px 0 10px; display:flex; align-items:center; gap:10px">
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,#ede9fe,transparent)"></div>
+    <span style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:800;color:#5b21b6;text-transform:uppercase;letter-spacing:1px;white-space:nowrap">🟣 Stage 4: Innovator — Grades 10 to 12</span>
+    <div style="flex:1;height:2px;background:linear-gradient(90deg,transparent,#ede9fe)"></div>
+  </div>
+  <p style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:20px">Focus: product innovation and real-world solutions</p>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-innovator">Innovator</span>
+        <div><div class="section-label">Grade 10 – Stage 4: Innovator</div><div class="section-sub">Ages 15–16 · 40 lessons · Product innovation and entrepreneurship</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#f5f3ff"><span class="lesson-num" style="background:#ede9fe;border-color:#c4b5fd;color:#5b21b6">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#5b21b6">10 Topics · 4 lessons each</div><div class="lesson-meta">Design Research Methods · Market Analysis · Advanced CAD (Fusion 360) · Rapid Iteration · Branding &amp; Presentation · Manufacturing Methods · IP Strategy · Venture Design · Social Innovation · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">Design Research Methods</div><div class="lesson-meta">Ethnographic research, trend analysis, competitive benchmarking</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">2–4</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T1: Research application activities and quiz</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T2: Market Analysis &amp; Opportunity Finding</div><div class="lesson-meta">TAM/SAM/SOM, customer segments, pain points</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T3: Advanced CAD in Fusion 360</div><div class="lesson-meta">Parametric modeling, assemblies, simulation</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T4–T9: Rapid Iteration, Branding, Manufacturing, IP, Venture, Social Innovation</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 10 Capstone — Venture Product</div><div class="lesson-meta">Full startup-style product design with pitch deck and prototype</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-innovator">Innovator</span>
+        <div><div class="section-label">Grade 11 – Stage 4: Innovator</div><div class="section-sub">Ages 16–17 · 40 lessons · Advanced manufacturing and systems thinking</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#f5f3ff"><span class="lesson-num" style="background:#ede9fe;border-color:#c4b5fd;color:#5b21b6">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#5b21b6">10 Topics · 4 lessons each</div><div class="lesson-meta">Systems Thinking · Advanced Materials (SLA/SLS) · Digital Twin · Supply Chains · Design for Scale · Biomedical Applications · Aerospace Applications · Environmental Design · Industry Partnerships · Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Systems Thinking in Product Design</div><div class="lesson-meta">Interconnections, feedback loops, lifecycle analysis</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T2: Advanced 3D Printing Technologies</div><div class="lesson-meta">SLA, SLS, MSLA resin printing — capabilities and use cases</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–36</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T3–T9: Digital Twin, Supply Chain, Scale, Biomedical, Aerospace, Environmental, Industry</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Grade 11 Capstone — Industry Partner Project</div><div class="lesson-meta">Real-world brief from an industry partner or NGO</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <button class="section-header" onclick="toggleSection(this)">
+      <div class="section-title">
+        <span class="stage-badge stage-innovator">Innovator</span>
+        <div><div class="section-label">Grade 12 – Stage 4: Innovator</div><div class="section-sub">Ages 17–18 · 40 lessons · Senior capstone and career pathways</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="lessons-count">40 lessons</span><span class="chevron">▾</span></div>
+    </button>
+    <div class="section-body">
+      <ul class="lessons-list">
+        <li class="lesson-item" style="background:#f5f3ff"><span class="lesson-num" style="background:#ede9fe;border-color:#c4b5fd;color:#5b21b6">T1–T10</span><span class="lesson-type-icon">📦</span><div class="lesson-info"><div class="lesson-title" style="color:#5b21b6">10 Topics · 4 lessons each</div><div class="lesson-meta">Career Pathways in Fabrication · University-Level CAD · Research Methods · Publication &amp; IP · Mentoring Junior Makers · Community Deployment · Industry Standards · Innovation Showcase · Portfolio Finalization · Senior Capstone</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">1–4</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T1: Career Pathways in 3D Design &amp; Fabrication</div><div class="lesson-meta">Engineering, industrial design, architecture, biomedical</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">5–8</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T2: University-Level CAD &amp; Simulation</div><div class="lesson-meta">Fusion 360 advanced, Solidworks intro, FEA</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">9–12</span><span class="lesson-type-icon">📖</span><div class="lesson-info"><div class="lesson-title">T3: Research Methods &amp; Technical Writing</div><div class="lesson-meta">Literature review, methodology, data analysis, citations</div></div><span class="lesson-type-badge type-reading">Reading</span></li>
+        <li class="lesson-item"><span class="lesson-num">13–32</span><span class="lesson-type-icon">🔄</span><div class="lesson-info"><div class="lesson-title">T4–T8: Publication, Mentoring, Community, Industry Standards, Innovation Showcase</div><div class="lesson-meta">4 lessons each</div></div></li>
+        <li class="lesson-item"><span class="lesson-num">33–36</span><span class="lesson-type-icon">🎯</span><div class="lesson-info"><div class="lesson-title">T9: Portfolio Finalization &amp; Presentation Skills</div><div class="lesson-meta">Digital portfolio, case studies, interview prep</div></div><span class="lesson-type-badge type-activity">Activity</span></li>
+        <li class="lesson-item"><span class="lesson-num">37–40</span><span class="lesson-type-icon">🏆</span><div class="lesson-info"><div class="lesson-title">T10: Senior Capstone — Innovation Showcase</div><div class="lesson-meta">Comprehensive K–12 culminating project presented to community/panel</div></div><span class="lesson-type-badge type-project">Project</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Curriculum Overview Table -->
+  <div style="background:#fff;border:1px solid #e8e2da;border-radius:16px;padding:24px;margin-top:8px;box-shadow:0 2px 6px rgba(0,0,0,0.04)">
+    <h2 style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;margin-bottom:16px;color:#1a1d2e">📊 Curriculum At a Glance</h2>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#f97316;color:white">
+            <th style="padding:10px 14px;text-align:left;border-radius:8px 0 0 0">Grade</th>
+            <th style="padding:10px 14px;text-align:left">Stage</th>
+            <th style="padding:10px 14px;text-align:left">Focus</th>
+            <th style="padding:10px 14px;text-align:center;border-radius:0 8px 0 0">Lessons</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#f9f9f7"><td style="padding:9px 14px;font-weight:600">Bootcamp</td><td style="padding:9px 14px"><span style="background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:999px;font-weight:700">Optional</span></td><td style="padding:9px 14px;color:#6b7280">Spatial thinking, CAD intro, print basics</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">8</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 14px;font-weight:600">Kindergarten</td><td style="padding:9px 14px"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px;font-weight:700">Maker</span></td><td style="padding:9px 14px;color:#6b7280">Shapes, 3D solids, clay modeling, imagination</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#f9f9f7"><td style="padding:9px 14px;font-weight:600">Grade 1</td><td style="padding:9px 14px"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px;font-weight:700">Maker</span></td><td style="padding:9px 14px;color:#6b7280">3D shapes, design process, first building</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 14px;font-weight:600">Grade 2</td><td style="padding:9px 14px"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px;font-weight:700">Maker</span></td><td style="padding:9px 14px;color:#6b7280">Symmetry, maps, first Tinkercad models</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#f9f9f7"><td style="padding:9px 14px;font-weight:600">Grade 3</td><td style="padding:9px 14px"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:999px;font-weight:700">Maker</span></td><td style="padding:9px 14px;color:#6b7280">CAD primitives, Boolean ops, design thinking</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#eff6ff"><td style="padding:9px 14px;font-weight:600">Grade 4</td><td style="padding:9px 14px"><span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:999px;font-weight:700">Designer</span></td><td style="padding:9px 14px;color:#6b7280">CAD workflow, tolerances, multi-part models</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 14px;font-weight:600">Grade 5</td><td style="padding:9px 14px"><span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:999px;font-weight:700">Designer</span></td><td style="padding:9px 14px;color:#6b7280">User research, ergonomics, sustainability</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#eff6ff"><td style="padding:9px 14px;font-weight:600">Grade 6</td><td style="padding:9px 14px"><span style="background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:999px;font-weight:700">Designer</span></td><td style="padding:9px 14px;color:#6b7280">Pro workflow, IP, DFM, community projects</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#ecfdf5"><td style="padding:9px 14px;font-weight:600">Grade 7</td><td style="padding:9px 14px"><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-weight:700">Engineer</span></td><td style="padding:9px 14px;color:#6b7280">Parametric CAD, gears, mechanical systems</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 14px;font-weight:600">Grade 8</td><td style="padding:9px 14px"><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-weight:700">Engineer</span></td><td style="padding:9px 14px;color:#6b7280">Electronics integration, structural analysis</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#ecfdf5"><td style="padding:9px 14px;font-weight:600">Grade 9</td><td style="padding:9px 14px"><span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:999px;font-weight:700">Engineer</span></td><td style="padding:9px 14px;color:#6b7280">Industry 4.0, GD&T, engineering portfolio</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#f5f3ff"><td style="padding:9px 14px;font-weight:600">Grade 10</td><td style="padding:9px 14px"><span style="background:#ede9fe;color:#5b21b6;padding:2px 8px;border-radius:999px;font-weight:700">Innovator</span></td><td style="padding:9px 14px;color:#6b7280">Design research, Fusion 360, venture design</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#fff"><td style="padding:9px 14px;font-weight:600">Grade 11</td><td style="padding:9px 14px"><span style="background:#ede9fe;color:#5b21b6;padding:2px 8px;border-radius:999px;font-weight:700">Innovator</span></td><td style="padding:9px 14px;color:#6b7280">Systems thinking, SLA/SLS, industry partners</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316">40</td></tr>
+          <tr style="background:#f5f3ff"><td style="padding:9px 14px;font-weight:600;border-radius:0 0 0 8px">Grade 12</td><td style="padding:9px 14px"><span style="background:#ede9fe;color:#5b21b6;padding:2px 8px;border-radius:999px;font-weight:700">Innovator</span></td><td style="padding:9px 14px;color:#6b7280">Career pathways, senior capstone, showcase</td><td style="padding:9px 14px;text-align:center;font-weight:700;color:#f97316;border-radius:0 0 8px 0">40</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">Powered by SilidLMS &nbsp;·&nbsp; 3D Design and Fabrication K–12 Curriculum</div>
+</div>
+
+<script>
+  function toggleSection(btn) {
+    const body = btn.nextElementSibling;
+    const chevron = btn.querySelector('.chevron');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
