@@ -183,7 +183,7 @@ export default function MakerLessons() {
       )}
 
       {/* Grid */}
-      {filtered.length === 0 ? (
+      {filtered.length === 0 && (search || skillFilter !== "All") ? (
         <div className="text-center py-16 border border-dashed rounded-2xl">
           <Layers className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
           <h3 className="font-poppins font-semibold text-foreground">No maker lessons found</h3>
@@ -198,13 +198,13 @@ export default function MakerLessons() {
             </Link>
           )}
         </div>
-      ) : (
+      ) : filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map(lesson => (
             <MakerLessonCard key={lesson.id} lesson={lesson} progress={getProgress(lesson.id)} isTeacher={isTeacher} onDelete={handleDelete} />
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
