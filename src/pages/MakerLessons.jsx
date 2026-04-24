@@ -22,20 +22,19 @@ export default function MakerLessons() {
   console.log('ROLE:', user?.role, '| isTeacher:', isTeacher);
 
   useEffect(() => {
-    if (user === undefined || user === null) return;
     const load = async () => {
       const role = user?.role?.toLowerCase();
       const isManager = role === "teacher" || role === "admin";
       const query = isManager ? {} : { status: "published" };
       const [l, s] = await Promise.all([
         base44.entities.MakerLesson.filter(query, "-created_date", 50).catch(() => []),
-        base44.entities.MakerSubmission.filter({ student_id: user.id }, "-created_date", 50).catch(() => []),
+        user ? base44.entities.MakerSubmission.filter({ student_id: user.id }, "-created_date", 50).catch(() => []) : Promise.resolve([]),
       ]);
       setLessons(l);
       setSubmissions(s);
       setLoading(false);
     };
-    load();
+    if (user !== undefined) load();
   }, [user]);
 
   const getProgress = (lessonId) => {

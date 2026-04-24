@@ -23,20 +23,19 @@ export default function Courses() {
   const canManage = role === "teacher" || role === "admin";
 
   useEffect(() => {
-    if (user === undefined || user === null) return;
     const load = async () => {
       const role = user?.role || "student";
       const isManager = role === "teacher" || role === "admin";
       const filter = isManager ? {} : { status: "published" };
       const [c, e] = await Promise.all([
         base44.entities.Course.filter(filter, "-created_date", 50),
-        base44.entities.Enrollment.filter({ student_id: user.id }),
+        user ? base44.entities.Enrollment.filter({ student_id: user.id }) : Promise.resolve([]),
       ]);
       setCourses(c);
       setEnrollments(e);
       setLoading(false);
     };
-    load();
+    if (user !== undefined) load();
   }, [user]);
 
   const filtered = courses.filter(c => {
