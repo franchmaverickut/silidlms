@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Copy, Check } from "lucide-react";
 import PublicProjectShell from "@/components/maker/PublicProjectShell";
 
 const PROJECTS = [
@@ -62,15 +60,6 @@ const difficultyColor = {
 };
 
 export default function PublicMakerLessons() {
-  const [copied, setCopied] = useState(false);
-  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(pageUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <PublicProjectShell>
       <div className="max-w-4xl mx-auto space-y-8">
@@ -80,19 +69,6 @@ export default function PublicMakerLessons() {
           <p className="text-gray-500 text-sm max-w-xl mx-auto">
             Hands-on STEM projects — design, build, and bring ideas to life with 3D printing, engineering, and robotics.
           </p>
-          {/* Page URL */}
-          <div className="flex items-center justify-center gap-2 mt-3">
-            <div className="flex items-center gap-2 bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 max-w-sm w-full">
-              <span className="text-xs text-gray-500 truncate flex-1 text-left font-mono">{pageUrl}</span>
-              <button
-                onClick={handleCopy}
-                className="flex-shrink-0 text-orange-500 hover:text-orange-600 transition-colors"
-                title="Copy link"
-              >
-                {copied ? <Check size={14} className="text-green-500" /> : <Copy size={14} />}
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Cards */}
