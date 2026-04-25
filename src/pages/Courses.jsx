@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useOutletContext, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Plus, Search, Filter, BookOpen, Layers } from "lucide-react";
+import { Plus, Search, Filter, BookOpen, Layers, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseCard from "@/components/courses/CourseCard";
+import { useToast } from "@/components/ui/use-toast";
 
 const SKILL_AREAS = ["All", "3D Printing", "Prompt Engineering", "AI Literacy", "Robotics", "Coding", "Digital Creativity", "Other"];
 
@@ -19,6 +20,7 @@ export default function Courses() {
   const [statusTab, setStatusTab] = useState("published");
   const [skillFilter, setSkillFilter] = useState("All");
 
+  const { toast } = useToast();
   const role = user?.role || "student";
   const canManage = role === "teacher" || role === "admin";
 
@@ -75,13 +77,18 @@ export default function Courses() {
             {canManage ? "Create, manage, and publish skill courses" : "Discover and learn future-ready tech skills"}
           </p>
         </div>
-        {canManage && (
-          <Link to="/courses/new">
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg shadow-primary/20 gap-2">
-              <Plus size={16} /> New Course
-            </Button>
-          </Link>
-        )}
+        <div className="flex gap-2">
+          <Button variant="outline" className="rounded-xl gap-2 text-xs" onClick={() => { const url = `${window.location.origin}/share/courses`; navigator.clipboard.writeText(url); toast({ title: "Courses page link copied!", description: url }); }}>
+            <Share2 size={14} /> Share All
+          </Button>
+          {canManage && (
+            <Link to="/courses/new">
+              <Button className="bg-primary hover:bg-primary/90 text-white rounded-xl shadow-lg shadow-primary/20 gap-2">
+                <Plus size={16} /> New Course
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Filters */}
