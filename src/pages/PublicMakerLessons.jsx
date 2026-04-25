@@ -63,14 +63,6 @@ export default function PublicMakerLessons() {
   return (
     <PublicProjectShell>
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-2 pt-2">
-          <h1 className="font-poppins font-bold text-3xl text-gray-900">Maker Projects</h1>
-          <p className="text-gray-500 text-sm max-w-xl mx-auto">
-            Hands-on STEM projects — design, build, and bring ideas to life with 3D printing, engineering, and robotics.
-          </p>
-        </div>
-
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {PROJECTS.map((project) => (
