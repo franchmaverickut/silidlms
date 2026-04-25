@@ -63,10 +63,15 @@ export default function PublicLessonViewer() {
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-        {/* Back to course */}
-        <Link to={`/share/course/${lesson.course_id}`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 transition-colors">
-          <ArrowLeft size={15} /> Back to Course
-        </Link>
+        {/* Back buttons */}
+        <div className="flex items-center gap-4 flex-wrap">
+          <Link to={`/share/course/${lesson.course_id}`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 transition-colors">
+            <ArrowLeft size={15} /> Back to Course
+          </Link>
+          <Link to="/share/courses" className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-orange-500 transition-colors">
+            <ArrowLeft size={15} /> Back to Gallery
+          </Link>
+        </div>
 
         {/* Lesson Header */}
         <div className="flex items-start gap-4">
