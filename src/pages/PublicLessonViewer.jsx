@@ -126,9 +126,9 @@ export default function PublicLessonViewer() {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-5xl mx-auto px-4 py-6 space-y-4">
         {/* Back buttons */}
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           <Link to={`/share/course/${lesson.course_id}`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 transition-colors">
             <ArrowLeft size={15} /> Back to Course
           </Link>
@@ -185,13 +185,10 @@ export default function PublicLessonViewer() {
 
         {/* External HTML Content */}
         {htmlContent && (
-          <Card className="p-6 border-gray-200 shadow-sm">
-            <div
-              className="prose prose-sm max-w-none text-foreground/90 leading-relaxed ql-editor"
-              style={{ padding: 0 }}
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
-            />
-          </Card>
+          <div
+            className="w-full text-foreground/90 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
         )}
 
         {/* Rich Content */}

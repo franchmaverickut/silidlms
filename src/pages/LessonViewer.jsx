@@ -193,7 +193,7 @@ export default function LessonViewer() {
   const TypeIcon = typeInfo.icon;
 
   return (
-    <div className="max-w-4xl space-y-5">
+    <div className="max-w-5xl space-y-4">
       {/* Back & Progress */}
       <div className="flex items-center gap-4">
         <button onClick={() => navigate(`/courses/${lesson.course_id}`)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors flex-shrink-0">
@@ -260,13 +260,10 @@ export default function LessonViewer() {
 
       {/* External HTML Content */}
       {htmlContent && (
-        <Card className="p-6 border-border/60 shadow-sm">
-          <div
-            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed ql-editor"
-            style={{ padding: 0 }}
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
-        </Card>
+        <div
+          className="w-full text-foreground/90 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
       )}
 
       {/* Rich Text Content */}
