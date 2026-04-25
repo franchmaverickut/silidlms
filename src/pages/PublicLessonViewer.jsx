@@ -176,8 +176,20 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
+        {/* External HTML Content */}
+        {lesson.content_url && (
+          <Card className="overflow-hidden border-gray-200 shadow-sm">
+            <iframe
+              src={lesson.content_url}
+              className="w-full border-0"
+              style={{ height: "80vh" }}
+              title={lesson.title}
+            />
+          </Card>
+        )}
+
         {/* Rich Content */}
-        {lesson.content && (
+        {!lesson.content_url && lesson.content && (
           <Card className="p-6 border-gray-200 shadow-sm">
             <div
               className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
@@ -202,7 +214,7 @@ export default function PublicLessonViewer() {
         )}
 
         {/* No content fallback */}
-        {!lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
+        {!lesson.content_url && !lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
           <Card className="p-8 text-center border-dashed border-gray-200">
             <FileText className="w-10 h-10 text-gray-200 mx-auto mb-2" />
             <p className="text-gray-400 text-sm">No content available for this lesson yet.</p>

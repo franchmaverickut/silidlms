@@ -251,8 +251,20 @@ export default function LessonViewer() {
         </Card>
       )}
 
+      {/* External HTML Content */}
+      {lesson.content_url && (
+        <Card className="overflow-hidden border-border/60 shadow-sm">
+          <iframe
+            src={lesson.content_url}
+            className="w-full border-0"
+            style={{ height: "80vh" }}
+            title={lesson.title}
+          />
+        </Card>
+      )}
+
       {/* Rich Text Content */}
-      {lesson.content && (
+      {!lesson.content_url && lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
           <div
             className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
