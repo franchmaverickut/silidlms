@@ -139,16 +139,7 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
-        {/* Sign in CTA for submission */}
-        {(lesson.type === "activity" || lesson.type === "project") && (
-          <Card className="p-6 border-orange-200 bg-orange-50/50 text-center">
-            <p className="font-poppins font-semibold text-gray-800 mb-1">Want to submit your work?</p>
-            <p className="text-sm text-gray-500 mb-3">Sign in to submit your response and track your progress.</p>
-            <a href="/">
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl">Sign In to Submit</Button>
-            </a>
-          </Card>
-        )}
+
 
         {/* Navigation */}
         <div className="flex items-center justify-between pt-2">
