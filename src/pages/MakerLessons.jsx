@@ -59,9 +59,13 @@ export default function MakerLessons() {
   };
 
   const COMMUNITY_IDS = ["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"];
+  const STEM_PROJECT_TITLES = ["Puzzle Cubes", "Functional Wrenches", "Balloon Dragsters", "Egyptian Obelisks", "Self-Watering Planters", "Whistles", "Suspension Bridges"];
+
+  const stemProjects = lessons.filter(l => STEM_PROJECT_TITLES.includes(l.title));
 
   const filtered = lessons.filter(l => {
     if (COMMUNITY_IDS.includes(l.id)) return false;
+    if (STEM_PROJECT_TITLES.includes(l.title)) return false;
     const matchSearch = l.title.toLowerCase().includes(search.toLowerCase()) ||
       l.description?.toLowerCase().includes(search.toLowerCase());
     const matchSkill = skillFilter === "All" || l.skill_area === skillFilter;
@@ -195,6 +199,39 @@ export default function MakerLessons() {
               <Share2 size={11} /> Share
             </button>
           </div>
+
+          {/* Additional STEM Projects from DB */}
+          {stemProjects.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {stemProjects.map(lesson => {
+                const diffColor = lesson.difficulty === "Beginner" ? "bg-green-600" : lesson.difficulty === "Intermediate" ? "bg-amber-500" : "bg-red-600";
+                const duration = lesson.estimated_minutes >= 60
+                  ? `${Math.round(lesson.estimated_minutes / 60)} hour${Math.round(lesson.estimated_minutes / 60) !== 1 ? "s" : ""}`
+                  : `${lesson.estimated_minutes} min`;
+                return (
+                  <div key={lesson.id} className="relative group">
+                    <Link to={`/maker/${lesson.id}`} className="block">
+                      <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
+                        <img src={lesson.thumbnail_url} alt={lesson.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                        <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                          <div className="flex gap-2 mb-2">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-orange-500 text-white">3D Printing</span>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${diffColor}`}>{lesson.difficulty}</span>
+                          </div>
+                          <h3 className="font-poppins font-bold text-base text-white">{lesson.title}</h3>
+                          <p className="text-white/70 text-xs">{lesson.description}</p>
+                        </div>
+                      </div>
+                    </Link>
+                    <button onClick={() => { const url = `${window.location.origin}/share/maker/${lesson.id}`; navigator.clipboard.writeText(url); toast({ title: `${lesson.title} link copied!`, description: url }); }} className="absolute top-2 right-2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+                      <Share2 size={11} /> Share
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Community Feature Projects */}
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
