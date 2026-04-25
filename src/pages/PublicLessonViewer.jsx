@@ -5,6 +5,18 @@ import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Cloc
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import "react-quill/dist/quill.snow.css";
+import Grade1MakerLesson from "@/components/lesson/Grade1MakerLesson";
+import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
+import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
+import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
+import { GRADE4_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade4";
+
+const ALL_INTERACTIVE_IDS = new Set([
+  ...GRADE1_MAKER_LESSONS,
+  ...GRADE2_MAKER_LESSONS,
+  ...GRADE3_MAKER_LESSONS,
+  ...GRADE4_MAKER_LESSONS,
+].map(l => l.id));
 
 const lessonTypeMap = {
   reading: { icon: FileText, color: "text-blue-500", bg: "bg-blue-50", label: "Reading" },
@@ -55,6 +67,48 @@ export default function PublicLessonViewer() {
   const currentIndex = allLessons.findIndex(l => l.id === id);
   const prevLesson = allLessons[currentIndex - 1];
   const nextLesson = allLessons[currentIndex + 1];
+
+  // Interactive lesson — render using the same component as LMS
+  if (ALL_INTERACTIVE_IDS.has(id)) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-extrabold text-orange-500 font-poppins">Silid</span>
+            <span className="text-lg font-extrabold text-gray-800 font-poppins">LMS</span>
+          </div>
+          <a href="/" className="text-xs text-orange-500 font-semibold hover:underline">Sign in →</a>
+        </div>
+        <div className="max-w-3xl mx-auto px-4 py-6">
+          <div className="flex items-center gap-4 mb-6 flex-wrap">
+            <Link to={`/share/course/${lesson.course_id}`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 transition-colors">
+              <ArrowLeft size={15} /> Back to Course
+            </Link>
+          </div>
+          <Grade1MakerLesson lessonId={id} enrollment={null} allLessons={allLessons} user={null} onComplete={null} />
+          <div className="flex items-center justify-between pt-4">
+            {prevLesson ? (
+              <Link to={`/share/lesson/${prevLesson.id}`}>
+                <Button variant="outline" className="gap-2 rounded-xl border-gray-200"><ArrowLeft size={15} /> Previous</Button>
+              </Link>
+            ) : <div />}
+            {nextLesson ? (
+              <Link to={`/share/lesson/${nextLesson.id}`}>
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl gap-2">Next <ArrowRight size={15} /></Button>
+              </Link>
+            ) : (
+              <Link to={`/share/course/${lesson.course_id}`}>
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl gap-2">Back to Course <ArrowRight size={15} /></Button>
+              </Link>
+            )}
+          </div>
+          <div className="border-t border-gray-200 pt-6 mt-6 text-center">
+            <p className="text-xs text-gray-400">Powered by <span className="font-semibold text-orange-500">SilidLMS</span></p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
