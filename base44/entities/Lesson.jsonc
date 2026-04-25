@@ -24,6 +24,10 @@
     "content": {
       "type": "string"
     },
+    "content_url": {
+      "type": "string",
+      "description": "URL to an external HTML file to render as lesson content"
+    },
     "video_url": {
       "type": "string"
     },
