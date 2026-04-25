@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import "react-quill/dist/quill.snow.css";
 
 const lessonTypeMap = {
   reading: { icon: FileText, color: "text-blue-500", bg: "bg-blue-50", label: "Reading" },
@@ -123,7 +124,7 @@ export default function PublicLessonViewer() {
         {lesson.content && (
           <Card className="p-6 border-gray-200 shadow-sm">
             <div
-              className="prose prose-sm max-w-none text-gray-800 leading-relaxed ql-editor"
+              className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
               style={{ padding: 0 }}
               dangerouslySetInnerHTML={{ __html: lesson.content }}
             />
