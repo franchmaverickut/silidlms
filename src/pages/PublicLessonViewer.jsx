@@ -72,12 +72,11 @@ export default function PublicLessonViewer() {
   if (ALL_INTERACTIVE_IDS.has(id)) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center sticky top-0 z-50 shadow-sm">
           <div className="flex items-center gap-2">
             <span className="text-lg font-extrabold text-orange-500 font-poppins">Silid</span>
             <span className="text-lg font-extrabold text-gray-800 font-poppins">LMS</span>
           </div>
-          <a href="/" className="text-xs text-orange-500 font-semibold hover:underline">Sign in →</a>
         </div>
         <div className="max-w-3xl mx-auto px-4 py-6">
           <div className="flex items-center gap-4 mb-6 flex-wrap">
@@ -113,12 +112,11 @@ export default function PublicLessonViewer() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top bar */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center sticky top-0 z-50 shadow-sm">
         <div className="flex items-center gap-2">
           <span className="text-lg font-extrabold text-orange-500 font-poppins">Silid</span>
           <span className="text-lg font-extrabold text-gray-800 font-poppins">LMS</span>
         </div>
-        <a href="/" className="text-xs text-orange-500 font-semibold hover:underline">Sign in →</a>
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
