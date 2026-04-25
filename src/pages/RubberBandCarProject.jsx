@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronDown, ChevronUp, Play, ExternalLink, Clock, Users, Star, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import CompeteTracker from "@/components/rubberband/CompeteTracker";
+import ReflectionTracker from "@/components/rubberband/ReflectionTracker";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/73050b285_RubberbandCarCoverPhoto.png";
 const IMG_PART1 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9288ed808_Part1InitialPreparationandAssembly.png";
@@ -255,41 +257,7 @@ export default function RubberBandCarProject() {
             },
             {
               num: "3", time: "5 min", title: "Compete",
-              content: (
-                <div className="space-y-2">
-                  <p className="text-sm text-foreground/80">Teams will be called up one at a time. Each team gets:</p>
-                  <ul className="space-y-1">
-                    {["One wind of the rubber band (standardized by the facilitator)", "One release per challenge", "One official measurement per challenge"].map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                        <span className="text-blue-500 font-bold">•</span> {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-xs text-muted-foreground">Results are recorded on the shared scoreboard. After all 12 teams complete their runs, winners are announced for each challenge.</p>
-                  <div className="rounded-xl border border-border/60 overflow-hidden mt-2">
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="bg-muted/50">
-                          <th className="text-left px-3 py-2 font-semibold text-foreground">Challenge</th>
-                          <th className="text-left px-3 py-2 font-semibold text-foreground">Your Result</th>
-                          <th className="text-left px-3 py-2 font-semibold text-foreground">Best in Room</th>
-                          <th className="text-left px-3 py-2 font-semibold text-foreground">Difference</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border/40">
-                        {["Distance (cm)", "Deviation from center (cm)", "Time to 3m line (sec)"].map((row, i) => (
-                          <tr key={i}>
-                            <td className="px-3 py-2 text-muted-foreground">{row}</td>
-                            <td className="px-3 py-2 text-muted-foreground/40">—</td>
-                            <td className="px-3 py-2 text-muted-foreground/40">—</td>
-                            <td className="px-3 py-2 text-muted-foreground/40">—</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ),
+              content: <CompeteTracker />,
             },
           ].map((step) => (
             <div key={step.num} className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
@@ -313,21 +281,8 @@ export default function RubberBandCarProject() {
               <span className="font-poppins font-bold text-sm text-foreground flex-1">Reflect</span>
               <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">10 min</span>
             </div>
-            <div className="p-5 space-y-3">
-              <p className="text-sm text-foreground/80">Do not skip this step — the reflection is where the real learning happens. Answer as a team and write your answers down:</p>
-              <ol className="space-y-2">
-                {[
-                  "What was your car's biggest failure during the competition? Be specific.",
-                  "Was the failure caused by design, materials, or assembly? How do you know?",
-                  "If you had 5 extra minutes to fix one thing before another run — what would it be and why?",
-                  "Look at the winning car for each challenge. What did they do differently from your team?",
-                  "Which of the five materials had the most impact on performance? Why?",
-                ].map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                    <span className="font-bold text-blue-600 flex-shrink-0">{i + 1}.</span> {q}
-                  </li>
-                ))}
-              </ol>
+            <div className="p-5">
+              <ReflectionTracker />
             </div>
           </div>
         </div>
