@@ -22,13 +22,17 @@ export default function PublicLessonViewer() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
+    if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
     const load = async () => {
-      const l = await base44.entities.Lesson.filter({ id });
-      const lessonData = l[0];
-      if (!lessonData) { setNotFound(true); setLoading(false); return; }
-      setLesson(lessonData);
-      const all = await base44.entities.Lesson.filter({ course_id: lessonData.course_id, module_id: lessonData.module_id }, "order");
-      setAllLessons(all);
+      const res = await base44.functions.invoke('getPublicLesson', { lesson_id: id });
+      const data = res.data;
+      if (!data || data.error || !data.lesson) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+      setLesson(data.lesson);
+      setAllLessons(data.siblings || []);
       setLoading(false);
     };
     load();
@@ -120,7 +124,7 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
-        {/* Content */}
+        {/* Rich Content */}
         {lesson.content && (
           <Card className="p-6 border-gray-200 shadow-sm">
             <div
@@ -145,7 +149,13 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
-
+        {/* No content fallback */}
+        {!lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
+          <Card className="p-8 text-center border-dashed border-gray-200">
+            <FileText className="w-10 h-10 text-gray-200 mx-auto mb-2" />
+            <p className="text-gray-400 text-sm">No content available for this lesson yet.</p>
+          </Card>
+        )}
 
         {/* Navigation */}
         <div className="flex items-center justify-between pt-2">
