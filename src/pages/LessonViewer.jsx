@@ -30,6 +30,7 @@ export default function LessonViewer() {
   const [uploading, setUploading] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [htmlContent, setHtmlContent] = useState(null);
 
   useEffect(() => {
     if (user === null) return; // wait for auth to resolve
@@ -52,6 +53,12 @@ export default function LessonViewer() {
           if (cancelled) return;
           if (sub[0]) { setSubmission(sub[0]); setTextResponse(sub[0].text_response || ""); }
         }
+      }
+      if (lessonData?.content_url) {
+        fetch(lessonData.content_url)
+          .then(res => res.text())
+          .then(html => { if (!cancelled) setHtmlContent(html); })
+          .catch(() => {});
       }
       setLoading(false);
     };
@@ -252,19 +259,18 @@ export default function LessonViewer() {
       )}
 
       {/* External HTML Content */}
-      {lesson.content_url && (
-        <Card className="overflow-hidden border-border/60 shadow-sm">
-          <iframe
-            src={lesson.content_url}
-            className="w-full border-0"
-            style={{ height: "80vh" }}
-            title={lesson.title}
+      {htmlContent && (
+        <Card className="p-6 border-border/60 shadow-sm">
+          <div
+            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed ql-editor"
+            style={{ padding: 0 }}
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </Card>
       )}
 
       {/* Rich Text Content */}
-      {!lesson.content_url && lesson.content && (
+      {!htmlContent && lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
           <div
             className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"

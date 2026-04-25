@@ -32,6 +32,7 @@ export default function PublicLessonViewer() {
   const [allLessons, setAllLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [htmlContent, setHtmlContent] = useState(null);
 
   useEffect(() => {
     if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
@@ -45,6 +46,12 @@ export default function PublicLessonViewer() {
       }
       setLesson(data.lesson);
       setAllLessons(data.siblings || []);
+      if (data.lesson?.content_url) {
+        fetch(data.lesson.content_url)
+          .then(res => res.text())
+          .then(html => setHtmlContent(html))
+          .catch(() => {});
+      }
       setLoading(false);
     };
     load();
@@ -177,19 +184,18 @@ export default function PublicLessonViewer() {
         )}
 
         {/* External HTML Content */}
-        {lesson.content_url && (
-          <Card className="overflow-hidden border-gray-200 shadow-sm">
-            <iframe
-              src={lesson.content_url}
-              className="w-full border-0"
-              style={{ height: "80vh" }}
-              title={lesson.title}
+        {htmlContent && (
+          <Card className="p-6 border-gray-200 shadow-sm">
+            <div
+              className="prose prose-sm max-w-none text-foreground/90 leading-relaxed ql-editor"
+              style={{ padding: 0 }}
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </Card>
         )}
 
         {/* Rich Content */}
-        {!lesson.content_url && lesson.content && (
+        {!htmlContent && lesson.content && (
           <Card className="p-6 border-gray-200 shadow-sm">
             <div
               className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
@@ -214,7 +220,7 @@ export default function PublicLessonViewer() {
         )}
 
         {/* No content fallback */}
-        {!lesson.content_url && !lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
+        {!htmlContent && !lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
           <Card className="p-8 text-center border-dashed border-gray-200">
             <FileText className="w-10 h-10 text-gray-200 mx-auto mb-2" />
             <p className="text-gray-400 text-sm">No content available for this lesson yet.</p>
