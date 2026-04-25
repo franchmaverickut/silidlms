@@ -46,7 +46,7 @@ function ModuleAccordion({ module, lessons }) {
             const typeInfo = lessonTypeMap[lesson.type] || lessonTypeMap.reading;
             const TypeIcon = typeInfo.icon;
             return (
-              <div key={lesson.id} className="flex items-center gap-4 px-5 py-3 bg-gray-50">
+              <a key={lesson.id} href={`/share/lesson/${lesson.id}`} className="flex items-center gap-4 px-5 py-3 bg-gray-50 hover:bg-orange-50 transition-colors cursor-pointer">
                 <div className={`w-8 h-8 rounded-lg ${typeInfo.bg} flex items-center justify-center flex-shrink-0`}>
                   <TypeIcon size={14} className={typeInfo.color} />
                 </div>
@@ -61,7 +61,7 @@ function ModuleAccordion({ module, lessons }) {
                     )}
                   </div>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
