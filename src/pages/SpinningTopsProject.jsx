@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ChevronLeft, ChevronDown, ChevronUp, Play, Download,
-  ExternalLink, Clock, Layers, Star, BookOpen
+  ExternalLink, Clock, Layers, Star, BookOpen, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png";
 const IMG_TIP = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ea1807891_tipsize.png";
@@ -92,13 +93,25 @@ function StepCard({ num, img, title, desc, downloads, links }) {
   );
 }
 
-export default function SpinningTopsProject() {
+export default function SpinningTopsProject({ isPublic = false }) {
+  const { toast } = useToast();
+  const shareUrl = `${window.location.origin}/share/spinning-tops`;
+
   return (
     <div className="max-w-3xl mx-auto pb-16 space-y-6">
-      {/* Back */}
-      <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-        <ChevronLeft size={16} /> Back to Maker Lessons
-      </Link>
+      {/* Back / Share */}
+      <div className="flex items-center justify-between">
+        {isPublic ? (
+          <span className="text-sm text-muted-foreground">🏠 SilidLMS — Maker Projects</span>
+        ) : (
+          <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+            <ChevronLeft size={16} /> Back to Maker Lessons
+          </Link>
+        )}
+        <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs" onClick={() => { navigator.clipboard.writeText(shareUrl); toast({ title: "Share link copied!", description: shareUrl }); }}>
+          <Share2 size={12} /> Share
+        </Button>
+      </div>
 
       {/* Hero */}
       <div className="relative rounded-3xl overflow-hidden min-h-[300px] shadow-xl">

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronDown, ChevronUp, Play, ExternalLink, Clock, Layers, Star } from "lucide-react";
+import { ChevronLeft, ChevronDown, ChevronUp, Play, ExternalLink, Clock, Layers, Star, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/4dc8cba41_EmojiTokenCover.png";
 const IMG_GROUP_VOTING = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/cd5e84e38_groupvotingjpg.png";
@@ -70,13 +71,25 @@ function StepCard({ num, img, title, desc, extra }) {
   );
 }
 
-export default function EmojiTokensProject() {
+export default function EmojiTokensProject({ isPublic = false }) {
+  const { toast } = useToast();
+  const shareUrl = `${window.location.origin}/share/emoji-tokens`;
+
   return (
     <div className="max-w-3xl mx-auto pb-16 space-y-6">
-      {/* Back */}
-      <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-        <ChevronLeft size={16} /> Back to Maker Lessons
-      </Link>
+      {/* Back / Share */}
+      <div className="flex items-center justify-between">
+        {isPublic ? (
+          <span className="text-sm text-muted-foreground">🏠 SilidLMS — Maker Projects</span>
+        ) : (
+          <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
+            <ChevronLeft size={16} /> Back to Maker Lessons
+          </Link>
+        )}
+        <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs" onClick={() => { navigator.clipboard.writeText(shareUrl); toast({ title: "Share link copied!", description: shareUrl }); }}>
+          <Share2 size={12} /> Share
+        </Button>
+      </div>
 
       {/* Hero */}
       <div className="relative rounded-3xl overflow-hidden min-h-[300px] shadow-xl">

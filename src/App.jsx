@@ -26,6 +26,9 @@ import EmojiTokensProject from '@/pages/EmojiTokensProject';
 import RubberBandCarProject from '@/pages/RubberBandCarProject';
 import PublicCourseViewer from '@/pages/PublicCourseViewer';
 import PublicMakerLessonViewer from '@/pages/PublicMakerLessonViewer';
+import PublicSpinningTops from '@/pages/PublicSpinningTops';
+import PublicEmojiTokens from '@/pages/PublicEmojiTokens';
+import PublicRubberBandCar from '@/pages/PublicRubberBandCar';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -84,6 +87,9 @@ function App() {
         <Routes>
           <Route path="/share/course/:id" element={<PublicCourseViewer />} />
           <Route path="/share/maker/:id" element={<PublicMakerLessonViewer />} />
+          <Route path="/share/spinning-tops" element={<PublicSpinningTops />} />
+          <Route path="/share/emoji-tokens" element={<PublicEmojiTokens />} />
+          <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />
