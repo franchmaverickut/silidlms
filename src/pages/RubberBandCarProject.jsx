@@ -255,10 +255,6 @@ export default function RubberBandCarProject() {
                 </div>
               ),
             },
-            {
-              num: "3", time: "5 min", title: "Compete",
-              content: <CompeteTracker />,
-            },
           ].map((step) => (
             <div key={step.num} className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
               <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
@@ -274,7 +270,19 @@ export default function RubberBandCarProject() {
 
           <img src={IMG_PART2} alt="Part 2 — Competition and Redesign" className="w-full rounded-2xl object-cover shadow-sm" />
 
-          {/* Step 4 - Reflect */}
+          {/* Step 3 - Compete (interactive) */}
+          <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
+            <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
+              <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+              <span className="font-poppins font-bold text-sm text-foreground flex-1">Compete</span>
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">5 min</span>
+            </div>
+            <div className="p-5">
+              <CompeteTracker />
+            </div>
+          </div>
+
+          {/* Step 4 - Reflect (interactive) */}
           <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
             <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
               <span className="w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
