@@ -29,6 +29,7 @@ import PublicMakerLessonViewer from '@/pages/PublicMakerLessonViewer';
 import PublicSpinningTops from '@/pages/PublicSpinningTops';
 import PublicEmojiTokens from '@/pages/PublicEmojiTokens';
 import PublicRubberBandCar from '@/pages/PublicRubberBandCar';
+import PublicMakerLessons from '@/pages/PublicMakerLessons';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -87,6 +88,7 @@ function App() {
         <Routes>
           <Route path="/share/course/:id" element={<PublicCourseViewer />} />
           <Route path="/share/maker/:id" element={<PublicMakerLessonViewer />} />
+          <Route path="/share/maker" element={<PublicMakerLessons />} />
           <Route path="/share/spinning-tops" element={<PublicSpinningTops />} />
           <Route path="/share/emoji-tokens" element={<PublicEmojiTokens />} />
           <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />

@@ -84,13 +84,18 @@ export default function MakerLessons() {
             {isTeacher ? "Create and manage hands-on project lessons" : "Explore hands-on projects and start building"}
           </p>
         </div>
-        {isTeacher && (
-          <Link to="/maker/new">
-            <Button className="bg-primary text-white rounded-xl gap-2 shadow-sm shadow-primary/20">
-              <Plus size={16} /> New Lesson
-            </Button>
-          </Link>
-        )}
+        <div className="flex gap-2">
+          <Button variant="outline" className="rounded-xl gap-2 text-xs" onClick={() => { const url = `${window.location.origin}/share/maker`; navigator.clipboard.writeText(url); toast({ title: "Maker page link copied!", description: url }); }}>
+            <Share2 size={14} /> Share All
+          </Button>
+          {isTeacher && (
+            <Link to="/maker/new">
+              <Button className="bg-primary text-white rounded-xl gap-2 shadow-sm shadow-primary/20">
+                <Plus size={16} /> New Lesson
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Filters */}
