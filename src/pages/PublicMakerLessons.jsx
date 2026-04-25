@@ -183,7 +183,7 @@ export default function PublicMakerLessons() {
   }, []);
 
   return (
-    <PublicProjectShell>
+    <PublicProjectShell hideHeader>
       <div className="max-w-4xl mx-auto space-y-10">
         {loading ? (
           <div className="flex justify-center py-16">
