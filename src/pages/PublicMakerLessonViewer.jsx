@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Clock, Layers, CheckCircle, Package, Cpu, Wrench, Play, FileText, Box } from "lucide-react";
+import { Clock, Layers, CheckCircle, ArrowLeft } from "lucide-react";
 
 const difficultyColors = {
   Beginner: "bg-green-100 text-green-700",
@@ -82,6 +82,10 @@ export default function PublicMakerLessonViewer() {
       </div>
 
       <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+        {/* Back to Maker Projects */}
+        <Link to="/share/maker" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-orange-500 transition-colors">
+          <ArrowLeft size={15} /> Back to Maker Projects
+        </Link>
 
         {/* Learning Objectives */}
         {lesson.learning_objectives?.length > 0 && (
