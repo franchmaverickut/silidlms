@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import {
@@ -63,49 +63,74 @@ function ModuleAccordion({ module, modIdx, lessons }) {
   );
 }
 
+function CourseSkeleton() {
+  return (
+    <div className="min-h-screen bg-background animate-pulse">
+      <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+        <div className="h-4 w-32 bg-muted rounded" />
+        <div className="rounded-2xl bg-muted h-48" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-3">
+            <div className="h-5 w-40 bg-muted rounded" />
+            {[1, 2, 3].map(i => <div key={i} className="rounded-xl border border-border/40 h-16 bg-muted/40" />)}
+          </div>
+          <div className="space-y-4">
+            <div className="rounded-xl border border-border/40 h-32 bg-muted/40" />
+            <div className="rounded-xl border border-border/40 h-24 bg-muted/40" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PublicCourseViewer() {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
   const [lessons, setLessons] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [courseLoading, setCourseLoading] = useState(true);
+  const [contentLoading, setContentLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
-    const load = async () => {
-      try {
-        const [courses, mods, lsns] = await Promise.all([
-          base44.entities.Course.filter({ id, status: "published" }),
+    if (!id || id === ':id') { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
+
+    // Load course metadata first — renders the hero immediately
+    base44.entities.Course.filter({ id, status: "published" })
+      .then(courses => {
+        if (!courses[0]) { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
+        setCourse(courses[0]);
+        setCourseLoading(false);
+
+        // Then load modules + lessons in parallel
+        return Promise.all([
           base44.entities.Module.filter({ course_id: id }, "order"),
           base44.entities.Lesson.filter({ course_id: id }, "order"),
         ]);
-        if (!courses[0]) { setNotFound(true); return; }
-        setCourse(courses[0]);
+      })
+      .then(results => {
+        if (!results) return;
+        const [mods, lsns] = results;
         setModules(mods);
-        setLessons(lsns);
-      } catch {
-        setNotFound(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+        // Strip heavy fields — only keep what the overview needs
+        setLessons(lsns.map(({ id, title, type, duration_minutes, module_id, order, is_published }) =>
+          ({ id, title, type, duration_minutes, module_id, order, is_published })
+        ));
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setContentLoading(false));
   }, [id]);
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-    </div>
-  );
+  const totalLessons = useMemo(() => lessons.length, [lessons]);
+
+  if (courseLoading) return <CourseSkeleton />;
 
   if (notFound) return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <p className="text-muted-foreground text-sm">Course not found or not published.</p>
     </div>
   );
-
-  const totalLessons = lessons.length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,7 +144,7 @@ export default function PublicCourseViewer() {
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-foreground/90 to-foreground/70 text-white p-7 shadow-xl">
           <div className="absolute inset-0">
             {course.thumbnail_url && (
-              <img src={course.thumbnail_url} alt="" className="w-full h-full object-cover opacity-20" />
+              <img src={course.thumbnail_url} alt="" className="w-full h-full object-cover opacity-20" loading="lazy" />
             )}
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 to-foreground/40" />
           </div>
@@ -153,7 +178,11 @@ export default function PublicCourseViewer() {
           <div className="lg:col-span-2 space-y-4">
             <h2 className="font-poppins font-bold text-lg text-foreground">Course Content</h2>
 
-            {modules.length === 0 ? (
+            {contentLoading ? (
+              <div className="space-y-3 animate-pulse">
+                {[1, 2, 3].map(i => <div key={i} className="rounded-xl border border-border/40 h-16 bg-muted/40" />)}
+              </div>
+            ) : modules.length === 0 ? (
               <div className="rounded-xl border border-dashed border-border p-8 text-center">
                 <BookOpen className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
                 <p className="text-muted-foreground text-sm">No modules available yet.</p>

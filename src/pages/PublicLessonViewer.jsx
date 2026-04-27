@@ -1,4 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
+// Module-level cache so HTML is not re-fetched when navigating between lessons
+const htmlCache = {};
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Clock } from "lucide-react";
@@ -47,10 +50,15 @@ export default function PublicLessonViewer() {
       setLesson(data.lesson);
       setAllLessons(data.siblings || []);
       if (data.lesson?.content_url) {
-        fetch(data.lesson.content_url)
-          .then(res => res.text())
-          .then(html => setHtmlContent(html))
-          .catch(() => {});
+        const url = data.lesson.content_url;
+        if (htmlCache[url]) {
+          setHtmlContent(htmlCache[url]);
+        } else {
+          fetch(url)
+            .then(res => res.text())
+            .then(html => { htmlCache[url] = html; setHtmlContent(html); })
+            .catch(() => {});
+        }
       }
       setLoading(false);
     };
@@ -58,8 +66,20 @@ export default function PublicLessonViewer() {
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-8 h-8 border-4 border-orange-400/30 border-t-orange-500 rounded-full animate-spin" />
+    <div className="min-h-screen bg-gray-50 animate-pulse">
+      <div className="bg-white border-b border-gray-200 h-12" />
+      <div className="max-w-5xl mx-auto px-4 py-6 space-y-4">
+        <div className="h-4 w-36 bg-gray-200 rounded" />
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-gray-200 flex-shrink-0" />
+          <div className="space-y-2 flex-1">
+            <div className="h-3 w-24 bg-gray-200 rounded" />
+            <div className="h-5 w-64 bg-gray-200 rounded" />
+          </div>
+        </div>
+        <div className="h-64 bg-gray-200 rounded-xl" />
+        <div className="h-32 bg-gray-200 rounded-xl" />
+      </div>
     </div>
   );
 

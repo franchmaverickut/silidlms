@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+
+const htmlCache = {};
 import { useParams, useOutletContext, useNavigate, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
@@ -55,10 +57,15 @@ export default function LessonViewer() {
         }
       }
       if (lessonData?.content_url) {
-        fetch(lessonData.content_url)
-          .then(res => res.text())
-          .then(html => { if (!cancelled) setHtmlContent(html); })
-          .catch(() => {});
+        const url = lessonData.content_url;
+        if (htmlCache[url]) {
+          if (!cancelled) setHtmlContent(htmlCache[url]);
+        } else {
+          fetch(url)
+            .then(res => res.text())
+            .then(html => { htmlCache[url] = html; if (!cancelled) setHtmlContent(html); })
+            .catch(() => {});
+        }
       }
       setLoading(false);
     };
