@@ -1,9 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams, Link } from "react-router-dom";
+import { appParams } from "@/lib/app-params";
 
 // Module-level cache so HTML is not re-fetched when navigating between lessons
 const htmlCache = {};
-import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+
+async function fetchPublicLesson(lessonId) {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicLesson`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lesson_id: lessonId }),
+  });
+  if (!res.ok) throw new Error("Not found");
+  return res.json();
+}
 import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -40,8 +54,7 @@ export default function PublicLessonViewer() {
   useEffect(() => {
     if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
     const load = async () => {
-      const res = await base44.functions.invoke('getPublicLesson', { lesson_id: id });
-      const data = res.data;
+      const data = await fetchPublicLesson(id);
       if (!data || data.error || !data.lesson) {
         setNotFound(true);
         setLoading(false);

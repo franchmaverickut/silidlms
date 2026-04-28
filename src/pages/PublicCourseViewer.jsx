@@ -1,6 +1,20 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
+
+async function publicFetch(fnName, body) {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const url = `${base}/api/apps/${appId}/functions/${ver}/${fnName}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error("Failed");
+  return res.json();
+}
 import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle,
   Play, FileText, Zap, ChevronDown, ChevronRight, Layers
@@ -97,24 +111,13 @@ export default function PublicCourseViewer() {
     if (!id || id === ':id') { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
 
     // Load course metadata first — renders the hero immediately
-    base44.entities.Course.filter({ id, status: "published" })
-      .then(courses => {
-        if (!courses[0]) { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
-        setCourse(courses[0]);
+    publicFetch('getPublicCourse', { course_id: id })
+      .then(data => {
+        if (!data?.course) { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
+        setCourse(data.course);
         setCourseLoading(false);
-
-        // Then load modules + lessons in parallel
-        return Promise.all([
-          base44.entities.Module.filter({ course_id: id }, "order"),
-          base44.entities.Lesson.filter({ course_id: id }, "order"),
-        ]);
-      })
-      .then(results => {
-        if (!results) return;
-        const [mods, lsns] = results;
-        setModules(mods);
-        // Strip heavy fields — only keep what the overview needs
-        setLessons(lsns.map(({ id, title, type, duration_minutes, module_id, order, is_published }) =>
+        setModules(data.modules || []);
+        setLessons((data.lessons || []).map(({ id, title, type, duration_minutes, module_id, order, is_published }) =>
           ({ id, title, type, duration_minutes, module_id, order, is_published })
         ));
       })

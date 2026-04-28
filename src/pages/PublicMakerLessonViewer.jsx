@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
+
+async function fetchPublicLesson(lessonId) {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicMakerLesson`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lesson_id: lessonId }),
+  });
+  if (!res.ok) throw new Error("Not found");
+  return res.json();
+}
 import { Clock, Layers, CheckCircle, ArrowLeft } from "lucide-react";
 
 const difficultyColors = {
@@ -26,8 +40,8 @@ export default function PublicMakerLessonViewer() {
     if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
     const load = async () => {
       try {
-        const res = await base44.functions.invoke('getPublicMakerLesson', { lesson_id: id });
-        setLesson(res.data.lesson);
+        const data = await fetchPublicLesson(id);
+        setLesson(data.lesson);
       } catch {
         setNotFound(true);
       } finally {

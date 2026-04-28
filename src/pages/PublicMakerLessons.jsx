@@ -1,8 +1,23 @@
 import { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
 import PublicProjectShell from "@/components/maker/PublicProjectShell";
 import { Clock } from "lucide-react";
+
+// Public-safe fetch: no auth token, no SDK, no User API calls
+async function fetchPublicGallery() {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicMakerGallery`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+  if (!res.ok) throw new Error("Failed to fetch gallery");
+  return res.json();
+}
 
 // ── Static data (renders instantly — no API needed) ─────────────────────────
 
@@ -171,9 +186,9 @@ export default function PublicMakerLessons() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.functions.invoke('getPublicMakerGallery', {})
-      .then(res => {
-        const cards = res?.data?.cards || [];
+    fetchPublicGallery()
+      .then(data => {
+        const cards = data?.cards || [];
         setDbCards(cards.filter(c => !STATIC_IDS.has(c.id)));
       })
       .catch(() => {}) // static content still shows on error

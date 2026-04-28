@@ -10,7 +10,7 @@ Deno.serve(async (req) => {
     }
 
     const [courses, modules, lessons] = await Promise.all([
-      base44.asServiceRole.entities.Course.filter({ id: course_id }),
+      base44.asServiceRole.entities.Course.filter({ id: course_id, status: "published" }),
       base44.asServiceRole.entities.Module.filter({ course_id }, "order"),
       base44.asServiceRole.entities.Lesson.filter({ course_id }, "order"),
     ]);
