@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import PublicProjectShell from "@/components/maker/PublicProjectShell";
 import { Clock } from "lucide-react";
 
-// Static STEM projects (hardcoded)
+// ── Static data (renders instantly — no API needed) ─────────────────────────
+
 const STEM_STATIC = [
   {
     id: "static-spinning-tops",
@@ -41,7 +42,6 @@ const STEM_STATIC = [
   },
 ];
 
-// Static Community projects (hardcoded)
 const COMMUNITY_STATIC = [
   {
     id: "69ddcb95e60c3666ca2a34f8",
@@ -67,17 +67,7 @@ const COMMUNITY_STATIC = [
   },
 ];
 
-// All IDs already handled statically
-const STATIC_IDS = new Set([
-  "69ddcb95e60c3666ca2a34f8",
-  "69ddcb95e60c3666ca2a34f9",
-]);
-
-// DB lesson titles that belong to STEM (matching MakerLessons page logic)
-const STEM_DB_TITLES = new Set([
-  "Puzzle Cubes", "Functional Wrenches", "Balloon Dragsters",
-  "Egyptian Obelisks", "Self-Watering Planters", "Whistles", "Suspension Bridges",
-]);
+const STATIC_IDS = new Set(["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"]);
 
 const skillBadgeColor = {
   "3D Printing": "bg-orange-500",
@@ -105,7 +95,9 @@ function formatDuration(minutes) {
   return `${minutes} min`;
 }
 
-function ProjectCard({ title, desc, img, href, badge, badgeColor, difficulty, duration, skillArea }) {
+// ── Memoized card — won't re-render unless props change ─────────────────────
+
+const ProjectCard = memo(function ProjectCard({ title, desc, img, href, badge, badgeColor, difficulty, duration, skillArea }) {
   const resolvedBadgeColor = badgeColor || skillBadgeColor[skillArea] || "bg-gray-500";
   const resolvedDiffColor = difficultyColor[difficulty] || "bg-gray-500";
 
@@ -119,6 +111,8 @@ function ProjectCard({ title, desc, img, href, badge, badgeColor, difficulty, du
           <img
             src={img}
             alt={title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         )}
@@ -147,6 +141,19 @@ function ProjectCard({ title, desc, img, href, badge, badgeColor, difficulty, du
       </div>
     </Link>
   );
+});
+
+function CardSkeleton() {
+  return (
+    <div className="rounded-2xl overflow-hidden border border-gray-200 bg-white animate-pulse">
+      <div className="h-44 bg-gray-200" />
+      <div className="p-4 space-y-2">
+        <div className="h-3.5 w-3/4 bg-gray-200 rounded" />
+        <div className="h-3 w-full bg-gray-100 rounded" />
+        <div className="h-3 w-1/2 bg-gray-100 rounded" />
+      </div>
+    </div>
+  );
 }
 
 function SectionHeader({ title }) {
@@ -157,85 +164,57 @@ function SectionHeader({ title }) {
   );
 }
 
+// ── Page ────────────────────────────────────────────────────────────────────
+
 export default function PublicMakerLessons() {
-  const [stemDb, setStemDb] = useState([]);
-  const [communityDb, setCommunityDb] = useState([]);
+  const [dbCards, setDbCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.MakerLesson.filter({ status: "published" }, "-created_date", 100)
-      .then(lessons => {
-        const stem = [];
-        const community = [];
-        lessons.forEach(l => {
-          if (STATIC_IDS.has(l.id)) return; // skip already-hardcoded
-          if (STEM_DB_TITLES.has(l.title)) {
-            stem.push(l);
-          } else {
-            // Default: STEM unless tagged as community
-            stem.push(l);
-          }
-        });
-        setStemDb(stem);
-        setCommunityDb(community);
+    base44.functions.invoke('getPublicMakerGallery', {})
+      .then(res => {
+        const cards = res?.data?.cards || [];
+        setDbCards(cards.filter(c => !STATIC_IDS.has(c.id)));
       })
+      .catch(() => {}) // static content still shows on error
       .finally(() => setLoading(false));
   }, []);
 
   return (
     <PublicProjectShell hideHeader>
       <div className="max-w-4xl mx-auto space-y-10">
-        {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="w-8 h-8 border-4 border-orange-400/30 border-t-orange-500 rounded-full animate-spin" />
-          </div>
-        ) : (
-          <>
-            {/* STEM Projects */}
-            <section className="space-y-4">
-              <SectionHeader title="STEM Projects" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {STEM_STATIC.map(p => (
-                  <ProjectCard key={p.id} {...p} />
-                ))}
-                {stemDb.map(l => (
-                  <ProjectCard
-                    key={l.id}
-                    title={l.title}
-                    desc={l.description}
-                    img={l.thumbnail_url || l.hero_image_url}
-                    href={`/share/maker/${l.id}`}
-                    skillArea={l.skill_area}
-                    difficulty={l.difficulty}
-                    duration={formatDuration(l.estimated_minutes)}
-                  />
-                ))}
-              </div>
-            </section>
 
-            {/* Community Projects */}
-            <section className="space-y-4">
-              <SectionHeader title="Community Projects" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {COMMUNITY_STATIC.map(p => (
-                  <ProjectCard key={p.id} {...p} />
-                ))}
-                {communityDb.map(l => (
+        {/* STEM Projects — static cards render immediately, DB cards append */}
+        <section className="space-y-4">
+          <SectionHeader title="STEM Projects" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {STEM_STATIC.map(p => <ProjectCard key={p.id} {...p} />)}
+            {loading
+              ? [1, 2].map(i => <CardSkeleton key={i} />)
+              : dbCards.map(l => (
                   <ProjectCard
                     key={l.id}
                     title={l.title}
                     desc={l.description}
-                    img={l.thumbnail_url || l.hero_image_url}
+                    img={l.img}
                     href={`/share/maker/${l.id}`}
                     skillArea={l.skill_area}
                     difficulty={l.difficulty}
                     duration={formatDuration(l.estimated_minutes)}
                   />
-                ))}
-              </div>
-            </section>
-          </>
-        )}
+                ))
+            }
+          </div>
+        </section>
+
+        {/* Community Projects — static cards render immediately */}
+        <section className="space-y-4">
+          <SectionHeader title="Community Projects" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {COMMUNITY_STATIC.map(p => <ProjectCard key={p.id} {...p} />)}
+          </div>
+        </section>
+
       </div>
     </PublicProjectShell>
   );
