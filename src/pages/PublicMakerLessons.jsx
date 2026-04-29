@@ -1,88 +1,95 @@
 import { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 import { appParams } from "@/lib/app-params";
-import PublicProjectShell from "@/components/maker/PublicProjectShell";
 import { Clock } from "lucide-react";
 
-// Public-safe fetch: no auth token, no SDK, no User API calls
-async function fetchPublicGallery() {
-  const base = appParams.appBaseUrl || "";
-  const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
-  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicMakerGallery`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
-  });
-  if (!res.ok) throw new Error("Failed to fetch gallery");
-  return res.json();
-}
+// ── Constants — must match LMS MakerLessons page exactly ────────────────────
 
-// ── Static data (renders instantly — no API needed) ─────────────────────────
+const COMMUNITY_IDS = new Set(["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"]);
+const STEM_PROJECT_TITLES = new Set([
+  "Puzzle Cubes", "Functional Wrenches", "Balloon Dragsters",
+  "Egyptian Obelisks", "Self-Watering Planters", "Whistles", "Suspension Bridges",
+]);
 
-const STEM_STATIC = [
+// ── Static cards (hardcoded images / routes that don't live in the DB) ──────
+
+const STATIC_STEM = [
   {
     id: "static-spinning-tops",
     title: "Spinning Tops",
-    desc: "Design & 3D print a spinning top — spin for as long as possible!",
+    description: "Design & 3D print a spinning top — spin for as long as possible!",
     img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png",
     href: "/share/spinning-tops",
-    badge: "3D Printing",
-    badgeColor: "bg-purple-600",
-    difficulty: "Basic",
-    duration: "4 hours",
+    skill_area: "3D Printing",
+    difficulty: "Beginner",
+    estimated_minutes: 240,
   },
   {
     id: "static-rubber-band-car",
     title: "Rubber Band Car Challenge",
-    desc: "Build, race, and redesign a rubber band-powered car.",
+    description: "Build, race, and redesign a rubber band-powered car.",
     img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/73050b285_RubberbandCarCoverPhoto.png",
     href: "/share/rubber-band-car",
-    badge: "Engineering",
-    badgeColor: "bg-blue-600",
-    difficulty: "Basic",
-    duration: "25 min",
+    skill_area: "Robotics",
+    difficulty: "Beginner",
+    estimated_minutes: 25,
   },
   {
     id: "static-emoji-tokens",
     title: "Emoji Tokens",
-    desc: "Design & 3D print emoji tokens for a feedback or communication system.",
+    description: "Design & 3D print emoji tokens for a feedback or communication system.",
     img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/4dc8cba41_EmojiTokenCover.png",
     href: "/share/emoji-tokens",
-    badge: "3D Printing",
-    badgeColor: "bg-yellow-500",
-    difficulty: "Basic",
-    duration: "3 hours",
+    skill_area: "3D Printing",
+    difficulty: "Beginner",
+    estimated_minutes: 180,
   },
 ];
 
-const COMMUNITY_STATIC = [
+const STATIC_COMMUNITY = [
   {
     id: "69ddcb95e60c3666ca2a34f8",
     title: "3D Printed RC Car",
-    desc: "Design, print, and assemble a fully functional RC car.",
+    description: "Design, print, and assemble a fully functional RC car.",
     img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/91c30fc60_CoverPhoto1.jpg",
     href: "/share/maker/69ddcb95e60c3666ca2a34f8",
-    badge: "3D Printing",
-    badgeColor: "bg-orange-500",
+    skill_area: "3D Printing",
     difficulty: "Advanced",
-    duration: null,
   },
   {
     id: "69ddcb95e60c3666ca2a34f9",
     title: "UArm Palletizing Robot Arm",
-    desc: "Build a miniature robotic arm with Arduino.",
+    description: "Build a miniature robotic arm with Arduino.",
     img: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/8764ae1e8_IMG_0296.jpeg",
     href: "/share/maker/69ddcb95e60c3666ca2a34f9",
-    badge: "Robotics",
-    badgeColor: "bg-blue-700",
+    skill_area: "Robotics",
     difficulty: "Advanced",
-    duration: null,
   },
 ];
 
-const STATIC_IDS = new Set(["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"]);
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+async function fetchGallery() {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicMakerGallery`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+  if (!res.ok) throw new Error("Failed");
+  return res.json();
+}
+
+function formatDuration(minutes) {
+  if (!minutes) return null;
+  if (minutes >= 60) {
+    const h = Math.round(minutes / 60);
+    return `${h} hr${h !== 1 ? "s" : ""}`;
+  }
+  return `${minutes} min`;
+}
 
 const skillBadgeColor = {
   "3D Printing": "bg-orange-500",
@@ -101,26 +108,19 @@ const difficultyColor = {
   Advanced: "bg-red-600",
 };
 
-function formatDuration(minutes) {
-  if (!minutes) return null;
-  if (minutes >= 60) {
-    const h = Math.round(minutes / 60);
-    return `${h} hour${h !== 1 ? "s" : ""}`;
-  }
-  return `${minutes} min`;
-}
+// ── Card component ───────────────────────────────────────────────────────────
 
-// ── Memoized card — won't re-render unless props change ─────────────────────
-
-const ProjectCard = memo(function ProjectCard({ title, desc, img, href, badge, badgeColor, difficulty, duration, skillArea }) {
-  const resolvedBadgeColor = badgeColor || skillBadgeColor[skillArea] || "bg-gray-500";
-  const resolvedDiffColor = difficultyColor[difficulty] || "bg-gray-500";
+const ProjectCard = memo(function ProjectCard({ title, description, img, href, skill_area, difficulty, estimated_minutes }) {
+  const badgeColor = skillBadgeColor[skill_area] || "bg-gray-500";
+  const diffColor  = difficultyColor[difficulty] || "bg-gray-500";
+  const duration   = formatDuration(estimated_minutes);
 
   return (
     <Link
       to={href}
       className="group block rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white"
     >
+      {/* Thumbnail */}
       <div className="relative h-44 overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600">
         {img && (
           <img
@@ -128,26 +128,32 @@ const ProjectCard = memo(function ProjectCard({ title, desc, img, href, badge, b
             alt={title}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={e => { e.currentTarget.style.display = "none"; }}
           />
         )}
+        {/* Gradient overlay — always present so text stays readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-3 left-3 flex gap-1.5 flex-wrap">
-          <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${resolvedBadgeColor}`}>
-            {badge || skillArea}
+          <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${badgeColor}`}>
+            {skill_area}
           </span>
           {difficulty && (
-            <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${resolvedDiffColor}`}>
+            <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${diffColor}`}>
               {difficulty}
             </span>
           )}
         </div>
       </div>
+
+      {/* Body */}
       <div className="p-4 space-y-1">
-        <h3 className="font-poppins font-bold text-sm text-gray-900 group-hover:text-orange-500 transition-colors">
+        <h3 className="font-poppins font-bold text-sm text-gray-900 group-hover:text-orange-500 transition-colors line-clamp-1">
           {title}
         </h3>
-        {desc && <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{desc}</p>}
+        {description && (
+          <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{description}</p>
+        )}
         {duration && (
           <p className="text-xs text-orange-500 font-semibold pt-1 flex items-center gap-1">
             <Clock size={11} /> {duration}
@@ -179,58 +185,95 @@ function SectionHeader({ title }) {
   );
 }
 
-// ── Page ────────────────────────────────────────────────────────────────────
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function PublicMakerLessons() {
-  const [dbCards, setDbCards] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [dbCards, setDbCards]     = useState([]);
+  const [loading, setLoading]     = useState(true);
 
   useEffect(() => {
-    fetchPublicGallery()
+    fetchGallery()
       .then(data => {
-        const cards = data?.cards || [];
-        setDbCards(cards.filter(c => !STATIC_IDS.has(c.id)));
+        setDbCards(data?.cards || []);
       })
-      .catch(() => {}) // static content still shows on error
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  return (
-    <PublicProjectShell hideHeader>
-      <div className="max-w-4xl mx-auto space-y-10">
+  // Split DB cards into categories — mirrors LMS logic exactly
+  // STEM_PROJECT_TITLES = DB lessons that belong under the STEM section
+  // COMMUNITY_IDS       = DB lessons that belong under Community
+  // Everything else     = general "All Projects" grid
+  const dbStem      = dbCards.filter(c => STEM_PROJECT_TITLES.has(c.title) && !COMMUNITY_IDS.has(c.id));
+  const dbCommunity = dbCards.filter(c => COMMUNITY_IDS.has(c.id));
+  const dbGeneral   = dbCards.filter(c => !STEM_PROJECT_TITLES.has(c.title) && !COMMUNITY_IDS.has(c.id));
 
-        {/* STEM Projects — static cards render immediately, DB cards append */}
+  // Merge community: static cards first, then any DB community cards not already in static list
+  const staticCommunityIds = new Set(STATIC_COMMUNITY.map(c => c.id));
+  const extraCommunity = dbCommunity.filter(c => !staticCommunityIds.has(c.id));
+  const communityCards = [
+    ...STATIC_COMMUNITY,
+    ...extraCommunity.map(c => ({ ...c, href: `/share/maker/${c.id}` })),
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Top bar */}
+      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-2 sticky top-0 z-50 shadow-sm">
+        <span className="text-lg font-extrabold text-orange-500 font-poppins">Silid</span>
+        <span className="text-lg font-extrabold text-gray-800 font-poppins">LMS</span>
+        <span className="text-xs text-gray-400 ml-1 hidden sm:block">Maker Projects</span>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-8 space-y-10">
+
+        {/* ── STEM Projects ───────────────────────────────────────────────── */}
         <section className="space-y-4">
           <SectionHeader title="STEM Projects" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {STEM_STATIC.map(p => <ProjectCard key={p.id} {...p} />)}
+            {/* Always-visible static cards */}
+            {STATIC_STEM.map(p => <ProjectCard key={p.id} {...p} />)}
+
+            {/* DB-sourced STEM project titles */}
             {loading
-              ? [1, 2].map(i => <CardSkeleton key={i} />)
-              : dbCards.map(l => (
+              ? [1, 2].map(i => <CardSkeleton key={`stem-sk-${i}`} />)
+              : dbStem.map(c => (
                   <ProjectCard
-                    key={l.id}
-                    title={l.title}
-                    desc={l.description}
-                    img={l.img}
-                    href={`/share/maker/${l.id}`}
-                    skillArea={l.skill_area}
-                    difficulty={l.difficulty}
-                    duration={formatDuration(l.estimated_minutes)}
+                    key={c.id}
+                    {...c}
+                    href={`/share/maker/${c.id}`}
                   />
                 ))
             }
+
+            {/* General published lessons that aren't STEM titles or community */}
+            {!loading && dbGeneral.map(c => (
+              <ProjectCard
+                key={c.id}
+                {...c}
+                href={`/share/maker/${c.id}`}
+              />
+            ))}
           </div>
         </section>
 
-        {/* Community Projects — static cards render immediately */}
+        {/* ── Community Projects ──────────────────────────────────────────── */}
         <section className="space-y-4">
           <SectionHeader title="Community Projects" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {COMMUNITY_STATIC.map(p => <ProjectCard key={p.id} {...p} />)}
+            {communityCards.map(p => <ProjectCard key={p.id} {...p} />)}
+            {loading && [1].map(i => <CardSkeleton key={`comm-sk-${i}`} />)}
           </div>
         </section>
 
       </div>
-    </PublicProjectShell>
+
+      {/* Footer */}
+      <div className="border-t border-gray-200 py-6 text-center">
+        <p className="text-xs text-gray-400">
+          Powered by <span className="font-semibold text-orange-500">SilidLMS</span>
+        </p>
+      </div>
+    </div>
   );
 }

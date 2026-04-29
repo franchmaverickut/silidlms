@@ -15,21 +15,24 @@ Deno.serve(async (req) => {
     }
 
     const base44 = createClientFromRequest(req);
+
+    // Fetch ALL published lessons — no artificial limit
     const lessons = await base44.asServiceRole.entities.MakerLesson.filter(
       { status: 'published' },
       '-created_date',
-      100
+      500
     );
 
-    // Return only fields needed for gallery cards — no content, no steps, no HTML
-    const cards = lessons.map(({ id, title, description, skill_area, difficulty, estimated_minutes, thumbnail_url, hero_image_url }) => ({
-      id,
-      title,
-      description,
-      skill_area,
-      difficulty,
-      estimated_minutes,
-      img: thumbnail_url || hero_image_url || null,
+    // Return only the lightweight fields needed for gallery cards
+    const cards = lessons.map(l => ({
+      id:                l.id,
+      title:             l.title,
+      description:       l.description || null,
+      skill_area:        l.skill_area  || null,
+      difficulty:        l.difficulty  || null,
+      estimated_minutes: l.estimated_minutes || null,
+      // Prefer thumbnail; fall back to hero image; null if neither
+      img: l.thumbnail_url || l.hero_image_url || null,
     }));
 
     cache = { cards };
