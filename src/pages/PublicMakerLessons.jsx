@@ -169,16 +169,24 @@ export default function PublicMakerLessons() {
             description="Design & 3D print emoji tokens for a feedback or communication system."
           />
 
-          {/* DB STEM projects (e.g. Puzzle Cubes, Whistles etc.) */}
+          {/* DB STEM projects — same full-width hero style as Spinning Tops etc. */}
           {loading
-            ? <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{[1, 2].map(i => <CardSkeleton key={i} />)}</div>
-            : stemFromDb.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {stemFromDb.map(c => (
-                    <ProjectCard key={c.id} {...c} href={`/share/maker/${c.id}`} />
-                  ))}
-                </div>
-              )
+            ? [1, 2].map(i => <CardSkeleton key={i} />)
+            : stemFromDb.map(c => (
+                <StaticHeroCard
+                  key={c.id}
+                  href={`/share/maker/${c.id}`}
+                  img={c.img}
+                  alt={c.title}
+                  badges={[
+                    { label: c.skill_area || "Project", color: skillBadgeColor[c.skill_area] || "bg-orange-500" },
+                    { label: c.difficulty || "Beginner", color: difficultyColor[c.difficulty] || "bg-green-600" },
+                    { label: "STEM", color: "bg-white/20" },
+                  ]}
+                  title={c.title}
+                  description={c.description}
+                />
+              ))
           }
         </section>
 
