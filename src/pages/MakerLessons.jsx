@@ -59,13 +59,11 @@ export default function MakerLessons() {
   };
 
   const COMMUNITY_IDS = ["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"];
-  const STEM_PROJECT_TITLES = ["Puzzle Cubes", "Functional Wrenches", "Balloon Dragsters", "Egyptian Obelisks", "Self-Watering Planters", "Whistles", "Suspension Bridges"];
-
-  const stemProjects = lessons.filter(l => STEM_PROJECT_TITLES.includes(l.title));
+  const STEM_IDS = ["69ec1418ba193ce56e0c585e","69ec1418ba193ce56e0c585f","69ec1418ba193ce56e0c5860","69ec1418ba193ce56e0c5861","69ec1418ba193ce56e0c5862","69ec1418ba193ce56e0c5863","69ec1418ba193ce56e0c5864"];
 
   const filtered = lessons.filter(l => {
     if (COMMUNITY_IDS.includes(l.id)) return false;
-    if (STEM_PROJECT_TITLES.includes(l.title)) return false;
+    if (STEM_IDS.includes(l.id)) return false;
     const matchSearch = l.title.toLowerCase().includes(search.toLowerCase()) ||
       l.description?.toLowerCase().includes(search.toLowerCase());
     const matchSkill = skillFilter === "All" || l.skill_area === skillFilter;
@@ -134,104 +132,40 @@ export default function MakerLessons() {
       {(skillFilter === "All" || skillFilter === "3D Printing") && !search && (
         <div className="space-y-4">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">STEM Projects</p>
-          {/* Spinning Tops */}
-          <div className="relative group">
-            <Link to="/maker/spinning-tops" className="block">
-              <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png" alt="Spinning Tops" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                  <div className="flex gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-purple-600 text-white">Project</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white">Basic</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
-                  </div>
-                  <h3 className="font-poppins font-bold text-lg text-white">Spinning Tops</h3>
-                  <p className="text-white/70 text-xs">Design & 3D print a spinning top — spin for as long as possible!</p>
-                </div>
-              </div>
-            </Link>
-            <button onClick={() => copyShare("spinning-tops", "Spinning Tops")} className="absolute top-3 right-3 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-              <Share2 size={11} /> Share
-            </button>
-          </div>
 
-          {/* Rubber Band Car */}
-          <div className="relative group">
-            <Link to="/maker/rubber-band-car" className="block">
-              <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/73050b285_RubberbandCarCoverPhoto.png" alt="Rubber Band Car" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                  <div className="flex gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white">Project</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white">Basic</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
+          {[
+            { to: "/maker/spinning-tops", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/a7884a6b9_SpinningTopscover.png", title: "Spinning Tops", desc: "Design & 3D print a spinning top — spin for as long as possible!", b1: "bg-purple-600", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "spinning-tops", shareLabel: "Spinning Tops" },
+            { to: "/maker/rubber-band-car", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/73050b285_RubberbandCarCoverPhoto.png", title: "Rubber Band Car Challenge", desc: "Build, race, and redesign a rubber band-powered car.", b1: "bg-blue-600", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "rubber-band-car", shareLabel: "Rubber Band Car" },
+            { to: "/maker/emoji-tokens", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/4dc8cba41_EmojiTokenCover.png", title: "Emoji Tokens", desc: "Design & 3D print emoji tokens for a feedback or communication system.", b1: "bg-yellow-500", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "emoji-tokens", shareLabel: "Emoji Tokens" },
+            { to: "/maker/69ec1418ba193ce56e0c585e", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/c44bb0b59_PuzzleCubes.png", title: "Puzzle Cubes", desc: "Learn how to design and make 3D printed puzzle cubes", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-green-600", b2l: "Beginner", shareKey: "maker/69ec1418ba193ce56e0c585e", shareLabel: "Puzzle Cubes" },
+            { to: "/maker/69ec1418ba193ce56e0c585f", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9f8f426ef_FunctionalWrenches.png", title: "Functional Wrenches", desc: "Design and create practical, usable wrench tools using digital fabrication", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-green-600", b2l: "Beginner", shareKey: "maker/69ec1418ba193ce56e0c585f", shareLabel: "Functional Wrenches" },
+            { to: "/maker/69ec1418ba193ce56e0c5860", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b57596a03_BalloonDragsters.png", title: "Balloon Dragsters", desc: "Build a balloon-powered dragster to explore motion and propulsion", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-green-600", b2l: "Beginner", shareKey: "maker/69ec1418ba193ce56e0c5860", shareLabel: "Balloon Dragsters" },
+            { to: "/maker/69ec1418ba193ce56e0c5861", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/2168fd833_EgyptianObelisks.png", title: "Egyptian Obelisks", desc: "Model and construct ancient Egyptian obelisks while exploring geometry and design", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-green-600", b2l: "Beginner", shareKey: "maker/69ec1418ba193ce56e0c5861", shareLabel: "Egyptian Obelisks" },
+            { to: "/maker/69ec1418ba193ce56e0c5862", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9b6f3097f_Self-WateringPlanters.png", title: "Self-Watering Planters", desc: "Create a 3D printed self-watering planter system for plants", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-amber-500", b2l: "Intermediate", shareKey: "maker/69ec1418ba193ce56e0c5862", shareLabel: "Self-Watering Planters" },
+            { to: "/maker/69ec1418ba193ce56e0c5863", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6b2dca797_Whistles.png", title: "Whistles", desc: "Design and build functional whistles while exploring sound and airflow", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-amber-500", b2l: "Intermediate", shareKey: "maker/69ec1418ba193ce56e0c5863", shareLabel: "Whistles" },
+            { to: "/maker/69ec1418ba193ce56e0c5864", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8906f1ab3_SuspensionBridges.png", title: "Suspension Bridges", desc: "Design and model a suspension bridge to understand structural engineering concepts", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-amber-500", b2l: "Intermediate", shareKey: "maker/69ec1418ba193ce56e0c5864", shareLabel: "Suspension Bridges" },
+          ].map(({ to, img, title, desc, b1, b1l, b2, b2l, shareKey, shareLabel }) => (
+            <div key={to} className="relative group">
+              <Link to={to} className="block">
+                <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
+                  <img src={img} alt={title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                  <div className="relative z-10 p-5 h-full flex flex-col justify-end">
+                    <div className="flex gap-2 mb-2">
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${b1}`}>{b1l}</span>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${b2}`}>{b2l}</span>
+                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
+                    </div>
+                    <h3 className="font-poppins font-bold text-lg text-white">{title}</h3>
+                    <p className="text-white/70 text-xs">{desc}</p>
                   </div>
-                  <h3 className="font-poppins font-bold text-lg text-white">Rubber Band Car Challenge</h3>
-                  <p className="text-white/70 text-xs">Build, race, and redesign a rubber band-powered car.</p>
                 </div>
-              </div>
-            </Link>
-            <button onClick={() => copyShare("rubber-band-car", "Rubber Band Car")} className="absolute top-3 right-3 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-              <Share2 size={11} /> Share
-            </button>
-          </div>
-
-          {/* Emoji Tokens */}
-          <div className="relative group">
-            <Link to="/maker/emoji-tokens" className="block">
-              <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/4dc8cba41_EmojiTokenCover.png" alt="Emoji Tokens" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                  <div className="flex gap-2 mb-2">
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-yellow-500 text-white">Project</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-600 text-white">Basic</span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">STEM</span>
-                  </div>
-                  <h3 className="font-poppins font-bold text-lg text-white">Emoji Tokens</h3>
-                  <p className="text-white/70 text-xs">Design & 3D print emoji tokens for a feedback or communication system.</p>
-                </div>
-              </div>
-            </Link>
-            <button onClick={() => copyShare("emoji-tokens", "Emoji Tokens")} className="absolute top-3 right-3 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-              <Share2 size={11} /> Share
-            </button>
-          </div>
-
-          {/* Additional STEM Projects from DB */}
-          {stemProjects.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {stemProjects.map(lesson => {
-                const diffColor = lesson.difficulty === "Beginner" ? "bg-green-600" : lesson.difficulty === "Intermediate" ? "bg-amber-500" : "bg-red-600";
-                const duration = lesson.estimated_minutes >= 60
-                  ? `${Math.round(lesson.estimated_minutes / 60)} hour${Math.round(lesson.estimated_minutes / 60) !== 1 ? "s" : ""}`
-                  : `${lesson.estimated_minutes} min`;
-                return (
-                  <div key={lesson.id} className="relative group">
-                    <Link to={`/maker/${lesson.id}`} className="block">
-                      <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                        <img src={lesson.thumbnail_url} alt={lesson.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                        <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                          <div className="flex gap-2 mb-2">
-                            <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-orange-500 text-white">3D Printing</span>
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${diffColor}`}>{lesson.difficulty}</span>
-                          </div>
-                          <h3 className="font-poppins font-bold text-base text-white">{lesson.title}</h3>
-                          <p className="text-white/70 text-xs">{lesson.description}</p>
-                        </div>
-                      </div>
-                    </Link>
-                    <button onClick={() => { const url = `${window.location.origin}/share/maker/${lesson.id}`; navigator.clipboard.writeText(url); toast({ title: `${lesson.title} link copied!`, description: url }); }} className="absolute top-2 right-2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-                      <Share2 size={11} /> Share
-                    </button>
-                  </div>
-                );
-              })}
+              </Link>
+              <button onClick={() => copyShare(shareKey, shareLabel)} className="absolute top-3 right-3 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+                <Share2 size={11} /> Share
+              </button>
             </div>
-          )}
+          ))}
 
           {/* Community Feature Projects */}
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
