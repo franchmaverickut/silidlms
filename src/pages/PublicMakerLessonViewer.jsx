@@ -5,15 +5,16 @@ import { appParams } from "@/lib/app-params";
 async function fetchPublicLesson(lessonId) {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
+  const appId = appParams.appId || "69d386ad9523e2ce04536574";
   const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicMakerLesson`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ lesson_id: lessonId }),
   });
-  if (!res.ok) throw new Error("Not found");
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.error || "Not found");
+  return data;
 }
 import { Clock, Layers, CheckCircle, ArrowLeft } from "lucide-react";
 
@@ -41,8 +42,13 @@ export default function PublicMakerLessonViewer() {
     const load = async () => {
       try {
         const data = await fetchPublicLesson(id);
-        setLesson(data.lesson);
-      } catch {
+        if (data?.lesson) {
+          setLesson(data.lesson);
+        } else {
+          setNotFound(true);
+        }
+      } catch (err) {
+        console.error("Failed to load maker lesson:", err);
         setNotFound(true);
       } finally {
         setLoading(false);
