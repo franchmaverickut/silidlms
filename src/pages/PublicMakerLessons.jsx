@@ -38,6 +38,13 @@ function formatDuration(minutes) {
   return `${minutes} min`;
 }
 
+const skillBadgeColor = {
+  "3D Printing": "bg-orange-500", "Robotics": "bg-blue-600",
+  "Prompt Engineering": "bg-pink-600", "Coding": "bg-green-600",
+  "Electronics": "bg-yellow-600", "Digital Creativity": "bg-purple-600", "Other": "bg-gray-500",
+};
+const difficultyColor = { Basic: "bg-green-600", Beginner: "bg-green-600", Intermediate: "bg-amber-500", Advanced: "bg-red-600" };
+
 // ── Reusable card for DB-sourced lessons ────────────────────────────────────
 const ProjectCard = memo(function ProjectCard({ title, description, img, href, skill_area, difficulty, estimated_minutes, tall = false }) {
   const badgeColor = skillBadgeColor[skill_area] || "bg-gray-500";
