@@ -34,6 +34,8 @@ import PublicMakerLessons from '@/pages/PublicMakerLessons';
 import PublicCourses from '@/pages/PublicCourses';
 import PublicLessonViewer from '@/pages/PublicLessonViewer';
 import PublicPrintingIndustry from '@/pages/PublicPrintingIndustry';
+import PrintingTechnologiesProject from '@/pages/PrintingTechnologiesProject';
+import PublicPrintingTechnologies from '@/pages/PublicPrintingTechnologies';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -80,6 +82,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/emoji-tokens" element={<EmojiTokensProject />} />
         <Route path="/maker/rubber-band-car" element={<RubberBandCarProject />} />
         <Route path="/maker/printing-industry" element={<PrintingIndustryProject />} />
+        <Route path="/maker/printing-technologies" element={<PrintingTechnologiesProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -100,6 +103,7 @@ function App() {
           <Route path="/share/emoji-tokens" element={<PublicEmojiTokens />} />
           <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />
           <Route path="/share/printing-industry" element={<PublicPrintingIndustry />} />
+          <Route path="/share/printing-technologies" element={<PublicPrintingTechnologies />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />
