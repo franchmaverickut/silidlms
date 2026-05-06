@@ -36,6 +36,8 @@ import PublicLessonViewer from '@/pages/PublicLessonViewer';
 import PublicPrintingIndustry from '@/pages/PublicPrintingIndustry';
 import PrintingTechnologiesProject from '@/pages/PrintingTechnologiesProject';
 import PublicPrintingTechnologies from '@/pages/PublicPrintingTechnologies';
+import QuickClipsProject from '@/pages/QuickClipsProject';
+import PublicQuickClips from '@/pages/PublicQuickClips';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -83,6 +85,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/rubber-band-car" element={<RubberBandCarProject />} />
         <Route path="/maker/printing-industry" element={<PrintingIndustryProject />} />
         <Route path="/maker/printing-technologies" element={<PrintingTechnologiesProject />} />
+        <Route path="/maker/quick-clips" element={<QuickClipsProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -104,6 +107,7 @@ function App() {
           <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />
           <Route path="/share/printing-industry" element={<PublicPrintingIndustry />} />
           <Route path="/share/printing-technologies" element={<PublicPrintingTechnologies />} />
+          <Route path="/share/quick-clips" element={<PublicQuickClips />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />
