@@ -22,6 +22,7 @@ import MakerLessons from '@/pages/MakerLessons';
 import MakerLessonViewer from '@/pages/MakerLessonViewer';
 import MakerLessonBuilder from '@/pages/MakerLessonBuilder';
 import SpinningTopsProject from '@/pages/SpinningTopsProject';
+import PrintingIndustryProject from '@/pages/PrintingIndustryProject';
 import EmojiTokensProject from '@/pages/EmojiTokensProject';
 import RubberBandCarProject from '@/pages/RubberBandCarProject';
 import PublicCourseViewer from '@/pages/PublicCourseViewer';
@@ -32,6 +33,7 @@ import PublicRubberBandCar from '@/pages/PublicRubberBandCar';
 import PublicMakerLessons from '@/pages/PublicMakerLessons';
 import PublicCourses from '@/pages/PublicCourses';
 import PublicLessonViewer from '@/pages/PublicLessonViewer';
+import PublicPrintingIndustry from '@/pages/PublicPrintingIndustry';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -77,6 +79,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/spinning-tops" element={<SpinningTopsProject />} />
         <Route path="/maker/emoji-tokens" element={<EmojiTokensProject />} />
         <Route path="/maker/rubber-band-car" element={<RubberBandCarProject />} />
+        <Route path="/maker/printing-industry" element={<PrintingIndustryProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -96,6 +99,7 @@ function App() {
           <Route path="/share/spinning-tops" element={<PublicSpinningTops />} />
           <Route path="/share/emoji-tokens" element={<PublicEmojiTokens />} />
           <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />
+          <Route path="/share/printing-industry" element={<PublicPrintingIndustry />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />
