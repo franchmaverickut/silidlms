@@ -12,13 +12,26 @@ const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", qu
 async function publicFetch(body) {
   const base = appParams.appBaseUrl || "";
   const ver = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
-  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicCourse`, {
+  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID;
+  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicCourse`;
+
+  console.log("[PublicCourseViewer] fetch →", url, "payload:", body);
+  console.log("[PublicCourseViewer] appParams:", { base, ver, appId });
+
+  const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error("Failed");
+
+  console.log("[PublicCourseViewer] response status:", res.status);
+
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    console.error("[PublicCourseViewer] error body:", errBody);
+    // Return the error body so the caller can read `detail`
+    return errBody;
+  }
   return res.json();
 }
 
@@ -109,7 +122,9 @@ export default function PublicCourseViewer() {
     publicFetch({ course_id: id })
       .then(data => {
         if (cancelled) return;
+        console.log("[PublicCourseViewer] data received:", data);
         if (data?.error) {
+          console.warn("[PublicCourseViewer] error detail:", data.detail);
           setErrorDetail(data.detail || 'not_found');
           setNotFound(true);
           return;
@@ -119,7 +134,13 @@ export default function PublicCourseViewer() {
         setModules(data.modules || []);
         setLessons(data.lessons || []);
       })
-      .catch(() => { if (!cancelled) { setNotFound(true); setErrorDetail('fetch_error'); } })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("[PublicCourseViewer] fetch threw:", err);
+          setNotFound(true);
+          setErrorDetail('fetch_error');
+        }
+      })
       .finally(() => {
         if (!cancelled) { clearTimeout(timeout); setLoading(false); }
       });
