@@ -5,7 +5,7 @@ import { appParams } from "@/lib/app-params";
 async function publicFetch(fnName, body) {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId || "69d386ad9523e2ce04536574";
+  const appId = appParams.appId;
   const url = `${base}/api/apps/${appId}/functions/${ver}/${fnName}`;
   const res = await fetch(url, {
     method: "POST",
