@@ -31,6 +31,7 @@
       "enum": [
         "draft",
         "published",
+        "coming_soon",
         "archived"
       ],
       "default": "draft"

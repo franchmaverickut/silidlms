@@ -113,6 +113,11 @@ export default function CourseDetail() {
             {course.difficulty && (
               <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold">{course.difficulty}</span>
             )}
+            {canManage && (
+              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${course.status === "published" ? "bg-green-500 text-white" : course.status === "coming_soon" ? "bg-yellow-500 text-white" : "bg-gray-500 text-white"}`}>
+                {course.status === "coming_soon" ? "Coming Soon" : course.status}
+              </span>
+            )}
           </div>
           <h1 className="font-poppins font-bold text-2xl md:text-3xl leading-tight mb-2">{course.title}</h1>
           {course.description && <p className="text-white/70 text-sm max-w-2xl">{course.description}</p>}
@@ -153,6 +158,31 @@ export default function CourseDetail() {
                     <Edit size={15} /> Edit Course
                   </Button>
                 </Link>
+                <Button
+                  className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20"
+                  onClick={async () => {
+                    let newStatus;
+                    if (course.status === "published") newStatus = "draft";
+                    else if (course.status === "coming_soon") newStatus = "published";
+                    else if (course.status === "draft") newStatus = "published";
+                    else newStatus = "published";
+                    await base44.entities.Course.update(id, { status: newStatus });
+                    setCourse(prev => ({ ...prev, status: newStatus }));
+                    toast({ title: `Course is now "${newStatus.replace("_", " ")}"` });
+                  }}
+                >
+                  {course.status === "published" ? "📤 Unpublish" : course.status === "coming_soon" ? "✅ Publish" : "✅ Publish"}
+                </Button>
+                <Button
+                  className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20"
+                  onClick={async () => {
+                    await base44.entities.Course.update(id, { status: "coming_soon" });
+                    setCourse(prev => ({ ...prev, status: "coming_soon" }));
+                    toast({ title: "Course set to Coming Soon" });
+                  }}
+                >
+                  🔒 Coming Soon
+                </Button>
                 <Button
                   className="bg-white/20 hover:bg-white/30 text-white rounded-xl gap-2 border border-white/20"
                   onClick={() => {

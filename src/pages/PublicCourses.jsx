@@ -66,54 +66,76 @@ export default function PublicCourses() {
           <div className="text-center py-16 text-gray-400 text-sm">No published courses yet.</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {courses.map((course) => (
-              <Link
-                key={course.id}
-                to={`/share/course/${course.id}`}
-                className="group block rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white"
-              >
-                {/* Thumbnail / Color banner */}
-                <div className="relative h-36 overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600">
-                  {course.thumbnail_url && (
-                    <img
-                      src={course.thumbnail_url}
-                      alt={course.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-300"
-                    />
-                  )}
-                  <div className="absolute inset-0 flex items-end p-3 gap-1.5 flex-wrap">
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${skillColors[course.skill_area] || "bg-gray-500"}`}>
-                      {course.skill_area}
-                    </span>
-                    {course.difficulty && (
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${difficultyColor[course.difficulty] || "bg-gray-500"}`}>
-                        {course.difficulty}
-                      </span>
-                    )}
-                  </div>
-                </div>
+            {courses.map((course) => {
+              const isComingSoon = course.status === "coming_soon";
+              const CardWrapper = isComingSoon ? "div" : Link;
+              const wrapperProps = isComingSoon
+                ? { className: "group block rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-white opacity-80" }
+                : { to: `/share/course/${course.id}`, className: "group block rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white" };
 
-                {/* Content */}
-                <div className="p-4 space-y-1.5">
-                  <h3 className="font-poppins font-bold text-sm text-gray-900 group-hover:text-orange-500 transition-colors leading-snug">
-                    {course.title}
-                  </h3>
-                  {course.description && (
-                    <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{course.description}</p>
-                  )}
-                  <div className="flex items-center gap-3 pt-1 text-xs text-gray-400">
-                    {course.duration_hours && (
-                      <span className="flex items-center gap-1"><Clock size={11} /> {course.duration_hours}h</span>
+              return (
+                <CardWrapper key={course.id} {...wrapperProps}>
+                  {/* Thumbnail / Color banner */}
+                  <div className="relative h-36 overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600">
+                    {course.thumbnail_url && (
+                      <img
+                        src={course.thumbnail_url}
+                        alt={course.title}
+                        loading="lazy"
+                        decoding="async"
+                        className={`absolute inset-0 w-full h-full object-cover opacity-30 ${!isComingSoon ? "group-hover:scale-105" : ""} transition-transform duration-300`}
+                      />
                     )}
-                    {course.total_lessons > 0 && (
-                      <span className="flex items-center gap-1"><Layers size={11} /> {course.total_lessons} lessons</span>
+                    {isComingSoon && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold border border-white/30">
+                          🔒 Coming Soon
+                        </span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 flex items-end p-3 gap-1.5 flex-wrap">
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${skillColors[course.skill_area] || "bg-gray-500"}`}>
+                        {course.skill_area}
+                      </span>
+                      {course.difficulty && (
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold text-white ${difficultyColor[course.difficulty] || "bg-gray-500"}`}>
+                          {course.difficulty}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4 space-y-1.5">
+                    <h3 className={`font-poppins font-bold text-sm text-gray-900 leading-snug ${!isComingSoon ? "group-hover:text-orange-500 transition-colors" : ""}`}>
+                      {course.title}
+                    </h3>
+                    {course.description && (
+                      <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{course.description}</p>
+                    )}
+                    {isComingSoon && course.learning_objectives?.length > 0 && (
+                      <ul className="space-y-1 pt-1">
+                        {course.learning_objectives.slice(0, 3).map((obj, i) => (
+                          <li key={i} className="text-xs text-gray-400 flex items-start gap-1.5">
+                            <span className="text-orange-400 mt-0.5">•</span> {obj}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {!isComingSoon && (
+                      <div className="flex items-center gap-3 pt-1 text-xs text-gray-400">
+                        {course.duration_hours && (
+                          <span className="flex items-center gap-1"><Clock size={11} /> {course.duration_hours}h</span>
+                        )}
+                        {course.total_lessons > 0 && (
+                          <span className="flex items-center gap-1"><Layers size={11} /> {course.total_lessons} lessons</span>
+                        )}
+                      </div>
                     )}
                   </div>
-                </div>
-              </Link>
-            ))}
+                </CardWrapper>
+              );
+            })}
           </div>
         )}
       </div>
