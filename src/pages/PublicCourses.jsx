@@ -7,7 +7,7 @@ import { Clock, Layers } from "lucide-react";
 async function fetchPublicCourses() {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
+  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
   const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicCourses`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

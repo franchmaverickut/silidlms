@@ -8,7 +8,7 @@ const htmlCache = {};
 async function fetchPublicLesson(lessonId) {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
+  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
   const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicLesson`;
   const res = await fetch(url, {
     method: "POST",

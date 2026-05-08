@@ -12,7 +12,7 @@ const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", qu
 async function publicFetch(body) {
   const base = appParams.appBaseUrl || "";
   const ver = appParams.functionsVersion || "prod";
-  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID;
+  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
   const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicCourse`;
 
   console.log("[PublicCourseViewer] fetch →", url, "payload:", body);
