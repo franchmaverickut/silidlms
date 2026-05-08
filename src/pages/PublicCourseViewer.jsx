@@ -24,7 +24,7 @@ const lessonTypeIcon = { reading: FileText, video: Play, quiz: Zap, activity: Bo
 const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", quiz: "text-orange-500", activity: "text-green-500", project: "text-teal-500" };
 
 function ModuleAccordion({ module, modIdx, lessons }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(modIdx === 0);
 
   return (
     <div className="rounded-xl border border-border/60 shadow-sm overflow-hidden bg-card">
@@ -163,6 +163,7 @@ export default function PublicCourseViewer() {
   }, [id]);
 
   const totalLessons = useMemo(() => lessons.length, [lessons]);
+  const [visibleModules, setVisibleModules] = useState(10);
 
   if (courseLoading) return <CourseSkeleton />;
 
@@ -239,7 +240,7 @@ export default function PublicCourseViewer() {
               </div>
             ) : (
               <div className="space-y-3">
-                {modules.map((mod, modIdx) => (
+                {modules.slice(0, visibleModules).map((mod, modIdx) => (
                   <ModuleAccordion
                     key={mod.id}
                     module={mod}
@@ -247,6 +248,14 @@ export default function PublicCourseViewer() {
                     lessons={lessons.filter(l => l.module_id === mod.id)}
                   />
                 ))}
+                {visibleModules < modules.length && (
+                  <button
+                    onClick={() => setVisibleModules(v => v + 10)}
+                    className="w-full py-3 rounded-xl border border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                  >
+                    Show more modules ({modules.length - visibleModules} remaining)
+                  </button>
+                )}
               </div>
             )}
           </div>
