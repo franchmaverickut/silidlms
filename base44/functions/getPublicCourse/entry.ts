@@ -9,13 +9,14 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'course_id is required' }, { status: 400 });
     }
 
-    const [courses, modules, lessons] = await Promise.all([
-      base44.asServiceRole.entities.Course.filter({ id: course_id }),
-      base44.asServiceRole.entities.Module.filter({ course_id }, "order"),
-      base44.asServiceRole.entities.Lesson.filter({ course_id }, "order"),
-    ]);
+    // Use .get() to fetch by id — .filter({ id }) throws
+    let course;
+    try {
+      course = await base44.asServiceRole.entities.Course.get(course_id);
+    } catch {
+      return Response.json({ error: 'Course not found', detail: 'no_record' }, { status: 404 });
+    }
 
-    const course = courses[0];
     if (!course) {
       return Response.json({ error: 'Course not found', detail: 'no_record' }, { status: 404 });
     }
@@ -23,7 +24,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Course is not published', detail: 'not_published' }, { status: 404 });
     }
 
-    // Minimal course fields only
+    const [modules, lessons] = await Promise.all([
+      base44.asServiceRole.entities.Module.filter({ course_id }, "order"),
+      base44.asServiceRole.entities.Lesson.filter({ course_id }, "order"),
+    ]);
+
     const courseSummary = {
       id: course.id,
       title: course.title,
@@ -38,16 +43,12 @@ Deno.serve(async (req) => {
       enrolled_count: course.enrolled_count,
     };
 
-    // Minimal module fields
     const moduleSummaries = modules.map(({ id, title, order }) => ({ id, title, order }));
-
-    // Minimal lesson fields — no content, no HTML, no objectives body
     const lessonSummaries = lessons.map(({ id, module_id, title, type, duration_minutes, order }) => ({
       id, module_id, title, type, duration_minutes, order,
     }));
 
-    const data = { course: courseSummary, modules: moduleSummaries, lessons: lessonSummaries };
-    return Response.json(data);
+    return Response.json({ course: courseSummary, modules: moduleSummaries, lessons: lessonSummaries });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
