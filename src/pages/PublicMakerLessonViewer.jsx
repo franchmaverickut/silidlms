@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { appParams } from "@/lib/app-params";
 
 async function fetchPublicLesson(lessonId) {
-  const base = appParams.appBaseUrl || "";
+  const base = appParams.appBaseUrl || import.meta.env.VITE_BASE44_APP_BASE_URL || "https://base44.app";
   const ver  = appParams.functionsVersion || "prod";
   const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
   const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicMakerLesson`;
