@@ -1,9 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-// Simple in-memory cache: course_id -> { data, ts }
-const cache = new Map();
-const CACHE_TTL_MS = 60 * 1000; // 1 minute
-
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
@@ -13,23 +9,18 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'course_id is required' }, { status: 400 });
     }
 
-    // Serve from cache if fresh
-    const cached = cache.get(course_id);
-    if (cached && (Date.now() - cached.ts) < CACHE_TTL_MS) {
-      return Response.json(cached.data, {
-        headers: { 'X-Cache': 'HIT' }
-      });
-    }
-
     const [courses, modules, lessons] = await Promise.all([
-      base44.asServiceRole.entities.Course.filter({ id: course_id, status: "published" }),
+      base44.asServiceRole.entities.Course.filter({ id: course_id }),
       base44.asServiceRole.entities.Module.filter({ course_id }, "order"),
-      base44.asServiceRole.entities.Lesson.filter({ course_id, is_published: true }, "order"),
+      base44.asServiceRole.entities.Lesson.filter({ course_id }, "order"),
     ]);
 
     const course = courses[0];
     if (!course) {
-      return Response.json({ error: 'Course not found' }, { status: 404 });
+      return Response.json({ error: 'Course not found', detail: 'no_record' }, { status: 404 });
+    }
+    if (course.status !== 'published') {
+      return Response.json({ error: 'Course is not published', detail: 'not_published' }, { status: 404 });
     }
 
     // Minimal course fields only
@@ -56,13 +47,7 @@ Deno.serve(async (req) => {
     }));
 
     const data = { course: courseSummary, modules: moduleSummaries, lessons: lessonSummaries };
-
-    // Store in cache
-    cache.set(course_id, { data, ts: Date.now() });
-
-    return Response.json(data, {
-      headers: { 'X-Cache': 'MISS' }
-    });
+    return Response.json(data);
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

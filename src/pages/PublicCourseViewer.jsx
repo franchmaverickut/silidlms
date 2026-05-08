@@ -92,6 +92,7 @@ export default function PublicCourseViewer() {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [errorDetail, setErrorDetail] = useState(null);
 
   useEffect(() => {
     if (!id || id === ':id') {
@@ -102,18 +103,23 @@ export default function PublicCourseViewer() {
 
     let cancelled = false;
     const timeout = setTimeout(() => {
-      if (!cancelled) { setNotFound(true); setLoading(false); }
-    }, 12000);
+      if (!cancelled) { setNotFound(true); setErrorDetail('timeout'); setLoading(false); }
+    }, 20000);
 
     publicFetch({ course_id: id })
       .then(data => {
         if (cancelled) return;
+        if (data?.error) {
+          setErrorDetail(data.detail || 'not_found');
+          setNotFound(true);
+          return;
+        }
         if (!data?.course) { setNotFound(true); return; }
         setCourse(data.course);
         setModules(data.modules || []);
         setLessons(data.lessons || []);
       })
-      .catch(() => { if (!cancelled) setNotFound(true); })
+      .catch(() => { if (!cancelled) { setNotFound(true); setErrorDetail('fetch_error'); } })
       .finally(() => {
         if (!cancelled) { clearTimeout(timeout); setLoading(false); }
       });
@@ -122,21 +128,30 @@ export default function PublicCourseViewer() {
   }, [id]);
 
   // ── Not found ────────────────────────────────────────────────────────────
-  if (notFound) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="text-center space-y-3">
-        <p className="text-3xl">📭</p>
-        <p className="font-poppins font-semibold text-gray-800">Course not found</p>
-        <p className="text-gray-400 text-sm">This course may not be published or the link may be incorrect.</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-500 hover:border-orange-400 hover:text-orange-500 transition-colors"
-        >
-          Try again
-        </button>
+  if (notFound) {
+    const msg = errorDetail === 'not_published'
+      ? 'This course exists but has not been published yet.'
+      : errorDetail === 'timeout' || errorDetail === 'fetch_error'
+      ? 'Could not load the course. Please check your connection and try again.'
+      : 'This course could not be found. The link may be incorrect.';
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="text-center space-y-3">
+          <p className="text-3xl">{errorDetail === 'not_published' ? '🔒' : '📭'}</p>
+          <p className="font-poppins font-semibold text-gray-800">
+            {errorDetail === 'not_published' ? 'Course not published' : 'Course not found'}
+          </p>
+          <p className="text-gray-400 text-sm max-w-xs mx-auto">{msg}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-2 px-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-500 hover:border-orange-400 hover:text-orange-500 transition-colors"
+          >
+            Try again
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
   const totalLessons = lessons.length;
 
