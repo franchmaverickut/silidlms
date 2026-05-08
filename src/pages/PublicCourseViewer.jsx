@@ -115,22 +115,11 @@ export default function PublicCourseViewer() {
       return;
     }
 
-    let cancelled = false;
-
-    // 10-second timeout guard — ensures skeleton never stays forever
-    const timeout = setTimeout(() => {
-      if (!cancelled) {
-        console.warn('[PublicCourseViewer] Request timed out for course:', id);
-        setNotFound(true);
-        setCourseLoading(false);
-        setContentLoading(false);
-      }
-    }, 10000);
+    setCourseLoading(true);
+    setNotFound(false);
 
     publicFetch('getPublicCourse', { course_id: id })
       .then(data => {
-        if (cancelled) return;
-        clearTimeout(timeout);
         if (!data?.course) {
           setNotFound(true);
           return;
@@ -144,22 +133,13 @@ export default function PublicCourseViewer() {
         );
       })
       .catch(err => {
-        if (cancelled) return;
-        clearTimeout(timeout);
         console.error('[PublicCourseViewer] Failed to load course:', err);
         setNotFound(true);
       })
       .finally(() => {
-        if (!cancelled) {
-          setCourseLoading(false);
-          setContentLoading(false);
-        }
+        setCourseLoading(false);
+        setContentLoading(false);
       });
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
   }, [id]);
 
   const totalLessons = useMemo(() => lessons.length, [lessons]);
