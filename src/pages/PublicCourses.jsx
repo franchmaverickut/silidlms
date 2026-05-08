@@ -1,8 +1,21 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
 import PublicProjectShell from "@/components/maker/PublicProjectShell";
-import { BookOpen, Clock, Layers } from "lucide-react";
+import { Clock, Layers } from "lucide-react";
+
+async function fetchPublicCourses() {
+  const base = appParams.appBaseUrl || "";
+  const ver  = appParams.functionsVersion || "prod";
+  const appId = appParams.appId;
+  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicCourses`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+  if (!res.ok) throw new Error("Failed to load courses");
+  return res.json();
+}
 
 const skillColors = {
   "3D Printing": "bg-purple-600",
@@ -25,9 +38,17 @@ export default function PublicCourses() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.Course.filter({ status: "published" }, "-created_date", 50)
-      .then(setCourses)
-      .finally(() => setLoading(false));
+    let cancelled = false;
+    const timeout = setTimeout(() => {
+      if (!cancelled) setLoading(false);
+    }, 10000);
+
+    fetchPublicCourses()
+      .then(data => { if (!cancelled) setCourses(data?.courses || []); })
+      .catch(err => { console.error('[PublicCourses] Failed:', err); })
+      .finally(() => { if (!cancelled) { clearTimeout(timeout); setLoading(false); } });
+
+    return () => { cancelled = true; clearTimeout(timeout); };
   }, []);
 
   return (
@@ -61,6 +82,8 @@ export default function PublicCourses() {
                     <img
                       src={course.thumbnail_url}
                       alt={course.title}
+                      loading="lazy"
+                      decoding="async"
                       className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-300"
                     />
                   )}
