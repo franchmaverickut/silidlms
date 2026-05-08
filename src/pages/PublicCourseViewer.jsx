@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
-import { appParams } from "@/lib/app-params";
 import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle,
   Play, FileText, Zap, ChevronDown, ChevronRight, Layers
@@ -10,13 +9,10 @@ const lessonTypeIcon = { reading: FileText, video: Play, quiz: Zap, activity: Bo
 const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", quiz: "text-orange-500", activity: "text-green-500", project: "text-teal-500" };
 
 async function publicFetch(body) {
-  const base = appParams.appBaseUrl || import.meta.env.VITE_BASE44_APP_BASE_URL || "https://base44.app";
-  const ver = appParams.functionsVersion || "prod";
-  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
-  const url = `${base}/api/apps/${appId}/functions/${ver}/getPublicCourse`;
+  const url = `https://base44.app/api/apps/69d386ad9523e2ce04536574/functions/getPublicCourse`;
 
   console.log("[PublicCourseViewer] fetch →", url, "payload:", body);
-  console.log("[PublicCourseViewer] appParams:", { base, ver, appId });
+
 
   const res = await fetch(url, {
     method: "POST",

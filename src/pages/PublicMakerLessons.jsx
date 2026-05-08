@@ -1,6 +1,5 @@
 import { useState, useEffect, memo } from "react";
 import { Link } from "react-router-dom";
-import { appParams } from "@/lib/app-params";
 import { Clock } from "lucide-react";
 
 const COMMUNITY_IDS = new Set(["69ddcb95e60c3666ca2a34f8", "69ddcb95e60c3666ca2a34f9"]);
@@ -23,10 +22,7 @@ const HARDCODED_STEM = [
 ];
 
 async function fetchGallery() {
-  const base  = appParams.appBaseUrl || import.meta.env.VITE_BASE44_APP_BASE_URL || "https://base44.app";
-  const ver   = appParams.functionsVersion || "prod";
-  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
-  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicMakerGallery`, {
+  const res = await fetch(`https://base44.app/api/apps/69d386ad9523e2ce04536574/functions/getPublicMakerGallery`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({}),

@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { appParams } from "@/lib/app-params";
 import PublicProjectShell from "@/components/maker/PublicProjectShell";
 import { Clock, Layers } from "lucide-react";
 
 async function fetchPublicCourses() {
-  const base = appParams.appBaseUrl || import.meta.env.VITE_BASE44_APP_BASE_URL || "https://base44.app";
-  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID || "69d386ad9523e2ce04536574";
-  const res = await fetch(`${base}/api/apps/${appId}/functions/getPublicCourses`, {
+  const res = await fetch(`https://base44.app/api/apps/69d386ad9523e2ce04536574/functions/getPublicCourses`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({}),
