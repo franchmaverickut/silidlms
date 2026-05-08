@@ -20,7 +20,12 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Course not found' }, { status: 404 });
     }
 
-    return Response.json({ course, modules, lessons });
+    // Strip heavy fields from lessons — content is loaded on-demand via getPublicLesson
+    const lessonSummaries = lessons.map(({ id, module_id, course_id, title, type, duration_minutes, order, is_published, objectives, materials }) => ({
+      id, module_id, course_id, title, type, duration_minutes, order, is_published, objectives, materials,
+    }));
+
+    return Response.json({ course, modules, lessons: lessonSummaries });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

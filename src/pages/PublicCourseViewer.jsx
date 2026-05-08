@@ -108,21 +108,58 @@ export default function PublicCourseViewer() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!id || id === ':id') { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
+    if (!id || id === ':id') {
+      setNotFound(true);
+      setCourseLoading(false);
+      setContentLoading(false);
+      return;
+    }
 
-    // Load course metadata first — renders the hero immediately
+    let cancelled = false;
+
+    // 10-second timeout guard — ensures skeleton never stays forever
+    const timeout = setTimeout(() => {
+      if (!cancelled) {
+        console.warn('[PublicCourseViewer] Request timed out for course:', id);
+        setNotFound(true);
+        setCourseLoading(false);
+        setContentLoading(false);
+      }
+    }, 10000);
+
     publicFetch('getPublicCourse', { course_id: id })
       .then(data => {
-        if (!data?.course) { setNotFound(true); setCourseLoading(false); setContentLoading(false); return; }
+        if (cancelled) return;
+        clearTimeout(timeout);
+        if (!data?.course) {
+          setNotFound(true);
+          return;
+        }
         setCourse(data.course);
-        setCourseLoading(false);
         setModules(data.modules || []);
-        setLessons((data.lessons || []).map(({ id, title, type, duration_minutes, module_id, order, is_published }) =>
-          ({ id, title, type, duration_minutes, module_id, order, is_published })
-        ));
+        setLessons(
+          (data.lessons || []).map(({ id, title, type, duration_minutes, module_id, order, is_published }) =>
+            ({ id, title, type, duration_minutes, module_id, order, is_published })
+          )
+        );
       })
-      .catch(() => setNotFound(true))
-      .finally(() => setContentLoading(false));
+      .catch(err => {
+        if (cancelled) return;
+        clearTimeout(timeout);
+        console.error('[PublicCourseViewer] Failed to load course:', err);
+        setNotFound(true);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setCourseLoading(false);
+          setContentLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
   }, [id]);
 
   const totalLessons = useMemo(() => lessons.length, [lessons]);
@@ -130,8 +167,18 @@ export default function PublicCourseViewer() {
   if (courseLoading) return <CourseSkeleton />;
 
   if (notFound) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <p className="text-muted-foreground text-sm">Course not found or not published.</p>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="text-center space-y-3">
+        <p className="text-2xl">📭</p>
+        <p className="font-poppins font-semibold text-foreground">Course not found</p>
+        <p className="text-muted-foreground text-sm">This course may not be published or the link may be incorrect.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-2 px-4 py-2 rounded-xl border border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+        >
+          Try again
+        </button>
+      </div>
     </div>
   );
 
