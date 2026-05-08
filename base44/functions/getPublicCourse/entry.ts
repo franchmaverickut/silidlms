@@ -9,14 +9,15 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'course_id is required' }, { status: 400 });
     }
 
-    const [courses, modules, lessons] = await Promise.all([
-      base44.asServiceRole.entities.Course.filter({ id: course_id, status: "published" }),
+    // Fetch course by id alone (combining id + status filter can fail)
+    const [coursesById, modules, lessons] = await Promise.all([
+      base44.asServiceRole.entities.Course.filter({ id: course_id }),
       base44.asServiceRole.entities.Module.filter({ course_id }, "order"),
       base44.asServiceRole.entities.Lesson.filter({ course_id }, "order"),
     ]);
 
-    const course = courses[0];
-    if (!course) {
+    const course = coursesById[0];
+    if (!course || course.status !== 'published') {
       return Response.json({ error: 'Course not found' }, { status: 404 });
     }
 

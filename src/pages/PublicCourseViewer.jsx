@@ -5,14 +5,14 @@ import { appParams } from "@/lib/app-params";
 async function publicFetch(fnName, body) {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId;
+  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID;
   const url = `${base}/api/apps/${appId}/functions/${ver}/${fnName}`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error("Failed");
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 import {

@@ -8,7 +8,8 @@ async function fetchPublicCourses() {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
   const appId = appParams.appId;
-  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicCourses`, {
+  const appIdFinal = appId || import.meta.env.VITE_BASE44_APP_ID;
+  const res = await fetch(`${base}/api/apps/${appIdFinal}/functions/${ver}/getPublicCourses`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({}),
