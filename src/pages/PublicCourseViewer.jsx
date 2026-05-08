@@ -5,14 +5,14 @@ import { appParams } from "@/lib/app-params";
 async function publicFetch(fnName, body) {
   const base = appParams.appBaseUrl || "";
   const ver  = appParams.functionsVersion || "prod";
-  const appId = appParams.appId || import.meta.env.VITE_BASE44_APP_ID;
+  const appId = appParams.appId;
   const url = `${base}/api/apps/${appId}/functions/${ver}/${fnName}`;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  if (!res.ok) throw new Error("Failed");
   return res.json();
 }
 import {
@@ -24,7 +24,7 @@ const lessonTypeIcon = { reading: FileText, video: Play, quiz: Zap, activity: Bo
 const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", quiz: "text-orange-500", activity: "text-green-500", project: "text-teal-500" };
 
 function ModuleAccordion({ module, modIdx, lessons }) {
-  const [open, setOpen] = useState(modIdx === 0);
+  const [open, setOpen] = useState(true);
 
   return (
     <div className="rounded-xl border border-border/60 shadow-sm overflow-hidden bg-card">
@@ -115,11 +115,22 @@ export default function PublicCourseViewer() {
       return;
     }
 
-    setCourseLoading(true);
-    setNotFound(false);
+    let cancelled = false;
+
+    // 10-second timeout guard — ensures skeleton never stays forever
+    const timeout = setTimeout(() => {
+      if (!cancelled) {
+        console.warn('[PublicCourseViewer] Request timed out for course:', id);
+        setNotFound(true);
+        setCourseLoading(false);
+        setContentLoading(false);
+      }
+    }, 10000);
 
     publicFetch('getPublicCourse', { course_id: id })
       .then(data => {
+        if (cancelled) return;
+        clearTimeout(timeout);
         if (!data?.course) {
           setNotFound(true);
           return;
@@ -133,17 +144,25 @@ export default function PublicCourseViewer() {
         );
       })
       .catch(err => {
+        if (cancelled) return;
+        clearTimeout(timeout);
         console.error('[PublicCourseViewer] Failed to load course:', err);
         setNotFound(true);
       })
       .finally(() => {
-        setCourseLoading(false);
-        setContentLoading(false);
+        if (!cancelled) {
+          setCourseLoading(false);
+          setContentLoading(false);
+        }
       });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
   }, [id]);
 
   const totalLessons = useMemo(() => lessons.length, [lessons]);
-  const [visibleModules, setVisibleModules] = useState(10);
 
   if (courseLoading) return <CourseSkeleton />;
 
@@ -220,7 +239,7 @@ export default function PublicCourseViewer() {
               </div>
             ) : (
               <div className="space-y-3">
-                {modules.slice(0, visibleModules).map((mod, modIdx) => (
+                {modules.map((mod, modIdx) => (
                   <ModuleAccordion
                     key={mod.id}
                     module={mod}
@@ -228,14 +247,6 @@ export default function PublicCourseViewer() {
                     lessons={lessons.filter(l => l.module_id === mod.id)}
                   />
                 ))}
-                {visibleModules < modules.length && (
-                  <button
-                    onClick={() => setVisibleModules(v => v + 10)}
-                    className="w-full py-3 rounded-xl border border-border text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
-                  >
-                    Show more modules ({modules.length - visibleModules} remaining)
-                  </button>
-                )}
               </div>
             )}
           </div>

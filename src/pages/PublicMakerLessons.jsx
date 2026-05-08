@@ -26,8 +26,7 @@ async function fetchGallery() {
   const base  = appParams.appBaseUrl || "";
   const ver   = appParams.functionsVersion || "prod";
   const appId = appParams.appId;
-  const appIdFinal = appId || import.meta.env.VITE_BASE44_APP_ID;
-  const res = await fetch(`${base}/api/apps/${appIdFinal}/functions/${ver}/getPublicMakerGallery`, {
+  const res = await fetch(`${base}/api/apps/${appId}/functions/${ver}/getPublicMakerGallery`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({}),

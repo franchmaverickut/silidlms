@@ -33,12 +33,12 @@ export default function CourseDetail() {
   useEffect(() => {
     if (!id || id === ':id') return;
     const load = async () => {
-      const [allCourses, m, l] = await Promise.all([
+      const [c, m, l] = await Promise.all([
         base44.entities.Course.filter({ id }),
         base44.entities.Module.filter({ course_id: id }, "order"),
         base44.entities.Lesson.filter({ course_id: id }, "order"),
       ]);
-      const cData = allCourses[0] || null;
+      const cData = c[0];
       setCourse(cData);
       setModules(m);
       setLessons(l);
