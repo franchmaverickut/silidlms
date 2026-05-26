@@ -3,7 +3,7 @@
 export const GRADE6_MAKER_LESSONS = [
   // ── Lesson 1 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e001",
+    id: "6a15213b4647da5627d3c57f",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 1 of 10 · Advanced Designer Stage",
     typeBadge: "Reading",
@@ -47,7 +47,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 2 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e002",
+    id: "6a15213b4647da5627d3c580",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 2 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -91,7 +91,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 3 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e003",
+    id: "6a15213b4647da5627d3c581",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 3 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -135,7 +135,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 4 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e004",
+    id: "6a15213b4647da5627d3c582",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 4 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -179,7 +179,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 5 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e005",
+    id: "6a15213b4647da5627d3c583",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 5 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -223,7 +223,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 6 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e006",
+    id: "6a15213b4647da5627d3c584",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 6 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -267,7 +267,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 7 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e007",
+    id: "6a15213b4647da5627d3c585",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 7 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -311,7 +311,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 8 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e008",
+    id: "6a15213b4647da5627d3c586",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 8 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -355,7 +355,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 9 ──────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e009",
+    id: "6a15213b4647da5627d3c587",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 9 of 10 · Advanced Designer Stage",
     typeBadge: "Activity",
@@ -399,7 +399,7 @@ export const GRADE6_MAKER_LESSONS = [
 
   // ── Lesson 10 ─────────────────────────────────────────────────────────────
   {
-    id: "6a1bc2d3e4f5a6b7c8d9e010",
+    id: "6a15213b4647da5627d3c588",
     accentColor: "#4338CA",
     badge: "Grade 6 · Lesson 10 of 10 · Advanced Designer Stage",
     typeBadge: "Project",
