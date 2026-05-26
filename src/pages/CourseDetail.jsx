@@ -26,34 +26,48 @@ export default function CourseDetail() {
   const [enrollment, setEnrollment] = useState(null);
   const [expandedModules, setExpandedModules] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const role = user?.role || "student";
   const canManage = role === "teacher" || role === "admin";
 
   useEffect(() => {
-    if (!id || id === ':id') return;
+    if (!id || id === ':id') { setLoading(false); return; }
+    // Wait until user auth has resolved (undefined = still loading, null = confirmed unauthenticated)
+    if (user === undefined) return;
+
+    let cancelled = false;
+    const timeout = setTimeout(() => {
+      if (!cancelled) { setError("timeout"); setLoading(false); }
+    }, 15000);
+
     const load = async () => {
       const [c, m, l] = await Promise.all([
         base44.entities.Course.filter({ id }),
         base44.entities.Module.filter({ course_id: id }, "order"),
         base44.entities.Lesson.filter({ course_id: id }, "order"),
       ]);
+      if (cancelled) return;
       const cData = c[0];
-      setCourse(cData);
+      setCourse(cData || null);
       setModules(m);
       setLessons(l);
-      // expand all modules by default
       const exp = {};
       m.forEach(mod => { exp[mod.id] = true; });
       setExpandedModules(exp);
 
       if (user) {
         const e = await base44.entities.Enrollment.filter({ course_id: id, student_id: user.id });
-        if (e[0]) setEnrollment(e[0]);
+        if (!cancelled && e[0]) setEnrollment(e[0]);
       }
-      setLoading(false);
+      if (!cancelled) { clearTimeout(timeout); setLoading(false); }
     };
-    if (user !== null) load();
+
+    load().catch(err => {
+      if (!cancelled) { setError(err.message || "load_error"); setLoading(false); }
+    });
+
+    return () => { cancelled = true; clearTimeout(timeout); };
   }, [id, user]);
 
   const handleEnroll = async () => {
@@ -82,9 +96,29 @@ export default function CourseDetail() {
     </div>
   );
 
+  if (error === "timeout") return (
+    <div className="text-center py-24 space-y-3">
+      <p className="text-2xl">⏱️</p>
+      <p className="font-semibold text-foreground">Took too long to load</p>
+      <p className="text-muted-foreground text-sm">Check your connection and try again.</p>
+      <Button onClick={() => window.location.reload()} variant="outline" className="mt-2 rounded-xl">Retry</Button>
+    </div>
+  );
+
+  if (error) return (
+    <div className="text-center py-24 space-y-3">
+      <p className="text-2xl">⚠️</p>
+      <p className="font-semibold text-foreground">Failed to load course</p>
+      <p className="text-muted-foreground text-sm">{error}</p>
+      <Button onClick={() => window.location.reload()} variant="outline" className="mt-2 rounded-xl">Retry</Button>
+    </div>
+  );
+
   if (!course) return (
-    <div className="text-center py-24">
-      <p className="text-muted-foreground">Course not found.</p>
+    <div className="text-center py-24 space-y-2">
+      <p className="text-2xl">📭</p>
+      <p className="font-semibold text-foreground">Course not found</p>
+      <p className="text-muted-foreground text-sm">This course may have been removed or the link is incorrect.</p>
     </div>
   );
 
