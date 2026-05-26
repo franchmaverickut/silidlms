@@ -33,8 +33,6 @@ export default function CourseDetail() {
 
   useEffect(() => {
     if (!id || id === ':id') { setLoading(false); return; }
-    // Wait until user auth has resolved (undefined = still loading, null = confirmed unauthenticated)
-    if (user === undefined) return;
 
     let cancelled = false;
     const timeout = setTimeout(() => {

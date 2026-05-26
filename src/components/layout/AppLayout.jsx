@@ -8,6 +8,21 @@ export default function AppLayout() {
   const { user } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
 
+  // Public (unauthenticated) layout — clean, no sidebar
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="bg-card border-b border-border px-6 py-3 flex items-center gap-2 sticky top-0 z-50 shadow-sm">
+          <span className="text-lg font-extrabold text-primary font-poppins">Silid</span>
+          <span className="text-lg font-extrabold text-foreground font-poppins">LMS</span>
+        </div>
+        <main className="max-w-5xl mx-auto px-4 py-8">
+          <Outlet context={{ user: null }} />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar user={user} collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
