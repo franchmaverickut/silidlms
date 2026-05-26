@@ -1,15 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-
-// Module-level cache so HTML is not re-fetched when navigating between lessons
-const htmlCache = {};
-
-async function fetchPublicLesson(lessonId) {
-  const res = await base44.functions.invoke("getPublicLesson", { lesson_id: lessonId });
-  return res.data;
-}
 import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Clock } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import "react-quill/dist/quill.snow.css";
@@ -19,6 +11,21 @@ import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
 import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
 import { GRADE4_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade4";
 import { GRADE6_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade6";
+
+// Module-level cache so HTML is not re-fetched when navigating between lessons
+const htmlCache = {};
+
+async function fetchPublicLesson(lessonId) {
+  const base = (appParams.appBaseUrl || '').replace(/\/$/, '');
+  const url = `${base}/api/apps/${appParams.appId}/functions/getPublicLesson`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lesson_id: lessonId }),
+  });
+  if (!res.ok) throw new Error("Not found");
+  return res.json();
+}
 
 const ALL_INTERACTIVE_IDS = new Set([
   ...GRADE1_MAKER_LESSONS,

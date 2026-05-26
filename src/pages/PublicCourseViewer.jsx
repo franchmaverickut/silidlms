@@ -4,14 +4,21 @@ import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle,
   Play, FileText, Zap, ChevronDown, ChevronRight, Layers
 } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { appParams } from "@/lib/app-params";
 
 const lessonTypeIcon = { reading: FileText, video: Play, quiz: Zap, activity: BookOpen, project: CheckCircle };
 const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", quiz: "text-orange-500", activity: "text-green-500", project: "text-teal-500" };
 
 async function publicFetch(body) {
-  const res = await base44.functions.invoke("getPublicCourse", body);
-  return res.data;
+  const base = (appParams.appBaseUrl || '').replace(/\/$/, '');
+  const url = `${base}/api/apps/${appParams.appId}/functions/getPublicCourse`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) return res.json().catch(() => ({ error: 'fetch_failed' }));
+  return res.json();
 }
 
 function ModuleRow({ module, modIdx, lessons }) {
