@@ -5,16 +5,11 @@ import { useParams, Link } from "react-router-dom";
 const htmlCache = {};
 
 async function fetchPublicLesson(lessonId) {
-  const url = `https://base44.app/api/apps/69d386ad9523e2ce04536574/functions/getPublicLesson`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ lesson_id: lessonId }),
-  });
-  if (!res.ok) throw new Error("Not found");
-  return res.json();
+  const res = await base44.functions.invoke("getPublicLesson", { lesson_id: lessonId });
+  return res.data;
 }
 import { ArrowLeft, ArrowRight, FileText, Play, Zap, BookOpen, CheckCircle, Clock } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import "react-quill/dist/quill.snow.css";

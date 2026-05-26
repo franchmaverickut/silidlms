@@ -1,34 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle,
   Play, FileText, Zap, ChevronDown, ChevronRight, Layers
 } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 const lessonTypeIcon = { reading: FileText, video: Play, quiz: Zap, activity: BookOpen, project: CheckCircle };
 const lessonTypeColor = { reading: "text-blue-500", video: "text-purple-500", quiz: "text-orange-500", activity: "text-green-500", project: "text-teal-500" };
 
 async function publicFetch(body) {
-  const url = `https://base44.app/api/apps/69d386ad9523e2ce04536574/functions/getPublicCourse`;
-
-  console.log("[PublicCourseViewer] fetch →", url, "payload:", body);
-
-
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-
-  console.log("[PublicCourseViewer] response status:", res.status);
-
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    console.error("[PublicCourseViewer] error body:", errBody);
-    // Return the error body so the caller can read `detail`
-    return errBody;
-  }
-  return res.json();
+  const res = await base44.functions.invoke("getPublicCourse", body);
+  return res.data;
 }
 
 function ModuleRow({ module, modIdx, lessons }) {
