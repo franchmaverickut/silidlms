@@ -23,12 +23,14 @@ import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
 import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
 import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
 import { GRADE4_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade4";
+import { GRADE6_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade6";
 
 const ALL_INTERACTIVE_IDS = new Set([
   ...GRADE1_MAKER_LESSONS,
   ...GRADE2_MAKER_LESSONS,
   ...GRADE3_MAKER_LESSONS,
   ...GRADE4_MAKER_LESSONS,
+  ...GRADE6_MAKER_LESSONS,
 ].map(l => l.id));
 
 const lessonTypeMap = {
