@@ -39,6 +39,7 @@ import PublicPrintingTechnologies from '@/pages/PublicPrintingTechnologies';
 import QuickClipsProject from '@/pages/QuickClipsProject';
 import PublicQuickClips from '@/pages/PublicQuickClips';
 import PuzzleCubesProject from '@/pages/PuzzleCubesProject';
+import FunctionalWrenchesProject from '@/pages/FunctionalWrenchesProject';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -88,6 +89,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/printing-technologies" element={<PrintingTechnologiesProject />} />
         <Route path="/maker/quick-clips" element={<QuickClipsProject />} />
         <Route path="/maker/puzzle-cubes" element={<PuzzleCubesProject />} />
+        <Route path="/maker/functional-wrenches" element={<FunctionalWrenchesProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
