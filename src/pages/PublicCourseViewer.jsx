@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft, BookOpen, Clock, Users, CheckCircle,
-  Play, FileText, Zap, ChevronDown, ChevronRight, Layers
+  Play, FileText, Zap, ChevronDown, ChevronRight, Layers, Share2
 } from "lucide-react";
 import { appParams } from "@/lib/app-params";
 
@@ -53,16 +53,17 @@ function ModuleRow({ module, modIdx, lessons }) {
               <a
                 key={lesson.id}
                 href={`/share/lesson/${lesson.id}`}
-                className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0 hover:bg-orange-50 cursor-pointer transition-colors"
               >
-                <Icon size={15} className={`flex-shrink-0 ${colorClass}`} />
+                <Icon size={16} className={`flex-shrink-0 ${colorClass}`} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-800 truncate">{lesson.title}</p>
+                  <p className="text-sm font-medium text-gray-800 truncate hover:text-orange-600 transition-colors">{lesson.title}</p>
                   <span className="text-xs text-gray-400 capitalize">{lesson.type}</span>
                 </div>
                 {lesson.duration_minutes && (
                   <span className="text-xs text-gray-400 flex-shrink-0">{lesson.duration_minutes}m</span>
                 )}
+                <ChevronRight size={13} className="text-gray-300 flex-shrink-0" />
               </a>
             );
           })}
@@ -92,6 +93,13 @@ export default function PublicCourseViewer() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [errorDetail, setErrorDetail] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const copyShareLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   useEffect(() => {
     if (!id || id === ':id') {
@@ -211,6 +219,22 @@ export default function PublicCourseViewer() {
                 {course.enrolled_count > 0 && (
                   <span className="flex items-center gap-1.5"><Users size={13} />{course.enrolled_count} enrolled</span>
                 )}
+              </div>
+              <div className="flex flex-wrap gap-3 mt-5">
+                {lessons.length > 0 && (
+                  <a
+                    href={`/share/lesson/${lessons[0].id}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-xl transition-colors shadow"
+                  >
+                    <Play size={14} /> Start Learning
+                  </a>
+                )}
+                <button
+                  onClick={copyShareLink}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 text-white text-sm font-semibold rounded-xl border border-white/20 transition-colors"
+                >
+                  <Share2 size={14} /> {copied ? "Copied!" : "Copy Share Link"}
+                </button>
               </div>
             </div>
           </div>
