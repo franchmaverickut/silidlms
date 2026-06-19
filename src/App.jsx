@@ -42,6 +42,7 @@ import PuzzleCubesProject from '@/pages/PuzzleCubesProject';
 import FunctionalWrenchesProject from '@/pages/FunctionalWrenchesProject';
 import BalloonDragstersProject from '@/pages/BalloonDragstersProject';
 import EgyptianObelisksProject from '@/pages/EgyptianObelisksProject';
+import SelfWateringPlantersProject from '@/pages/SelfWateringPlantersProject';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -94,6 +95,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/functional-wrenches" element={<FunctionalWrenchesProject />} />
         <Route path="/maker/balloon-dragsters" element={<BalloonDragstersProject />} />
         <Route path="/maker/egyptian-obelisks" element={<EgyptianObelisksProject />} />
+        <Route path="/maker/self-watering-planters" element={<SelfWateringPlantersProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
