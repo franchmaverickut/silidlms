@@ -12,9 +12,6 @@ import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
 import { GRADE4_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade4";
 import { GRADE6_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade6";
 
-// Module-level cache so HTML is not re-fetched when navigating between lessons
-const htmlCache = {};
-
 async function fetchPublicLesson(lessonId) {
   const base = (appParams.appBaseUrl || '').replace(/\/$/, '');
   const url = `${base}/api/apps/${appParams.appId}/functions/getPublicLesson`;
@@ -49,7 +46,6 @@ export default function PublicLessonViewer() {
   const [allLessons, setAllLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [htmlContent, setHtmlContent] = useState(null);
 
   useEffect(() => {
     if (!id || id === ':id') { setNotFound(true); setLoading(false); return; }
@@ -62,17 +58,6 @@ export default function PublicLessonViewer() {
       }
       setLesson(data.lesson);
       setAllLessons(data.siblings || []);
-      if (data.lesson?.content_url) {
-        const url = data.lesson.content_url;
-        if (htmlCache[url]) {
-          setHtmlContent(htmlCache[url]);
-        } else {
-          fetch(url)
-            .then(res => res.text())
-            .then(html => { htmlCache[url] = html; setHtmlContent(html); })
-            .catch(() => {});
-        }
-      }
       setLoading(false);
     };
     load();
@@ -216,16 +201,18 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
-        {/* External HTML Content */}
-        {htmlContent && (
-          <div
-            className="w-full text-foreground/90 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
+        {/* External HTML Content via iframe */}
+        {lesson.content_url && (
+          <iframe
+            src={lesson.content_url}
+            className="w-full rounded-xl border border-gray-200"
+            style={{ minHeight: '80vh', height: '80vh' }}
+            title={lesson.title}
           />
         )}
 
         {/* Rich Content */}
-        {!htmlContent && lesson.content && (
+        {!lesson.content_url && lesson.content && (
           <Card className="p-6 border-gray-200 shadow-sm">
             <div
               className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
@@ -250,7 +237,7 @@ export default function PublicLessonViewer() {
         )}
 
         {/* No content fallback */}
-        {!htmlContent && !lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
+        {!lesson.content_url && !lesson.content && !lesson.video_url && lesson.objectives?.length === 0 && (
           <Card className="p-8 text-center border-dashed border-gray-200">
             <FileText className="w-10 h-10 text-gray-200 mx-auto mb-2" />
             <p className="text-gray-400 text-sm">No content available for this lesson yet.</p>
