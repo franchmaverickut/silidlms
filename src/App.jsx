@@ -41,6 +41,7 @@ import PublicQuickClips from '@/pages/PublicQuickClips';
 import PuzzleCubesProject from '@/pages/PuzzleCubesProject';
 import FunctionalWrenchesProject from '@/pages/FunctionalWrenchesProject';
 import BalloonDragstersProject from '@/pages/BalloonDragstersProject';
+import EgyptianObelisksProject from '@/pages/EgyptianObelisksProject';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -92,6 +93,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/puzzle-cubes" element={<PuzzleCubesProject />} />
         <Route path="/maker/functional-wrenches" element={<FunctionalWrenchesProject />} />
         <Route path="/maker/balloon-dragsters" element={<BalloonDragstersProject />} />
+        <Route path="/maker/egyptian-obelisks" element={<EgyptianObelisksProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
