@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import "react-quill/dist/quill.snow.css";
 import Grade1MakerLesson from "@/components/lesson/Grade1MakerLesson";
+import LessonHtmlContent from "@/components/lesson/LessonHtmlContent";
 import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
 import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
 import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
@@ -201,14 +202,9 @@ export default function PublicLessonViewer() {
           </Card>
         )}
 
-        {/* External HTML Content via iframe */}
+        {/* External HTML Content rendered in-page */}
         {lesson.content_url && (
-          <iframe
-            src={lesson.content_url}
-            className="w-full rounded-xl border border-gray-200"
-            style={{ minHeight: '80vh', height: '80vh' }}
-            title={lesson.title}
-          />
+          <LessonHtmlContent url={lesson.content_url} title={lesson.title} />
         )}
 
         {/* Rich Content */}

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-const htmlCache = {};
 import { useParams, useOutletContext, useNavigate, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { GRADE1_MAKER_LESSONS } from "@/components/lesson/lessonData";
@@ -8,6 +7,7 @@ import { GRADE2_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade2";
 import { GRADE3_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade3";
 import { GRADE4_MAKER_LESSONS } from "@/components/lesson/lessonDataGrade4";
 import Grade1MakerLesson from "@/components/lesson/Grade1MakerLesson";
+import LessonHtmlContent from "@/components/lesson/LessonHtmlContent";
 import {
   ArrowLeft, ArrowRight, CheckCircle, FileText, Play,
   Zap, BookOpen, Upload, Loader2
@@ -32,7 +32,6 @@ export default function LessonViewer() {
   const [uploading, setUploading] = useState(false);
   const [completing, setCompleting] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [htmlContent, setHtmlContent] = useState(null);
 
   useEffect(() => {
     if (user === null) return; // wait for auth to resolve
@@ -54,17 +53,6 @@ export default function LessonViewer() {
           const sub = await base44.entities.Submission.filter({ lesson_id: id, student_id: user?.id });
           if (cancelled) return;
           if (sub[0]) { setSubmission(sub[0]); setTextResponse(sub[0].text_response || ""); }
-        }
-      }
-      if (lessonData?.content_url) {
-        const url = lessonData.content_url;
-        if (htmlCache[url]) {
-          if (!cancelled) setHtmlContent(htmlCache[url]);
-        } else {
-          fetch(url)
-            .then(res => res.text())
-            .then(html => { htmlCache[url] = html; if (!cancelled) setHtmlContent(html); })
-            .catch(() => {});
         }
       }
       setLoading(false);
@@ -265,16 +253,13 @@ export default function LessonViewer() {
         </Card>
       )}
 
-      {/* External HTML Content */}
-      {htmlContent && (
-        <div
-          className="w-full text-foreground/90 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
-        />
+      {/* External HTML Content rendered in-page */}
+      {lesson.content_url && (
+        <LessonHtmlContent url={lesson.content_url} title={lesson.title} />
       )}
 
       {/* Rich Text Content */}
-      {!htmlContent && lesson.content && (
+      {!lesson.content_url && lesson.content && (
         <Card className="p-6 border-border/60 shadow-sm">
           <div
             className="prose prose-sm max-w-none text-foreground/90 leading-relaxed text-sm ql-editor"
