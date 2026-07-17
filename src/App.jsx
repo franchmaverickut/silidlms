@@ -43,6 +43,7 @@ import FunctionalWrenchesProject from '@/pages/FunctionalWrenchesProject';
 import BalloonDragstersProject from '@/pages/BalloonDragstersProject';
 import EgyptianObelisksProject from '@/pages/EgyptianObelisksProject';
 import SelfWateringPlantersProject from '@/pages/SelfWateringPlantersProject';
+import TinkercadFundamentalsProject from '@/pages/TinkercadFundamentalsProject';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -96,6 +97,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/balloon-dragsters" element={<BalloonDragstersProject />} />
         <Route path="/maker/egyptian-obelisks" element={<EgyptianObelisksProject />} />
         <Route path="/maker/self-watering-planters" element={<SelfWateringPlantersProject />} />
+        <Route path="/maker/tinkercad-fundamentals" element={<TinkercadFundamentalsProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -118,6 +120,7 @@ function App() {
           <Route path="/share/printing-industry" element={<PublicPrintingIndustry />} />
           <Route path="/share/printing-technologies" element={<PublicPrintingTechnologies />} />
           <Route path="/share/quick-clips" element={<PublicQuickClips />} />
+          <Route path="/share/tinkercad-fundamentals" element={<TinkercadFundamentalsProject isPublic={true} />} />
           <Route path="*" element={
             <AuthProvider>
               <AuthenticatedApp />
