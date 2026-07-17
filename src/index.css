@@ -82,6 +82,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* Remove the default top margin on the first element inside lesson
+     content containers so there's no gap between the page header and the
+     rendered HTML content card. */
+  .prose > :first-child {
+    margin-top: 0 !important;
+  }
   body {
     @apply bg-background text-foreground font-inter;
   }
