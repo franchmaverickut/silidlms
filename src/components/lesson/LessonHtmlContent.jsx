@@ -39,7 +39,13 @@ export default function LessonHtmlContent({ url, title }) {
       .then(text => {
         if (cancelled) return;
         // Strip <script> tags for safety; lesson HTML should be static content.
-        const sanitized = text.replace(/<script[\s\S]*?<\/script>/gi, "");
+        // Also strip inline event-handler attributes (onclick, onmousedown, …)
+        // since the <script> blocks that defined their handlers are removed
+        // above — leaving them in place causes ReferenceErrors on interaction.
+        const sanitized = text
+          .replace(/<script[\s\S]*?<\/script>/gi, "")
+          .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
+          .replace(/\son\w+\s*=\s*'[^']*'/gi, "");
         htmlCache[url] = sanitized;
         setHtml(sanitized);
         setLoading(false);
