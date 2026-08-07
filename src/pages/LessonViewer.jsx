@@ -177,6 +177,128 @@ export default function LessonViewer() {
     );
   }
 
+  // ── External HTML lesson — premium full-bleed layout ──────────────────
+  if (lesson.content_url) {
+    const currentIndex = allLessons.findIndex(l => l.id === id);
+    const prevLesson = allLessons[currentIndex - 1];
+    const nextLesson = allLessons[currentIndex + 1];
+    const isCompleted = enrollment?.completed_lessons?.includes(id);
+    const progress = enrollment ? Math.round(((enrollment.completed_lessons?.length || 0) / allLessons.length) * 100) : 0;
+
+    return (
+      <div className="-mx-6 md:-mx-8 -mt-6 md:-mt-8">
+        {/* Slim top nav */}
+        <div className="px-6 md:px-8 pt-2 pb-3 flex items-center gap-4">
+          <button onClick={() => navigate(`/courses/${lesson.course_id}`)} className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors">
+            <ArrowLeft size={16} /> Back to Course
+          </button>
+          {enrollment && (
+            <div className="flex-1 max-w-[200px]">
+              <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <span>Progress</span><span className="font-medium text-primary">{progress}%</span>
+              </div>
+              <Progress value={progress} className="h-1.5" />
+            </div>
+          )}
+        </div>
+
+        {/* Full-bleed lesson content */}
+        <LessonHtmlContent url={lesson.content_url} title={lesson.title} />
+
+        {/* App sections — content column */}
+        <div className="max-w-[960px] mx-auto px-6 md:px-8 py-12 space-y-10">
+          {/* Objectives */}
+          {lesson.objectives?.length > 0 && (
+            <div>
+              <p className="font-poppins font-semibold text-base text-foreground mb-3">Learning Objectives</p>
+              <ul className="space-y-2">
+                {lesson.objectives.map((obj, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-sm text-foreground/80 leading-relaxed">
+                    <CheckCircle size={15} className="text-secondary mt-0.5 flex-shrink-0" /> {obj}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Materials */}
+          {lesson.materials?.length > 0 && (
+            <div>
+              <p className="font-poppins font-semibold text-base text-foreground mb-3">Required Materials</p>
+              <ul className="space-y-2">
+                {lesson.materials.map((m, i) => (
+                  <li key={i} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full" /> {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Submission */}
+          {enrollment && (lesson.type === "activity" || lesson.type === "project") && (
+            <div className="p-6 rounded-2xl border border-primary/15 bg-primary/[0.03]">
+              <h3 className="font-poppins font-semibold text-foreground mb-1">Submit Your Work</h3>
+              <p className="text-sm text-muted-foreground mb-4">Share your response, reflection, or upload a file.</p>
+              {submission?.feedback && (
+                <div className="mb-4 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+                  <p className="text-xs font-semibold text-secondary mb-1">Teacher Feedback</p>
+                  <p className="text-sm text-foreground">{submission.feedback}</p>
+                  {submission.grade && <p className="text-sm font-bold text-primary mt-2">Grade: {submission.grade}</p>}
+                </div>
+              )}
+              <Textarea
+                value={textResponse}
+                onChange={e => setTextResponse(e.target.value)}
+                placeholder="Write your response, reflection, or describe your project..."
+                className="min-h-[120px] text-sm mb-3"
+              />
+              <div className="flex flex-wrap gap-3">
+                <Button onClick={handleSubmit} disabled={uploading || !textResponse.trim()} className="bg-primary text-white rounded-xl gap-2">
+                  {uploading ? <Loader2 size={14} className="animate-spin" /> : null}
+                  {submission ? "Update Response" : "Submit Response"}
+                </Button>
+                <label className="cursor-pointer">
+                  <input type="file" className="hidden" onChange={handleFileUpload} accept=".pdf,.doc,.docx,.png,.jpg,.stl,.zip" />
+                  <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-xl text-sm text-muted-foreground hover:border-primary/40 hover:text-primary transition-colors">
+                    <Upload size={14} /> Upload File
+                  </div>
+                </label>
+              </div>
+              {submission?.file_url && (
+                <p className="text-xs text-secondary mt-2 flex items-center gap-1"><CheckCircle size={12} /> File submitted</p>
+              )}
+            </div>
+          )}
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between pt-6 border-t border-border">
+            <Button variant="outline" disabled={!prevLesson} onClick={() => navigate(`/lessons/${prevLesson?.id}`)} className="gap-2 rounded-xl">
+              <ArrowLeft size={15} /> Previous
+            </Button>
+            <div className="flex items-center gap-3">
+              {enrollment && !isCompleted && (
+                <Button onClick={handleMarkComplete} disabled={completing} className="bg-secondary hover:bg-secondary/90 text-white rounded-xl gap-2">
+                  {completing ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle size={15} />}
+                  Mark Complete
+                </Button>
+              )}
+              {nextLesson ? (
+                <Button onClick={() => navigate(`/lessons/${nextLesson.id}`)} className="bg-primary text-white rounded-xl gap-2">
+                  Next <ArrowRight size={15} />
+                </Button>
+              ) : (
+                <Link to={`/courses/${lesson.course_id}`}>
+                  <Button className="bg-primary text-white rounded-xl gap-2">Back to Course <ArrowRight size={15} /></Button>
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const currentIndex = allLessons.findIndex(l => l.id === id);
   const prevLesson = allLessons[currentIndex - 1];
   const nextLesson = allLessons[currentIndex + 1];
@@ -251,11 +373,6 @@ export default function LessonViewer() {
             />
           </div>
         </Card>
-      )}
-
-      {/* External HTML Content rendered in-page */}
-      {lesson.content_url && (
-        <LessonHtmlContent url={lesson.content_url} title={lesson.title} />
       )}
 
       {/* Rich Text Content */}

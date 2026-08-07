@@ -1,0 +1,146 @@
+/*
+  Premium layout overrides for externally-hosted lesson HTML.
+  Scoped under .lesson-html-shell so specificity (0,2,0) beats the
+  injected stylesheet's bare-class rules (0,1,0) — no re-upload needed,
+  and the original IDs / classes / content / structure are untouched.
+
+  Goals: full-width hero, centered 960px content column, 8px-grid spacing,
+  lighter cards, centered timeline, relaxed typography, responsive.
+*/
+
+.lesson-html-shell {
+  font-family: 'Nunito Sans', sans-serif;
+  background: #F1F5F9;
+  color: #0F172A;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── Hero — full-width, content aligned to the 960px column ─────────── */
+.lesson-html-shell .hdr {
+  padding: 48px max(24px, calc(50% - 480px)) 40px;
+}
+.lesson-html-shell .hdr .meta {
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.lesson-html-shell .hdr h1 {
+  font-size: 26px;
+  line-height: 1.22;
+  margin-bottom: 8px;
+}
+.lesson-html-shell .hdr .sub {
+  font-size: 14px;
+  max-width: 640px;
+}
+.lesson-html-shell .prog-bar {
+  margin-top: 22px;
+}
+
+/* ── Tier bar — full-width sticky, aligned to the content column ────── */
+.lesson-html-shell .tier-bar {
+  padding: 14px max(24px, calc(50% - 480px));
+  border-bottom-width: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Content column — centered 960px ────────────────────────────────── */
+.lesson-html-shell .wrap {
+  max-width: 960px;
+  padding: 0 24px 64px;
+}
+
+/* ── Timeline — centered, even spacing ──────────────────────────────── */
+.lesson-html-shell .timer-row {
+  margin: 48px 0 8px;
+  justify-content: center;
+  gap: 10px;
+}
+.lesson-html-shell .phase-chip {
+  padding: 6px 16px;
+}
+
+/* ── Section spacing (8px grid) ─────────────────────────────────────── */
+.lesson-html-shell .divider {
+  margin: 48px 0 32px;
+}
+.lesson-html-shell .step-pill {
+  margin-top: 64px;
+  margin-bottom: 14px;
+}
+.lesson-html-shell .section-head {
+  font-size: 18px;
+  margin-top: 8px;
+  margin-bottom: 14px;
+}
+.lesson-html-shell .body-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+/* ── Cards — lighter styling: thin borders, minimal shadow, 14px radius */
+.lesson-html-shell .part-card {
+  border-radius: 14px;
+  border-width: 1px;
+  box-shadow: none;
+}
+.lesson-html-shell .asm-item {
+  border-radius: 14px;
+  border-width: 1px;
+  box-shadow: none;
+}
+.lesson-html-shell .tier-card {
+  border-radius: 14px;
+  border-width: 1px;
+}
+.lesson-html-shell .callout {
+  border-radius: 14px;
+  border-width: 1px;
+  box-shadow: none;
+  padding: 16px 18px;
+  margin: 16px 0;
+}
+.lesson-html-shell .co-text {
+  line-height: 1.65;
+}
+.lesson-html-shell .code-block {
+  border-radius: 14px;
+}
+.lesson-html-shell .bt-cmd {
+  border-radius: 12px;
+  border-width: 1px;
+}
+.lesson-html-shell .vctrl-wrap {
+  border-radius: 14px;
+}
+
+/* ── Default tier content visible (interactive JS is sandboxed out) ── */
+.lesson-html-shell .t2-only {
+  display: block;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .lesson-html-shell .hdr {
+    padding: 36px 20px 32px;
+  }
+  .lesson-html-shell .hdr h1 {
+    font-size: 22px;
+  }
+  .lesson-html-shell .tier-bar {
+    padding: 12px 16px;
+  }
+  .lesson-html-shell .wrap {
+    padding: 0 16px 48px;
+  }
+  .lesson-html-shell .timer-row {
+    margin-top: 32px;
+  }
+  .lesson-html-shell .step-pill {
+    margin-top: 48px;
+  }
+  .lesson-html-shell .parts-grid {
+    grid-template-columns: 1fr;
+  }
+}

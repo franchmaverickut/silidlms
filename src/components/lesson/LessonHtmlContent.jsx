@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Loader2, AlertCircle, ExternalLink } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import "./lessonHtmlOverrides.css";
 
 // Module-level cache so navigating back to a lesson doesn't re-fetch.
 const htmlCache = {};
@@ -45,7 +45,11 @@ export default function LessonHtmlContent({ url, title }) {
         const sanitized = text
           .replace(/<script[\s\S]*?<\/script>/gi, "")
           .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
-          .replace(/\son\w+\s*=\s*'[^']*'/gi, "");
+          .replace(/\son\w+\s*=\s*'[^']*'/gi, "")
+          // Strip the global `body{…}` rule so the injected stylesheet
+          // doesn't restyle the app's sidebar/topbar; re-scoped to the
+          // shell in lessonHtmlOverrides.css.
+          .replace(/body\s*\{[^}]*\}/g, "");
         htmlCache[url] = sanitized;
         setHtml(sanitized);
         setLoading(false);
@@ -60,33 +64,30 @@ export default function LessonHtmlContent({ url, title }) {
 
   if (loading) {
     return (
-      <Card className="p-10 border-gray-200 flex items-center justify-center">
-        <Loader2 className="animate-spin text-gray-400" size={22} />
-      </Card>
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="animate-spin text-muted-foreground" size={22} />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Card className="p-6 border-gray-200 flex flex-col items-center text-center gap-3">
-        <AlertCircle className="text-gray-300" size={28} />
-        <p className="text-sm text-gray-500">This lesson couldn't be loaded in-page.</p>
+      <div className="flex flex-col items-center text-center gap-3 py-16">
+        <AlertCircle className="text-muted-foreground/40" size={28} />
+        <p className="text-sm text-muted-foreground">This lesson couldn't be loaded in-page.</p>
         <a href={url} target="_blank" rel="noopener noreferrer">
           <Button variant="outline" size="sm" className="rounded-xl gap-1.5">
             <ExternalLink size={13} /> Open in new tab
           </Button>
         </a>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="p-6 border-gray-200 shadow-sm">
-      <div
-        className="prose prose-sm max-w-none text-foreground/90 leading-relaxed ql-editor"
-        style={{ padding: 0 }}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </Card>
+    <div
+      className="lesson-html-shell"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   );
 }
