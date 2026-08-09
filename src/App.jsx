@@ -33,6 +33,7 @@ import PublicRubberBandCar from '@/pages/PublicRubberBandCar';
 import PublicMakerLessons from '@/pages/PublicMakerLessons';
 import PublicCourses from '@/pages/PublicCourses';
 import PublicLessonViewer from '@/pages/PublicLessonViewer';
+import EmbedLesson from '@/pages/EmbedLesson';
 import PublicPrintingIndustry from '@/pages/PublicPrintingIndustry';
 import PrintingTechnologiesProject from '@/pages/PrintingTechnologiesProject';
 import PublicPrintingTechnologies from '@/pages/PublicPrintingTechnologies';
@@ -114,6 +115,7 @@ function App() {
           <Route path="/share/maker" element={<PublicMakerLessons />} />
           <Route path="/share/courses" element={<PublicCourses />} />
           <Route path="/share/lesson/:id" element={<PublicLessonViewer />} />
+          <Route path="/embed/lesson/:id" element={<EmbedLesson />} />
           <Route path="/share/spinning-tops" element={<PublicSpinningTops />} />
           <Route path="/share/emoji-tokens" element={<PublicEmojiTokens />} />
           <Route path="/share/rubber-band-car" element={<PublicRubberBandCar />} />
