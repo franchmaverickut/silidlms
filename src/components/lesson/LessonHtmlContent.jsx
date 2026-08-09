@@ -1,24 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2, AlertCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import "./lessonHtmlOverrides.css";
 
 // Module-level cache so navigating back to a lesson doesn't re-fetch.
 const htmlCache = {};
 
 /**
- * Reusable in-page renderer for lesson content stored as an external HTML file.
- * Fetches the file as text (bypassing Content-Disposition: attachment headers
- * that cause browsers to download .html files) and renders it inside a
- * styled, sandboxed prose container.
+ * Faithful host for lesson content stored as an external HTML file.
  *
- * Scalable: handles loading + error states and degrades to an "open in new tab"
- * fallback if the fetch fails, so it works for any text/HTML content_url.
+ * The HTML/JavaScript is the source of truth; the screenshot is only a
+ * visual verification reference. This component fetches the FULL original
+ * document (no script/style/handler stripping) and renders it inside a
+ * sandboxed iframe via srcDoc, so the original <style>, <script>, IDs,
+ * event handlers, calculations, and conditional content all run exactly as
+ * authored — isolated from the React app's DOM and global scope.
+ *
+ * sandbox="allow-scripts allow-same-origin" lets the original scripts run
+ * AND use localStorage (e.g. tier persistence) while letting the parent
+ * read the iframe's document to auto-size it and observe completion.
+ *
+ * Auto-resize + completion are driven from the PARENT (not an injected
+ * bridge script) for reliability: on iframe load we attach a ResizeObserver
+ * to the iframe's body and a MutationObserver to #done-banner (the original
+ * updateProgress() adds the `show` class at ≥80%).
  */
-export default function LessonHtmlContent({ url, title }) {
+export default function LessonHtmlContent({ url, title, onComplete }) {
   const [html, setHtml] = useState(htmlCache[url] || null);
   const [loading, setLoading] = useState(!htmlCache[url]);
   const [error, setError] = useState(false);
+  const [iframeHeight, setIframeHeight] = useState(600);
+  const iframeRef = useRef(null);
+  const completedRef = useRef(false);
 
   useEffect(() => {
     if (!url) return;
@@ -38,20 +50,9 @@ export default function LessonHtmlContent({ url, title }) {
       })
       .then(text => {
         if (cancelled) return;
-        // Strip <script> tags for safety; lesson HTML should be static content.
-        // Also strip inline event-handler attributes (onclick, onmousedown, …)
-        // since the <script> blocks that defined their handlers are removed
-        // above — leaving them in place causes ReferenceErrors on interaction.
-        const sanitized = text
-          .replace(/<script[\s\S]*?<\/script>/gi, "")
-          .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
-          .replace(/\son\w+\s*=\s*'[^']*'/gi, "")
-          // Strip the global `body{…}` rule so the injected stylesheet
-          // doesn't restyle the app's sidebar/topbar; re-scoped to the
-          // shell in lessonHtmlOverrides.css.
-          .replace(/body\s*\{[^}]*\}/g, "");
-        htmlCache[url] = sanitized;
-        setHtml(sanitized);
+        // Full original document is the source of truth — no stripping.
+        htmlCache[url] = text;
+        setHtml(text);
         setLoading(false);
       })
       .catch(() => {
@@ -61,6 +62,42 @@ export default function LessonHtmlContent({ url, title }) {
       });
     return () => { cancelled = true; };
   }, [url]);
+
+  const handleIframeLoad = () => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    let doc = null;
+    try { doc = iframe.contentDocument; } catch (e) { return; }
+    if (!doc || !doc.body) return;
+
+    // Auto-resize to content height — no inner scrollbar.
+    const syncHeight = () => {
+      const h = doc.body.scrollHeight;
+      if (h > 0) setIframeHeight(h);
+    };
+    syncHeight();
+    setTimeout(syncHeight, 300);
+    setTimeout(syncHeight, 1200);
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(syncHeight).observe(doc.body);
+    }
+
+    // Completion bridge: the original updateProgress() adds `show` to
+    // #done-banner at ≥80% — forward that to the parent once.
+    const banner = doc.getElementById("done-banner");
+    if (banner && onComplete) {
+      if (banner.classList.contains("show")) {
+        if (!completedRef.current) { completedRef.current = true; onComplete(); }
+      } else {
+        new MutationObserver(() => {
+          if (banner.classList.contains("show") && !completedRef.current) {
+            completedRef.current = true;
+            onComplete();
+          }
+        }).observe(banner, { attributes: true, attributeFilter: ["class"] });
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -85,9 +122,14 @@ export default function LessonHtmlContent({ url, title }) {
   }
 
   return (
-    <div
-      className="lesson-html-shell"
-      dangerouslySetInnerHTML={{ __html: html }}
+    <iframe
+      ref={iframeRef}
+      title={title || "Lesson content"}
+      srcDoc={html}
+      sandbox="allow-scripts allow-same-origin"
+      onLoad={handleIframeLoad}
+      className="w-full border-0"
+      style={{ height: iframeHeight + "px" }}
     />
   );
 }

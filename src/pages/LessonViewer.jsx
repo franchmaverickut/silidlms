@@ -202,8 +202,8 @@ export default function LessonViewer() {
           )}
         </div>
 
-        {/* Full-bleed lesson content */}
-        <LessonHtmlContent url={lesson.content_url} title={lesson.title} />
+        {/* Faithful iframe host — original HTML/CSS/JS run unmodified */}
+        <LessonHtmlContent url={lesson.content_url} title={lesson.title} onComplete={handleMarkComplete} />
 
         {/* App sections — content column */}
         <div className="max-w-[960px] mx-auto px-6 md:px-8 py-12 space-y-10">
