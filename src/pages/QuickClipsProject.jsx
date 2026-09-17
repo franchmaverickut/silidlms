@@ -32,15 +32,21 @@ function Section({ title, icon, children, defaultOpen = true }) {
   );
 }
 
-function StepCard({ num, title, desc }) {
+function StepCard({ num, title, desc, media }) {
   return (
     <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
       <div className="flex items-center gap-3 px-5 py-3 bg-purple-50 border-b border-purple-100">
         <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
         <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
       </div>
-      <div className="p-5">
+      <div className="p-5 space-y-4">
         <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+        {media?.type === "video" && (
+          <video src={media.url} controls className="w-full rounded-xl border border-border/40" preload="metadata" />
+        )}
+        {media?.type === "image" && (
+          <img src={media.url} alt={title} className="w-full rounded-xl border border-border/40" />
+        )}
       </div>
     </div>
   );
@@ -49,38 +55,46 @@ function StepCard({ num, title, desc }) {
 const DRAWING_STEPS = [
   {
     title: "Select Product",
-    desc: "Decide on whether you want to make a cable tidy, a bag holder, or a filament clip. Use reference images to help you decide which best suits your needs.",
+    desc: "Decide on whether you want to make a cable tidy, a bag holder, or a filament clip. Use the images here to help you decide.",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/88c00bf9e_2DStep1.mp4" },
   },
   {
     title: "Measure",
     desc: "If you opted for the cable tidy or bag holder, accurately measure the thickness of the table where your clip will slot on to. If you opted for the filament clip, measure the thickness of the filament reel where the clip will attach.",
+    media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/d391f92fe_2DStep2.jpg" },
   },
   {
     title: "Draw Reference",
-    desc: "On a blank sheet of paper, use a pencil to faintly draw the edge of the object where your clip will attach — the edge of a table or the edge of a filament reel. Create the drawing at real-life dimensions (scale 1:1) so you get a good perspective on the size of your clip.",
+    desc: "On a blank sheet of paper, use a pencil to faintly draw the edge of the object where your clip will attach — the edge of a table for a cable tidy or bag holder, the edge of a filament reel for a filament clip. Create the drawing at real-life dimensions (scale 1:1) so you get a good perspective on the size of your clip accessory.",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/0a6c1c1f2_2DStep3.mp4" },
   },
   {
     title: "Draw Outline",
-    desc: "Using a black pen, draw an outline of your clip accessory around the reference sketch. Try to create as smooth an outline as possible. If required, draw in pencil first and trace over in pen.",
+    desc: "Using a black pen, draw an outline of your clip accessory around the reference sketch. Try to create as smooth an outline as possible. If required, draw the outline in pencil first and trace over it in pen.",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/15b700b42_2Dstep4.mp4" },
   },
   {
     title: "Fill in Outline",
-    desc: "Once you are happy with your outline, colour it in using a black marker or pen. The filled area will be extruded to create a 3D model — ensure it is thoroughly filled in with no gaps.",
+    desc: "Once you are happy with your outline, colour it in using a black marker or pen. The coloured-in area will be extruded to create a 3D model, so ensure it is thoroughly filled in.",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/81ada87df_2Dstep5.mp4" },
   },
   {
     title: "Scan JPG",
-    desc: "Use an eraser to remove the pencil reference lines, leaving only your clip drawing. Scan the drawing or take a top-down photo, and save it as a JPG file.",
+    desc: "Use an eraser to get rid of the pencil reference image, leaving only your clip accessory drawing. Scan the drawing, or take a top-down photo of it, and save it as a JPG file.",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/58763b520_2Dstep6.mp4" },
   },
 ];
 
 const PRINT_STEPS = [
   {
     title: "3D Print + Test",
-    desc: "Slice your STL file and 3D print the model. Once printed, test your clip and write down key learnings — what did you notice about its flexibility and strength? Did it work as intended? How could it be improved?",
+    desc: "Slice your STL file and 3D print the model. Once printed, test your filament clip and write down some key learnings. For example, what did you notice about the clip's flexibility and strength? Did the clip work as intended? How could it have been improved?",
+    media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ea08855bf_3Dprintingstep1.jpg" },
   },
   {
     title: "Make a Unique Clip",
-    desc: "Use everything you've learnt in the course and testing phase to brainstorm ideas for a brand-new clip accessory. Then use the same 2D to 3D workflow to design and make your unique idea!",
+    desc: "Use everything you've learnt in the course and testing phase to brainstorm ideas for a new clip accessory. Then use the same 2D to 3D workflow to design and make your unique idea!",
+    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/86c8d540e_3Dprintingstep2.mp4" },
   },
 ];
 
@@ -163,18 +177,18 @@ export default function QuickClipsProject({ isPublic = false }) {
         </div>
       </Section>
 
-      {/* Part 1 — Draw Your Clip */}
-      <Section title="Part 1 — Draw Your Clip" icon="✏️" defaultOpen={true}>
+      {/* 2D Drawing */}
+      <Section title="2D Drawing" icon="✏️" defaultOpen={true}>
         <p className="text-sm text-muted-foreground">
-          Follow these six steps to draw your clip accessory on paper. The drawing you create will act as the base of your 3D design.
+          Follow the below steps to draw out an example clip accessory. The drawing you create will act as the base of your design and in the next sections you'll be turning it into a 3D model!
         </p>
         <div className="space-y-3">
-          {DRAWING_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} />)}
+          {DRAWING_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} media={s.media} />)}
         </div>
       </Section>
 
-      {/* Part 2 — 3D Modelling Tutorial */}
-      <Section title="Part 2 — Turn Your Sketch into a 3D Model" icon="🖥️" defaultOpen={false}>
+      {/* 3D Modelling */}
+      <Section title="3D Modelling" icon="🖥️" defaultOpen={false}>
         <p className="text-sm text-muted-foreground leading-relaxed">
           We're now going to turn your sketch into a 3D model by extruding it! First, your JPG sketch needs to be converted into an SVG vector file using <strong>Inkscape</strong>. The SVG can then be uploaded into either Tinkercad or Fusion 360 to be extruded into a 3D printable model.
         </p>
@@ -210,13 +224,13 @@ export default function QuickClipsProject({ isPublic = false }) {
         </div>
       </Section>
 
-      {/* Part 3 — Print, Test & Iterate */}
-      <Section title="Part 3 — Print, Test & Make Your Own" icon="🖨️" defaultOpen={false}>
+      {/* 3D Printing */}
+      <Section title="3D Printing" icon="🖨️" defaultOpen={false}>
         <p className="text-sm text-muted-foreground">
-          At this stage you should have a 3D printable STL file ready. Follow these steps to bring your creation to life — then use what you've learnt to design something entirely your own.
+          At this stage, you should have a 3D printable STL file exported. Follow the below steps to bring your creation to life, before testing it and using your key learnings to make a unique clip accessory!
         </p>
         <div className="space-y-3">
-          {PRINT_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} />)}
+          {PRINT_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} media={s.media} />)}
         </div>
         <div className="bg-green-50 border border-green-200 rounded-xl p-4">
           <p className="text-xs text-green-800 leading-relaxed">
@@ -224,6 +238,16 @@ export default function QuickClipsProject({ isPublic = false }) {
           </p>
         </div>
       </Section>
+
+      {/* Back to top */}
+      <div className="flex justify-center pt-2">
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+        >
+          <ChevronUp size={16} /> Back to top
+        </button>
+      </div>
     </div>
   );
 }
