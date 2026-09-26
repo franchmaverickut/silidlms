@@ -152,11 +152,11 @@ const MODELLING_STEPS = [
   { title: "Add Reference Box", desc: "Drag red Box from Basic Shapes panel onto workplane to create a sizing reference for table thickness.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/508ab8855_28-113226-reference-box.png" } },
   { title: "Position Reference Box", desc: "Position red reference box against purple clip opening, checking whether clip dimensions fit intended table edge.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/f82086748_29-113229-position-box.png" } },
   { title: "Scale Proportionally", desc: "Hold Shift and drag white corner handle to scale clip proportionally around reference box accurately.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/75f8ddcea_30-113249-scale-corner.png" } },
-  { title: "Disable Snap Grid", desc: "Open Snap Grid menu and choose Off, allowing finer unrestricted scaling adjustments beyond preset increments." },
-  { title: "Fine-tune Scaling", desc: "Drag upper-right corner handle after disabling snapping, enlarging clip smoothly while retaining proportions around reference shape." },
-  { title: "Monitor Dimensions", desc: "Monitor horizontal dimension value while scaling, stopping near 27.98 millimeters or your required target width." },
-  { title: "Orbit & Inspect", desc: "Orbit to perspective view and inspect finished purple clip, verifying clean extrusion, notch geometry, and overall proportions." },
-  { title: "Compare with Concept", desc: "Compare final three-dimensional clip with design concept, confirming key features survived tracing, cleanup, scaling, and extrusion." },
+  { title: "Disable Snap Grid", desc: "Open Snap Grid menu and choose Off, allowing finer unrestricted scaling adjustments beyond preset increments.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/46e4d57bd_31-113256-snap-grid-off.png" } },
+  { title: "Fine-tune Scaling", desc: "Drag upper-right corner handle after disabling snapping, enlarging clip smoothly while retaining proportions around reference shape.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/28b34cf1b_32-113258-scale-upper-corner.png" } },
+  { title: "Monitor Dimensions", desc: "Monitor horizontal dimension value while scaling, stopping near 27.98 millimeters or your required target width.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6d91d6e7e_33-113302-measurement-2798.png" } },
+  { title: "Orbit & Inspect", desc: "Orbit to perspective view and inspect finished purple clip, verifying clean extrusion, notch geometry, and overall proportions.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/27d288ad6_34-113327-finished-model.png" } },
+  { title: "Compare with Concept", desc: "Compare final three-dimensional clip with design concept, confirming key features survived tracing, cleanup, scaling, and extrusion.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6876e7cef_35-113336-final-cover.png" } },
 ];
 
 export default function QuickClipsProject({ isPublic = false }) {
