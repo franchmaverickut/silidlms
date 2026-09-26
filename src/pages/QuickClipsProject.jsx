@@ -39,27 +39,35 @@ function StepCard({ num, title, desc, media }) {
         <span className="w-7 h-7 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
         <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
       </div>
-      <div className="p-5 space-y-4">
-        <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-        {media?.type === "video" && media.size === "icon" && (
-          <video
-            src={media.url}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            className="w-20 h-20 object-cover rounded-lg border border-border/40 shadow-sm"
-          />
-        )}
-        {media?.type === "video" && media.size !== "icon" && (
-          <video src={media.url} controls className="w-full rounded-xl border border-border/40" preload="metadata" />
-        )}
-        {media?.type === "image" && media.size === "icon" && (
-          <img src={media.url} alt={title} className="w-20 h-20 object-cover rounded-lg border border-border/40 shadow-sm" />
-        )}
-        {media?.type === "image" && media.size !== "icon" && (
-          <img src={media.url} alt={title} className="w-full rounded-xl border border-border/40" />
+      <div className="p-5">
+        {media?.size === "icon" ? (
+          <div className="flex items-start gap-4">
+            {media?.type === "video" && (
+              <video
+                src={media.url}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="w-24 h-24 object-cover rounded-lg border border-border/40 shadow-sm flex-shrink-0"
+              />
+            )}
+            {media?.type === "image" && (
+              <img src={media.url} alt={title} className="w-24 h-24 object-cover rounded-lg border border-border/40 shadow-sm flex-shrink-0" />
+            )}
+            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+            {media?.type === "video" && (
+              <video src={media.url} controls className="w-full rounded-xl border border-border/40" preload="metadata" />
+            )}
+            {media?.type === "image" && (
+              <img src={media.url} alt={title} className="w-full rounded-xl border border-border/40" />
+            )}
+          </div>
         )}
       </div>
     </div>
