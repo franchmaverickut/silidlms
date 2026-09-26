@@ -60,7 +60,7 @@ export const TUTORIALS = [
     num: 4,
     title: "Grouping",
     description: "In this tutorial, you'll learn how to group multiple shapes together so they behave as single objects, and combine shapes to create new ones.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "83f2f36a2_4-Groupingf.mp4",
     modelUrl: "https://www.tinkercad.com/things/bQWOCJyhjqf-4-grouping?sharecode=JIJF7G4a7L-k2ZLBupj1KbD2FeuY_-ILn5TKlV6xQKE",
     keyTakeaways: [
       "Bundle Group makes multiple objects behave as a single object while keeping their positions relative to one another.",
@@ -77,7 +77,7 @@ export const TUTORIALS = [
     num: 5,
     title: "Rotating",
     description: "In this tutorial, you'll learn how to rotate shapes to create new forms and position objects in different orientations.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "2b880bbe0_5-Rotatingf.mp4",
     modelUrl: "https://www.tinkercad.com/things/dJZ6Cx9UkhL-5-rotating?sharecode=Riw2v8BTI7XYmEY1iwdDN6Hs1-3f8lkSKKpOqBe_lNw",
     keyTakeaways: [
       "Drag a double-ended arrow around a selected shape to rotate it around that axis.",
@@ -94,7 +94,7 @@ export const TUTORIALS = [
     num: 6,
     title: "Holes",
     description: "In this tutorial, you'll learn how to use hole shapes to remove material and create different cutouts for a modular stationery organiser.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "71596f40a_6-Holesf.mp4",
     modelUrl: "https://www.tinkercad.com/things/fqYCbSXwMYl-6-holes?sharecode=j66QQfqho3X-gqcPSe-C3jmAIhMDI5ZlT3l86cf6mPg",
     keyTakeaways: [
       "When a hole shape intersects with a solid shape and they are Union Grouped, the intersecting material is removed.",
@@ -111,7 +111,7 @@ export const TUTORIALS = [
     num: 7,
     title: "Duplicating",
     description: "In this tutorial, you'll learn how to use the Duplicate tool to quickly and accurately create repeating patterns for a 3D printable texture swatch.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "743d6597b_7-Duplicatef.mp4",
     modelUrl: "https://www.tinkercad.com/things/5AbJnMGnA13-7-duplicate?sharecode=8ehJzDng46vWJ8RmoAzpa7669coygVfV1gU1ILz9WL0",
     keyTakeaways: [
       "The Duplicate tool remembers the previous movement, allowing the same spacing to be repeated across a pattern.",
@@ -127,7 +127,7 @@ export const TUTORIALS = [
     num: 8,
     title: "Aligning",
     description: "In this tutorial, you'll learn how to use the Align tool to accurately position shapes relative to one another.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "5cff1eda1_8-Aligningf.mp4",
     modelUrl: "https://www.tinkercad.com/things/3EyYCEXboqm-8-aligning?sharecode=NTuSPuCL3Tp_AvmhvJB4yF0wVx0WjPqSAE2dimcL5Rk",
     keyTakeaways: [
       "The Align tool accurately positions multiple shapes relative to one another.",
@@ -144,7 +144,7 @@ export const TUTORIALS = [
     num: 9,
     title: "Mirroring",
     description: "In this tutorial, you'll learn how to use the Mirror tool to create a reverse copy of a shape and accurately join mirrored shapes together.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "281385703_9-Mirroringf.mp4",
     modelUrl: "https://www.tinkercad.com/things/kn9U5V49CpG-9-mirror?sharecode=1D_dwa9dXkP8ZuhMbFmWlmzcC7Gg1ys7dF59NWaCh4E",
     keyTakeaways: [
       "The Mirror tool flips a shape across an axis rather than rotating it.",
@@ -160,7 +160,7 @@ export const TUTORIALS = [
     num: 10,
     title: "Sketching",
     description: "In this tutorial, you'll learn how to use the Sketch tool to draw a custom 2D shape and extrude it into a 3D phone stand.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "a4202a9b5_10-SketchToolf.mp4",
     modelUrl: "https://www.tinkercad.com/things/1VxdouUXa0e-10-sketch-tool?sharecode=UKmCYCJhgZVa9uFt7WjtKUj2TJgH0iK5nh-ioA-lSAY",
     keyTakeaways: [
       "The Sketch tool provides a 2D environment where you can draw and edit custom geometry.",

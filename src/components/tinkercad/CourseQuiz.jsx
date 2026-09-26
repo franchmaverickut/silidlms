@@ -3,8 +3,6 @@ import { CheckCircle2, XCircle, Trophy, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QUIZ_QUESTIONS } from "./tutorialsData";
 
-const PASS_THRESHOLD = 0.7;
-
 export default function CourseQuiz() {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -15,7 +13,6 @@ export default function CourseQuiz() {
 
   const correctCount = QUIZ_QUESTIONS.filter((q, i) => answers[i] === q.answer).length;
   const scorePercent = Math.round((correctCount / totalQuestions) * 100);
-  const passed = scorePercent >= PASS_THRESHOLD * 100;
 
   const handleSubmit = () => {
     if (allAnswered) setSubmitted(true);
@@ -72,21 +69,17 @@ export default function CourseQuiz() {
       ) : (
         <div className="space-y-4">
           {/* Score banner */}
-          <div className={`rounded-2xl p-6 text-center ${passed ? "bg-green-50 border border-green-200" : "bg-amber-50 border border-amber-200"}`}>
+          <div className="rounded-2xl p-6 text-center bg-violet-50 border border-violet-200">
             <div className="flex justify-center mb-2">
-              {passed ? (
-                <Trophy size={40} className="text-green-600" />
-              ) : (
-                <RotateCcw size={40} className="text-amber-600" />
-              )}
+              <Trophy size={40} className="text-violet-600" />
             </div>
             <p className="font-poppins font-bold text-2xl text-foreground">
               {correctCount} / {totalQuestions} ({scorePercent}%)
             </p>
-            <p className={`text-sm mt-1 ${passed ? "text-green-700" : "text-amber-700"}`}>
-              {passed
-                ? "Congratulations! You've earned a downloadable certificate."
-                : `You need 70% or higher to pass. You scored ${scorePercent}%. Try again!`}
+            <p className="text-sm mt-1 text-violet-700">
+              {correctCount === totalQuestions
+                ? "Perfect score! You've mastered the fundamentals."
+                : `You answered ${correctCount} out of ${totalQuestions} correctly.`}
             </p>
           </div>
 

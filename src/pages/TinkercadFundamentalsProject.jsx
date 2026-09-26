@@ -74,14 +74,14 @@ export default function TinkercadFundamentalsProject({ isPublic = false }) {
           In this short online course, you'll learn the fundamentals of 3D CAD (computer-aided design) using Tinkercad, a free and beginner-friendly 3D design tool. Through a series of hands-on tutorials, you'll learn how to navigate the workspace and use key modelling tools to create a range of 3D printable designs.
         </p>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Before you begin, make sure you have created a free Tinkercad account and are logged in. Each tutorial includes a link to a starting model in Tinkercad, which you'll be guided to open as you follow along with the video. Work through each tutorial to build the designs yourself, then complete the quiz at the end of the course — score 70% or higher to earn a downloadable certificate.
+          Before you begin, make sure you have created a free Tinkercad account and are logged in. Each tutorial includes a link to a starting model in Tinkercad, which you'll be guided to open as you follow along with the video. Work through each tutorial to build the designs yourself, then complete the quiz at the end of the course to test your knowledge.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
             { label: "Who is this for", icon: "👤", text: "Beginners with no prior 3D modeling experience, or anyone who wants a structured intro to 3D CAD." },
             { label: "What you'll need", icon: "🧰", text: "A free Tinkercad account and a web browser. No software installation required." },
             { label: "How it works", icon: "📖", text: "Watch each video tutorial, follow along in Tinkercad using the starting model links, then check the Key Takeaways." },
-            { label: "By the end", icon: "🏆", text: "You'll be able to navigate, model, and export 3D printable designs — and earn a certificate by passing the quiz." },
+            { label: "By the end", icon: "🏆", text: "You'll be able to navigate, model, and export 3D printable designs — and test your knowledge with the final quiz." },
           ].map((item, i) => (
             <div key={i} className="flex gap-3 p-4 rounded-xl bg-muted/40 border border-border/40">
               <span className="text-xl flex-shrink-0">{item.icon}</span>
@@ -132,7 +132,7 @@ export default function TinkercadFundamentalsProject({ isPublic = false }) {
       {/* Quiz */}
       <Section title="Final Quiz" icon={<Trophy size={18} className="text-violet-600" />} defaultOpen={false}>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Complete the quiz below to test your knowledge. Score 70% or higher to earn a downloadable certificate!
+          Complete the quiz below to test your knowledge of Tinkercad fundamentals.
         </p>
         <CourseQuiz />
       </Section>
