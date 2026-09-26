@@ -55,7 +55,10 @@ function StepCard({ num, title, desc, media }) {
         {media?.type === "video" && media.size !== "icon" && (
           <video src={media.url} controls className="w-full rounded-xl border border-border/40" preload="metadata" />
         )}
-        {media?.type === "image" && (
+        {media?.type === "image" && media.size === "icon" && (
+          <img src={media.url} alt={title} className="w-20 h-20 object-cover rounded-lg border border-border/40 shadow-sm" />
+        )}
+        {media?.type === "image" && media.size !== "icon" && (
           <img src={media.url} alt={title} className="w-full rounded-xl border border-border/40" />
         )}
       </div>
@@ -72,7 +75,7 @@ const DRAWING_STEPS = [
   {
     title: "Measure",
     desc: "If you opted for the cable tidy or bag holder, accurately measure the thickness of the table where your clip will slot on to. If you opted for the filament clip, measure the thickness of the filament reel where the clip will attach.",
-    media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/d391f92fe_2DStep2.jpg" },
+    media: { type: "image", size: "icon", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/d391f92fe_2DStep2.jpg" },
   },
   {
     title: "Draw Reference",
