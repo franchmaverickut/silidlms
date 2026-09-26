@@ -215,6 +215,14 @@ export default function QuickClipsProject({ isPublic = false }) {
             </div>
           ))}
         </div>
+        <a
+          href="https://inkscape.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors"
+        >
+          <ExternalLink size={15} /> Download Inkscape (free)
+        </a>
       </Section>
 
       {/* How to Use the Course */}
