@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ModellingStepper from "@/components/quickclips/ModellingStepper";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/682842f2f_image.png";
 
@@ -252,9 +253,7 @@ export default function QuickClipsProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground leading-relaxed">
           We're now going to turn your sketch into a 3D model by extruding it! First, your JPG sketch needs to be converted into an SVG vector file using <strong>Inkscape</strong>. The SVG can then be uploaded into either Tinkercad or Fusion 360 to be extruded into a 3D printable model.
         </p>
-        <div className="space-y-3">
-          {MODELLING_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} media={s.media} />)}
-        </div>
+        <ModellingStepper steps={MODELLING_STEPS} />
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
           <p className="text-xs text-amber-800 leading-relaxed">
             <span className="font-bold">💡 Tip:</span> At the end of the tutorial you should have a 3D printable STL file exported and ready to slice. If you get stuck, ask your teacher or check the text-based instructions.
