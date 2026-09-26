@@ -199,24 +199,15 @@ export default function QuickClipsProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground leading-relaxed">
           The 2D to 3D workflow is a great way to introduce complete beginners to 3D printing, but it is also a very useful technique for any designer wishing to quickly turn their ideas into physical objects.
         </p>
-        <div className="rounded-xl bg-muted/40 border border-border/40 p-5 space-y-3">
-          <p className="text-xs font-poppins font-bold text-foreground uppercase tracking-wide">The Workflow</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Did you know that you can turn 2D sketches into 3D models within a matter of minutes? Whether it's for making quick prototypes or functional parts, this efficient workflow can be a great addition to your creative arsenal. In this resource, you will learn how to make a range of clip accessories, including a cable tidy, a bag holder, and a filament clip.
-          </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Before you begin, let's take a look at the workflow. The process begins by <strong>measuring</strong> the thickness of the object that your clip will attach to. This might be a table, a phone, a piece of clothing, amongst many other objects.
-          </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            You can then faintly <strong>draw a reference image</strong> of the object to its real-life dimensions. Using a black pen, an outline of your clip can then be drawn around the reference image. This example is a cable tidy. To finish the sketch, it is colored in and the reference image is erased.
-          </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            The sketch is <strong>scanned and imported</strong> into Inkscape software, where it is turned into a scalable vector graphic — a type of file that can be extruded into a 3D model. The scalable vector graphic is then imported into a 3D software such as Tinkercad or Fusion 360 and <strong>extruded</strong> to a depth of your choice.
-          </p>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Finally, the STL is <strong>exported for 3D printing</strong>. Once 3D printed, you can analyze your model in terms of its aesthetics and functionality before making improvements or developing new unique products.
-          </p>
-        </div>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Did you know that you can turn 2D sketches into 3D models within a matter of minutes? Whether it's for making quick prototypes or functional parts, this efficient workflow can be a great addition to your creative arsenal. In this resource, you will learn how to make a range of clip accessories, including a cable tidy, a bag holder, and a filament clip.
+        </p>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Before you begin, let's take a look at the workflow. The process begins by <strong>measuring</strong> the thickness of the object that your clip will attach to — this might be a table, a phone, a piece of clothing, amongst many other objects. You can then faintly <strong>draw a reference image</strong> of the object to its real-life dimensions. Using a black pen, an outline of your clip can then be drawn around the reference image. To finish the sketch, it is colored in and the reference image is erased.
+        </p>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          The sketch is <strong>scanned and imported</strong> into Inkscape software, where it is turned into a scalable vector graphic — a type of file that can be extruded into a 3D model. The scalable vector graphic is then imported into a 3D software such as Tinkercad or Fusion 360 and <strong>extruded</strong> to a depth of your choice. Finally, the STL is <strong>exported for 3D printing</strong>. Once 3D printed, you can analyze your model in terms of its aesthetics and functionality before making improvements or developing new unique products.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
             { label: "Software Needed", icon: "💻", text: "Inkscape (free) + either Tinkercad (recommended for beginners / under 13) or Fusion 360 (over 13). All are free for education and hobbyists." },
