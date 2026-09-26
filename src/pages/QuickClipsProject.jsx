@@ -120,6 +120,44 @@ const PRINT_STEPS = [
   },
 ];
 
+const MODELLING_STEPS = [
+  { title: "Review Example Clips", desc: "Review example clips and choose a practical object whose side profile can become a printable cable clip.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ca1a5a16f_01-112855-intro.png" } },
+  { title: "Open File → Import", desc: "Open File menu in Inkscape, then select Import to bring your photographed sketch into the document.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/55c3aa6da_02-112900-file-import.png" } },
+  { title: "Select cable tidy.jpg", desc: "Select cable tidy.jpg in file browser, verify preview, then click Open to continue importing image.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/aa9bcc9ff_03-112916-select-jpg.png" } },
+  { title: "Confirm Import Settings", desc: "Keep default image import settings, then click OK to embed the photograph directly within the document.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/fd6233fbb_04-112919-import-ok.png" } },
+  { title: "Confirm Image Imported", desc: "Confirm imported cable clip image appears on page, selected with resize handles and ready for positioning.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/bbbeffc88_05-112927-imported-image.png" } },
+  { title: "Adjust Vertical View", desc: "Use mouse wheel to adjust vertical view and keep imported image centered within page while navigating workspace.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6143e8876_06-112932-zoom-state.png" } },
+  { title: "Zoom Closer", desc: "Hold Control while scrolling mouse wheel to zoom closer, making cable clip's edges easier to inspect.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b7a3d6e2f_07-112935-zoom-detail.png" } },
+  { title: "Pan Canvas", desc: "Hold Space and drag mouse to pan canvas freely, repositioning selected image without moving the object.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/663a54b7c_08-112940-pan-canvas.png" } },
+  { title: "Path → Trace Bitmap", desc: "With image selected, open Path menu and choose Trace Bitmap to convert photograph into editable vector.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/f8deb1ba7_09-112943-trace-bitmap.png" } },
+  { title: "Enable Live Preview", desc: "Enable Live Preview in Trace Bitmap dialog to immediately see how current settings affect resulting vector.", media: { type: "image", url: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/79eea18d0_10-112953-live-preview.png" } },
+  { title: "Set Brightness Cutoff", desc: "Set Brightness cutoff threshold around 0.450, checking preview for solid shape with preserved openings and clean edges." },
+  { title: "Test Lower Threshold", desc: "Test a lower threshold like 0.300 to understand how insufficient values create gaps, noise, and missing regions." },
+  { title: "Increase Threshold", desc: "Increase threshold until preview becomes a solid, flat silhouette without unwanted speckles or broken contour sections." },
+  { title: "Open Options Tab", desc: "Open Options tab after achieving a clean preview to access path smoothing and optimization controls." },
+  { title: "Optimize Paths", desc: "Enable Optimize paths and set tolerance to 5.00, reducing excess nodes and smoothing jagged traced edges." },
+  { title: "Execute Trace", desc: "Click OK to execute the trace, create a vector silhouette, and close the Trace Bitmap dialog when satisfied." },
+  { title: "Reveal Vector", desc: "Drag original gray raster aside, revealing separate black traced vector underneath for comparison and editing." },
+  { title: "Inspect Vector Shape", desc: "Select black vector and zoom closer, checking its overall shape before making detailed corrections manually." },
+  { title: "Inspect Notch & Curves", desc: "Inspect inner notch and surrounding curves closely, confirming important openings remain distinct and properly shaped." },
+  { title: "Reveal Editable Nodes", desc: "Double-click vector to reveal editable nodes, then examine contour for excessive points or irregular transitions." },
+  { title: "Locate Unwanted Bulges", desc: "Locate small unwanted bulges or speckles along outline before switching to eraser tool for cleanup." },
+  { title: "Zoom onto Bulge", desc: "Zoom tightly onto unwanted bulge, ensuring eraser width is appropriate for precise removal without damaging contour." },
+  { title: "Erase the Defect", desc: "Click and drag eraser stroke across unwanted bump, removing only defect while preserving neighboring curve." },
+  { title: "Save As SVG", desc: "Open Save As dialog, select filename field, and prepare descriptive SVG filename for cleaned vector file." },
+  { title: "Name & Save", desc: "Enter cable tidy.svg, confirm Inkscape SVG format, then click Save to preserve editable vector file." },
+  { title: "Import SVG to Tinkercad", desc: "In Tinkercad, import saved SVG using default centering, scale, and dimensions, then click blue Import." },
+  { title: "Confirm Extruded Clip", desc: "Confirm purple extruded clip appears on workplane, then inspect orientation and shape from top view." },
+  { title: "Add Reference Box", desc: "Drag red Box from Basic Shapes panel onto workplane to create a sizing reference for table thickness." },
+  { title: "Position Reference Box", desc: "Position red reference box against purple clip opening, checking whether clip dimensions fit intended table edge." },
+  { title: "Scale Proportionally", desc: "Hold Shift and drag white corner handle to scale clip proportionally around reference box accurately." },
+  { title: "Disable Snap Grid", desc: "Open Snap Grid menu and choose Off, allowing finer unrestricted scaling adjustments beyond preset increments." },
+  { title: "Fine-tune Scaling", desc: "Drag upper-right corner handle after disabling snapping, enlarging clip smoothly while retaining proportions around reference shape." },
+  { title: "Monitor Dimensions", desc: "Monitor horizontal dimension value while scaling, stopping near 27.98 millimeters or your required target width." },
+  { title: "Orbit & Inspect", desc: "Orbit to perspective view and inspect finished purple clip, verifying clean extrusion, notch geometry, and overall proportions." },
+  { title: "Compare with Concept", desc: "Compare final three-dimensional clip with design concept, confirming key features survived tracing, cleanup, scaling, and extrusion." },
+];
+
 export default function QuickClipsProject({ isPublic = false }) {
   return (
     <div className="max-w-3xl mx-auto pb-16 space-y-6">
@@ -214,30 +252,8 @@ export default function QuickClipsProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground leading-relaxed">
           We're now going to turn your sketch into a 3D model by extruding it! First, your JPG sketch needs to be converted into an SVG vector file using <strong>Inkscape</strong>. The SVG can then be uploaded into either Tinkercad or Fusion 360 to be extruded into a 3D printable model.
         </p>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Select the tutorial that matches your chosen software and follow it through. Both tutorials include the Inkscape step and offer voice-over and text-based instruction options — choose your preferred learning style.
-        </p>
         <div className="space-y-3">
-          <div className="flex gap-4 p-4 rounded-xl bg-muted/40 border border-border/40 items-start">
-            <span className="text-2xl flex-shrink-0">🟢</span>
-            <div>
-              <p className="font-poppins font-bold text-sm text-foreground mb-1">Tinkercad Tutorial</p>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-2">
-                A step-by-step tutorial to design a clip accessory using Inkscape and Tinkercad — with text instructions. Recommended for beginners and those under 13.
-              </p>
-              <span className="text-xs text-muted-foreground italic">Provided by your teacher or course platform.</span>
-            </div>
-          </div>
-          <div className="flex gap-4 p-4 rounded-xl bg-muted/40 border border-border/40 items-start">
-            <span className="text-2xl flex-shrink-0">🔵</span>
-            <div>
-              <p className="font-poppins font-bold text-sm text-foreground mb-1">Fusion 360 Tutorial</p>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-2">
-                A step-by-step tutorial to design a clip accessory using Inkscape and Fusion 360. Recommended for those over 13 seeking more advanced CAD capabilities.
-              </p>
-              <span className="text-xs text-muted-foreground italic">Provided by your teacher or course platform.</span>
-            </div>
-          </div>
+          {MODELLING_STEPS.map((s, i) => <StepCard key={i} num={i + 1} title={s.title} desc={s.desc} media={s.media} />)}
         </div>
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
           <p className="text-xs text-amber-800 leading-relaxed">
