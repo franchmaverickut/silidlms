@@ -41,7 +41,18 @@ function StepCard({ num, title, desc, media }) {
       </div>
       <div className="p-5 space-y-4">
         <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-        {media?.type === "video" && (
+        {media?.type === "video" && media.size === "icon" && (
+          <video
+            src={media.url}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="w-20 h-20 object-cover rounded-lg border border-border/40 shadow-sm"
+          />
+        )}
+        {media?.type === "video" && media.size !== "icon" && (
           <video src={media.url} controls className="w-full rounded-xl border border-border/40" preload="metadata" />
         )}
         {media?.type === "image" && (
@@ -56,7 +67,7 @@ const DRAWING_STEPS = [
   {
     title: "Select Product",
     desc: "Decide on whether you want to make a cable tidy, a bag holder, or a filament clip. Use the images here to help you decide.",
-    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/88c00bf9e_2DStep1.mp4" },
+    media: { type: "video", size: "icon", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/88c00bf9e_2DStep1.mp4" },
   },
   {
     title: "Measure",
@@ -66,22 +77,22 @@ const DRAWING_STEPS = [
   {
     title: "Draw Reference",
     desc: "On a blank sheet of paper, use a pencil to faintly draw the edge of the object where your clip will attach — the edge of a table for a cable tidy or bag holder, the edge of a filament reel for a filament clip. Create the drawing at real-life dimensions (scale 1:1) so you get a good perspective on the size of your clip accessory.",
-    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/0a6c1c1f2_2DStep3.mp4" },
+    media: { type: "video", size: "icon", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/0a6c1c1f2_2DStep3.mp4" },
   },
   {
     title: "Draw Outline",
     desc: "Using a black pen, draw an outline of your clip accessory around the reference sketch. Try to create as smooth an outline as possible. If required, draw the outline in pencil first and trace over it in pen.",
-    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/15b700b42_2Dstep4.mp4" },
+    media: { type: "video", size: "icon", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/15b700b42_2Dstep4.mp4" },
   },
   {
     title: "Fill in Outline",
     desc: "Once you are happy with your outline, colour it in using a black marker or pen. The coloured-in area will be extruded to create a 3D model, so ensure it is thoroughly filled in.",
-    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/81ada87df_2Dstep5.mp4" },
+    media: { type: "video", size: "icon", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/81ada87df_2Dstep5.mp4" },
   },
   {
     title: "Scan JPG",
     desc: "Use an eraser to get rid of the pencil reference image, leaving only your clip accessory drawing. Scan the drawing, or take a top-down photo of it, and save it as a JPG file.",
-    media: { type: "video", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/58763b520_2Dstep6.mp4" },
+    media: { type: "video", size: "icon", url: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/58763b520_2Dstep6.mp4" },
   },
 ];
 
