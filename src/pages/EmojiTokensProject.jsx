@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronDown, ChevronUp, Play, ExternalLink, Clock, Layers, Star } from "lucide-react";
+import { ChevronLeft, ChevronDown, ChevronUp, ExternalLink, Clock, Layers, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
@@ -18,7 +18,7 @@ const IMG_STEP3 = "https://media.base44.com/images/public/69d386ad9523e2ce045365
 const IMG_STEP4 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/18dcd4486_STEP4-Use.png";
 
 const PORTFOLIO_URL = "https://docs.google.com/presentation/d/1MwPTeClDyl_uXPpKisTIxu1HIAhkJGHwmh4Ksf4sfZI/edit?slide=id.g1c4697c0878_0_68#slide=id.g1c4697c0878_0_68";
-const TUTORIAL_VIDEO = "https://youtu.be/KQrX50B5oe0";
+const TUTORIAL_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9d7cd95ce_EmojiTokens-ExplainerVideof.mp4";
 
 function Section({ title, icon, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -177,20 +177,14 @@ export default function EmojiTokensProject({ isPublic = false }) {
           Follow this tutorial to design example emoji tokens in Tinkercad, building the 3D CAD skills you'll need for your own unique tokens. Choose your preferred learning format — video or text-based instructions.
         </p>
         <div className="rounded-2xl overflow-hidden aspect-video bg-black">
-          <iframe
-            src="https://www.youtube.com/embed/KQrX50B5oe0?origin=https://base44.app"
+          <video
+            src={TUTORIAL_VIDEO}
             className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            title="Emoji Tokens Tinkercad Tutorial"
+            controls
+            preload="metadata"
+            title="Emoji Tokens Explainer Video"
           />
         </div>
-        <a href={TUTORIAL_VIDEO} target="_blank" rel="noopener noreferrer">
-          <Button className="rounded-xl gap-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm">
-            <Play size={14} /> Watch on YouTube
-          </Button>
-        </a>
       </Section>
 
       {/* Design Process */}
