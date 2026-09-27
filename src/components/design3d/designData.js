@@ -342,13 +342,15 @@ export const SECTIONS = [
         title: "Horizontal holes may create overhangs",
         description:
           "When printed on their side, the top of the hole becomes an unsupported span, which can lead to sagging or a flattened surface.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b40199649_8-Holes-Horizontalholesmaycreateoverhangs.png",
       },
       {
         title: "Horizontal holes can be improved by changing shape",
         description:
           "Using shapes such as teardrops or diamonds replaces flat overhangs with angled surfaces, allowing layers to build gradually and print cleanly without support.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/55b0ded2c_8-Holes-Horizontalholescanbeimprovedbychangingshape.png",
       },
     ],
   },
@@ -357,7 +359,8 @@ export const SECTIONS = [
     title: "Sharp + Narrow Points",
     intro:
       "Sharp points occur when geometry tapers down to an extremely small area or a perfect tip.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/4a239957d_9-SharpandNarrowPoints.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare the sharp and flat-tipped spikes in both orientations. Look closely at the tips and notice where the geometry stops short, and try gently bending them to feel how strength varies.",
@@ -373,19 +376,22 @@ export const SECTIONS = [
         title: "Perfectly sharp tips cannot be printed",
         description:
           "As geometry narrows below the printer's minimum feature size, the slicer cannot generate toolpaths. This causes tips to be shortened or rounded instead of forming a true point.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/49d5349fb_9-SharpandNarrowPoints-Perfectlysharptipscannotbeprinted.png",
       },
       {
         title: "Adding a small flat tip improves reliability",
         description:
           "A defined flat surface ensures the feature remains within printable limits, allowing it to reach the intended size. This produces more consistent and predictable results.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/1e6540a11_9-SharpandNarrowPoints-Addingasmallflattipimprovesreliability.png",
       },
       {
         title: "Vertical spikes snap very easily",
         description:
           "Because they are built layer by layer, vertical spikes are weak between layers and can break easily. Adjusting orientation or adding a flat tip helps improve strength and durability.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/7251c1b75_9-SharpandNarrowPoints-Verticalspikessnapveryeasily.png",
       },
     ],
   },
@@ -395,7 +401,8 @@ export const SECTIONS = [
     title: "Multicolour",
     intro:
       "Multicolour 3D printing allows a single part to be produced using multiple filaments. This is commonly achieved using filament switching systems such as an AMS.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/0ea4e0ae9_10-Multicolour.mp4",
     toggles: {
       reviewModel: null,
       topTip:
@@ -410,19 +417,22 @@ export const SECTIONS = [
         title: "Multicolour prints can significantly increase print time",
         description:
           "Each colour change requires the printer to switch filament and purge material, which adds time and waste. Designs with frequent colour changes across many layers are the least efficient.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6065e74ad_10-Multicolour-Multicolourprintscansignificantlyincreaseprinttime.png",
       },
       {
         title: "Separate parts can reduce time and waste",
         description:
           "Printing parts in different colours as separate components avoids filament switching and produces faster, more efficient prints. A small clearance, around 0.1mm, can be used to create a simple press fit for assembly.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8140dc8b5_10-Multicolour-Separatepartscanreducetimeandwaste.png",
       },
       {
         title: "Limiting colour changes improves efficiency",
         description:
           "Restricting colour changes to specific areas, such as the top layers, reduces the number of filament swaps. This helps balance print time, material use, and overall appearance.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/fc7c81f63_10-Multicolour-Limitingcolourchangesimprovesefficiency.png",
       },
     ],
   },
