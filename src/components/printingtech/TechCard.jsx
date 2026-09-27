@@ -76,8 +76,9 @@ export default function TechCard({ tech }) {
           <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">External Video</p>
           <div className="rounded-xl overflow-hidden border border-border/40 shadow-sm" style={{ aspectRatio: "16 / 9" }}>
             <iframe
-              src={`https://www.youtube.com/embed/${tech.videoId}`}
+              src={`https://www.youtube-nocookie.com/embed/${tech.videoId}`}
               title={`${tech.name} video`}
+              referrerPolicy="strict-origin-when-cross-origin"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               className="w-full h-full"

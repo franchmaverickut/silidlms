@@ -120,8 +120,9 @@ export default function TinkercadFundamentalsProject({ isPublic = false }) {
         </p>
         <div className="rounded-xl overflow-hidden border border-border/40 shadow-sm" style={{ aspectRatio: "16 / 9" }}>
           <iframe
-            src={BONUS_VIDEO}
+            src={BONUS_VIDEO.replace("youtube.com/embed", "youtube-nocookie.com/embed")}
             title="35 Rapid-Fire Tinkercad Tips"
+            referrerPolicy="strict-origin-when-cross-origin"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="w-full h-full"
