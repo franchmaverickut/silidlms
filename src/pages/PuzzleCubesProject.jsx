@@ -43,45 +43,23 @@ function Section({ title, icon, children, defaultOpen = true }) {
   );
 }
 
-function InfoCard({ icon, label, text }) {
-  return (
-    <div className="flex gap-3 p-4 rounded-xl bg-muted/40 border border-border/40">
-      <span className="text-xl flex-shrink-0">{icon}</span>
-      <div>
-        <p className="font-poppins font-bold text-xs text-foreground mb-1">{label}</p>
-        <p className="text-xs text-muted-foreground leading-relaxed">{text}</p>
-      </div>
-    </div>
-  );
-}
-
-function StepCard({ num, title, desc, tip, warning, img, video }) {
+function IterationStep({ num, title, desc, img, video }) {
   return (
     <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-      <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-        <span className="w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
-        <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
-      </div>
-      <div className="p-5 space-y-3">
+      {img && (
+        <img src={img} alt={title} className="w-full object-cover max-h-80" />
+      )}
+      {video && (
+        <div className="bg-black">
+          <video src={video} controls preload="metadata" className="w-full" title={title} />
+        </div>
+      )}
+      <div className="p-5 space-y-2">
+        <div className="flex items-center gap-3">
+          <span className="px-2.5 py-1 rounded-full bg-orange-500 text-white text-xs font-bold flex-shrink-0">STEP {num}</span>
+          <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
+        </div>
         <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
-        {img && (
-          <img src={img} alt={title} className="w-full rounded-xl object-cover max-h-72" />
-        )}
-        {video && (
-          <div className="rounded-xl overflow-hidden bg-black">
-            <video src={video} controls preload="metadata" className="w-full" title={title} />
-          </div>
-        )}
-        {tip && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
-            <p className="text-xs text-amber-800"><span className="font-bold">💡 Tip:</span> {tip}</p>
-          </div>
-        )}
-        {warning && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
-            <p className="text-xs text-blue-800 leading-relaxed">{warning}</p>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -110,276 +88,177 @@ export default function PuzzleCubesProject({ isPublic = false }) {
           <h1 className="font-poppins font-bold text-3xl md:text-5xl text-white leading-tight">Puzzle Cubes</h1>
           <p className="text-white/80 text-sm md:text-base max-w-xl">Design and 3D print a puzzle cube made of separate pieces that fit together to form one perfect cube.</p>
           <div className="flex flex-wrap gap-5 text-white/70 text-sm">
-            <span className="flex items-center gap-1.5"><Clock size={15} /> 4 hours (excl. print time)</span>
+            <span className="flex items-center gap-1.5"><Clock size={15} /> 3 hours (excl. print time)</span>
             <span className="flex items-center gap-1.5"><Layers size={15} /> 1 prototype + 1 iteration</span>
             <span className="flex items-center gap-1.5"><Star size={15} /> All skill levels</span>
           </div>
         </div>
       </div>
 
-      {/* Project Overview */}
-      <Section title="Project Overview" icon="📋" defaultOpen={true}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <InfoCard icon="✅" label="Criteria & Constraints" text="The puzzle cube must be made from smaller cube units. Each small cube should measure 10 mm × 10 mm × 10 mm. The final assembled puzzle should form a complete cube measuring 30 mm × 30 mm × 30 mm. All pieces must be 3D printed and fit together properly." />
-          <InfoCard icon="⭐" label="Difficulty" text="Basic — suitable for learners with foundational skills in 3D design and 3D printing." />
-          <InfoCard icon="🕐" label="Project Length" text="~4 hours (excl. 3D printing time). Includes designing the puzzle cube, testing the prototype, modifying the model, designing a case, and creating assembly instructions." />
-          <InfoCard icon="📁" label="Project Portfolio" text="Document your design process in a portfolio. Include screenshots of your CAD model, photos of your 3D print, testing notes, design changes, and final instructional diagrams." />
-        </div>
-      </Section>
-
-      {/* Design Considerations */}
-      <Section title="Design Considerations" icon="🔬" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          This project focuses on designing objects that fit together. Instead of deep research, you will begin directly with 3D CAD design — create an initial puzzle cube prototype, test it, improve it, then create a case and assembly guide.
-        </p>
-        <div className="space-y-3">
-          {[
-            { icon: "📦", title: "Cube Size", desc: "Start with a small cube measuring 10 mm × 10 mm × 10 mm. These small cubes act as the building blocks of the puzzle pieces." },
-            { icon: "🔲", title: "Final Cube Size", desc: "The final assembled puzzle should form a larger cube measuring 30 mm × 30 mm × 30 mm — a 3 × 3 × 3 cube structure." },
-            { icon: "🧩", title: "Puzzle Pieces", desc: "Adjoining small cubes can be combined to form different puzzle pieces. Each piece should have a unique shape, but all must still fit together to complete the final cube." },
-            { icon: "📏", title: "Tolerance", desc: "Tolerance refers to the small difference between your CAD design and the actual 3D printed part. If pieces are too tight or don't fit, you may need to make small adjustments to your model." },
-            { icon: "🖨️", title: "3D Printing Orientation", desc: "Before printing, separate and orient puzzle pieces properly. Try to reduce or remove overhangs so the pieces print cleanly." },
-          ].map((item, i) => (
-            <div key={i} className="flex gap-4 p-4 rounded-xl bg-muted/40 border border-border/40">
-              <span className="text-2xl flex-shrink-0">{item.icon}</span>
-              <div>
-                <p className="font-poppins font-bold text-sm text-foreground mb-1">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Tinkercad Tutorial */}
-      <Section title="Tinkercad Tutorial — Build the Example Model" icon="🖥️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Follow the step-by-step tutorial to design a puzzle cube in Tinkercad. You may use video or text-based instructions depending on your preferred learning style.
+      {/* Intro */}
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          In this project, you'll be designing a 3D printed puzzle cube. The process involves following a tutorial to design an initial prototype, which will then be tested and modified. You'll then be challenged to create a case for the puzzle and a set of assembly instructions using isometric diagrams. Watch the intro video below and browse through the project sections to learn more about the journey.
         </p>
         <div className="rounded-2xl overflow-hidden bg-black">
-          <video src={VIDEO_TINKERCAD} controls preload="metadata" className="w-full" title="Puzzle Cube Tinkercad Tutorial" />
+          <video src={VIDEO_TINKERCAD} controls preload="metadata" className="w-full" title="Puzzle Cube intro tutorial" />
         </div>
-        <div className="space-y-3">
+        <p className="text-xs text-muted-foreground italic leading-relaxed">
+          *This project guides you through the design process using a series of design methods. If you'd like to adapt the project or challenge yourself to take an alternative approach to the project instructions, feel free to select different methods from the Design Method Toolkit.
+        </p>
+      </Card>
+
+      {/* Criteria + Constraints */}
+      <Section title="Criteria + Constraints" icon="✅" defaultOpen={false}>
+        <ul className="space-y-3">
+          <li className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+            <span className="text-orange-500 font-bold flex-shrink-0 mt-0.5">•</span>
+            The assembled puzzle cube should have a length, width and height of 30mm.
+          </li>
+          <li className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+            <span className="text-orange-500 font-bold flex-shrink-0 mt-0.5">•</span>
+            Puzzle pieces should be built by combining 1000mm³ cubes (10x10x10mm) so that it fills the overall volume.
+          </li>
+          <li className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+            <span className="text-orange-500 font-bold flex-shrink-0 mt-0.5">•</span>
+            Individual cubes should connect by adjoining faces to form pieces. Pieces should be a minimum of 4 connecting cubes and a maximum of 10.
+          </li>
+        </ul>
+      </Section>
+
+      {/* Project Difficulty */}
+      <Section title="Project Difficulty" icon="⭐" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          This project is rated as basic and is suitable for all those who have foundational skills in 3D design and 3D printing.
+        </p>
+      </Section>
+
+      {/* Project Length */}
+      <Section title="Project Length" icon="🕐" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          The estimated project length is 3 hours, excluding any 3D printing time. This estimate includes designing and making an initial puzzle cube plus time for testing and creating 1 improved version with an additional casing for the puzzle. The project can be run in shorter or longer periods of time depending on the number of iterations you choose to make. We recommend breaking the project up into multiple sessions (e.g. 3 x 1 hour sessions), which will allow you to 3D print necessary objects between sessions.
+        </p>
+      </Section>
+
+      {/* Equipment Required */}
+      <Section title="Equipment Required" icon="🧰" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">To participate in this project, you will require:</p>
+        <ul className="space-y-2.5">
           {[
-            { num: 1, step: "Open Tinkercad or your preferred CAD software." },
-            { num: 2, step: "Create a cube with dimensions of 10 mm × 10 mm × 10 mm." },
-            { num: 3, step: "Duplicate the cube along the horizontal and vertical axes." },
-            { num: 4, step: "Arrange the cubes to form a larger 30 mm × 30 mm × 30 mm cube." },
-            { num: 5, step: "Group adjoining small cubes to create different puzzle pieces." },
-            { num: 6, step: "Make sure all pieces can combine into one complete cube." },
-            { num: 7, step: "Separate each puzzle piece for 3D printing." },
-          ].map(({ num, step }) => (
-            <div key={num} className="flex items-start gap-3 py-2">
-              <span className="w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{num}</span>
-              <p className="text-sm text-foreground/80 leading-relaxed">{step}</p>
-            </div>
-          ))}
-        </div>
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-          <p className="text-xs text-amber-800"><span className="font-bold">💡 Tip:</span> Keep each puzzle piece simple enough to print, but challenging enough to solve.</p>
-        </div>
-      </Section>
-
-      {/* Product Analysis & Testing */}
-      <Section title="Product Analysis & Testing" icon="📊" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          After printing your initial prototype, test the puzzle by assembling all pieces into a perfect cube.
-        </p>
-        <div className="space-y-3">
-          <StepCard
-            num="1"
-            title="Test"
-            desc="Try to assemble your puzzle cube. Observe which pieces fit properly and which pieces are difficult to connect."
-            img={IMG_TEST}
-            warning="Record: Which pieces fit well? Which are too tight or too loose? Did the final shape form a perfect cube? Was the puzzle too easy or too difficult?"
-          />
-          <StepCard
-            num="2"
-            title="Tolerance"
-            desc="If the pieces do not fit properly, the problem may be caused by tolerance. Because 3D printers are not always perfectly accurate, printed parts may be slightly larger or smaller than the CAD model."
-            video={VIDEO_TOLERANCE}
-            tip="You may need to add small gaps or reduce certain dimensions so the puzzle pieces can fit smoothly."
-          />
-          <StepCard
-            num="3"
-            title="Modify"
-            desc="Go back to your CAD model and make small changes based on your testing results. You do not need to reprint the whole puzzle — only reprint the pieces that need adjustment."
-            img={IMG_MODIFY}
-          />
-        </div>
-      </Section>
-
-      {/* Feature Variation Models — Design Process */}
-      <Section title="Feature Variation Models — Design Process" icon="🔁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Use your testing results to improve your puzzle cube. The goal is to create a better version of your design through iteration.
-        </p>
-        <div className="space-y-4">
-          <StepCard
-            num="1"
-            title="Example Model Diagram"
-            desc="Before making your final version, review the structure of your original puzzle cube. Check how each piece connects to the others and how the complete cube is formed."
-          />
-          <StepCard
-            num="2"
-            title="Base Model"
-            desc="Your base model is the first version of your puzzle cube. This version should follow the 3 × 3 × 3 cube structure using 10 mm cube units."
-          />
-          <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-            <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-              <span className="w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
-              <span className="font-poppins font-bold text-sm text-foreground">Feature Variations</span>
-            </div>
-            <div className="p-5 space-y-2">
-              <p className="text-sm text-foreground/80 leading-relaxed">Choose one or more features to improve. Possible variations:</p>
-              <ul className="space-y-1.5">
-                {[
-                  "Increase spacing between pieces for better fit",
-                  "Change the shape of one puzzle piece",
-                  "Reduce sharp edges",
-                  "Improve piece orientation for printing",
-                  "Make the puzzle more challenging",
-                  "Make the pieces easier to assemble",
-                ].map((v, i) => (
-                  <li key={i} className="flex gap-2 text-xs text-muted-foreground">
-                    <span className="text-orange-500 font-bold flex-shrink-0">•</span> {v}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <StepCard
-            num="4"
-            title="Sketch and Plan"
-            desc="Before editing your CAD model, sketch your changes. Label the pieces and show how they should fit together."
-          />
-          <StepCard
-            num="5"
-            title="3D Printing"
-            desc="Print your modified puzzle pieces. Make sure each piece is oriented properly on the print bed. Reduce overhangs where possible."
-          />
-          <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-            <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-              <span className="w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">6</span>
-              <span className="font-poppins font-bold text-sm text-foreground">Test + Iterate</span>
-            </div>
-            <div className="p-5 space-y-3">
-              <p className="text-sm text-foreground/80 leading-relaxed">
-                Assemble the modified puzzle again. Compare the new version with your first prototype and decide if the changes improved the design.
-              </p>
-              <div className="bg-orange-50 border border-orange-200 rounded-xl p-3">
-                <p className="text-xs text-orange-800 font-semibold mb-1">Iteration Goal</p>
-                <p className="text-xs text-orange-700">Each iteration should bring the puzzle closer to a perfect fit — pieces that slot together smoothly but hold their shape when assembled.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Design Case */}
-      <Section title="Design Case" icon="📦" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          After improving your puzzle pieces, design a case that can hold all the parts safely and securely.
-        </p>
-        <img src={IMG_DESIGN_CASE} alt="Design case example" className="w-full rounded-xl object-cover max-h-72" />
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">The case should:</p>
-          {[
-            "Fit all puzzle pieces",
-            "Protect the pieces when stored",
-            "Be easy to open and close",
-            "Use proper tolerance so the pieces are not too tight",
-            "Be fully 3D printable",
+            "A laptop or computer with either Tinkercad or Fusion 360 software (both free for educational and personal use).",
+            "A software or web application to create a digital portfolio. We recommend using Google Slides as we provide a portfolio template in this format.",
+            "Access to a 3D printer and 3D printing material.",
+            "A device to capture images of your design process to insert into the project portfolio.",
+            "Additional materials may be required depending on the design methods you use when developing your solution.",
           ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-orange-500 font-bold flex-shrink-0">✓</span> {item}
-            </div>
+            <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+              <span className="text-orange-500 font-bold flex-shrink-0 mt-0.5">•</span> {item}
+            </li>
           ))}
-        </div>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-xs text-blue-800 leading-relaxed">You may design a simple box, sliding case, open tray, or snap-fit container.</p>
-        </div>
+        </ul>
       </Section>
 
-      {/* Final 3D Print */}
-      <Section title="Final 3D Print" icon="🖨️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          After completing your modifications and case design, print your final version.
+      {/* Initial Prototype */}
+      <Card className="p-6 border-border/60 shadow-sm">
+        <h2 className="font-poppins font-bold text-lg text-foreground mb-2">Initial Prototype</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          This project aims to teach you about designing objects that fit together. Therefore, rather than performing deep research on a topic, we're going to jump straight into 3D CAD to design an initial puzzle cube prototype.
         </p>
-        <img src={IMG_3D_PRINT} alt="Final 3D printed puzzle cube" className="w-full rounded-xl object-cover max-h-72" />
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Before printing, check the following:</p>
-          {[
-            "Pieces are properly separated",
-            "Parts are correctly oriented",
-            "Overhangs are reduced",
-            "The case has enough clearance",
-            "The final cube can be assembled",
-            "The design is clean and functional",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-green-600 font-bold flex-shrink-0">✓</span> {item}
-            </div>
-          ))}
-        </div>
-      </Section>
+      </Card>
 
-      {/* Instructional Diagrams */}
-      <Section title="Instructional Diagrams" icon="🧩" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Create a set of instructional diagrams to show how the puzzle is assembled. These diagrams act like an answer sheet. Use isometric drawings to show the puzzle clearly from a 3D angle.
-        </p>
-        <img src={IMG_DIAGRAMS} alt="Instructional diagram example" className="w-full rounded-xl object-cover max-h-72" />
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Your diagrams should include:</p>
-          {[
-            "Each puzzle piece",
-            "The order of assembly",
-            "Arrows showing where pieces should go",
-            "A final image of the completed cube",
-            "Labels or step numbers",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-orange-500 font-bold flex-shrink-0">→</span> {item}
-            </div>
-          ))}
-        </div>
-      </Section>
+      {/* Iteration */}
+      <div className="space-y-4">
+        <Card className="p-6 border-orange-200 bg-orange-50/40 shadow-sm">
+          <h2 className="font-poppins font-bold text-lg text-foreground mb-2">Iteration</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            With your initial prototype manufactured, let's go through the iteration phase! Follow the below steps, which will guide you through various activities and challenges to complete the project.
+          </p>
+        </Card>
 
-      {/* Portfolio Guide */}
-      <Section title="Project Portfolio Guide" icon="📁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Document your design process in a Google Slides or digital portfolio format.
+        <IterationStep
+          num={1}
+          title="Test"
+          img={IMG_TEST}
+          desc="Try and assemble your puzzle cube. Depending on the composition of your pieces, you might find that your puzzle doesn't fit together to form a perfect cube. Take note of what pieces didn't fit."
+        />
+        <IterationStep
+          num={2}
+          title="Tolerance"
+          video={VIDEO_TOLERANCE}
+          desc="If pieces didn't fit like they should, it's likely down to something called tolerance and this relates to the accuracy of your 3D printer. Watch the below video to learn more about tolerance."
+        />
+        <IterationStep
+          num={3}
+          title="Modify"
+          img={IMG_MODIFY}
+          desc="Go back to your 3D CAD model and make small adjustments based on what you have learnt about tolerance. Remember that you don't need to reprint the entire puzzle, just the pieces that required adjusting."
+        />
+        <IterationStep
+          num={4}
+          title="Design Case"
+          img={IMG_DESIGN_CASE}
+          desc="Before you 3D print your modifications, use your knowledge of tolerance to design a case for the puzzle pieces. Try to design something that holds all the pieces safely and securely."
+        />
+        <IterationStep
+          num={5}
+          title="3D Print"
+          img={IMG_3D_PRINT}
+          desc="With your modifications and case complete, bring your final design to life with 3D printing. Again, remember to orientate pieces optimally, reducing or eliminating overhangs where possible."
+        />
+        <IterationStep
+          num={6}
+          title="Instructional Diagrams"
+          img={IMG_DIAGRAMS}
+          desc="In the final step, we're challenging you to create a set of instructional diagrams to show people how to assemble the puzzle. Think of it like an answer sheet. Take a look at the instructions for the Isometric Drawing method and see if you can create your instructional diagrams in this format using the template provided."
+        />
+      </div>
+
+      {/* Project Portfolio */}
+      <Section title="Project Portfolio" icon="📁" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          The project will guide you in documenting your design process in a Google Slide portfolio format. The template portfolio can be accessed here. Simply create a copy of it and follow the guidance at the bottom of each project section to fill in the details. The template portfolio acts as a starting point and we encourage you to adapt the styling and content to your needs. Alternatively, feel free to create a portfolio from scratch in a software of your choice.
         </p>
-        <div className="space-y-3">
-          {[
-            { slide: "Title Slide", items: ["Enter your full name, project title, date, and class or group."] },
-            { slide: "Inspiration Collage", items: ["Add images of puzzle cubes, 3D printed puzzles, tangrams, or dissection puzzles."] },
-            { slide: "Design Considerations", items: ["Explain the purpose of the project.", "Describe important design factors: cube size, tolerance, fit, and 3D printing orientation."] },
-            { slide: "Initial Prototype", items: ["Show your first CAD design.", "Include screenshots from Tinkercad or Fusion 360."] },
-            { slide: "Testing Results", items: ["Describe what happened when you tested your first printed prototype.", "Include notes about which parts fit or did not fit."] },
-            { slide: "Modifications", items: ["Explain the changes you made to improve the puzzle.", "Include before-and-after screenshots if possible."] },
-            { slide: "Case Design", items: ["Show your storage case design.", "Explain how it protects and holds the puzzle pieces."] },
-            { slide: "Final Solution", items: ["Present your final puzzle cube and case.", "Explain why your final design works better than your first prototype."] },
-            { slide: "Instructional Diagrams", items: ["Include your isometric assembly guide showing how to solve the puzzle."] },
-          ].map((section, i) => (
-            <div key={i} className="p-4 rounded-xl bg-muted/40 border border-border/40">
-              <p className="font-poppins font-bold text-xs text-orange-600 mb-2">{section.slide}</p>
-              <ul className="space-y-1">
-                {section.items.map((item, j) => (
-                  <li key={j} className="flex gap-2 text-xs text-muted-foreground">
-                    <span className="text-orange-400 flex-shrink-0">→</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
         <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
           <Button className="w-full rounded-xl gap-2 bg-orange-500 hover:bg-orange-600 text-white">
-            <ExternalLink size={14} /> Open Portfolio Template in Google Slides
+            <ExternalLink size={14} /> Open Portfolio Template
           </Button>
         </a>
+      </Section>
+
+      {/* Portfolio Slides Guidance */}
+      <Section title="Portfolio Slide Guidance" icon="📝" defaultOpen={false}>
+        <div className="space-y-4">
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/40">
+            <p className="font-poppins font-bold text-xs text-orange-600 mb-2">Title Slide</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Open up the project portfolio and enter your full name and the date on the title slide. If you haven't already done so, you will need to go to 'File &gt; Make a Copy' before you can begin editing the portfolio.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/40">
+            <p className="font-poppins font-bold text-xs text-orange-600 mb-2">Slide 3 — Initial Prototype</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Write a paragraph about the process you took to design your initial puzzle cube prototype. Include information about designing, 3D printing and testing. Then insert images of the process. This might include 3D CAD screenshots/renders, as well as photos of the 3D printing and testing phase.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/40">
+            <p className="font-poppins font-bold text-xs text-orange-600 mb-2">Slide 4 — Modifications + Additions</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Write a paragraph about your iteration and additions. Include information about any adjustments you made to the prototype and talk about the casing you designed. Then insert images of the modifications and additions process.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/40">
+            <p className="font-poppins font-bold text-xs text-orange-600 mb-2">Slide 5 — Final Solution</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Insert some final images of your puzzle and case. These might be renders or photographs depending on what represents your design the best.
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/40">
+            <p className="font-poppins font-bold text-xs text-orange-600 mb-2">Slide 6 — Instructional Diagrams</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Write a paragraph about how you developed instructional diagrams to be packaged with your puzzle. Include information about steps you outlined and the visuals you created. Then insert images of your instructional diagrams.
+            </p>
+          </div>
+        </div>
       </Section>
 
       {/* Downloads */}
@@ -394,7 +273,7 @@ export default function PuzzleCubesProject({ isPublic = false }) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-sm">Portfolio Template</p>
-              <p className="text-xs text-muted-foreground truncate">Use this to document your design process, testing results, and final solution</p>
+              <p className="text-xs text-muted-foreground truncate">Google Slides template to document your design process</p>
             </div>
             <Button size="sm" className="rounded-xl gap-1.5 text-xs flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white">
               <ExternalLink size={12} /> Open
@@ -402,7 +281,6 @@ export default function PuzzleCubesProject({ isPublic = false }) {
           </a>
           {[
             { label: "Example STL File", desc: "Use this if you need a sample puzzle cube model or have issues exporting from Tinkercad" },
-            { label: "Puzzle Cube Tutorial", desc: "Step-by-step instructions for creating the puzzle cube in Tinkercad or Fusion 360" },
             { label: "Isometric Drawing Template", desc: "Use this to create assembly instructions for your final puzzle cube" },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/40 border border-border/40">
