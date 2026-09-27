@@ -9,6 +9,17 @@ import { Card } from "@/components/ui/card";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/c44bb0b59_PuzzleCubes.png";
 
+const IMG_TEST = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/f0770805c_STEP1-Test.jpg";
+const IMG_MODIFY = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/5eefa1a8f_STEP3-Modify.jpg";
+const IMG_DESIGN_CASE = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ec1afe9ff_STEP4-DesignCase.jpg";
+const IMG_3D_PRINT = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/295c31641_STEP5-3DPrint.jpg";
+const IMG_DIAGRAMS = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/5a85d6ce3_STEP6-InstructionalDiagrams.jpg";
+
+const VIDEO_TINKERCAD = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/cc9eca871_PuzzleCube-TinkercadTutorial-VoiceOver.mp4";
+const VIDEO_TOLERANCE = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/e8d13a856_5-Tolerance.mp4";
+
+const PORTFOLIO_URL = "https://docs.google.com/presentation/d/14MeWPaxIXmRxzvUlfDNWyfZzP5d9SEDcmf4HtdIqJI0/edit?slide=id.g1c4697c0878_0_68#slide=id.g1c4697c0878_0_68";
+
 function Section({ title, icon, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
@@ -44,15 +55,23 @@ function InfoCard({ icon, label, text }) {
   );
 }
 
-function StepCard({ num, title, desc, tip, warning }) {
+function StepCard({ num, title, desc, tip, warning, img, video }) {
   return (
     <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
       <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
         <span className="w-7 h-7 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
         <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
       </div>
-      <div className="p-5 space-y-2">
+      <div className="p-5 space-y-3">
         <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
+        {img && (
+          <img src={img} alt={title} className="w-full rounded-xl object-cover max-h-72" />
+        )}
+        {video && (
+          <div className="rounded-xl overflow-hidden bg-black">
+            <video src={video} controls preload="metadata" className="w-full" title={title} />
+          </div>
+        )}
         {tip && (
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
             <p className="text-xs text-amber-800"><span className="font-bold">💡 Tip:</span> {tip}</p>
@@ -137,6 +156,9 @@ export default function PuzzleCubesProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground">
           Follow the step-by-step tutorial to design a puzzle cube in Tinkercad. You may use video or text-based instructions depending on your preferred learning style.
         </p>
+        <div className="rounded-2xl overflow-hidden bg-black">
+          <video src={VIDEO_TINKERCAD} controls preload="metadata" className="w-full" title="Puzzle Cube Tinkercad Tutorial" />
+        </div>
         <div className="space-y-3">
           {[
             { num: 1, step: "Open Tinkercad or your preferred CAD software." },
@@ -168,18 +190,21 @@ export default function PuzzleCubesProject({ isPublic = false }) {
             num="1"
             title="Test"
             desc="Try to assemble your puzzle cube. Observe which pieces fit properly and which pieces are difficult to connect."
+            img={IMG_TEST}
             warning="Record: Which pieces fit well? Which are too tight or too loose? Did the final shape form a perfect cube? Was the puzzle too easy or too difficult?"
           />
           <StepCard
             num="2"
             title="Tolerance"
             desc="If the pieces do not fit properly, the problem may be caused by tolerance. Because 3D printers are not always perfectly accurate, printed parts may be slightly larger or smaller than the CAD model."
+            video={VIDEO_TOLERANCE}
             tip="You may need to add small gaps or reduce certain dimensions so the puzzle pieces can fit smoothly."
           />
           <StepCard
             num="3"
             title="Modify"
             desc="Go back to your CAD model and make small changes based on your testing results. You do not need to reprint the whole puzzle — only reprint the pieces that need adjustment."
+            img={IMG_MODIFY}
           />
         </div>
       </Section>
@@ -256,6 +281,7 @@ export default function PuzzleCubesProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground">
           After improving your puzzle pieces, design a case that can hold all the parts safely and securely.
         </p>
+        <img src={IMG_DESIGN_CASE} alt="Design case example" className="w-full rounded-xl object-cover max-h-72" />
         <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
           <p className="font-poppins font-bold text-xs text-foreground mb-1">The case should:</p>
           {[
@@ -280,6 +306,7 @@ export default function PuzzleCubesProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground">
           After completing your modifications and case design, print your final version.
         </p>
+        <img src={IMG_3D_PRINT} alt="Final 3D printed puzzle cube" className="w-full rounded-xl object-cover max-h-72" />
         <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
           <p className="font-poppins font-bold text-xs text-foreground mb-1">Before printing, check the following:</p>
           {[
@@ -302,6 +329,7 @@ export default function PuzzleCubesProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground">
           Create a set of instructional diagrams to show how the puzzle is assembled. These diagrams act like an answer sheet. Use isometric drawings to show the puzzle clearly from a 3D angle.
         </p>
+        <img src={IMG_DIAGRAMS} alt="Instructional diagram example" className="w-full rounded-xl object-cover max-h-72" />
         <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
           <p className="font-poppins font-bold text-xs text-foreground mb-1">Your diagrams should include:</p>
           {[
@@ -347,6 +375,11 @@ export default function PuzzleCubesProject({ isPublic = false }) {
             </div>
           ))}
         </div>
+        <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+          <Button className="w-full rounded-xl gap-2 bg-orange-500 hover:bg-orange-600 text-white">
+            <ExternalLink size={14} /> Open Portfolio Template in Google Slides
+          </Button>
+        </a>
       </Section>
 
       {/* Downloads */}
@@ -355,11 +388,22 @@ export default function PuzzleCubesProject({ isPublic = false }) {
           <Download size={15} className="text-orange-500" /> Downloads & Resources
         </h3>
         <div className="space-y-2">
+          <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/40 border border-border/40 hover:bg-muted/60 transition-colors">
+            <div className="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+              <ExternalLink size={15} className="text-orange-500" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-sm">Portfolio Template</p>
+              <p className="text-xs text-muted-foreground truncate">Use this to document your design process, testing results, and final solution</p>
+            </div>
+            <Button size="sm" className="rounded-xl gap-1.5 text-xs flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white">
+              <ExternalLink size={12} /> Open
+            </Button>
+          </a>
           {[
             { label: "Example STL File", desc: "Use this if you need a sample puzzle cube model or have issues exporting from Tinkercad" },
             { label: "Puzzle Cube Tutorial", desc: "Step-by-step instructions for creating the puzzle cube in Tinkercad or Fusion 360" },
             { label: "Isometric Drawing Template", desc: "Use this to create assembly instructions for your final puzzle cube" },
-            { label: "Portfolio Template", desc: "Use this to document your design process, testing results, and final solution" },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/40 border border-border/40">
               <div className="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
