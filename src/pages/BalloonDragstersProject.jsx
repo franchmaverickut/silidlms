@@ -1,18 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  ChevronLeft, ChevronDown, ChevronUp, Download,
-  ExternalLink, Clock, Layers, Star
+  ChevronLeft, ChevronDown, ChevronUp, Download, ExternalLink, Clock, Layers, Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b57596a03_BalloonDragsters.png";
-const PORTFOLIO_URL = "https://docs.google.com/presentation/d/15L_eqd4ChWpcoW2yxvC_tvNQNMXXs3lQFhtsVXx-bJ0/edit?usp=sharing";
-const FID_STEP1 = "https://weareprintlab.com/wp-content/uploads/2023/07/Feature-Iteration-Diagrams-Step-1-Example.pdf";
-const FID_STEP2 = "https://weareprintlab.com/wp-content/uploads/2023/07/Feature-Iteration-Diagrams-Step-2-Example.pdf";
-const FID_STEP3 = "https://weareprintlab.com/wp-content/uploads/2023/07/Feature-Iteration-Diagrams-Step-3-Example.pdf";
-const FID_STEP4 = "https://weareprintlab.com/wp-content/uploads/2023/07/Feature-Iteration-Diagrams-Step-4-Example.pdf";
+const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/680a707f9_BalloonDragster-ExplainerVideo.mp4";
+const TINKERCAD_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/937619357_BalloonPoweredDragster-TinkercadTutorial-VoiceOver.mp4";
+const PIPE_STL_DOWNLOAD = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/e97a3702c_Balloon-Dragster-Pipe.zip";
+const FEATURE_ITERATION_TEMPLATE = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/61c9a7a98_Feature-Iteration-Diagram.pdf";
+const PORTFOLIO_URL = "https://docs.google.com/presentation/d/15L_eqd4ChWpcoW2yxvC_tvNQNMXXs3lQFhtsVXx-bJ0/edit?slide=id.g1c4697c0878_0_68#slide=id.g1c4697c0878_0_68";
+
+const IMG_MASS = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/3ea6776f1_Mass.jpg";
+const IMG_AIR_RESISTANCE = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6c3a53c88_AirResistance.jpg";
+const IMG_FRICTION = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9b2bbb69b_Friction.jpg";
+const IMG_AIR_PIPE = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/7c7cd4c32_AirPipeDiameter.jpg";
+const IMG_BALLOON_CONNECTOR = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ac28e2ecb_BalloonConnector.jpg";
+const IMG_CLEARANCE = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b13b61203_Clearance.jpg";
+
+const DESIGN_CONSIDERATIONS = [
+  { title: "Mass", image: IMG_MASS, desc: "A dragster with more mass will require more force to propel the wheels on a flat surface. Reducing the mass will increase its acceleration and ability to travel further." },
+  { title: "Air Resistance", image: IMG_AIR_RESISTANCE, desc: "If the front faces of the dragster have large surface area, it will incur increased air resistance and will slow down quicker. Experiment with angled and curved surfaces to reduce drag." },
+  { title: "Friction", image: IMG_FRICTION, desc: "Wheels with less surface area will decrease the amount of friction applied to the dragster when in motion. However, reducing the surface area may affect the dragster's ability to travel in a straight line." },
+  { title: "Air Pipe Diameter", image: IMG_AIR_PIPE, desc: "Experimenting with different air pipe diameters can help you improve the amount and duration of thrust. When doing so, ensure the rear outlet is pointing straight back and not at an angle." },
+  { title: "Balloon Connector", image: IMG_BALLOON_CONNECTOR, desc: "Ensure your connector is big enough for the balloon to fit around tightly without air gaps, but not too big that it significantly increases the mass of the overall dragster." },
+  { title: "Clearance", image: IMG_CLEARANCE, desc: "Clearance (the gap between 2 joining parts) needs to be considered to ensure axles have a tight fit with the wheels, and to ensure the axles can turn freely within the chassis." },
+];
+
+const FEATURE_STEPS = [
+  { num: 1, title: "Numbered Diagram", desc: "Using the template provided above, create a numbered diagram of your initial prototype that lists out the key features. This might be a simple 2D or 3D diagram. Check out the example below to guide you." },
+  { num: 2, title: "Feature Diagrams", desc: "Create a separate diagram of each numbered feature in the 'Iteration 1' column, which provides further details into its form and composition. Annotate each diagram with dimensions and notes. This might involve heading back into your CAD design to figure out specific measurements." },
+  { num: 3, title: "Test", desc: "Test your initial prototype by measuring the straight line distance it can travel. We recommend doing 3 tests and using the best result. When testing, ensure you identify a straight line path you'd like the dragster to follow. When measuring the distance travelled, measure along the straight line path to the point that the dragster is in line with." },
+  { num: 4, title: "Feedback Notes", desc: "Once tested, write down both the best distance travelled and your key learnings in the 'feedback notes' section of the template. Try to include feedback based on your goal. For example, it wouldn't make sense to mention the aesthetics of the dragster for this project." },
+  { num: 5, title: "Iteration Diagrams", desc: "Go through your features and think carefully about what could be changed to increase the straight line distance travelled. It's important to note that you don't need to change everything – even minor changes to 1 or 2 features can have a great impact. Create new diagrams in the 'Iteration 2' column to show the changes. Then use the diagrams as a foundation to build your new and improved prototype." },
+  { num: 6, title: "Repeat", desc: "When you have 3D printed 'Iteration 2', repeat steps 3-5 again to bring your final model to life. Depending on the time you have available, you can continue developing further iterations to see how far you can get the dragster to go!" },
+];
 
 function Section({ title, icon, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -37,45 +61,10 @@ function Section({ title, icon, children, defaultOpen = true }) {
   );
 }
 
-function InfoCard({ icon, label, text }) {
+function PortfolioTask({ children }) {
   return (
-    <div className="flex gap-3 p-4 rounded-xl bg-muted/40 border border-border/40">
-      <span className="text-xl flex-shrink-0">{icon}</span>
-      <div>
-        <p className="font-poppins font-bold text-xs text-foreground mb-1">{label}</p>
-        <p className="text-xs text-muted-foreground leading-relaxed">{text}</p>
-      </div>
-    </div>
-  );
-}
-
-function StepCard({ num, title, desc, tip, warning, links }) {
-  return (
-    <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-      <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-        <span className="w-7 h-7 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
-        <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
-      </div>
-      <div className="p-5 space-y-2">
-        <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
-        {tip && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
-            <p className="text-xs text-amber-800"><span className="font-bold">💡 Tip:</span> {tip}</p>
-          </div>
-        )}
-        {warning && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
-            <p className="text-xs text-blue-800 leading-relaxed">{warning}</p>
-          </div>
-        )}
-        {links && links.map((l, i) => (
-          <a key={i} href={l.url} target="_blank" rel="noopener noreferrer">
-            <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs mt-1">
-              <ExternalLink size={12} /> {l.label}
-            </Button>
-          </a>
-        ))}
-      </div>
+    <div className="p-4 rounded-xl bg-muted/40 border border-border/40 space-y-2">
+      {children}
     </div>
   );
 }
@@ -101,7 +90,9 @@ export default function BalloonDragstersProject({ isPublic = false }) {
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white">Basic</span>
           </div>
           <h1 className="font-poppins font-bold text-3xl md:text-5xl text-white leading-tight">Balloon Dragsters</h1>
-          <p className="text-white/80 text-sm md:text-base max-w-xl">Design and 3D print a balloon-powered dragster that travels as far as possible in a straight line.</p>
+          <p className="text-white/80 text-sm md:text-base max-w-xl">
+            In this project, you'll be designing and making a 3D printed balloon dragster, with the aim of making it travel as far as possible in a straight line. After analysing an example model, you'll follow tutorials to design your own unique dragster, which will be tested and improved through an iterative process. Watch the intro video below and browse through the project sections to learn more about the journey.
+          </p>
           <div className="flex flex-wrap gap-5 text-white/70 text-sm">
             <span className="flex items-center gap-1.5"><Clock size={15} /> 4 hours (excl. print time)</span>
             <span className="flex items-center gap-1.5"><Layers size={15} /> 1 dragster + 2 improved versions</span>
@@ -110,269 +101,195 @@ export default function BalloonDragstersProject({ isPublic = false }) {
         </div>
       </div>
 
-      {/* Project Overview */}
-      <Section title="Project Overview" icon="📋" defaultOpen={true}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <InfoCard icon="✅" label="Criteria & Constraints" text="The dragster must be made from 3D printed components only, except for the axles, which may be made from another material. The dragster must be powered by one balloon and tested on the same flat surface throughout." />
-          <InfoCard icon="⭐" label="Difficulty" text="Basic — suitable for learners with foundational skills in 3D design and 3D printing." />
-          <InfoCard icon="🕐" label="Project Length" text="~4 hours (excl. 3D printing time). Includes designing an initial dragster, testing it, and creating 2 improved versions. Recommend 4 × 1-hour sessions." />
-          <InfoCard icon="🧰" label="Equipment Required" text="Laptop with Tinkercad or Fusion 360, 3D printer, balloon, tape measure, pen & paper, camera or phone for photos." />
+      {/* Overview Video */}
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <h2 className="font-poppins font-bold text-lg text-foreground">Overview Video</h2>
+        <div className="rounded-2xl overflow-hidden bg-black">
+          <video src={OVERVIEW_VIDEO} controls preload="metadata" className="w-full" title="Balloon Dragster overview video" />
         </div>
+      </Card>
+
+      {/* Criteria + Constraints */}
+      <Section title="Criteria + Constraints" icon="✅" defaultOpen={false}>
+        <ul className="space-y-3">
+          {[
+            "The dragster must be made up of 3D printed components only, with the exception of axles, which can be made up of another material.",
+            "The dragster must be powered by an individual balloon.",
+            "The dragster should be tested on the same flat surface throughout the project.",
+          ].map((item, i) => (
+            <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+              <span className="text-red-500 font-bold flex-shrink-0 mt-0.5">•</span> {item}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* Project Difficulty */}
+      <Section title="Project Difficulty" icon="⭐" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          This project is rated as basic and is suitable for all those who have foundational skills in 3D design and 3D printing.
+        </p>
+      </Section>
+
+      {/* Project Length */}
+      <Section title="Project Length" icon="🕐" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          The estimated project length is 4 hours, excluding any 3D printing time. This estimate includes designing and making an initial dragster plus time for testing and creating 2 improved versions. The project can be run in longer or shorter periods of time depending on the number of iterations you choose to make. We recommend breaking the project up into multiple sessions (e.g. 4 x 1 hour sessions), which will allow you to 3D print necessary objects between sessions.
+        </p>
+      </Section>
+
+      {/* Equipment Required */}
+      <Section title="Equipment Required" icon="🧰" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">To participate in this project, you will require:</p>
+        <ul className="space-y-2.5">
+          {[
+            "A laptop or computer with either Tinkercad or Fusion 360 software (both free for educational and personal use).",
+            "A software or web application to create a digital portfolio. We recommend using Google Slides as we provide a portfolio template in this format.",
+            "Access to a 3D printer and 3D printing material.",
+            "A balloon.",
+            "A device to measure distance travelled (e.g. tape measure).",
+            "Pen/pencil and paper.",
+            "A device to capture images of your design process to insert into the project portfolio.",
+          ].map((item, i) => (
+            <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+              <span className="text-red-500 font-bold flex-shrink-0 mt-0.5">•</span> {item}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* Project Portfolio - template */}
+      <Section title="Project Portfolio" icon="📁" defaultOpen={false}>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          The project will guide you in documenting your design process in a Google Slide portfolio format. The template portfolio can be accessed here. Simply create a copy of it and follow the guidance at the bottom of each project section to fill in the details. The template portfolio acts as a starting point and we encourage you to adapt the styling and content to your needs. Alternatively, feel free to create a portfolio from scratch in a software of your choice.
+        </p>
         <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
-          <Button className="rounded-xl gap-2 bg-red-500 hover:bg-red-600 text-white text-sm">
+          <Button className="w-full rounded-xl gap-2 bg-red-500 hover:bg-red-600 text-white">
             <ExternalLink size={14} /> Open Portfolio Template
           </Button>
         </a>
       </Section>
 
-      {/* Introduction */}
-      <Section title="Introduction" icon="🎈" defaultOpen={false}>
-        <div className="space-y-3 text-sm text-foreground/80 leading-relaxed">
-          <p>A balloon-powered dragster is made up of several components: a <strong>chassis</strong>, an integrated <strong>airflow mechanism</strong>, <strong>wheels</strong>, and <strong>axles</strong>.</p>
-          <p>When the dragster is stationary on a platform, its weight pushes downward. This is balanced by the reaction force from the platform. Forces always come in pairs. <strong>Newton's Third Law of Motion</strong> states that for every action, there is an equal and opposite reaction.</p>
-          <p>This principle can be seen in rockets and birds. When a rocket launches, exhaust gas is pushed downward, creating thrust that moves the rocket upward. When birds fly, they push air downward with their wings, and the air pushes them upward.</p>
-          <p>A balloon dragster works in a similar way. The balloon releases air pressure through the chassis and out the back of the dragster. This creates <strong>thrust</strong>, which pushes the dragster forward.</p>
-          <p>The dragster eventually stops because of <strong>friction</strong> between the wheels and the surface, as well as <strong>air resistance</strong>.</p>
-          <p>In this project, you will use your knowledge of Newton's Third Law to design and 3D print your own balloon-powered dragster. The goal is to make the dragster travel as far as possible in a straight line.</p>
-        </div>
-      </Section>
-
-      {/* Design Considerations */}
-      <Section title="Design Considerations" icon="🔬" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Before designing, consider the main factors that affect how far and how straight the balloon dragster can travel.
-        </p>
-        <div className="space-y-3">
-          {[
-            { icon: "⚖️", title: "Mass", desc: "A dragster with more mass will need more force to move. Reducing mass can improve acceleration and may help the dragster travel farther." },
-            { icon: "💨", title: "Air Resistance", desc: "Large front-facing surfaces increase air resistance and slow the dragster down. Angled or curved surfaces can help reduce drag." },
-            { icon: "🔄", title: "Friction", desc: "Wheels with less surface area may reduce friction. However, if the wheels are too narrow, the dragster may struggle to travel in a straight line." },
-            { icon: "🔧", title: "Air Pipe Diameter", desc: "Different air pipe diameters can change the amount and duration of thrust. The rear outlet should point straight backward, not at an angle." },
-            { icon: "🎈", title: "Balloon Connector", desc: "The connector should be large enough for the balloon to fit tightly without air gaps. However, it should not be too large because this can add unnecessary mass." },
-            { icon: "📏", title: "Clearance", desc: "Clearance is the gap between joining parts. It is important so the axles fit tightly with the wheels while still turning freely inside the chassis." },
-          ].map((item, i) => (
-            <div key={i} className="flex gap-4 p-4 rounded-xl bg-muted/40 border border-border/40">
-              <span className="text-2xl flex-shrink-0">{item.icon}</span>
-              <div>
-                <p className="font-poppins font-bold text-sm text-foreground mb-1">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Skill Building Tutorial */}
-      <Section title="Skill Building — Build the Example Model" icon="🖥️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          You will begin by following a tutorial to design a basic balloon dragster. This example model will act as the starting point for your own unique design. Choose either the Tinkercad or Fusion 360 tutorial.
-        </p>
-        <div className="space-y-3">
-          {[
-            "Open Tinkercad or Fusion 360.",
-            "Import the required STL file if using the Tinkercad tutorial.",
-            "Design the main chassis of the dragster.",
-            "Add an airflow channel for the balloon air to pass through.",
-            "Create the balloon connector.",
-            "Design the wheel and axle system.",
-            "Check that all parts have proper clearance.",
-            "Export the model for slicing.",
-            "Prepare the parts for 3D printing.",
-            "Print and assemble the initial dragster prototype.",
-          ].map((step, i) => (
-            <div key={i} className="flex items-start gap-3 py-2">
-              <span className="w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
-              <p className="text-sm text-foreground/80 leading-relaxed">{step}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Product Analysis & Testing */}
-      <Section title="Product Analysis & Testing" icon="📊" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          After creating the first prototype, test how far the dragster can travel in a straight line.
-        </p>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Testing Method:</p>
-          {[
-            "Choose one flat testing surface.",
-            "Mark a straight line path for the dragster.",
-            "Inflate the balloon to the same size for each test.",
-            "Release the dragster without pushing it.",
-            "Measure how far it travels along the straight line path.",
-            "Run 3 tests.",
-            "Record the best distance travelled.",
-          ].map((item, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-              <span className="w-5 h-5 rounded-full bg-red-100 text-red-600 text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
-              {item}
-            </div>
-          ))}
-        </div>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Record the following:</p>
-          {[
-            "Distance travelled in each test",
-            "Best distance travelled",
-            "Did the dragster travel straight?",
-            "Did it turn left or right?",
-            "Did the wheels spin freely?",
-            "Did the balloon connector leak air?",
-            "Did the dragster stop because of friction, weight, or air resistance?",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-red-500 font-bold flex-shrink-0">•</span> {item}
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Feature Iteration Diagrams */}
-      <Section title="Feature Iteration Diagrams — Design Process" icon="🔁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          To improve your dragster, use a design method called <strong>Feature Iteration Diagrams</strong>. This method helps you plan improvements by drawing and analysing the key features of your prototype.
+      {/* Design Consideration */}
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <h2 className="font-poppins font-bold text-lg text-foreground">Design Consideration</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Before we begin designing, let's take a look at some design considerations for balloon dragsters. Browse through the content below and feel free to refer back to it at any point for guidance.
         </p>
         <div className="space-y-4">
-          <StepCard
-            num="1"
-            title="Numbered Diagram"
-            desc="Create a numbered diagram of your initial prototype. Label the main features: chassis, air channel, balloon connector, wheels, axles, front body shape, rear outlet."
-            links={[{ label: "View Step 1 Example", url: FID_STEP1 }]}
-          />
-          <StepCard
-            num="2"
-            title="Feature Diagrams"
-            desc="Create a separate diagram for each numbered feature in the Iteration 1 column. Add dimensions and notes for each feature. You may need to return to your CAD model to check measurements."
-            links={[{ label: "View Step 2 Example", url: FID_STEP2 }]}
-          />
-          <StepCard
-            num="3"
-            title="Test"
-            desc="Test your initial prototype by measuring the straight line distance it can travel. Run 3 tests and use the best result. Measure along the straight line path up to the point where the dragster stops or moves out of line."
-          />
-          <StepCard
-            num="4"
-            title="Feedback Notes"
-            desc="Write down your best distance travelled and key learnings in the feedback notes section. Focus your feedback on the project goal: making the dragster travel as far as possible in a straight line."
-            links={[{ label: "View Step 3 Example", url: FID_STEP3 }]}
-          />
-          <StepCard
-            num="5"
-            title="Iteration Diagrams"
-            desc="Look at each feature and decide what could be improved. You do not need to change everything. Even small changes to 1 or 2 features can greatly improve performance. Create new diagrams in the Iteration 2 column to show your planned changes."
-            links={[{ label: "View Step 4 Example", url: FID_STEP4 }]}
-          />
-          <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-            <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-              <span className="w-7 h-7 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">6</span>
-              <span className="font-poppins font-bold text-sm text-foreground">Repeat</span>
-            </div>
-            <div className="p-5 space-y-3">
-              <p className="text-sm text-foreground/80 leading-relaxed">
-                After 3D printing Iteration 2, repeat the testing and feedback process. Use your results to create a final improved model. If time allows, continue making more iterations to see how far your dragster can go.
-              </p>
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3">
-                <p className="text-xs text-red-800 font-semibold mb-1">Iteration Goal</p>
-                <p className="text-xs text-red-700">Each iteration should improve how far the dragster travels in a straight line. Track your distance improvements across all versions.</p>
+          {DESIGN_CONSIDERATIONS.map((item, i) => (
+            <div key={i} className="rounded-2xl border border-border/60 overflow-hidden shadow-sm sm:flex">
+              <img src={item.image} alt={item.title} className="w-full sm:w-56 h-48 sm:h-auto object-cover flex-shrink-0" />
+              <div className="p-5 space-y-1.5">
+                <p className="font-poppins font-bold text-sm text-foreground">{item.title}</p>
+                <p className="text-sm text-foreground/80 leading-relaxed">{item.desc}</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Final 3D Print */}
-      <Section title="Final 3D Print" icon="🖨️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Before printing your final dragster, check the following:
-        </p>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          {[
-            "The chassis is lightweight but strong",
-            "The airflow path is clear",
-            "The balloon connector fits tightly",
-            "The rear outlet points straight back",
-            "Wheels spin freely",
-            "Axles have proper clearance",
-            "The dragster can travel in a straight line",
-            "The design reduces friction and air resistance",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-green-600 font-bold flex-shrink-0">✓</span> {item}
-            </div>
-          ))}
-        </div>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-xs text-blue-800 leading-relaxed">After printing, assemble the dragster and test it again using the same flat surface.</p>
-        </div>
-      </Section>
-
-      {/* Portfolio Guide */}
-      <Section title="Project Portfolio Guide" icon="📁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          Document your design process in a Google Slides portfolio or another digital format.
-        </p>
-        <div className="space-y-3">
-          {[
-            { slide: "Title Slide", items: ["Add your full name, project title, date, and class or group."] },
-            { slide: "Introduction", items: ["Explain the goal of the project.", "Describe how a balloon-powered dragster works using Newton's Third Law."] },
-            { slide: "Design Considerations", items: ["Discuss mass, air resistance, friction, airflow, balloon connector size, and clearance."] },
-            { slide: "Initial Prototype", items: ["Show screenshots of your first CAD model.", "Explain its main features."] },
-            { slide: "Feature Iteration Diagrams", items: ["Include your numbered diagram and feature diagrams."] },
-            { slide: "Testing Results", items: ["Record the 3 test distances and the best distance travelled.", "Add observations about straight-line movement and performance."] },
-            { slide: "Feedback Notes", items: ["Explain what worked well and what needed improvement."] },
-            { slide: "Iteration 2", items: ["Show the changes made to your design.", "Explain why you made them."] },
-            { slide: "Final Solution", items: ["Present your final dragster design.", "Include images, test results, and a short explanation of why it performed better."] },
-          ].map((section, i) => (
-            <div key={i} className="p-4 rounded-xl bg-muted/40 border border-border/40">
-              <p className="font-poppins font-bold text-xs text-red-600 mb-2">{section.slide}</p>
-              <ul className="space-y-1">
-                {section.items.map((item, j) => (
-                  <li key={j} className="flex gap-2 text-xs text-muted-foreground">
-                    <span className="text-red-400 flex-shrink-0">→</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
-          <Button className="w-full rounded-xl gap-2 bg-red-500 hover:bg-red-600 text-white">
-            <ExternalLink size={14} /> Open Portfolio Template in Google Slides
-          </Button>
-        </a>
-      </Section>
-
-      {/* Downloads */}
-      <Card className="p-5 border-border/60 shadow-sm">
-        <h3 className="font-poppins font-bold text-sm mb-4 flex items-center gap-2">
-          <Download size={15} className="text-red-500" /> Downloads & Resources
-        </h3>
-        <div className="space-y-2">
-          {[
-            { label: "Portfolio Template", desc: "Google Slides portfolio template for documenting the design process", url: PORTFOLIO_URL },
-            { label: "Feature Iteration — Step 1 Example", desc: "Numbered diagram example", url: FID_STEP1 },
-            { label: "Feature Iteration — Step 2 Example", desc: "Feature diagrams example", url: FID_STEP2 },
-            { label: "Feature Iteration — Step 3 Example", desc: "Feedback notes example", url: FID_STEP3 },
-            { label: "Feature Iteration — Step 4 Example", desc: "Iteration diagrams example", url: FID_STEP4 },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/40 border border-border/40">
-              <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
-                <Download size={15} className="text-red-500" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm">{item.label}</p>
-                <p className="text-xs text-muted-foreground truncate">{item.desc}</p>
-              </div>
-              <a href={item.url} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs flex-shrink-0">
-                  <ExternalLink size={12} /> Open
-                </Button>
-              </a>
             </div>
           ))}
         </div>
       </Card>
+
+      {/* Project Portfolio - slide 3 */}
+      <Section title="Project Portfolio" icon="📁" defaultOpen={false}>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            Open up the project portfolio and enter your full name and the date on the title slide. If you haven't already done so, you will need to go to 'File &gt; Make a Copy' before you can begin editing the portfolio.
+          </p>
+        </PortfolioTask>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On slide 3 (How Balloon Dragsters Work), write a paragraph about how balloon dragsters work and forces that act upon the dragster whilst travelling. You may wish to summarise the content from the learning platform but also consider doing additional research and mentioning additional insights.
+          </p>
+        </PortfolioTask>
+      </Section>
+
+      {/* Skill Building */}
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <h2 className="font-poppins font-bold text-lg text-foreground">Skill Building</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          We're now going to go through a tutorial to design a basic balloon dragster. This is going to act as the starting point of your own unique design! Select either the Tinkercad or Fusion 360 tutorial below and follow it to design the example balloon dragster. If you are using the Tinkercad tutorial, you will require this STL file to import into the design. There are options for both voice over instructions and text-based instructions so simply pick your preferred method of learning.
+        </p>
+        <a href={PIPE_STL_DOWNLOAD} download className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors">
+          <Download size={15} /> Download Balloon Dragster Pipe STL
+        </a>
+        <div className="space-y-3 pt-2">
+          <p className="font-poppins font-bold text-sm text-foreground flex items-center gap-2">
+            <span className="text-base">🖥️</span> TinkerCad Video
+          </p>
+          <div className="rounded-2xl overflow-hidden bg-black">
+            <video src={TINKERCAD_VIDEO} controls preload="metadata" className="w-full" title="Balloon Powered Dragster Tinkercad Tutorial" />
+          </div>
+        </div>
+      </Card>
+
+      {/* Feature Iteration */}
+      <Card className="p-6 border-red-200 bg-red-50/40 shadow-sm space-y-4">
+        <h2 className="font-poppins font-bold text-lg text-foreground">Feature Iteration</h2>
+        <div className="space-y-3 text-sm text-foreground/80 leading-relaxed">
+          <p>
+            Now that you've created your initial prototype, it's time to test and improve it through an iterative process – in view of getting the dragster to travel as far as possible in a straight line. To do this, we'll be using a design method called 'Feature Iteration Diagrams', which is a simple method to plan out product improvements.
+          </p>
+          <p>
+            The process involves creating basic diagrams of the various features that make up your prototype. Once your prototype has been tested, a new set of diagrams are created showing changes and improvements to be made. For each iteration, the process is repeated. Using basic visual diagrams encourages you to consider each key feature of your design – helping you to plan improvements in a simple, clear and effective way. Download and print out this template and then follow the below steps to complete the project!
+          </p>
+        </div>
+        <a href={FEATURE_ITERATION_TEMPLATE} target="_blank" rel="noopener noreferrer">
+          <Button className="rounded-xl gap-2 bg-red-500 hover:bg-red-600 text-white text-sm">
+            <Download size={14} /> Download Feature Iteration Template
+          </Button>
+        </a>
+        <p className="text-xs text-muted-foreground italic leading-relaxed">
+          *The following instructions are just one of many ways in which you might approach the design process. If you'd like to adapt the project or challenge yourself to take an alternative approach, feel free to explore the Design Method Toolkit and use different methods to those stated in this project.
+        </p>
+      </Card>
+
+      <div className="space-y-4">
+        {FEATURE_STEPS.map((step) => (
+          <div key={step.num} className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
+            <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
+              <span className="w-7 h-7 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{step.num}</span>
+              <span className="font-poppins font-bold text-sm text-foreground">STEP {step.num}: {step.title}</span>
+            </div>
+            <div className="p-5">
+              <p className="text-sm text-foreground/80 leading-relaxed">{step.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Project Portfolio - slides 4-8 */}
+      <Section title="Project Portfolio" icon="📁" defaultOpen={false}>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On Slide 4 (Initial Prototype), write a paragraph about your initial prototype. Talk about the process, what changes you made to the tutorial design, and why you made those changes. Then insert images of your initial prototype. This might include screenshots, photographs etc.
+          </p>
+        </PortfolioTask>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On Slide 5 (Feature Iterations), write a paragraph providing an overview of the feature iteration design method you went through. Include information about what the process involved but don't go into specific design details just yet – you'll be doing that in the next slide! Then insert an image of your feature iteration diagrams worksheet.
+          </p>
+        </PortfolioTask>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On Slide 6 (Iteration 1), write a paragraph about your first iteration. Include information about the features, design decisions you made and how it performed during testing. Then insert images of the design and 3D printed outcome.
+          </p>
+        </PortfolioTask>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On Slide 7 (Iteration 2), write a paragraph about your second iteration. Include information about the features, design decisions you made and how it performed during testing. Then insert images of the design and 3D printed outcome.
+          </p>
+        </PortfolioTask>
+        <PortfolioTask>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            On Slide 8, insert a high quality image showcasing your final dragster model.
+          </p>
+        </PortfolioTask>
+        <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+          <Button className="w-full rounded-xl gap-2 bg-red-500 hover:bg-red-600 text-white">
+            <ExternalLink size={14} /> Open Portfolio Template
+          </Button>
+        </a>
+      </Section>
 
       {/* Key Learning */}
       <Card className="p-5 border-red-200 bg-red-50/50 shadow-sm">
