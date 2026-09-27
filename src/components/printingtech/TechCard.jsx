@@ -1,36 +1,56 @@
-import { useState } from "react";
-import { ChevronDown, ChevronUp, ExternalLink, Lightbulb } from "lucide-react";
+import { CheckCircle2, Lightbulb, XCircle } from "lucide-react";
 
-function CollapsibleList({ title, icon, items, accent = "pink" }) {
-  const [open, setOpen] = useState(false);
-  const accentClasses = {
-    pink: { header: "text-pink-700", bg: "bg-pink-50 hover:bg-pink-100", dot: "text-pink-400" },
-    green: { header: "text-green-700", bg: "bg-green-50 hover:bg-green-100", dot: "text-green-500" },
-    red: { header: "text-red-600", bg: "bg-red-50 hover:bg-red-100", dot: "text-red-400" },
-    blue: { header: "text-blue-700", bg: "bg-blue-50 hover:bg-blue-100", dot: "text-blue-400" },
-  };
-  const c = accentClasses[accent];
+function InfoList({ title, icon, items, dotColor }) {
   return (
-    <div className={`rounded-xl border border-border/40 overflow-hidden`}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        className={`w-full flex items-center justify-between px-4 py-3 ${c.bg} transition-colors text-left`}
-      >
-        <span className={`font-poppins font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 ${c.header}`}>
+    <div className="rounded-xl border border-border/40 overflow-hidden">
+      <div className="px-4 py-2.5 bg-muted/30 border-b border-border/40">
+        <span className="font-poppins font-bold text-xs uppercase tracking-wider text-foreground flex items-center gap-1.5">
           {icon} {title}
         </span>
-        {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </button>
-      {open && (
+      </div>
+      <ul className="px-4 py-3 space-y-1">
+        {items.map((item, i) => (
+          <li key={i} className="text-xs text-muted-foreground flex items-start gap-2 leading-relaxed">
+            <span className={`${dotColor} mt-0.5 flex-shrink-0`}>•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ProsCons({ benefits, limitations }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="rounded-xl border border-green-200 overflow-hidden">
+        <div className="px-4 py-2.5 bg-green-50 border-b border-green-200 flex items-center gap-1.5">
+          <CheckCircle2 size={14} className="text-green-600" />
+          <span className="font-poppins font-bold text-xs uppercase tracking-wider text-green-700">Benefits</span>
+        </div>
         <ul className="px-4 py-3 space-y-1">
-          {items.map((item, i) => (
+          {benefits.map((item, i) => (
             <li key={i} className="text-xs text-muted-foreground flex items-start gap-2 leading-relaxed">
-              <span className={`${c.dot} mt-0.5 flex-shrink-0`}>•</span>
+              <span className="text-green-500 mt-0.5 flex-shrink-0">✓</span>
               <span>{item}</span>
             </li>
           ))}
         </ul>
-      )}
+      </div>
+      <div className="rounded-xl border border-red-200 overflow-hidden">
+        <div className="px-4 py-2.5 bg-red-50 border-b border-red-200 flex items-center gap-1.5">
+          <XCircle size={14} className="text-red-500" />
+          <span className="font-poppins font-bold text-xs uppercase tracking-wider text-red-600">Limitations</span>
+        </div>
+        <ul className="px-4 py-3 space-y-1">
+          {limitations.map((item, i) => (
+            <li key={i} className="text-xs text-muted-foreground flex items-start gap-2 leading-relaxed">
+              <span className="text-red-400 mt-0.5 flex-shrink-0">✕</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
@@ -86,13 +106,14 @@ export default function TechCard({ tech }) {
           </div>
         </div>
 
-        {/* Collapsible info sections */}
+        {/* Materials & Applications */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <CollapsibleList title="Key Materials" icon="🧱" items={tech.materials} accent="pink" />
-          <CollapsibleList title="Key Applications" icon="🎯" items={tech.applications} accent="blue" />
-          <CollapsibleList title="Benefits" icon="✅" items={tech.benefits} accent="green" />
-          <CollapsibleList title="Limitations" icon="⚠️" items={tech.limitations} accent="red" />
+          <InfoList title="Key Materials" icon="🧱" items={tech.materials} dotColor="text-pink-400" />
+          <InfoList title="Key Applications" icon="🎯" items={tech.applications} dotColor="text-blue-400" />
         </div>
+
+        {/* Benefits vs Limitations */}
+        <ProsCons benefits={tech.benefits} limitations={tech.limitations} />
 
         {/* Key learnings */}
         <div className="rounded-xl bg-amber-50 border border-amber-200 p-4">
