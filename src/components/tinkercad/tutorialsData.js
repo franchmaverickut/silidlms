@@ -178,7 +178,7 @@ export const TUTORIALS = [
     num: 11,
     title: "Revolving",
     description: "In this tutorial, you'll learn how to use the Revolve tool to rotate a 2D profile around a centre line and create rounded 3D shapes like a pen shell.",
-    videoUrl: null,
+    videoUrl: VIDEO_BASE + "dcce738d1_11-RevolveToolf.mp4",
     modelUrl: "https://www.tinkercad.com/things/1VxdouUXa0e-10-sketch-tool?sharecode=UKmCYCJhgZVa9uFt7WjtKUj2TJgH0iK5nh-ioA-lSAY",
     keyTakeaways: [
       "The Revolve tool rotates a 2D profile around a centre line to create a 3D shape.",
