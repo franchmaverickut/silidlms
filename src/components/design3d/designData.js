@@ -236,7 +236,8 @@ export const SECTIONS = [
     title: "Chamfers",
     intro:
       "A chamfer is an angled face added where two surfaces meet. It replaces a sharp edge with a flat, angled transition.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/cb93edfa6_6-Chamfers.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, examine the different chamfers on the cube. Compare how they behave in different positions, and run your finger along the edges to feel how the angled surfaces transition between faces.",
@@ -252,19 +253,22 @@ export const SECTIONS = [
         title: "Chamfers can improve strength and print reliably",
         description:
           "They reduce sharp corners and help spread stress through a part, improving durability, although not to the same extent as fillets. They are also more predictable to print, especially on underside edges, as they are typically around 45°.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/7b6a26475_6-Chamfers-Chamferscanimprovestrengthandprintreliably.png",
       },
       {
         title: "Chamfers can replace unsupported horizontal surfaces",
         description:
           "A flat edge would create an unsupported overhang, but a chamfer turns it into a gradual slope. This allows surfaces to print cleanly without supports, even on underside features.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/c55bb7a65_6-Chamfers-Chamferscanreplaceunsupportedhorizontalsurfaces.png",
       },
       {
         title: "Chamfers produce controlled, consistent surfaces",
         description:
           "Because they are built at a constant angle, any stair stepping appears even and predictable. This often looks more consistent than curved features, where stair stepping can be more noticeable.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/e5742dceb_6-Chamfers-Chamfersproducecontrolledconsistentsurfaces.png",
       },
     ],
   },
@@ -273,7 +277,8 @@ export const SECTIONS = [
     title: "Tolerance",
     intro:
       "Tolerance describes the acceptable deviation from an intended size in a printed part. In 3D printing, parts are rarely exact, so designs need to account for these small differences.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/50db3c37d_7-Tolerance.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, test the different pins and holes. Insert each pin and compare how the fit changes with different clearances, noticing how friction and movement vary.",
@@ -289,19 +294,22 @@ export const SECTIONS = [
         title: "Clearance allows parts to fit and function reliably",
         description:
           "Clearance is a small intentional gap designed into parts in CAD to account for variations in 3D printing. Without it, parts may not fit together or move as intended.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/2158e5f17_7-Tolerance-Clearanceallowspartstofitandfunctionreliably.png",
       },
       {
         title: "Small clearances can be used for tighter fitting parts",
         description:
           "Clearances around 0.1 to 0.2mm are commonly used for parts that need to fit together securely, such as press fits or dovetail joints. These values provide a balance between accuracy and reliable assembly.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/54e257808_7-Tolerance-Smallclearancescanbeusedfortighterfittingparts.png",
       },
       {
         title: "Larger clearances can be used for moving parts",
         description:
           "Clearances around 0.3 to 0.4mm are better suited to mechanisms with rotation or sliding motion. The extra space helps reduce friction and allows parts to move freely and reliably.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/72b88017e_7-Tolerance-Largerclearancescanbeusedformovingparts.png",
       },
     ],
   },
@@ -310,7 +318,8 @@ export const SECTIONS = [
     title: "Holes",
     intro:
       "A hole is an opening created by removing material from a solid body. In 3D printing, hole quality depends on size, orientation, and shape.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9fada40a4_8-Holes.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare the vertical and horizontal holes. Look closely at the top of each opening and feel the surface with your finger to notice differences in shape and finish.",
@@ -326,7 +335,8 @@ export const SECTIONS = [
         title: "Vertical holes print very accurately",
         description:
           "When printed upright, each layer is supported by the one below, allowing the intended geometry to be reproduced cleanly and consistently.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/4f73bce10_8-Holes-Verticalholesprintveryaccurately.png",
       },
       {
         title: "Horizontal holes may create overhangs",
