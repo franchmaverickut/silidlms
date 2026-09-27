@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b57596a03_BalloonDragsters.png";
 const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/680a707f9_BalloonDragster-ExplainerVideo.mp4";
-const TINKERCAD_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/937619357_BalloonPoweredDragster-TinkercadTutorial-VoiceOver.mp4";
+const TINKERCAD_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/de0de82f4_BalloonPoweredDragster-TinkercadTutorial-VoiceOver.mp4";
 const PIPE_STL_DOWNLOAD = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/e97a3702c_Balloon-Dragster-Pipe.zip";
 const FEATURE_ITERATION_TEMPLATE = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/61c9a7a98_Feature-Iteration-Diagram.pdf";
 const PORTFOLIO_URL = "https://docs.google.com/presentation/d/15L_eqd4ChWpcoW2yxvC_tvNQNMXXs3lQFhtsVXx-bJ0/edit?slide=id.g1c4697c0878_0_68#slide=id.g1c4697c0878_0_68";
