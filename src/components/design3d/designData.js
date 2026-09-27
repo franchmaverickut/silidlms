@@ -137,13 +137,15 @@ export const SECTIONS = [
         title: "Aim for features of at least 0.8 mm or larger",
         description:
           "Designing at around twice the nozzle diameter allows multiple lines of material, improving strength and consistency. Features closer to the minimum are more fragile and less predictable.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/414fadab2_3-MinimumFeatures-Aimforfeaturesofatleast08mmorlarger.png",
       },
       {
         title: "Engraved details can be smaller than raised features",
         description:
           "Engraving creates gaps between printed lines rather than adding thin lines of material, allowing finer details to appear. However, designing too close to the limit can still reduce reliability.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/e76825798_3-MinimumFeatures-Engraveddetailscanbesmallerthanraisedfeatures.png",
       },
     ],
   },
@@ -152,7 +154,8 @@ export const SECTIONS = [
     title: "Orientation",
     intro:
       "Orientation refers to how a 3D model is positioned on the build plate during printing.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/002465822_4-Orientation.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare this model to the original overhang cube from earlier in the course. Notice how rotating the part changes which faces require support, and try bending the thin fins to feel how strength varies depending on layer direction.",
@@ -168,19 +171,22 @@ export const SECTIONS = [
         title: "Orientation can be used to increase contact with the build plate",
         description:
           "Placing a larger, flatter face on the build plate improves adhesion and reduces the risk of the print detaching. Small or narrow contact areas are less stable and more likely to fail.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/bcf8790cf_4-Orientation-Orientationcanbeusedtoincreasecontactwiththebuildplate.png",
       },
       {
         title: "Changing orientation can reduce overhangs and supports",
         description:
           "By considering overhangs during the design process, you can rotate parts to turn unsupported features into supported ones. This allows models to print cleanly without support material, improving surface quality and efficiency.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/cf74f9d50_4-Orientation-Changingorientationcanreduceoverhangsandsupports.png",
       },
       {
         title: "Parts are stronger along the direction of the layers",
         description:
           "Because parts are built layer by layer, they are strongest along the layers and weaker between them. This is similar to wood grain, which is harder to break along the grain than across it.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/96c96b84a_4-Orientation-Partsarestrongeralongthedirectionofthelayers.png",
       },
     ],
   },
@@ -189,7 +195,8 @@ export const SECTIONS = [
     title: "Fillets",
     intro:
       "A fillet is the rounding of an interior or exterior corner where two features meet. It creates a smooth, curved transition between surfaces.",
-    videoUrl: null,
+    videoUrl:
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/69e93ac0f_5-Fillets.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, examine the different fillets on the cube. Compare how fillets behave depending on their position, and run your finger over each to feel differences in surface quality and smoothness.",
@@ -205,19 +212,22 @@ export const SECTIONS = [
         title: "Fillets on undersides behave like overhangs",
         description:
           "When placed on downward-facing edges, fillets have no support beneath them and can sag during printing. Keep these fillets small to reduce overhang angles and improve surface quality.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/905c45321_5-Fillets-Filletsonundersidesbehavelikeoverhangs.png",
       },
       {
         title: "Internal fillets improve strength and print reliably",
         description:
           "Adding a radius to internal corners spreads stress more evenly and reduces weak points. These fillets are usually well supported during printing and produce consistent results.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/da54b7efb_5-Fillets-Internalfilletsimprovestrengthandprintreliably.png",
       },
       {
         title: "Fillet quality depends on their orientation",
         description:
           "Vertical fillets print as smooth curves, while horizontal fillets are built in layers and may show visible stepping. Choosing the right orientation can improve both appearance and performance.",
-        imageUrl: null,
+        imageUrl:
+          "https://media.base44.com/images/public/69d386ad9523e2ce04536574/40fe91de1_5-Fillets-Filletqualitydependsontheirorientation.png",
       },
     ],
   },
