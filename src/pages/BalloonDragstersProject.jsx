@@ -29,13 +29,24 @@ const DESIGN_CONSIDERATIONS = [
   { title: "Clearance", image: IMG_CLEARANCE, desc: "Clearance (the gap between 2 joining parts) needs to be considered to ensure axles have a tight fit with the wheels, and to ensure the axles can turn freely within the chassis." },
 ];
 
+const IMG_STEP1 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/d8f639352_STEP1-NumberedDiagram.jpg";
+const IMG_STEP2 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/cccdfc114_STEP2-FeatureDiagrams.jpg";
+const VIDEO_STEP3 = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9855858a7_STEP3-Test.mp4";
+const IMG_STEP4 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/394cb2200_STEP4-FeedbackNotes.jpg";
+const IMG_STEP5 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/ec73101fe_STEP5-IterationDiagrams.jpg";
+const IMG_STEP6 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/23b23aabd_STEP6-Repeat.jpg";
+
+const FID_STEP1_EXAMPLE = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/e7473dfa9_Feature-Iteration-Diagrams-Step-1-Example.pdf";
+const FID_STEP2_EXAMPLE = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/271c3ee82_Feature-Iteration-Diagrams-Step-2-Example.pdf";
+const FID_STEP4_EXAMPLE = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/22cb1f674_Feature-Iteration-Diagrams-Step-4-Example.pdf";
+
 const FEATURE_STEPS = [
-  { num: 1, title: "Numbered Diagram", desc: "Using the template provided above, create a numbered diagram of your initial prototype that lists out the key features. This might be a simple 2D or 3D diagram. Check out the example below to guide you." },
-  { num: 2, title: "Feature Diagrams", desc: "Create a separate diagram of each numbered feature in the 'Iteration 1' column, which provides further details into its form and composition. Annotate each diagram with dimensions and notes. This might involve heading back into your CAD design to figure out specific measurements." },
-  { num: 3, title: "Test", desc: "Test your initial prototype by measuring the straight line distance it can travel. We recommend doing 3 tests and using the best result. When testing, ensure you identify a straight line path you'd like the dragster to follow. When measuring the distance travelled, measure along the straight line path to the point that the dragster is in line with." },
-  { num: 4, title: "Feedback Notes", desc: "Once tested, write down both the best distance travelled and your key learnings in the 'feedback notes' section of the template. Try to include feedback based on your goal. For example, it wouldn't make sense to mention the aesthetics of the dragster for this project." },
-  { num: 5, title: "Iteration Diagrams", desc: "Go through your features and think carefully about what could be changed to increase the straight line distance travelled. It's important to note that you don't need to change everything – even minor changes to 1 or 2 features can have a great impact. Create new diagrams in the 'Iteration 2' column to show the changes. Then use the diagrams as a foundation to build your new and improved prototype." },
-  { num: 6, title: "Repeat", desc: "When you have 3D printed 'Iteration 2', repeat steps 3-5 again to bring your final model to life. Depending on the time you have available, you can continue developing further iterations to see how far you can get the dragster to go!" },
+  { num: 1, title: "Numbered Diagram", image: IMG_STEP1, desc: "Using the template provided above, create a numbered diagram of your initial prototype that lists out the key features. This might be a simple 2D or 3D diagram. Check out the example below to guide you.", exampleUrl: FID_STEP1_EXAMPLE },
+  { num: 2, title: "Feature Diagrams", image: IMG_STEP2, desc: "Create a separate diagram of each numbered feature in the 'Iteration 1' column, which provides further details into its form and composition. Annotate each diagram with dimensions and notes. This might involve heading back into your CAD design to figure out specific measurements.", exampleUrl: FID_STEP2_EXAMPLE },
+  { num: 3, title: "Test", video: VIDEO_STEP3, desc: "Test your initial prototype by measuring the straight line distance it can travel. We recommend doing 3 tests and using the best result. When testing, ensure you identify a straight line path you'd like the dragster to follow. When measuring the distance travelled, measure along the straight line path to the point that the dragster is in line with." },
+  { num: 4, title: "Feedback Notes", image: IMG_STEP4, desc: "Once tested, write down both the best distance travelled and your key learnings in the 'feedback notes' section of the template. Try to include feedback based on your goal. For example, it wouldn't make sense to mention the aesthetics of the dragster for this project.", exampleUrl: FID_STEP4_EXAMPLE },
+  { num: 5, title: "Iteration Diagrams", image: IMG_STEP5, desc: "Go through your features and think carefully about what could be changed to increase the straight line distance travelled. It's important to note that you don't need to change everything – even minor changes to 1 or 2 features can have a great impact. Create new diagrams in the 'Iteration 2' column to show the changes. Then use the diagrams as a foundation to build your new and improved prototype." },
+  { num: 6, title: "Repeat", image: IMG_STEP6, desc: "When you have 3D printed 'Iteration 2', repeat steps 3-5 again to bring your final model to life. Depending on the time you have available, you can continue developing further iterations to see how far you can get the dragster to go!" },
 ];
 
 function Section({ title, icon, children, defaultOpen = true }) {
@@ -246,12 +257,27 @@ export default function BalloonDragstersProject({ isPublic = false }) {
       <div className="space-y-4">
         {FEATURE_STEPS.map((step) => (
           <div key={step.num} className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
+            {step.image && (
+              <img src={step.image} alt={step.title} className="w-full object-cover max-h-80" />
+            )}
+            {step.video && (
+              <div className="bg-black">
+                <video src={step.video} controls preload="metadata" className="w-full" title={step.title} />
+              </div>
+            )}
             <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
               <span className="w-7 h-7 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{step.num}</span>
               <span className="font-poppins font-bold text-sm text-foreground">STEP {step.num}: {step.title}</span>
             </div>
-            <div className="p-5">
+            <div className="p-5 space-y-3">
               <p className="text-sm text-foreground/80 leading-relaxed">{step.desc}</p>
+              {step.exampleUrl && (
+                <a href={step.exampleUrl} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
+                    <ExternalLink size={12} /> View Example
+                  </Button>
+                </a>
+              )}
             </div>
           </div>
         ))}
