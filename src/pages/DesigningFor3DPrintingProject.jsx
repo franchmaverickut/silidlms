@@ -11,6 +11,7 @@ import {
   GraduationCap,
   ArrowUp,
   Sparkles,
+  Download,
 } from "lucide-react";
 import { COURSE_INFO, SECTIONS } from "@/components/design3d/designData";
 import DesignSectionCard from "@/components/design3d/DesignSectionCard";
@@ -86,7 +87,18 @@ export default function DesigningFor3DPrintingProject() {
             <p className="font-poppins font-bold text-sm text-cyan-900 mb-1.5 flex items-center gap-1.5">
               <Box size={16} /> {COURSE_INFO.modelSet.title}
             </p>
-            <p className="text-sm text-cyan-800 leading-relaxed">{COURSE_INFO.modelSet.description}</p>
+            <p className="text-sm text-cyan-800 leading-relaxed mb-3">{COURSE_INFO.modelSet.description}</p>
+            {COURSE_INFO.modelSet.downloadUrl && (
+              <a
+                href={COURSE_INFO.modelSet.downloadUrl}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 text-white text-sm font-semibold hover:bg-cyan-700 transition-colors"
+              >
+                <Download size={15} /> Download Model Set (ZIP)
+              </a>
+            )}
           </div>
         </CollapsibleSection>
 

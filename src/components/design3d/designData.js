@@ -22,6 +22,8 @@ export const COURSE_INFO = {
     title: "Design Principles Model Set",
     description:
       "A set of test models demonstrating key 3D printing principles such as overhangs, bridging and tolerance. Print and refer to them as you work through the course to see how each principle behaves in real life. Includes 30 mm (recommended) and 60 mm versions. The 60 mm models match the videos but do not include the base.",
+    downloadUrl:
+      "https://media.base44.com/files/public/69d386ad9523e2ce04536574/66dc7b894_Design-Principles-Demo-Model-Set.zip",
   },
 };
 
