@@ -45,6 +45,7 @@ import BalloonDragstersProject from '@/pages/BalloonDragstersProject';
 import EgyptianObelisksProject from '@/pages/EgyptianObelisksProject';
 import SelfWateringPlantersProject from '@/pages/SelfWateringPlantersProject';
 import TinkercadFundamentalsProject from '@/pages/TinkercadFundamentalsProject';
+import DesigningFor3DPrintingProject from '@/pages/DesigningFor3DPrintingProject';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -99,6 +100,7 @@ const AuthenticatedApp = () => {
         <Route path="/maker/egyptian-obelisks" element={<EgyptianObelisksProject />} />
         <Route path="/maker/self-watering-planters" element={<SelfWateringPlantersProject />} />
         <Route path="/maker/tinkercad-fundamentals" element={<TinkercadFundamentalsProject />} />
+      <Route path="/maker/designing-for-3d-printing" element={<DesigningFor3DPrintingProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
