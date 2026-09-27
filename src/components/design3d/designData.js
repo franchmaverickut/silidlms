@@ -34,7 +34,7 @@ export const SECTIONS = [
     intro:
       "An overhang is any part of a 3D model that extends outward, with little or no material beneath it to support it during printing.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/d65033539_1-Overhangs.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/78fc6693b_1-Overhangsf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, take a closer look at the overhang cube. Compare the surface quality across different angles and observe where the print begins to struggle.",
@@ -75,7 +75,7 @@ export const SECTIONS = [
     intro:
       "A bridge is a horizontal span between two supported points, with no material beneath it during printing.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/8b9d20d70_2-Bridging.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/29687df6b_2-Bridgingf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, take a closer look at the bridging cube. Compare the underside across different distances and observe how the filament behaves as the span increases.",
@@ -116,7 +116,7 @@ export const SECTIONS = [
     intro:
       "Minimum features refer to the smallest details a 3D printer can reliably produce, such as thin walls or fine surface details.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/6b0411cc7_3-MinimumFeatures.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/c0425701b_3-MinimumFeaturesf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, take a closer look at the minimum features cube. Try gently bending the thinner walls to compare their strength, and run your finger over the embossed and engraved features to feel how clarity improves as the size increases. Notice which details print clearly and which begin to disappear.",
@@ -157,7 +157,7 @@ export const SECTIONS = [
     intro:
       "Orientation refers to how a 3D model is positioned on the build plate during printing.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/002465822_4-Orientation.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/562f99eb1_4-Orientationf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare this model to the original overhang cube from earlier in the course. Notice how rotating the part changes which faces require support, and try bending the thin fins to feel how strength varies depending on layer direction.",
@@ -198,7 +198,7 @@ export const SECTIONS = [
     intro:
       "A fillet is the rounding of an interior or exterior corner where two features meet. It creates a smooth, curved transition between surfaces.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/69e93ac0f_5-Fillets.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/b9285f08a_5-Filletsf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, examine the different fillets on the cube. Compare how fillets behave depending on their position, and run your finger over each to feel differences in surface quality and smoothness.",
@@ -239,7 +239,7 @@ export const SECTIONS = [
     intro:
       "A chamfer is an angled face added where two surfaces meet. It replaces a sharp edge with a flat, angled transition.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/cb93edfa6_6-Chamfers.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/944f27b68_6-Chamfersf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, examine the different chamfers on the cube. Compare how they behave in different positions, and run your finger along the edges to feel how the angled surfaces transition between faces.",
@@ -280,7 +280,7 @@ export const SECTIONS = [
     intro:
       "Tolerance describes the acceptable deviation from an intended size in a printed part. In 3D printing, parts are rarely exact, so designs need to account for these small differences.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/50db3c37d_7-Tolerance.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/f35ccbb80_7-Tolerancef.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, test the different pins and holes. Insert each pin and compare how the fit changes with different clearances, noticing how friction and movement vary.",
@@ -321,7 +321,7 @@ export const SECTIONS = [
     intro:
       "A hole is an opening created by removing material from a solid body. In 3D printing, hole quality depends on size, orientation, and shape.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9fada40a4_8-Holes.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/7e477d55e_8-Holesf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare the vertical and horizontal holes. Look closely at the top of each opening and feel the surface with your finger to notice differences in shape and finish.",
@@ -362,7 +362,7 @@ export const SECTIONS = [
     intro:
       "Sharp points occur when geometry tapers down to an extremely small area or a perfect tip.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/4a239957d_9-SharpandNarrowPoints.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/b56d4319c_9-SharpandNarrowPointsf.mp4",
     toggles: {
       reviewModel:
         "If you've printed the demo model set, compare the sharp and flat-tipped spikes in both orientations. Look closely at the tips and notice where the geometry stops short, and try gently bending them to feel how strength varies.",
@@ -404,7 +404,7 @@ export const SECTIONS = [
     intro:
       "Multicolour 3D printing allows a single part to be produced using multiple filaments. This is commonly achieved using filament switching systems such as an AMS.",
     videoUrl:
-      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/0ea4e0ae9_10-Multicolour.mp4",
+      "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/80d80ff35_10-Multicolourf.mp4",
     toggles: {
       reviewModel: null,
       topTip:
