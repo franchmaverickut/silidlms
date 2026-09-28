@@ -129,7 +129,7 @@ export default function MakerLessons() {
       </div>
 
       {/* STEM Projects — Static */}
-      {(skillFilter === "All" || skillFilter === "3D Printing") && !search && (
+      {(skillFilter === "All" || skillFilter === "3D Printing" || skillFilter === "Robotics" || skillFilter === "Electronics") && !search && (
         <div className="space-y-4">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest">STEM Projects</p>
 
@@ -147,6 +147,7 @@ export default function MakerLessons() {
             { to: "/maker/balloon-dragsters", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b57596a03_BalloonDragsters.png", title: "Balloon Dragsters", desc: "Design and 3D print a balloon-powered dragster that travels as far as possible in a straight line.", b1: "bg-red-500", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "balloon-dragsters", shareLabel: "Balloon Dragsters" },
             { to: "/maker/egyptian-obelisks", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/2168fd833_EgyptianObelisks.png", title: "Egyptian Obelisks", desc: "Design and 3D print a personalised Egyptian obelisk inscribed with hieroglyphics.", b1: "bg-amber-600", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "egyptian-obelisks", shareLabel: "Egyptian Obelisks" },
             { to: "/maker/self-watering-planters", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9b6f3097f_Self-WateringPlanters.png", title: "Self-Watering Planters", desc: "Design and 3D print a self-watering planter that helps plants receive consistent moisture over time.", b1: "bg-emerald-600", b1l: "Project", b2: "bg-green-600", b2l: "Basic", shareKey: "self-watering-planters", shareLabel: "Self-Watering Planters" },
+            { to: "/maker/smart-car-kit", img: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/5c7ab985f_89896f6642cd25e6a6d4794c39e1118d1ae01466.png", title: "4WD Arduino Smart Car Kit", desc: "Build a 4WD robot car, then program it for obstacle avoidance, line following, and maze solving.", b1: "bg-blue-600", b1l: "Robotics", b2: "bg-green-600", b2l: "Beginner", shareKey: "smart-car-kit", shareLabel: "4WD Arduino Smart Car Kit" },
             { to: "/maker/69ec1418ba193ce56e0c5863", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6b2dca797_Whistles.png", title: "Whistles", desc: "Design and build functional whistles while exploring sound and airflow", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-amber-500", b2l: "Intermediate", shareKey: "maker/69ec1418ba193ce56e0c5863", shareLabel: "Whistles" },
             { to: "/maker/69ec1418ba193ce56e0c5864", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8906f1ab3_SuspensionBridges.png", title: "Suspension Bridges", desc: "Design and model a suspension bridge to understand structural engineering concepts", b1: "bg-orange-500", b1l: "3D Printing", b2: "bg-amber-500", b2l: "Intermediate", shareKey: "maker/69ec1418ba193ce56e0c5864", shareLabel: "Suspension Bridges" },
           ].map(({ to, img, title, desc, b1, b1l, b2, b2l, shareKey, shareLabel }) => (
