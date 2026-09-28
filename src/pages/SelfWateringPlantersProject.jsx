@@ -7,7 +7,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9b6f3097f_Self-WateringPlanters.png";
+const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/30d11a1c7_self-watering_planter.jpg";
+const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/f776ba117_Self-WateringPlanter-Overview.mp4";
+const PRINT_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/7adf629b4_self-watering-planter-3d-print.mp4";
+const DESIGN_CHALLENGES_PDF = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/ffd84944a_Self-Watering-Planters-Design-Challenges.pdf";
+const VISUAL_MONITORING_PDF = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/9db324afd_Visual-Monitoring.pdf";
+const PORTFOLIO_URL = "https://docs.google.com/presentation/d/1eFqo8krPka9FO8V3eG5NVHSoUr788_ZDncOy7XzbYtI/edit?usp=sharing";
+
+const IMG = {
+  designChallenges: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9dbf33c3f_self-watering-planters-design-challenges.jpg",
+  rootCharacteristics: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/3050f4bd2_self-watering-planter-root-characteristics.jpg",
+  leafCharacteristics: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9cadb45f1_self-watering-planter-leaf-characteristics.jpg",
+  glucoseOxygen: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/4a76191b6_self-watering-planter-glucose-oxygen.jpg",
+  co2LightWater: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/7407d87c5_self-watering-planter-co2-light-water.jpg",
+  planterBench: COVER_IMG,
+};
 
 function Section({ title, icon, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -44,26 +58,32 @@ function InfoCard({ icon, label, text }) {
   );
 }
 
-function ChallengeCard({ num, title, desc, considerations }) {
+function PhotosynthesisCard({ image, title, desc }) {
   return (
     <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-      <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
-        <span className="w-7 h-7 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{num}</span>
-        <span className="font-poppins font-bold text-sm text-foreground">{title}</span>
+      {image && (
+        <div className="bg-muted/20 p-4 flex items-center justify-center">
+          <img src={image} alt={title} className="max-h-40 w-auto object-contain rounded-lg" />
+        </div>
+      )}
+      <div className="p-4 space-y-1">
+        <p className="font-poppins font-bold text-sm text-foreground">{title}</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
       </div>
-      <div className="p-5 space-y-2">
-        <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
-        {considerations && (
-          <div className="bg-muted/40 border border-border/40 rounded-xl p-3 space-y-1">
-            <p className="font-poppins font-bold text-xs text-foreground mb-1">Consider:</p>
-            {considerations.map((c, i) => (
-              <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-                <span className="text-emerald-500 font-bold flex-shrink-0">•</span> {c}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+    </div>
+  );
+}
+
+function PortfolioNote({ children }) {
+  return (
+    <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
+      <p className="font-poppins font-bold text-xs text-foreground">📁 Project Portfolio</p>
+      <p className="text-xs text-muted-foreground leading-relaxed">{children}</p>
+      <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+        <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs">
+          <ExternalLink size={12} /> Open Project Portfolio
+        </Button>
+      </a>
     </div>
   );
 }
@@ -85,12 +105,12 @@ export default function SelfWateringPlantersProject({ isPublic = false }) {
           <div className="flex flex-wrap gap-2">
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-600 text-white">Project</span>
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-sm">STEM</span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white">Basic</span>
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white">Skill Building</span>
           </div>
           <h1 className="font-poppins font-bold text-3xl md:text-5xl text-white leading-tight">Self-Watering Planters</h1>
-          <p className="text-white/80 text-sm md:text-base max-w-xl">Design and 3D print a self-watering planter that helps plants receive consistent moisture over time.</p>
+          <p className="text-white/80 text-sm md:text-base max-w-xl">Design and make a 3D printed self-watering planter that helps plants receive consistent moisture over time.</p>
           <div className="flex flex-wrap gap-5 text-white/70 text-sm">
-            <span className="flex items-center gap-1.5"><Clock size={15} /> 4 hours + monitoring time</span>
+            <span className="flex items-center gap-1.5"><Clock size={15} /> Skill Building + Design & Make</span>
             <span className="flex items-center gap-1.5"><Layers size={15} /> 1 planter + design challenges</span>
             <span className="flex items-center gap-1.5"><Star size={15} /> All skill levels</span>
           </div>
@@ -108,226 +128,119 @@ export default function SelfWateringPlantersProject({ isPublic = false }) {
       </Section>
 
       {/* Introduction */}
-      <Section title="Introduction" icon="🌱" defaultOpen={false}>
-        <div className="space-y-3 text-sm text-foreground/80 leading-relaxed">
-          <p>Plants make their own food through a process called <strong>photosynthesis</strong>. This process allows plants to survive and grow. Photosynthesis is important to Earth because it is a major source of oxygen in the atmosphere.</p>
-          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
-            <p className="text-sm font-poppins font-bold text-emerald-800">Carbon dioxide + water + light → glucose + oxygen</p>
-          </div>
-          <p>Plants get carbon dioxide from the air through their leaves. They get light from the sun, and they absorb water from the soil. Photosynthesis creates glucose and oxygen. Oxygen is released into the air, while glucose is used for respiration, growth, and storage.</p>
-          <p>Plants have special features that help them carry out photosynthesis. Leaves are thin, making it easier for carbon dioxide to move into the leaf. Leaves also have a large surface area to capture light. They contain <strong>chloroplasts</strong>, which help convert sunlight into energy. Plants also have tube-like structures that carry water and food around the plant.</p>
-          <p>Water is absorbed from the soil through <strong>root hair cells</strong>. These cells are thin and have a large surface area, allowing water to pass into the plant more easily.</p>
-          <p>Traditional planters usually hold soil in a container, and water is added from the top. However, traditional planters may require frequent watering and can be prone to overwatering. Too much water can leave roots waterlogged, causing them to rot.</p>
-          <p><strong>Self-watering planters</strong> are designed to solve this problem. They usually have two main parts: an outer container and an inner pot with perforated holes. The outer container holds a reservoir of water at the bottom. The soil and plant are placed inside the inner pot. When the soil dries out, it draws water from the reservoir as needed.</p>
-          <p>In this project, you will design and 3D print your own self-watering planter. Once created, you can begin growing plants and helping the ecosystem thrive.</p>
-        </div>
-      </Section>
-
-      {/* Design Considerations */}
-      <Section title="Design Considerations" icon="🔬" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">Before designing your self-watering planter, think about how plants grow and how water moves through the planter system.</p>
-        <div className="space-y-3">
-          {[
-            { icon: "☀️", title: "Photosynthesis", desc: "Plants need light, carbon dioxide, and water to make food. Your planter should support healthy plant growth by helping the plant access water without becoming waterlogged." },
-            { icon: "💧", title: "Water Reservoir", desc: "The planter should include a space where water can be stored. This reservoir allows the plant to access water when the soil becomes dry." },
-            { icon: "🪴", title: "Inner Pot", desc: "The inner pot holds the soil and plant. It should have small holes or openings that allow water to move from the reservoir into the soil." },
-            { icon: "⭕", title: "Perforated Holes", desc: "The holes must be large enough to allow water movement but not so large that soil falls out easily." },
-            { icon: "🌿", title: "Root Health", desc: "Healthy roots need water and air. The design should avoid overwatering, because waterlogged roots can rot." },
-            { icon: "📐", title: "Planter Size", desc: "The planter should be large enough for the selected plant, but not too large that it becomes difficult or slow to print." },
-            { icon: "🔄", title: "Water Refill Access", desc: "The design should make it easy to add water to the reservoir when needed. A small refill opening or removable inner pot may help." },
-            { icon: "⚖️", title: "Stability", desc: "The planter should have a stable base so it does not tip over when filled with soil, water, and a plant." },
-          ].map((item, i) => (
-            <div key={i} className="flex gap-4 p-4 rounded-xl bg-muted/40 border border-border/40">
-              <span className="text-2xl flex-shrink-0">{item.icon}</span>
-              <div>
-                <p className="font-poppins font-bold text-sm text-foreground mb-1">{item.title}</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Skill Building Tutorial */}
-      <Section title="Skill Building — Build the Basic Planter" icon="🖥️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">
-          You will begin by following a tutorial to design a basic self-watering planter. This example model will act as the starting point for your own improved version.
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <h2 className="font-poppins font-bold text-lg text-foreground">Introduction</h2>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          In this project, you'll be designing and making a 3D printed self-watering planter. The process involves learning about photosynthesis before following tutorials to design a basic self-watering planter. In the main part of the project, you'll be introduced to design challenges to improve the design and develop a plant growth strategy, which will be monitored over time. Watch the intro video below and browse through the project sections to learn more about the journey.
         </p>
-        <div className="space-y-3">
-          {[
-            "Open Tinkercad or Fusion 360.",
-            "Create the outer container that will hold the water reservoir.",
-            "Create the inner pot that will hold the soil and plant.",
-            "Add perforated holes to the inner pot.",
-            "Design enough clearance so the inner pot fits inside the outer container.",
-            "Add a stable base to prevent tipping.",
-            "Add a water refill gap or opening if needed.",
-            "Check that the parts are printable.",
-            "Export the model as an STL file.",
-            "Slice and 3D print the planter parts.",
-          ].map((step, i) => (
-            <div key={i} className="flex items-start gap-3 py-1">
-              <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
-              <p className="text-sm text-foreground/80 leading-relaxed">{step}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Product Analysis & Testing */}
-      <Section title="Product Analysis & Testing" icon="🧪" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">After printing your planter, test if the parts fit together and if the water system works properly.</p>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Testing Method:</p>
-          {[
-            "Assemble the outer container and inner pot.",
-            "Check if the inner pot fits properly.",
-            "Add water to the reservoir.",
-            "Add soil to the inner pot.",
-            "Plant a seed or small plant.",
-            "Observe how the soil absorbs water.",
-            "Monitor the plant over several days or weeks.",
-          ].map((item, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-              <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
-              {item}
-            </div>
-          ))}
-        </div>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">Record the following:</p>
-          {[
-            "Did the inner pot fit inside the outer container?",
-            "Was there enough clearance between the parts?",
-            "Did the reservoir hold water without leaking?",
-            "Did the soil absorb water properly?",
-            "Were the holes too small or too large?",
-            "Did the plant receive enough moisture?",
-            "Did the roots become too wet?",
-            "How often did you need to refill the water?",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-emerald-500 font-bold flex-shrink-0">•</span> {item}
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Design Challenges */}
-      <Section title="Design Challenges — Improve the Planter" icon="🔁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">After making the basic model, improve your design through one or more design challenges.</p>
-        <div className="space-y-4">
-          <ChallengeCard num="1" title="Improve the Water Reservoir" desc="Redesign the reservoir so it can hold more water without making the planter too large or unstable." considerations={["Wider base", "Deeper water chamber", "Clear refill level marker", "Easy refill opening"]} />
-          <ChallengeCard num="2" title="Improve the Inner Pot" desc="Modify the inner pot so water can move into the soil more effectively." considerations={["Hole size", "Hole spacing", "Hole location", "Soil support"]} />
-          <ChallengeCard num="3" title="Reduce Overwatering" desc="Design a feature that helps prevent too much water from reaching the roots." considerations={["Raised inner pot", "Smaller water contact area", "Drainage gap", "Air space between reservoir and soil"]} />
-          <ChallengeCard num="4" title="Improve Plant Growth Monitoring" desc="Create a simple way to observe or track plant growth." considerations={["Height marker", "Label area", "Plant name tag", "Water level indicator", "Observation chart"]} />
-          <ChallengeCard num="5" title="Improve Aesthetics" desc="Make the planter more visually appealing while keeping it functional." considerations={["Patterned outer wall", "Textured surface", "Custom name or label", "Nature-inspired shape", "Decorative rim"]} />
-        </div>
-      </Section>
-
-      {/* Plant Growth Strategy */}
-      <Section title="Plant Growth Strategy" icon="🌿" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">After printing and assembling your planter, create a plan for growing and monitoring your plant.</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-            <p className="font-poppins font-bold text-xs text-foreground mb-1">Growth Plan — Include:</p>
-            {["Plant type", "Amount of soil", "Amount of water added to the reservoir", "Location of the planter", "Expected sunlight exposure", "Observation schedule"].map((item, i) => (
-              <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-                <span className="text-emerald-500 font-bold flex-shrink-0">•</span> {item}
-              </div>
-            ))}
-          </div>
-          <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-            <p className="font-poppins font-bold text-xs text-foreground mb-1">Monitoring — Record:</p>
-            {["Plant height", "Leaf growth", "Soil moisture", "Water level", "Refill dates", "Signs of overwatering", "Signs of healthy growth"].map((item, i) => (
-              <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-                <span className="text-emerald-500 font-bold flex-shrink-0">•</span> {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Final 3D Print */}
-      <Section title="Final 3D Print" icon="🖨️" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">Before printing your final planter, check the following:</p>
-        <div className="bg-muted/40 border border-border/40 rounded-xl p-4 space-y-2">
-          {[
-            "The planter has an outer water reservoir",
-            "The inner pot fits properly",
-            "Perforated holes allow water movement",
-            "The base is stable",
-            "The design is not too thin or fragile",
-            "The reservoir can be refilled easily",
-            "The model is properly oriented for printing",
-            "The planter supports healthy root growth",
-          ].map((item, i) => (
-            <div key={i} className="flex gap-2 text-xs text-muted-foreground">
-              <span className="text-green-600 font-bold flex-shrink-0">✓</span> {item}
-            </div>
-          ))}
-        </div>
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <p className="text-xs text-blue-800 leading-relaxed">After printing, assemble the parts and test the planter with soil, water, and a plant.</p>
-        </div>
-      </Section>
-
-      {/* Portfolio Guide */}
-      <Section title="Project Portfolio Guide" icon="📁" defaultOpen={false}>
-        <p className="text-sm text-muted-foreground">Document your design process in a Google Slides portfolio or another digital format.</p>
-        <div className="space-y-3">
-          {[
-            { slide: "Title Slide", items: ["Add your full name, project title, date, and class or group."] },
-            { slide: "Introduction", items: ["Explain the goal of the project.", "Describe how self-watering planters work."] },
-            { slide: "Photosynthesis", items: ["Summarize why plants need water, carbon dioxide, and light to grow."] },
-            { slide: "Design Considerations", items: ["Discuss the water reservoir, inner pot, perforated holes, root health, refill access, and stability."] },
-            { slide: "Initial CAD Model", items: ["Show screenshots of your first planter design."] },
-            { slide: "3D Print", items: ["Include photos of your printed parts."] },
-            { slide: "Testing Results", items: ["Describe how the planter performed when filled with water, soil, and a plant."] },
-            { slide: "Design Improvements", items: ["Explain what changes you made to improve the planter."] },
-            { slide: "Growth Monitoring", items: ["Record plant growth observations over time."] },
-            { slide: "Final Solution", items: ["Present your final planter design.", "Explain how it helps plants grow."] },
-          ].map((section, i) => (
-            <div key={i} className="p-4 rounded-xl bg-muted/40 border border-border/40">
-              <p className="font-poppins font-bold text-xs text-emerald-700 mb-2">{section.slide}</p>
-              <ul className="space-y-1">
-                {section.items.map((item, j) => (
-                  <li key={j} className="flex gap-2 text-xs text-muted-foreground">
-                    <span className="text-emerald-400 flex-shrink-0">→</span> {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Downloads */}
-      <Card className="p-5 border-border/60 shadow-sm">
-        <h3 className="font-poppins font-bold text-sm mb-4 flex items-center gap-2">
-          <Download size={15} className="text-emerald-600" /> Downloads & Resources
-        </h3>
-        <div className="space-y-2">
-          {[
-            { label: "Self-Watering Planter Tutorial", desc: "Step-by-step guide to design the basic planter in Tinkercad or Fusion 360" },
-            { label: "Design Method Toolkit", desc: "Alternative design methods to adapt or extend the project" },
-            { label: "Portfolio Template", desc: "Google Slides or digital portfolio format to document your process" },
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-4 px-4 py-3 rounded-xl bg-muted/40 border border-border/40">
-              <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                <Download size={15} className="text-emerald-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm">{item.label}</p>
-                <p className="text-xs text-muted-foreground truncate">{item.desc}</p>
-              </div>
-              <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs flex-shrink-0" disabled>
-                <ExternalLink size={12} /> Coming Soon
-              </Button>
-            </div>
-          ))}
+        <div className="rounded-2xl overflow-hidden border border-border/60 bg-black">
+          <video src={OVERVIEW_VIDEO} controls className="w-full max-h-96" />
         </div>
       </Card>
+
+      {/* Photosynthesis */}
+      <Section title="Photosynthesis" icon="🌱" defaultOpen={true}>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          Before we begin designing, it's important to understand how plants actually grow. Let's have a quick recap of photosynthesis!
+        </p>
+        <PhotosynthesisCard title="Food for Plants" desc="Plants make their own food through a process called photosynthesis, which allows them to survive and grow." />
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
+          <p className="font-poppins font-bold text-xs text-foreground mb-1">The Equation</p>
+          <p className="text-sm font-poppins font-bold text-emerald-800">Carbon dioxide + water + light → glucose + oxygen</p>
+          <p className="text-xs text-muted-foreground mt-1">If any of these things were not present, photosynthesis could not occur!</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <PhotosynthesisCard image={IMG.co2LightWater} title="CO2, Light + Water" desc="CO2 is acquired from the air through leaves, light from the sun and water from the soil! Chlorophyll is an essential pigment within leaves that allows the plant to absorb light." />
+          <PhotosynthesisCard image={IMG.glucoseOxygen} title="Oxygen + Glucose" desc="Photosynthesis creates glucose and oxygen. Oxygen is released into the air and glucose is converted into starch or used for respiration, growth and storage in seeds." />
+          <PhotosynthesisCard image={IMG.leafCharacteristics} title="Leaf Characteristics" desc="Leaves are thin, which makes it easy for CO2 to diffuse into the leaf for photosynthesis. They also have a large surface area to capture light, they contain chloroplasts which allow sunlight to be converted into energy by the leaf and they have a network of tubes that carries water and food." />
+          <PhotosynthesisCard image={IMG.rootCharacteristics} title="Root Characteristics" desc="Water is transported to the leaf from the roots of a plant. It is absorbed from the soil in what is known as a 'root hair cell', which is thin with a large surface area to easily allow the passage of water." />
+        </div>
+        <PortfolioNote>
+          Open up the project portfolio and enter your full name and the date on the title slide. If you haven't already done so, you will need to go to 'File &gt; Make a Copy' before you can begin editing the portfolio. On slide 3 (Photosynthesis), summarise the content on this page by writing a paragraph about the process and purpose of photosynthesis.
+        </PortfolioNote>
+      </Section>
+
+      {/* Skill Building */}
+      <Section title="Skill Building" icon="🖥️" defaultOpen={false}>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          Self-watering planters hold a reservoir of water at the bottom of an outer container. When soil dries out in the inner pot, it draws water in through small holes as required by the plant. This means no waterlogged roots and consistent moisture – meaning they can go days or even weeks without watering.
+        </p>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          We're now going to go through a tutorial to design a basic self-watering planter. This is going to act as the starting point of your own unique design! Select either the Tinkercad or Fusion 360 tutorial and follow it to design the example self-watering planter. There are options for both voice over instructions and text-based instructions so simply pick your preferred method of learning. When you complete the tutorial, don't 3D print the model just yet as we'll be improving it in the next section!
+        </p>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+          <p className="text-xs text-amber-800">Tinkercad and Fusion 360 tutorial videos for this project are coming soon.</p>
+        </div>
+        <PortfolioNote>
+          On Slide 4 (Self-Watering Planters), write a paragraph about self-watering planters. Explain how they work and what benefits they bring. Supplement this information with a visual diagram/drawing.
+        </PortfolioNote>
+      </Section>
+
+      {/* Design + Make */}
+      <Section title="Design + Make" icon="🔨" defaultOpen={false}>
+        <p className="text-sm text-foreground/80 leading-relaxed">
+          Now that you've designed a basic self-watering planter, it's time to improve it by incorporating new features! To do this, we'll be going through a series of design challenges before developing a growth strategy, which will be monitored over time. Follow the below steps to complete the project and bring your unique self-watering planter to life!
+        </p>
+
+        {/* Step 1 */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 1: Design Challenges</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            Although the basic self-watering planter you designed is perfectly functional, there are various ways in which it could be improved to be more user-friendly and aesthetically pleasing. Download the design challenge document below and go through the exercises to improve the design. In addition to the suggested challenges, see if you can think of additional unique features.
+          </p>
+          <div className="rounded-2xl overflow-hidden border border-border/60">
+            <div className="bg-muted/20 p-4 flex items-center justify-center">
+              <img src={IMG.designChallenges} alt="Design Challenges" className="max-h-52 w-auto object-contain rounded-lg" />
+            </div>
+          </div>
+          <a href={DESIGN_CHALLENGES_PDF} target="_blank" rel="noopener noreferrer">
+            <Button className="rounded-xl gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm">
+              <Download size={14} /> Download Design Challenges
+            </Button>
+          </a>
+        </div>
+
+        {/* Step 2 */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 2: 3D Print</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            3D print multiple copies of your planter so you can test different growth strategies. You may need to experiment with different things to ensure the planter is watertight. Tips include increasing the number of outer walls, thicker print layers, lower print speed, ensuring the nozzle temperature is high enough to not cause underextrusion or even adding a waterproofing layer to the finished model.
+          </p>
+          <div className="rounded-2xl overflow-hidden border border-border/60 bg-black">
+            <video src={PRINT_VIDEO} controls className="w-full max-h-96" />
+          </div>
+          <div className="rounded-2xl overflow-hidden border border-border/60">
+            <div className="bg-muted/20 p-4 flex items-center justify-center">
+              <img src={IMG.planterBench} alt="3D printed self-watering planter" className="max-h-64 w-auto object-contain rounded-lg" />
+            </div>
+            <p className="p-3 text-xs text-muted-foreground italic">3D printed self-watering planter placed on a wooden bench.</p>
+          </div>
+        </div>
+
+        {/* Step 3 */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 3: Growth Strategy</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            Once your model is 3D printed, devise a strategy to grow plants in your home, school or office. Use online research to discover what seeds can be grown in your environment, together with information about optimal growth conditions (light, temperature etc). We recommend testing different strategies/conditions for each of the planters you 3D printed.
+          </p>
+          <Button variant="outline" size="sm" className="rounded-xl gap-1.5 text-xs" disabled>
+            <ExternalLink size={12} /> View Online Research Method
+          </Button>
+        </div>
+
+        {/* Step 4 */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 4: Visual Monitoring</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            Planting your seeds is just the beginning of your journey. Consider using the visual monitoring method to track performance of each of your planters. As you review growth at regular intervals, think carefully about what improvements could be made to both your design and growth strategy.
+          </p>
+          <a href={VISUAL_MONITORING_PDF} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" className="rounded-xl gap-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50 text-sm">
+              <Download size={14} /> View Visual Monitoring Method
+            </Button>
+          </a>
+        </div>
+      </Section>
 
       {/* Key Learning */}
       <Card className="p-5 border-emerald-200 bg-emerald-50/50 shadow-sm">
