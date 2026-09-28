@@ -15,6 +15,8 @@ const VISUAL_MONITORING_PDF = "https://media.base44.com/files/public/69d386ad952
 const PORTFOLIO_URL = "https://docs.google.com/presentation/d/1eFqo8krPka9FO8V3eG5NVHSoUr788_ZDncOy7XzbYtI/edit?usp=sharing";
 
 const IMG = {
+  plantFood: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/aa41107ff_self-watering-planter-plant-food.jpg",
+  photosynthesisEquation: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/618819274_self-watering-planter-photosynthesis-equation.jpg",
   designChallenges: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9dbf33c3f_self-watering-planters-design-challenges.jpg",
   rootCharacteristics: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/3050f4bd2_self-watering-planter-root-characteristics.jpg",
   leafCharacteristics: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9cadb45f1_self-watering-planter-leaf-characteristics.jpg",
@@ -143,11 +145,14 @@ export default function SelfWateringPlantersProject({ isPublic = false }) {
         <p className="text-sm text-foreground/80 leading-relaxed">
           Before we begin designing, it's important to understand how plants actually grow. Let's have a quick recap of photosynthesis!
         </p>
-        <PhotosynthesisCard title="Food for Plants" desc="Plants make their own food through a process called photosynthesis, which allows them to survive and grow." />
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center">
-          <p className="font-poppins font-bold text-xs text-foreground mb-1">The Equation</p>
-          <p className="text-sm font-poppins font-bold text-emerald-800">Carbon dioxide + water + light → glucose + oxygen</p>
-          <p className="text-xs text-muted-foreground mt-1">If any of these things were not present, photosynthesis could not occur!</p>
+        <PhotosynthesisCard image={IMG.plantFood} title="Food for Plants" desc="Plants make their own food through a process called photosynthesis, which allows them to survive and grow." />
+        <div className="space-y-2">
+          <div className="rounded-2xl overflow-hidden border border-border/60">
+            <div className="bg-muted/20 p-4 flex items-center justify-center">
+              <img src={IMG.photosynthesisEquation} alt="Photosynthesis equation" className="max-h-40 w-auto object-contain rounded-lg" />
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground italic text-center">If any of the things mentioned in the diagram were not present, photosynthesis could not occur!</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <PhotosynthesisCard image={IMG.co2LightWater} title="CO2, Light + Water" desc="CO2 is acquired from the air through leaves, light from the sun and water from the soil! Chlorophyll is an essential pigment within leaves that allows the plant to absorb light." />
