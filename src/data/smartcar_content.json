@@ -1,0 +1,5391 @@
+{
+  "images": {
+    "word/media/": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/89896f6642cd25e6a6d4794c39e1118d1ae01466.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/9d43d7601701ad501a59ece5442a6207db4a611f.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/6bd1820d68fbce5fe0d1dc1f001a7e4c81537600.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/7ed9cbd1a09690c01caf88cee98f22fea0ca9f28.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/386a69b58b77384d4e207e7677d7277e235611d1.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/61d49a0432f8622b43ea83adfb4c2123802c1824.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/b5e5d7643920eef788a0315db6207b7a0a1d3323.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/7c4d07f150e6e373d8ec9fde30f59ce5c260f85a.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/4a09dffdd0be725410c4b2c04a15c1052ee1b9e5.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/8756b7f0d78611302a032b67cf53593de76ed88b.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/79ab920f43ad6061ad731ee53a0540c153089fee.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/b38c30969cadf33488f2d3555b4562616d0de4b5.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/72add54a9ed1fb235aac40a147b65c81e4c82b3a.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/368510c8624f5c4d6b1e8a95dd2518b04abdf061.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/5ba62b937b834090602e95f6ea5c6217f3269932.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/e47e85206e29ae6e752771df417780458873448a.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/7a504bca94e4c3cf32cd63af6fb09a04d6a638b0.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/39a466f22d44919106a5361c2742f97032b91e81.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/9f4900fa36e7bde28e27362b1cdd08942417ba84.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/42d9d69bbbf3eb299d4889c8f79685dec0d28065.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/acc011c4cce30436c78e52871bf9f5253e5d3914.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/2cafb46e4235b4c085b0a3f93eac56b5d3869891.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/bfbd656fa8c1bcd840bc3ef083cb987f20d8a958.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/888bb85dab25f989d9fdf5facfb53823930593f1.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/41a0f8ddf5e820afe8ec6591199cc7d7c525bef0.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/80f257ef1cb8c03969b1317b02d2065de55eca65.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}",
+    "word/media/1410ad98726805ce7ac2df447f76a01a55e911c8.png": "ERROR:{'message': 'Validation Error', 'error': [{'type': 'value_error', 'loc': ('file',), 'msg': \"Value error, Expected UploadFile, received: <class 'dict'>\", 'ctx': {'error': ValueError(\"Expected UploadFile, received: <class 'dict'>\")}}]}"
+  },
+  "structured": [
+    {
+      "style": "Normal",
+      "text": "MAKER BUILD MODULE",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "4WD Arduino Smart Car Kit",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Three step-by-step builds: Obstacle Avoidance Car, Line-Following Robot and Maze Solver",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/89896f6642cd25e6a6d4794c39e1118d1ae01466.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 1. Contents of the 4WD Electronic Smart Car Kit (UNO R3, Sensor Shield v5.0, L298N, HC-SR04, SG90, 4-channel tracker, 4 TT motors, chassis)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Level",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Beginner to intermediate maker",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Build time",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Base car 2 to 3 hours; each project 1 to 2 hours",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Software",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Arduino IDE 2.x, built-in Servo and EEPROM libraries only",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Prepared by Franch Maverick A. Lorilla, PECE, DEng",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "University of Science and Technology of Southern Philippines, Cagayan de Oro",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "College of Engineering and Architecture",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Contents",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "How to Use This Module",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 1. Know Your Kit (Supplies)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Parts list with photos, extra tools",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 2. Build the Base Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Steps 1 to 14: assembly, power, master pin map, motor and sensor tests",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 3. Project A: Obstacle Avoidance Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "How it works, flowchart, code, tuning, challenges",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 4. Project B: Line-Following Robot",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Sensor logic, PD steering, track, code, tuning",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 5. Project C: Maze Solver",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C1 line maze with shortest path; C2 wall maze with ultrasonic scanning",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 6. Troubleshooting and Reference",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Fault table, sketch list, references",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "How to Use This Module",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "This module follows the same pattern that popular maker sites such as Instructables use for robot car builds: a short introduction, a Supplies list with a photo of every part, then numbered steps, each with a picture and a few clear actions, followed by the code, a test, and a troubleshooting section. Guides like the Instructables &quot;Smart Robot Car&quot; (15 steps) and the UCTRONICS kit user guide organize the work as Introduction, Parts, Pin Definition, Installation and Programming. We keep that familiar order but add one important idea: build the car once, then change only the code and a few sensors for each project.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "What you will do",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 1. Know Your Kit",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Identify every component from the kit photo and learn what it does.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 2. Build the Base Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "14 numbered steps: mechanical assembly, wiring to one master pin map, and two test sketches that prove everything works.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 3. Project A",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Obstacle Avoidance Car using the HC-SR04 on the servo &quot;neck&quot;.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 4. Project B",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Line-Following Robot using the 4-channel tracker with smooth PD steering.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 5. Project C",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Maze Solver in two versions: C1 black-line maze with shortest-path learning, and C2 wall maze with ultrasonic scanning.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part 6. Troubleshooting",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Symptoms, causes and fixes, plus the full pin map and references.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Every project uses the same wiring, so you never need to rewire the car between projects. Only the sketch you upload changes. All six sketches in this module were compiled against the official Arduino AVR core for the UNO before publishing, and they use only libraries that come with the Arduino IDE.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "NOTE:  Photos in this module are cut from the kit product photo so you can match each part on your table. Diagrams were drawn for this module to show wiring and logic that photos cannot show clearly.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 1. Know Your Kit (Supplies)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Lay out every part on a clean table and tick it off. The photo column is cut straight from the kit picture, so the parts should look the same as yours.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Photo",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Part (qty)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "What it does",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/9d43d7601701ad501a59ece5442a6207db4a611f.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "UNO R3 board (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The &quot;brain&quot;. Runs your Arduino sketch and reads sensors.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/6bd1820d68fbce5fe0d1dc1f001a7e4c81537600.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Sensor Shield v5.0 (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Plugs on top of the UNO. Every pin gets a 3-pin G/V/S header, so sensors plug in with no breadboard.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/7ed9cbd1a09690c01caf88cee98f22fea0ca9f28.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "L298N motor driver (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Turns the small Arduino signals into motor power. Drives the left pair and right pair of motors forward or backward at variable speed.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/386a69b58b77384d4e207e7677d7277e235611d1.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "TT gear motors (4)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Yellow 3 to 6 V geared DC motors, one per wheel.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/61d49a0432f8622b43ea83adfb4c2123802c1824.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Wheels (4)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Press onto the D-shaped motor shafts.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/b5e5d7643920eef788a0315db6207b7a0a1d3323.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Acrylic chassis plates (2)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Bottom plate holds motors, driver and battery. Top plate holds the UNO, servo and sensors.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/7c4d07f150e6e373d8ec9fde30f59ce5c260f85a.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Motor mounts (8)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "T-shaped acrylic brackets. Two per motor clamp it to the bottom plate.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/4a09dffdd0be725410c4b2c04a15c1052ee1b9e5.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04 ultrasonic sensor (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Measures distance (2 to 400 cm) with sound echoes. The car&apos;s &quot;eyes&quot; for obstacles and walls.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/8756b7f0d78611302a032b67cf53593de76ed88b.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "SG90 micro servo (1) with horns and screws",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Turns the ultrasonic sensor left and right so the car can look around.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/79ab920f43ad6061ad731ee53a0540c153089fee.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Pan-tilt bracket (1 set)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Holds the servo and the HC-SR04 at the front of the car.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/b38c30969cadf33488f2d3555b4562616d0de4b5.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "4-channel tracking board (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Comparator board with 4 blue sensitivity knobs. Converts the probe signals into clean HIGH/LOW outputs.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/72add54a9ed1fb235aac40a147b65c81e4c82b3a.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "IR line probes (4)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Small TCRT5000-type sensors mounted under the front to see black tape.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/368510c8624f5c4d6b1e8a95dd2518b04abdf061.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Battery box (1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Holds the cells that power motors and electronics. Check whether yours takes AA or 18650 cells.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/5ba62b937b834090602e95f6ea5c6217f3269932.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Encoder disks (4)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Slotted disks for speed sensing. Optional: this module does not need them, but they are ready for a future upgrade.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/e47e85206e29ae6e752771df417780458873448a.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Screws, nuts, brass standoffs",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Long M3 screws for motors, short M3 screws and nuts for boards, standoffs to join the two plates.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/7a504bca94e4c3cf32cd63af6fb09a04d6a638b0.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Dupont jumper wires",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Female-female ribbon wires for all signal connections.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/39a466f22d44919106a5361c2742f97032b91e81.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "USB cable, red/black wire, header pins",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "USB for programming; red/black wire for power; header strip for spare connections.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Extra tools and materials (not in the kit)",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Small Phillips screwdriver, wire stripper, and electrical tape. A soldering iron is needed only if your motors do not have wires attached.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Batteries for the battery box (2 or 4 cells, see Step 11). Rechargeable 18650 cells need a proper charger.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "A small ON/OFF switch (strongly recommended) placed in the red battery wire.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "For Project B and C1: black electrical tape 18 to 25 mm wide and a light, matte floor or a large white cartolina/illustration board.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "For Project C2: cardboard, books or wood blocks to make maze walls at least 10 cm high.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "A computer with Arduino IDE 2.x installed (free from arduino.cc). Select Tools &gt; Board &gt; Arduino Uno and the correct Port.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 2. Build the Base Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The base car is the same for all three projects. Follow the steps in order. The side view below shows where everything ends up.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/9f4900fa36e7bde28e27362b1cdd08942417ba84.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 2. Side view of the finished base car: two plates, motors below, electronics on top, sensors at the front.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 1:  Prepare the four motors",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/386a69b58b77384d4e207e7677d7277e235611d1.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "If the motors have no wires, solder a red and a black wire (about 15 cm) to each motor&apos;s two tabs.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Mark every motor with tape: LF, LR, RF, RR (left front, left rear, right front, right rear).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Optional: slide an encoder disk onto the inner shaft of each motor for later upgrades.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tip: Solder the red wire to the same tab on every motor. This makes directions consistent later.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 2:  Mount the motors on the bottom plate",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/7c4d07f150e6e373d8ec9fde30f59ce5c260f85a.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Each motor uses two T-shaped mounts. Push one mount up through the slot from underneath and place the other against the outside of the motor.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Pass two long M3 screws through mount, motor and mount, then tighten the nuts.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Motor shafts point outward; wires point toward the middle of the plate.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Repeat for all four corners.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tip: Do not over-tighten. Acrylic cracks easily. Stop when the motor no longer wobbles.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 3:  Fit the wheels",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/61d49a0432f8622b43ea83adfb4c2123802c1824.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Line up the flat side of the wheel hole with the flat of the motor shaft and press straight on.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Support the motor from behind while pressing so the mount does not bend.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Spin each wheel by hand: it should turn freely and not rub the chassis.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 4:  Mount the L298N driver",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/7ed9cbd1a09690c01caf88cee98f22fea0ca9f28.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Place the L298N on the bottom plate between the front motors, screw terminals facing the sides so motor wires reach easily.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Use short M3 screws with a brass standoff or nut as a spacer so the board does not touch the plate.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Remove the two jumper caps on ENA and ENB. The Arduino will control speed through these pins.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Keep the 5V-EN jumper (near the power terminal) in place if your battery is 12 V or less.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 5:  Connect the motors to the L298N",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/386a69b58b77384d4e207e7677d7277e235611d1.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "The two left motors are wired together (in parallel), and so are the two right motors.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "LF + LR red wires into OUT1, black wires into OUT2.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "RF + RR red wires into OUT3, black wires into OUT4.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Twist each pair of wires before inserting and tighten the terminal screws firmly.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tip: If one side later spins backward, just swap its two wires on the terminal, or change LEFT_INVERT / RIGHT_INVERT in the code.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 6:  Install the line probes (for Projects B and C1)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/72add54a9ed1fb235aac40a147b65c81e4c82b3a.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Screw the four IR probes in a straight row under the front edge of the bottom plate, facing down.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Keep the probes about 5 to 10 mm above the floor.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Spacing: the two middle probes should be about as far apart as your tape is wide (around 18 to 20 mm). Outer probes go 15 to 20 mm further out.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Order seen from behind the car: S1 far-left, S2, S3, S4 far-right.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 7:  Fit the standoffs and the battery box",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/368510c8624f5c4d6b1e8a95dd2518b04abdf061.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Screw the brass standoffs into the bottom plate (usually 4 to 6 positions).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Fix the battery box on the rear half of the bottom plate with screws or double-sided tape.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Route the red wire to where your ON/OFF switch will sit.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tip: Keep the heavy battery low and toward the middle for better balance.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 8:  Attach the top plate",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/b5e5d7643920eef788a0315db6207b7a0a1d3323.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Pull all wires (motor power, L298N signal pins, probe cables) up through the large holes in the top plate.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Place the top plate on the standoffs and fix with short M3 screws.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Screw the 4-channel tracking board on the top plate near the front, knobs facing up so you can adjust them.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 9:  Mount the UNO and the Sensor Shield",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/9d43d7601701ad501a59ece5442a6207db4a611f.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/6bd1820d68fbce5fe0d1dc1f001a7e4c81537600.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Fix the UNO on the top plate with short screws and standoffs, USB port toward the rear or side so you can reach it.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Press the Sensor Shield straight down onto the UNO headers. Check that no pin is bent or left outside.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "On the shield, every digital pin has three pins: G (ground), V (5 V) and S (signal).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 10:  Assemble the servo &quot;neck&quot; and the HC-SR04",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/8756b7f0d78611302a032b67cf53593de76ed88b.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/79ab920f43ad6061ad731ee53a0540c153089fee.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Center the servo first. Plug it into D3 (brown G, red V, orange S), upload the Sensor Test sketch from Step 14, and let it stop at 90 degrees. Now fit the horn pointing straight forward.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Build the pan bracket around the servo with the small screws, then screw the bracket to the front of the top plate.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Clip or screw the HC-SR04 onto the bracket face with the two &quot;eyes&quot; looking forward.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tip: If you skip centering, the sensor will look sideways when the code thinks it looks forward.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "STEP 11: Power wiring",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Power is where most beginner cars fail, so read this step twice. All grounds must be connected together: battery minus, L298N GND and Arduino GND.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Connection",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "From",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "To",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Battery positive",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Battery box red wire, through the ON/OFF switch",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N 12V (VS) terminal",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Battery negative",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Battery box black wire",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N GND terminal",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Common ground",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N GND terminal",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Sensor Shield G pin (any row)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UNO power, 2 x 18650 (7.4 V)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N 12V terminal (second wire)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UNO VIN pin on the shield power header",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UNO power, 4 x AA (6 V)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N +5V terminal",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UNO 5V pin on the shield power header",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "CAUTION:  Use only ONE of the two UNO power options. Keep the L298N 5V-EN jumper fitted only when the battery is 12 V or less. When you upload with USB while the car is wired to the 5V option, switch the battery OFF first.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "STEP 12: Signal wiring (master pin map)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Use the Dupont wires to connect everything below. This single pin map is used by all six sketches in this module.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/42d9d69bbbf3eb299d4889c8f79685dec0d28065.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 3. Master wiring diagram.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Module pin",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Shield / UNO pin",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wire colour idea",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Used in",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N ENA",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D5 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "purple",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N IN1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D7 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "blue",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N IN2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D8 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "cyan",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N ENB",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D6 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "purple",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N IN3",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D9 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "green",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N IN4",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D11 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "lime",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "all",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo signal (orange)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D3: S, red to V, brown to G",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "servo cable",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A, C2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04 Trig",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A0 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "light blue",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A, C2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04 Echo",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A1 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "violet",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A, C2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04 VCC / GND",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "V / G on A0 or A1 row",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "red / black",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A, C2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tracker OUT1 (far left)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A2 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "red",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B, C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tracker OUT2",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A3 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "orange",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B, C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tracker OUT3",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A4 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "green",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B, C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tracker OUT4 (far right)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A5 (S)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "blue",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B, C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Tracker VCC / GND",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "V / G on any row",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "red / black",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B, C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Maze mode jumper",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "D12 to G (only for replay)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "any",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "NOTE:  Why D9 and D11 for IN3 and IN4? The Servo library takes over the timer that makes PWM on D9 and D10. IN3 and IN4 only need simple on/off signals, so D9 is safe, and the speed pins ENA and ENB stay on D5 and D6 which the servo does not affect.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 13:  Upload and run the Motor Test",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/39a466f22d44919106a5361c2742f97032b91e81.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Lift the car so the wheels are in the air (put it on a cup or box). Connect USB, open 00_MotorTest.ino, click Upload, then open Serial Monitor at 9600 baud.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Turn the battery switch ON. The Serial Monitor tells you what each wheel should be doing.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "During &quot;FORWARD&quot; all four wheels must roll forward. If one side rolls backward, set LEFT_INVERT or RIGHT_INVERT to true (or swap that side&apos;s motor wires).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "If a side does not move at all, check its ENA/ENB wire and that the jumper caps were removed.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "00_MotorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "00_MotorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "4WD Smart Car Kit: check that all four motors spin the right way.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Lift the car off the table (wheels in the air) before uploading.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring (L298N to Sensor Shield / UNO):",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "ENA -&gt; D5   IN1 -&gt; D7   IN2 -&gt; D8     (LEFT motors on OUT1/OUT2)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "ENB -&gt; D6   IN3 -&gt; D9   IN4 -&gt; D11    (RIGHT motors on OUT3/OUT4)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Remove the two ENA/ENB jumper caps on the L298N before connecting D5/D6.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENA = 5, IN1 = 7, IN2 = 8;   // left side",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENB = 6, IN3 = 9, IN4 = 11;  // right side",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// If one side spins backwards during &quot;FORWARD&quot;, change its value to true",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// (or simply swap the two motor wires of that side on the L298N terminal).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool LEFT_INVERT  = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool RIGHT_INVERT = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setMotor(int leftSpeed, int rightSpeed) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (LEFT_INVERT)  leftSpeed  = -leftSpeed;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (RIGHT_INVERT) rightSpeed = -rightSpeed;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "leftSpeed  = constrain(leftSpeed,  -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "rightSpeed = constrain(rightSpeed, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN1, leftSpeed &gt;= 0 ? HIGH : LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN2, leftSpeed &gt;= 0 ? LOW  : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENA, abs(leftSpeed));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN3, rightSpeed &gt;= 0 ? HIGH : LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN4, rightSpeed &gt;= 0 ? LOW  : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENB, abs(rightSpeed));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void stopMotors() { setMotor(0, 0); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void runFor(const char *label, int l, int r, unsigned long ms) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(label);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(l, r);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(ms);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(700);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENA, OUTPUT); pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENB, OUTPUT); pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(F(&quot;Motor test starts in 3 s. Keep the wheels off the table!&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(3000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;FORWARD  (all 4 wheels roll forward)&quot;, 180, 180, 1500);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;BACKWARD (all 4 wheels roll backward)&quot;, -180, -180, 1500);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;SPIN LEFT  (left side back, right side forward)&quot;, -180, 180, 1000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;SPIN RIGHT (left side forward, right side back)&quot;, 180, -180, 1000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;LEFT SIDE ONLY&quot;, 180, 0, 1000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "runFor(&quot;RIGHT SIDE ONLY&quot;, 0, 180, 1000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(F(&quot;--- cycle done, repeating in 3 s ---&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(3000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP 14:  Upload and run the Sensor Test (calibrate the line sensors)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/b38c30969cadf33488f2d3555b4562616d0de4b5.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Upload 01_SensorTest.ino. The servo sweeps 30, 90 and 150 degrees and the Serial Monitor prints the distance and the four line sensors (B = black, w = white).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Hold your hand in front of the HC-SR04: the distance should drop.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Put the car on your track. Turn each blue knob on the tracking board slowly until its LED turns on over white and off over black tape (or the reverse on some boards). Stop at the middle of the range where it switches cleanly.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "If the monitor shows B over white and w over black, change BLACK_LEVEL to LOW in every sketch.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "01_SensorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "01_SensorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Checks the HC-SR04 ultrasonic sensor, the SG90 servo and the",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "4-channel line tracking module. Open Serial Monitor at 9600 baud.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo signal -&gt; D3          HC-SR04 Trig -&gt; A0, Echo -&gt; A1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Line sensor OUT1..OUT4 -&gt; A2, A3, A4, A5  (OUT1 = far LEFT probe)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "#include &lt;Servo.h&gt;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int SERVO_PIN = 3;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int TRIG = A0, ECHO = A1;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int LINE_PIN[4] = {A2, A3, A4, A5};",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// Most TCRT5000 tracking boards output HIGH over a black line",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// (no reflection) and LOW over white. If yours is the opposite, set LOW.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int BLACK_LEVEL = HIGH;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo neck;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long readDistanceCm() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);  delayMicroseconds(2);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, HIGH); delayMicroseconds(10);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t = pulseIn(ECHO, HIGH, 25000UL);  // about 4 m max",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (t == 0) return 400;                           // no echo = far away",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return t / 58;                                    // microseconds to cm",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(TRIG, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ECHO, INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) pinMode(LINE_PIN[i], INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.attach(SERVO_PIN);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(90);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(F(&quot;Sensor test. Servo sweeps 30-90-150 deg.&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int angles[3] = {30, 90, 150};",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int a = 0; a &lt; 3; a++) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(angles[a]);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(400);                         // give the servo time to arrive",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot;Servo &quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(angles[a]);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot; deg  distance = &quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(readDistanceCm());",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot; cm   line [L..R] = &quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(digitalRead(LINE_PIN[i]) == BLACK_LEVEL ? &quot;B &quot; : &quot;w &quot;);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "TIP:  Your base car is finished when the Motor Test drives all wheels the right way and the Sensor Test gives sensible distances and B/w readings. Do not start a project before both tests pass.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 3. Project A: Obstacle Avoidance Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/4a09dffdd0be725410c4b2c04a15c1052ee1b9e5.png"
+      ]
+    },
+    {
+      "style": "Heading2",
+      "text": "How it works",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The HC-SR04 sends a short burst of 40 kHz sound and times how long the echo takes to return. Sound travels about 0.0343 cm per microsecond and makes a round trip, so distance (cm) = echo time (microseconds) / 58. The car drives forward while the path is clear. When something is closer than 25 cm it stops, reverses briefly, turns its servo &quot;neck&quot; to look right and left, and then turns toward the side with more free space. If both sides are blocked it turns around.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/acc011c4cce30436c78e52871bf9f5253e5d3914.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 4. Program flow of the obstacle avoidance car.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Build steps",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP A1:  Check the hardware",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/8756b7f0d78611302a032b67cf53593de76ed88b.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "This project uses the base car plus the servo on D3 and the HC-SR04 on A0/A1. The line probes can stay on; they are ignored.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Make sure the HC-SR04 is not tilted down, or it will &quot;see&quot; the floor.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP A2:  Upload the code",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Open A_ObstacleAvoidance.ino, upload with the battery switch OFF, unplug USB, place the car on the floor and switch ON. The car waits 2 seconds before moving.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A_ObstacleAvoidance.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project A: Obstacle Avoidance Car",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The car drives forward. When something is closer than STOP_CM, it stops,",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "backs up a little, &quot;looks&quot; right and left with the servo-mounted",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04, then turns toward the side with more free space.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N  ENA D5, IN1 D7, IN2 D8 (left)   ENB D6, IN3 D9, IN4 D11 (right)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo  D3        HC-SR04  Trig A0, Echo A1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "#include &lt;Servo.h&gt;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- pins ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENA = 5, IN1 = 7, IN2 = 8;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENB = 6, IN3 = 9, IN4 = 11;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int SERVO_PIN = 3;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int TRIG = A0, ECHO = A1;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- tuning ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  SERVO_CENTER = 90;    // adjust until the sensor faces straight ahead",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  LOOK_RIGHT   = 20;    // servo angle when looking right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  LOOK_LEFT    = 160;   // servo angle when looking left",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  STOP_CM      = 25;    // obstacle distance that triggers a decision",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  SLOW_CM      = 45;    // start slowing down below this distance",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  CRUISE_SPEED = 170;   // 0..255",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  TURN_SPEED   = 180;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long BACKUP_MS = 300;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long TURN_MS   = 350;   // roughly 45 to 60 degrees; tune on your floor",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool LEFT_INVERT = false, RIGHT_INVERT = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo neck;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- motors ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setMotor(int l, int r) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (LEFT_INVERT)  l = -l;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (RIGHT_INVERT) r = -r;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "l = constrain(l, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "r = constrain(r, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN1, l &gt;= 0 ? HIGH : LOW);  digitalWrite(IN2, l &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN3, r &gt;= 0 ? HIGH : LOW);  digitalWrite(IN4, r &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENA, abs(l));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENB, abs(r));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void stopMotors() { setMotor(0, 0); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- ultrasonic ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long readDistanceCm() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);  delayMicroseconds(2);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, HIGH); delayMicroseconds(10);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t = pulseIn(ECHO, HIGH, 25000UL);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (t == 0) return 400;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return t / 58;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// median of 3 readings removes most random spikes",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long distanceFiltered() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long a = readDistanceCm(); delay(10);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long b = readDistanceCm(); delay(10);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long c = readDistanceCm();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (a &gt; b) { long t = a; a = b; b = t; }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (b &gt; c) { long t = b; b = c; c = t; }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (a &gt; b) { long t = a; a = b; b = t; }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return b;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long lookAt(int angle) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(angle);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(450);                    // wait for the servo to settle",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return distanceFiltered();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- behaviour ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void avoid() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(100);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(-CRUISE_SPEED, -CRUISE_SPEED);   // back up",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(BACKUP_MS);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long right = lookAt(LOOK_RIGHT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long left  = lookAt(LOOK_LEFT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(250);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot;Left=&quot;)); Serial.print(left);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot; cm  Right=&quot;)); Serial.print(right); Serial.println(F(&quot; cm&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (left &lt; STOP_CM &amp;&amp; right &lt; STOP_CM) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// boxed in: turn around (about 180 degrees)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(TURN_SPEED, -TURN_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(TURN_MS * 3);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else if (left &gt; right) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(-TURN_SPEED, TURN_SPEED);      // spin left",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(TURN_MS);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(TURN_SPEED, -TURN_SPEED);      // spin right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(TURN_MS);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(100);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENA, OUTPUT); pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENB, OUTPUT); pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(TRIG, OUTPUT); pinMode(ECHO, INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.attach(SERVO_PIN);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(2000);                   // time to put the car on the floor",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long d = distanceFiltered();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (d &lt;= STOP_CM) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "avoid();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else if (d &lt; SLOW_CM) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(CRUISE_SPEED * 3 / 4, CRUISE_SPEED * 3 / 4);   // careful approach",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(CRUISE_SPEED, CRUISE_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(40);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP A3:  Test and tune",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Start in an open room, then add boxes and chair legs as obstacles.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "If the car looks sideways when centered, change SERVO_CENTER (for example 85 or 95).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "If it turns too little or too much, change TURN_MS. On carpet you may need a higher TURN_SPEED.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "If it bumps into things, raise STOP_CM to 30 or 35.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Setting",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Default",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Effect when increased",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STOP_CM",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "25",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Reacts earlier; safer but needs more space.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "SLOW_CM",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "45",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Starts slowing down earlier.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "CRUISE_SPEED",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "170",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Faster car; needs larger STOP_CM.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "TURN_MS",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "350",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Larger turn angle per decision.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "LOOK_RIGHT / LOOK_LEFT",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "20 / 160",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "How far the servo looks to each side (keep between 0 and 180).",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Challenges",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Add a buzzer on D12 that beeps faster as the obstacle gets closer.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Instead of three looks, sweep from 20 to 160 degrees in 10 degree steps and turn toward the angle with the largest distance.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 4. Project B: Line-Following Robot",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/72add54a9ed1fb235aac40a147b65c81e4c82b3a.png"
+      ]
+    },
+    {
+      "style": "Heading2",
+      "text": "How it works",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Each IR probe shines infrared light at the floor. A white floor reflects it back; black tape absorbs it. The tracking board compares the reflection with the knob setting and outputs a clean digital signal. With four probes the car does not just know &quot;on or off the line&quot;, it knows how far the line is from the center. Each probe gets a weight (-3, -1, +1, +3) and the average weight of the probes that see black is the error. The code then steers with a simple PD controller: the P part turns harder when the error is large, and the D part looks at how fast the error is changing to stop the zig-zag.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/2cafb46e4235b4c085b0a3f93eac56b5d3869891.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 5. What the four sensors see and what the car does.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/bfbd656fa8c1bcd840bc3ef083cb987f20d8a958.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 6. Program flow of the line follower.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Build steps",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP B1:  Make the track",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Use black electrical tape 18 to 25 mm wide on a light, matte surface. Glossy tiles can reflect like black; test first.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Keep curves gentle at first (radius at least 15 cm). Add sharp corners later.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Leave at least 15 cm between parallel lines so the outer probes do not see the neighbour line.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP B2:  Re-check the sensors on your track",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/b38c30969cadf33488f2d3555b4562616d0de4b5.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Run 01_SensorTest again with the car on the actual track and adjust the four knobs. Lighting changes the readings, so calibrate in the room where you will run.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP B3:  Upload the line follower",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Open B_LineFollower.ino, upload, place the car with the line between S2 and S3, and switch ON.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B_LineFollower.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project B: Line-Following Robot (4-channel sensor, PD steering)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Follows a black line (about 18 to 25 mm wide electrical tape) on a light floor.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Sensor order seen from BEHIND the car:  S1  S2  S3  S4",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "far-L L R far-R",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N  ENA D5, IN1 D7, IN2 D8 (left)   ENB D6, IN3 D9, IN4 D11 (right)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Line sensor OUT1..OUT4 -&gt; A2, A3, A4, A5",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENA = 5, IN1 = 7, IN2 = 8;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENB = 6, IN3 = 9, IN4 = 11;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int LINE_PIN[4] = {A2, A3, A4, A5};",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int BLACK_LEVEL = HIGH;          // set LOW if your module is inverted",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- tuning ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int   BASE_SPEED = 140;          // straight-line speed (0..255)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int   MAX_SPEED  = 220;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const float KP = 45.0;                 // how hard to steer toward the line",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const float KD = 90.0;                 // damping: reduces zig-zag",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int   SEARCH_SPEED = 150;        // spin speed when the line is lost",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool  LEFT_INVERT = false, RIGHT_INVERT = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// position weight of each sensor: negative = line is to the LEFT",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int WEIGHT[4] = {-3, -1, 1, 3};",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "float lastError = 0;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setMotor(int l, int r) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (LEFT_INVERT)  l = -l;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (RIGHT_INVERT) r = -r;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "l = constrain(l, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "r = constrain(r, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN1, l &gt;= 0 ? HIGH : LOW);  digitalWrite(IN2, l &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN3, r &gt;= 0 ? HIGH : LOW);  digitalWrite(IN4, r &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENA, abs(l));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENB, abs(r));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// returns number of sensors on the line, writes the line position to *err",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int readLine(float *err) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int count = 0, sum = 0;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (digitalRead(LINE_PIN[i]) == BLACK_LEVEL) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "sum += WEIGHT[i];",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "count++;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (count &gt; 0) *err = (float)sum / count;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return count;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENA, OUTPUT); pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENB, OUTPUT); pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) pinMode(LINE_PIN[i], INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(0, 0);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(2000);                 // place the car on the line",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "float error = lastError;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int seen = readLine(&amp;error);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (seen == 0) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// line lost: spin toward the side where we last saw it",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (lastError &lt; 0) setMotor(-SEARCH_SPEED, SEARCH_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else               setMotor(SEARCH_SPEED, -SEARCH_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (seen == 4) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// all sensors black: a cross line or a finish bar. Go straight over it.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(BASE_SPEED, BASE_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "float correction = KP * error + KD * (error - lastError);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "lastError = error;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int left  = BASE_SPEED + (int)correction;   // line on the right -&gt; left wheel faster",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int right = BASE_SPEED - (int)correction;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(constrain(left, -MAX_SPEED, MAX_SPEED),",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "constrain(right, -MAX_SPEED, MAX_SPEED));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(5);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP B4:  Tune the PD values",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Change one value at a time and test the same track each time.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Weaves left and right on straights: lower KP (try 35) or raise KD (try 120).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Runs off the outside of curves: raise KP (try 55) or lower BASE_SPEED.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Too slow: raise BASE_SPEED by 10 at a time and re-tune.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Spins on the spot at the start: the line is not under the sensors, or BLACK_LEVEL is inverted.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Challenges",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Add the HC-SR04: stop on the line if an obstacle is closer than 15 cm, then continue when it is removed.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Count the cross lines (all four sensors black) and stop at the third one, like a delivery robot stopping at station 3.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 5. Project C: Maze Solver",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A maze solver needs a rule for choosing a path at every junction. The simplest reliable rule is the Left-Hand Rule: keep your left hand on the wall (or line) and you will eventually reach the exit of any maze whose walls are connected. At each junction the car prefers Left, then Straight, then Right, then U-turn (Back). This module gives you two versions that use the same rule:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Version",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Maze type",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Sensors used",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C1 Line Maze",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Black tape maze on the floor, finish is a black square. Learns the shortest route.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "4-channel line tracker (A2 to A5)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C2 Wall Maze",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Real walls made of cardboard or wood, square cells 30 to 40 cm.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "HC-SR04 on the servo (A0, A1, D3)",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "C1. Line Maze Solver with shortest-path learning",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "On the first run the car explores the maze with the left-hand rule and writes every decision into a list, for example S L B L R. A &quot;B&quot; means it hit a dead end and turned back. Any three moves with a B in the middle can be replaced by one move, because the car simply went into a dead end and came back out. The code does this on the fly by adding up the turn angles (L = 270, S = 0, R = 90, B = 180) and taking the result modulo 360.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Pattern",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Becomes",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Why",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L B L",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "S",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "270 + 180 + 270 = 720, which is 0: straight",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L B S",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "R",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "270 + 180 + 0 = 450, which is 90: right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L B R",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "270 + 180 + 90 = 540, which is 180: back",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "S B L",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "R",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "0 + 180 + 270 = 450, which is 90: right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "S B S",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "0 + 180 + 0 = 180: back",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "R B L",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "90 + 180 + 270 = 540, which is 180: back",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/888bb85dab25f989d9fdf5facfb53823930593f1.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 7. Example line maze with six junctions (J1 to J6) and five dead ends.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Worked example (Figure 7). Starting at START and driving up, the explore run records: J1 S, J2 L (dead end) B, J2 L, J3 R, J4 L (dead end) B, J4 S, J5 L, J6 L (dead end) B, J6 S. That is S L B L R L B S L L B S. After simplification it becomes S S R R L R, the direct route. The car saves this in EEPROM, so it survives a reset.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/41a0f8ddf5e820afe8ec6591199cc7d7c525bef0.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 8. Program flow of the line maze solver.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C1-1:  Build the maze",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/888bb85dab25f989d9fdf5facfb53823930593f1.png"
+      ]
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Use the same tape as Project B. Make all turns 90 degrees and keep at least 25 cm between junctions.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Make the FINISH a solid black square about 10 x 10 cm, wide enough to cover all four probes.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Dead ends should end cleanly with no tape stubs.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C1-2:  Run 1: explore",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Leave D12 unconnected. Upload C1_LineMazeSolver.ino, place the car at START and switch ON.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Watch it explore. When it reaches the black square it stops and the UNO LED (D13) blinks fast. With USB connected, the Serial Monitor prints the saved shortest path.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C1-3:  Run 2: fast replay",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Connect a jumper wire from D12 (S) to G. Put the car back at START and press the UNO RESET button (or switch the power off and on).",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "The LED stays on to show replay mode and the car drives the shortest path with no dead ends.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Remove the jumper to explore a new maze.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C1-4:  Calibrate the junction behaviour",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "INCH_MS moves the wheels onto the junction before turning. If the car turns too early and misses the new line, increase it; if it overshoots, decrease it.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "TURN_CLEAR_MS is the blind spin time before looking for the new line. If a left turn stops on the old straight line, increase it.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Keep FOLLOW_SPEED low (100 to 130) while tuning. Speed up only when every junction works.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C1_LineMazeSolver.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project C1: Line Maze Solver (Left-Hand Rule + shortest-path learning)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The maze is drawn with black tape on a light floor. All turns are 90 deg.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "The FINISH is a solid black square (about 10 x 10 cm) that covers all 4 sensors.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "RUN 1 (explore):  leave D12 open. The car explores with the left-hand rule",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "(Left &gt; Straight &gt; Right &gt; U-turn), records every decision,",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "removes dead ends on the fly and saves the short path to",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "EEPROM when it reaches the finish. LED 13 blinks fast.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "RUN 2 (replay):   put a jumper wire from D12 to GND, place the car at the",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "start and press RESET. The car drives the shortest path.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N  ENA D5, IN1 D7, IN2 D8 (left)   ENB D6, IN3 D9, IN4 D11 (right)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Line sensor OUT1..OUT4 -&gt; A2, A3, A4, A5 (OUT1 = far LEFT)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Mode jumper D12 (to GND = replay)       Status LED = on-board D13",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "#include &lt;EEPROM.h&gt;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENA = 5, IN1 = 7, IN2 = 8;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENB = 6, IN3 = 9, IN4 = 11;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int LINE_PIN[4] = {A2, A3, A4, A5};",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int MODE_PIN = 12;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int LED = 13;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int BLACK_LEVEL = HIGH;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- tuning (adjust for your car and floor) ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int FOLLOW_SPEED = 120;          // speed on straight segments",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int STEER_DELTA  = 70;           // speed difference when correcting",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int TURN_SPEED   = 150;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long INCH_MS       = 220;  // drive past the junction so the axle sits on it",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long TURN_CLEAR_MS = 200;  // spin blindly to leave the current line",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long TURN_TIMEOUT  = 3000;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool LEFT_INVERT = false, RIGHT_INVERT = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- path memory ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const byte MAGIC = 0x5A;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int  MAX_PATH = 100;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "char path[MAX_PATH];",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int  pathLen = 0;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool s[4];   // true = sensor sees black",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setMotor(int l, int r) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (LEFT_INVERT)  l = -l;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (RIGHT_INVERT) r = -r;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "l = constrain(l, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "r = constrain(r, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN1, l &gt;= 0 ? HIGH : LOW);  digitalWrite(IN2, l &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN3, r &gt;= 0 ? HIGH : LOW);  digitalWrite(IN4, r &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENA, abs(l));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENB, abs(r));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void stopMotors() { setMotor(0, 0); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void readSensors() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) s[i] = (digitalRead(LINE_PIN[i]) == BLACK_LEVEL);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// Follow the line until an outer sensor hits a branch, or the line ends.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void followSegment() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (true) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "readSensors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[0] || s[3]) return;                  // side branch or finish",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (!s[1] &amp;&amp; !s[2]) return;                // line ended: dead end",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[1] &amp;&amp; s[2]) setMotor(FOLLOW_SPEED, FOLLOW_SPEED);          // centred",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else if (s[1])    setMotor(FOLLOW_SPEED - STEER_DELTA, FOLLOW_SPEED); // steer left",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else              setMotor(FOLLOW_SPEED, FOLLOW_SPEED - STEER_DELTA); // steer right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// Spin in place until the given centre sensor finds the line again.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void spinUntilLine(int dir, int sensorIndex, unsigned long clearMs) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(dir * -TURN_SPEED, dir * TURN_SPEED);   // dir = +1 left, -1 right",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(clearMs);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t0 = millis();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (millis() - t0 &lt; TURN_TIMEOUT) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "readSensors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[sensorIndex]) break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(50);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void turn(char d) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "switch (d) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;L&apos;: spinUntilLine(+1, 1, TURN_CLEAR_MS);     break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;R&apos;: spinUntilLine(-1, 2, TURN_CLEAR_MS);     break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;B&apos;: spinUntilLine(-1, 2, TURN_CLEAR_MS * 2); break;  // U-turn",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "default:  break;                                           // &apos;S&apos;: keep going",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "char chooseLeftHand(bool L, bool S, bool R) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (L) return &apos;L&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (S) return &apos;S&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (R) return &apos;R&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return &apos;B&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// Replace &quot;x B y&quot; with its single equivalent turn (removes dead ends).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void simplifyPath() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (pathLen &lt; 3 || path[pathLen - 2] != &apos;B&apos;) return;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int angle = 0;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 1; i &lt;= 3; i++) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "switch (path[pathLen - i]) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;R&apos;: angle += 90;  break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;B&apos;: angle += 180; break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "case &apos;L&apos;: angle += 270; break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "angle %= 360;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "char c = &apos;S&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (angle == 90) c = &apos;R&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else if (angle == 180) c = &apos;B&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else if (angle == 270) c = &apos;L&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pathLen -= 3;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "path[pathLen++] = c;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void savePath() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "EEPROM.update(0, MAGIC);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "EEPROM.update(1, (byte)pathLen);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; pathLen; i++) EEPROM.update(2 + i, path[i]);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool loadPath() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (EEPROM.read(0) != MAGIC) return false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pathLen = EEPROM.read(1);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (pathLen &gt; MAX_PATH) return false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; pathLen; i++) path[i] = EEPROM.read(2 + i);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return true;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void printPath(const __FlashStringHelper *title) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(title);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; pathLen; i++) Serial.print(path[i]);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// Handles one junction. Returns true when the finish square is reached.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// replayIndex &lt; 0 means &quot;explore&quot;, otherwise the next stored decision is used.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool handleJunction(int &amp;replayIndex) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool foundL = s[0], foundR = s[3];",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// creep forward, still watching for branches that arrive a bit later",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(FOLLOW_SPEED, FOLLOW_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t0 = millis();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (millis() - t0 &lt; INCH_MS) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "readSensors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[0]) foundL = true;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[3]) foundR = true;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(30);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "readSensors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (s[0] &amp;&amp; s[1] &amp;&amp; s[2] &amp;&amp; s[3]) return true;       // still all black: finish",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool foundS = s[1] || s[2];",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "char d;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (replayIndex &lt; 0) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "d = chooseLeftHand(foundL, foundS, foundR);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (pathLen &lt; MAX_PATH) path[pathLen++] = d;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "simplifyPath();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "d = (replayIndex &lt; pathLen) ? path[replayIndex++] : &apos;S&apos;;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot;Junction L/S/R=&quot;)); Serial.print(foundL); Serial.print(foundS);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(foundR); Serial.print(F(&quot;  go &quot;)); Serial.println(d);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "turn(d);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void celebrate() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (true) {                      // blink until reset",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(LED, HIGH); delay(120);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(LED, LOW);  delay(120);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENA, OUTPUT); pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENB, OUTPUT); pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "for (int i = 0; i &lt; 4; i++) pinMode(LINE_PIN[i], INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(MODE_PIN, INPUT_PULLUP);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(LED, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "bool replay = (digitalRead(MODE_PIN) == LOW) &amp;&amp; loadPath();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (replay) printPath(F(&quot;REPLAY mode, stored path: &quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else        Serial.println(F(&quot;EXPLORE mode (left-hand rule)&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(LED, replay ? HIGH : LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(2000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "int replayIndex = replay ? 0 : -1;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (true) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "followSegment();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (handleJunction(replayIndex)) break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (!replay) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "savePath();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "printPath(F(&quot;FINISH! Shortest path saved: &quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "} else {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(F(&quot;FINISH (replay)&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "celebrate();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {}",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "C2. Wall Maze Solver with ultrasonic scanning",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "In a maze with real walls the car cannot see the line, so it uses its servo-mounted HC-SR04. It moves through the maze one cell at a time. In every cell it stops and scans left, front and right, then uses the same Left-Hand Rule. A side counts as open when the wall is more than 30 cm away. When all three directions read more than 150 cm the car has driven out of the maze and stops.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/80f257ef1cb8c03969b1317b02d2065de55eca65.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 9. In each cell the car looks left, front and right.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "",
+      "images": [
+        "word/media/1410ad98726805ce7ac2df447f76a01a55e911c8.png"
+      ]
+    },
+    {
+      "style": "Normal",
+      "text": "Figure 10. Program flow of the wall maze solver.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C2-1:  Build the maze",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Walls at least 10 cm high, made from flat cardboard or wood. Soft cloth absorbs sound and gives bad readings.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Cells about 30 to 40 cm square. Start simple: a 3 x 3 cell maze with one exit.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C2-2:  Calibrate 90 degree turns and one cell",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Timed moves depend on your battery, floor and motors, so calibrate before solving.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "TURN90_MS: put a strip of tape on the floor along the car. Run spinLeft90() repeatedly (call it in loop with a 2 s pause) and adjust until each turn is exactly a quarter turn.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "CELL_MS: time how long the car takes to drive from the center of one cell to the center of the next at DRIVE_SPEED.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "Recalibrate when the batteries get weak.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "STEP C2-3:  Upload and solve",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Open C2_WallMazeSolver.ino, upload, place the car in the center of the start cell facing into the maze, and switch ON. Watch the Serial Monitor (with USB) to see L, F and R distances and each decision.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C2_WallMazeSolver.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "/*",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project C2: Wall Maze Solver (ultrasonic, cell by cell, Left-Hand Rule)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "For a maze with real walls (cardboard, wood, books) and square cells",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "about 30 to 40 cm wide. The car moves one cell, stops, scans LEFT / FRONT /",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "RIGHT with the servo-mounted HC-SR04, then applies the left-hand rule:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "left open  -&gt; turn left, go",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "front open -&gt; go straight",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "right open -&gt; turn right, go",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "otherwise  -&gt; turn around",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Turns are timed, so calibrate TURN90_MS and CELL_MS first (see module).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wiring:",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "L298N  ENA D5, IN1 D7, IN2 D8 (left)   ENB D6, IN3 D9, IN4 D11 (right)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo  D3        HC-SR04  Trig A0, Echo A1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "*/",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "#include &lt;Servo.h&gt;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENA = 5, IN1 = 7, IN2 = 8;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int ENB = 6, IN3 = 9, IN4 = 11;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int SERVO_PIN = 3;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int TRIG = A0, ECHO = A1;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// ---------- tuning ----------",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int SERVO_CENTER = 90, SERVO_RIGHT = 5, SERVO_LEFT = 175;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int OPEN_CM      = 30;     // a side is &quot;open&quot; if the wall is farther than this",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int FRONT_STOP_CM = 8;     // emergency stop if a wall is this close in front",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int DRIVE_SPEED  = 150;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const int TURN_SPEED   = 170;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long CELL_MS   = 900;   // time to drive one cell forward",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const unsigned long TURN90_MS = 420;   // time for a 90 degree spin",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "const bool LEFT_INVERT = false, RIGHT_INVERT = false;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo neck;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setMotor(int l, int r) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (LEFT_INVERT)  l = -l;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (RIGHT_INVERT) r = -r;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "l = constrain(l, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "r = constrain(r, -255, 255);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN1, l &gt;= 0 ? HIGH : LOW);  digitalWrite(IN2, l &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(IN3, r &gt;= 0 ? HIGH : LOW);  digitalWrite(IN4, r &gt;= 0 ? LOW : HIGH);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENA, abs(l));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "analogWrite(ENB, abs(r));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void stopMotors() { setMotor(0, 0); delay(150); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long readDistanceCm() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);  delayMicroseconds(2);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, HIGH); delayMicroseconds(10);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "digitalWrite(TRIG, LOW);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t = pulseIn(ECHO, HIGH, 25000UL);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (t == 0) return 400;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return t / 58;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long lookAt(int angle) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(angle);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(450);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long a = readDistanceCm(); delay(15);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long b = readDistanceCm();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "return (a + b) / 2;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void spinLeft90()  { setMotor(-TURN_SPEED, TURN_SPEED); delay(TURN90_MS); stopMotors(); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void spinRight90() { setMotor(TURN_SPEED, -TURN_SPEED); delay(TURN90_MS); stopMotors(); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "// drive one cell, but stop early if a wall appears right in front",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void forwardOneCell() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(200);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(DRIVE_SPEED, DRIVE_SPEED);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "unsigned long t0 = millis();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (millis() - t0 &lt; CELL_MS) {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (readDistanceCm() &lt;= FRONT_STOP_CM) break;",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(30);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "stopMotors();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void setup() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENA, OUTPUT); pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(ENB, OUTPUT); pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "pinMode(TRIG, OUTPUT); pinMode(ECHO, INPUT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(0, 0);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.begin(9600);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.attach(SERVO_PIN);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "delay(2000);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "void loop() {",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long left  = lookAt(SERVO_LEFT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long front = lookAt(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "long right = lookAt(SERVO_RIGHT);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "neck.write(SERVO_CENTER);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot;L=&quot;)); Serial.print(left);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot; F=&quot;)); Serial.print(front);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.print(F(&quot; R=&quot;)); Serial.println(right);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (left &gt; 150 &amp;&amp; front &gt; 150 &amp;&amp; right &gt; 150) {   // out of the maze: finished",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Serial.println(F(&quot;EXIT reached&quot;));",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "setMotor(0, 0);",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "while (true) {}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "if (left &gt; OPEN_CM)       { Serial.println(F(&quot;-&gt; LEFT&quot;));     spinLeft90(); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else if (front &gt; OPEN_CM) { Serial.println(F(&quot;-&gt; STRAIGHT&quot;)); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else if (right &gt; OPEN_CM) { Serial.println(F(&quot;-&gt; RIGHT&quot;));    spinRight90(); }",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "else                      { Serial.println(F(&quot;-&gt; U-TURN&quot;));   spinRight90(); spinRight90();}",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "forwardOneCell();",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "}",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Challenges",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "C1: add a start button on D2 so you can switch between explore and replay without the jumper.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "C2: fit the encoder disks with a slot sensor (sold separately) to measure distance and turns accurately instead of using time.",
+      "images": []
+    },
+    {
+      "style": "ListParagraph",
+      "text": "C2: record the decisions and apply the same path simplification as C1 so the second run is shorter.",
+      "images": []
+    },
+    {
+      "style": "Heading1",
+      "text": "Part 6. Troubleshooting and Reference",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Symptom",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Likely cause",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Fix",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Upload fails (&quot;not in sync&quot;)",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Wrong board or port; a wire on D0 or D1",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Select Arduino Uno and the right port; keep D0/D1 free.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UNO resets when motors start",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Battery too weak; voltage drops",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Charge or replace cells; use 2 x 18650; add the ON/OFF switch close to the battery.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "One side does not move",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "ENA/ENB jumper still on, or loose wire",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Remove jumper caps, check D5/D6 wires and terminal screws.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Car drives backward or spins when it should go forward",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Motor wires reversed",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Swap the two wires of that side, or set LEFT_INVERT / RIGHT_INVERT.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Car curves on a straight",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Motors differ in speed",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Lower the faster side slightly, for example setMotor(170, 160).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Distance always 400 cm",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Trig/Echo swapped or no power to HC-SR04",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Check A0 = Trig, A1 = Echo, VCC on V, GND on G.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo jitters",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Servo shares a weak 5 V supply",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Use fresh batteries; keep servo moves short; do not power from USB only.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Line sensors always B or always w",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Knob mis-set, probes too high, or BLACK_LEVEL inverted",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Re-run Sensor Test, lower probes to 5 to 10 mm, adjust knobs.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Maze car misses turns",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "INCH_MS or TURN_CLEAR_MS not tuned",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Slow down FOLLOW_SPEED and tune one value at a time.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "Sketch files in this module",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Sketch",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Purpose",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "00_MotorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Checks motor direction for both sides.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "01_SensorTest.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Checks servo, HC-SR04 and the four line sensors.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "A_ObstacleAvoidance.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project A.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "B_LineFollower.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project B.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C1_LineMazeSolver.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project C1, line maze with EEPROM shortest path.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "C2_WallMazeSolver.ino",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Project C2, wall maze with ultrasonic scanning.",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Each sketch must sit in a folder with the same name (for example B_LineFollower/B_LineFollower.ino). The accompanying ZIP file already has this layout.",
+      "images": []
+    },
+    {
+      "style": "Heading2",
+      "text": "References",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Arduino (n.d.) Servo library reference. Available at: https://docs.arduino.cc/libraries/servo/ (Accessed: 28 September 2026).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Arduino (n.d.) EEPROM library reference. Available at: https://docs.arduino.cc/learn/built-in-libraries/eeprom/ (Accessed: 28 September 2026).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "Instructables (n.d.) Smart Robot Car. Available at: https://www.instructables.com/Smart-Robot-Car/ (Accessed: 28 September 2026).",
+      "images": []
+    },
+    {
+      "style": "Normal",
+      "text": "UCTRONICS (2017) Arduino Smart Robot Car Kit User Guide V1.0. Available at: https://www.uctronics.com/download/Amazon/K0065_KIT.pdf (Accessed: 28 September 2026).",
+      "images": []
+    }
+  ]
+}
