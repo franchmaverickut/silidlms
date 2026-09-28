@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronDown, ChevronUp, Download, Clock, Cpu, Wrench, BookOpen, Lightbulb, AlertTriangle, Code } from "lucide-react";
+import { ChevronLeft, ChevronDown, ChevronUp, Download, Clock, Cpu, Wrench, BookOpen, Lightbulb, AlertTriangle, Code, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SMART_CAR } from "@/data/smartcarData";
+import InteractiveWiringDiagram from "@/components/smartcar/InteractiveWiringDiagram";
+import SmartCarSimulator from "@/components/smartcar/SmartCarSimulator";
 
 function Section({ title, icon, children, defaultOpen = false, accent = "blue" }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -230,12 +232,8 @@ export default function SmartCarProject({ isPublic = false }) {
         <div className="pt-2 space-y-3">
           <h3 className="font-poppins font-bold text-sm text-foreground">STEP 12: Signal Wiring (Master Pin Map)</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">Use the Dupont wires to connect everything below. This single pin map is used by all six sketches in this module.</p>
-          <div className="rounded-2xl overflow-hidden border border-border/60">
-            <div className="bg-muted/20 p-4 flex items-center justify-center">
-              <img src={d.baseCar.wiring} alt="Master wiring diagram" className="max-h-64 w-auto object-contain rounded-lg" />
-            </div>
-            <p className="p-3 text-xs text-muted-foreground italic">Figure 3. Master wiring diagram.</p>
-          </div>
+          <InteractiveWiringDiagram />
+          <p className="text-xs text-muted-foreground italic">Figure 3. Interactive master wiring diagram — hover or click any wire.</p>
           <DataTable
             headers={["Module pin", "Shield / UNO pin", "Wire colour", "Used in"]}
             rows={d.baseCar.pinMap}
@@ -269,6 +267,14 @@ export default function SmartCarProject({ isPublic = false }) {
           <Lightbulb size={14} className="text-green-600 flex-shrink-0 mt-0.5" />
           <p className="text-xs text-green-800 leading-relaxed">{d.baseCar.baseCarTip}</p>
         </div>
+      </Section>
+
+      {/* Interactive Simulations */}
+      <Section title="Interactive Simulations — Understand the Math & Science" icon="⚡" defaultOpen={false} accent="purple">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Before uploading code, explore how each algorithm works. Adjust the sliders and watch the math change in real time.
+        </p>
+        <SmartCarSimulator />
       </Section>
 
       {/* Projects A, B, C */}
