@@ -126,26 +126,13 @@ export default function SmartCarProject({ isPublic = false }) {
       </div>
 
       {/* Downloads */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a href={d.docxUrl} target="_blank" rel="noopener noreferrer">
-          <Button className="w-full rounded-xl gap-2 bg-blue-600 hover:bg-blue-700 text-white">
-            <Download size={16} /> Download Build Module (DOCX)
-          </Button>
-        </a>
+      <div className="grid grid-cols-1 gap-3">
         <a href={d.sketchesZipUrl} download>
           <Button variant="outline" className="w-full rounded-xl gap-2 border-blue-300 text-blue-700 hover:bg-blue-50">
             <Download size={16} /> Download Arduino Sketches (ZIP)
           </Button>
         </a>
       </div>
-
-      {/* Author */}
-      <Card className="p-5 border-border/60 shadow-sm">
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          <span className="font-semibold text-foreground">Prepared by {d.author}</span><br />
-          {d.affiliation}
-        </p>
-      </Card>
 
       {/* How to Use */}
       <Card className="p-6 border-border/60 shadow-sm space-y-3">
