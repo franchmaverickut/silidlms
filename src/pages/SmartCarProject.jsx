@@ -23,7 +23,7 @@ function Section({ title, icon, children, defaultOpen = false, accent = "blue" }
 }
 
 function CodeBlock({ code, filename }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [copied, setCopied] = useState(false);
   const handleCopy = () => { navigator.clipboard?.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   return (
@@ -52,8 +52,16 @@ function CodeBlock({ code, filename }) {
 function StepCard({ step }) {
   return (
     <div className="rounded-2xl border border-border/60 overflow-hidden shadow-sm">
-      {step.image && <img src={step.image} alt={step.title} className="w-full object-cover max-h-72" />}
-      {step.secondaryImage && <img src={step.secondaryImage} alt={step.title} className="w-full object-cover max-h-72 border-t border-border/40" />}
+      {step.image && (
+        <div className="bg-muted/20 p-4 flex items-center justify-center">
+          <img src={step.image} alt={step.title} className="max-h-52 w-auto object-contain rounded-lg" />
+        </div>
+      )}
+      {step.secondaryImage && (
+        <div className="bg-muted/20 p-4 flex items-center justify-center border-t border-border/40">
+          <img src={step.secondaryImage} alt={step.title} className="max-h-52 w-auto object-contain rounded-lg" />
+        </div>
+      )}
       <div className="flex items-center gap-3 px-5 py-3 bg-muted/30 border-b border-border/40">
         <span className="px-2.5 py-1 rounded-full bg-blue-600 text-white text-xs font-bold flex-shrink-0">STEP {step.num}</span>
         <span className="font-poppins font-bold text-sm text-foreground">{step.title}</span>
@@ -188,7 +196,9 @@ export default function SmartCarProject({ isPublic = false }) {
       <Section title="Part 2. Build the Base Car" icon="🔧" defaultOpen={false} accent="blue">
         <p className="text-sm text-muted-foreground leading-relaxed">{d.baseCar.intro}</p>
         <div className="rounded-2xl overflow-hidden border border-border/60">
-          <img src={d.baseCar.sideViewImage} alt="Side view" className="w-full" />
+          <div className="bg-muted/20 p-4 flex items-center justify-center">
+            <img src={d.baseCar.sideViewImage} alt="Side view" className="max-h-64 w-auto object-contain rounded-lg" />
+          </div>
           <p className="p-3 text-xs text-muted-foreground italic">{d.baseCar.sideViewCaption}</p>
         </div>
         <div className="space-y-4">
@@ -219,7 +229,9 @@ export default function SmartCarProject({ isPublic = false }) {
           <h3 className="font-poppins font-bold text-sm text-foreground">STEP 12: Signal Wiring (Master Pin Map)</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">Use the Dupont wires to connect everything below. This single pin map is used by all six sketches in this module.</p>
           <div className="rounded-2xl overflow-hidden border border-border/60">
-            <img src={d.baseCar.wiring} alt="Master wiring diagram" className="w-full" />
+            <div className="bg-muted/20 p-4 flex items-center justify-center">
+              <img src={d.baseCar.wiring} alt="Master wiring diagram" className="max-h-64 w-auto object-contain rounded-lg" />
+            </div>
             <p className="p-3 text-xs text-muted-foreground italic">Figure 3. Master wiring diagram.</p>
           </div>
           <DataTable
@@ -263,13 +275,17 @@ export default function SmartCarProject({ isPublic = false }) {
           {proj.howItWorks && <p className="text-sm text-foreground/80 leading-relaxed">{proj.howItWorks}</p>}
           {proj.flowchartImage && (
             <div className="rounded-2xl overflow-hidden border border-border/60">
-              <img src={proj.flowchartImage} alt={proj.flowchartCaption} className="w-full" />
+              <div className="bg-muted/20 p-4 flex items-center justify-center">
+                <img src={proj.flowchartImage} alt={proj.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
+              </div>
               <p className="p-3 text-xs text-muted-foreground italic">{proj.flowchartCaption}</p>
             </div>
           )}
           {proj.diagrams && proj.diagrams.map((diagram, i) => (
             <div key={i} className="rounded-2xl overflow-hidden border border-border/60">
-              <img src={diagram.image} alt={diagram.caption} className="w-full" />
+              <div className="bg-muted/20 p-4 flex items-center justify-center">
+                <img src={diagram.image} alt={diagram.caption} className="max-h-64 w-auto object-contain rounded-lg" />
+              </div>
               <p className="p-3 text-xs text-muted-foreground italic">{diagram.caption}</p>
             </div>
           ))}
@@ -302,12 +318,16 @@ export default function SmartCarProject({ isPublic = false }) {
                 )}
               />
               <div className="rounded-2xl overflow-hidden border border-border/60">
-                <img src={proj.c1.mazeImage} alt={proj.c1.mazeCaption} className="w-full" />
+                <div className="bg-muted/20 p-4 flex items-center justify-center">
+                  <img src={proj.c1.mazeImage} alt={proj.c1.mazeCaption} className="max-h-64 w-auto object-contain rounded-lg" />
+                </div>
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c1.mazeCaption}</p>
               </div>
               <p className="text-sm text-foreground/80 leading-relaxed">{proj.c1.workedExample}</p>
               <div className="rounded-2xl overflow-hidden border border-border/60">
-                <img src={proj.c1.flowchartImage} alt={proj.c1.flowchartCaption} className="w-full" />
+                <div className="bg-muted/20 p-4 flex items-center justify-center">
+                  <img src={proj.c1.flowchartImage} alt={proj.c1.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
+                </div>
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c1.flowchartCaption}</p>
               </div>
               <div className="space-y-3">
@@ -321,11 +341,15 @@ export default function SmartCarProject({ isPublic = false }) {
               <h3 className="font-poppins font-bold text-sm text-foreground">{proj.c2.title}</h3>
               <p className="text-sm text-foreground/80 leading-relaxed">{proj.c2.desc}</p>
               <div className="rounded-2xl overflow-hidden border border-border/60">
-                <img src={proj.c2.scanImage} alt={proj.c2.scanCaption} className="w-full" />
+                <div className="bg-muted/20 p-4 flex items-center justify-center">
+                  <img src={proj.c2.scanImage} alt={proj.c2.scanCaption} className="max-h-64 w-auto object-contain rounded-lg" />
+                </div>
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c2.scanCaption}</p>
               </div>
               <div className="rounded-2xl overflow-hidden border border-border/60">
-                <img src={proj.c2.flowchartImage} alt={proj.c2.flowchartCaption} className="w-full" />
+                <div className="bg-muted/20 p-4 flex items-center justify-center">
+                  <img src={proj.c2.flowchartImage} alt={proj.c2.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
+                </div>
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c2.flowchartCaption}</p>
               </div>
               <div className="space-y-3">
