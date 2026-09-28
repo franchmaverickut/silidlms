@@ -10,6 +10,7 @@ import { Card } from "@/components/ui/card";
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/30d11a1c7_self-watering_planter.jpg";
 const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/f776ba117_Self-WateringPlanter-Overview.mp4";
 const PRINT_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/7adf629b4_self-watering-planter-3d-print.mp4";
+const TINKERCAD_TUTORIAL_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/b3cb998b4_Self-WateringPlanter-TinkercadTutorial-VoiceOvermp4.mp4";
 const DESIGN_CHALLENGES_PDF = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/ffd84944a_Self-Watering-Planters-Design-Challenges.pdf";
 const VISUAL_MONITORING_PDF = "https://media.base44.com/files/public/69d386ad9523e2ce04536574/9db324afd_Visual-Monitoring.pdf";
 const PORTFOLIO_URL = "https://docs.google.com/presentation/d/1eFqo8krPka9FO8V3eG5NVHSoUr788_ZDncOy7XzbYtI/edit?usp=sharing";
@@ -125,7 +126,7 @@ export default function SelfWateringPlantersProject({ isPublic = false }) {
           <InfoCard icon="✅" label="Criteria & Constraints" text="The planter must be 3D printable and designed to support plant growth. It should include a container system that stores water and supplies it to the plant when needed, reducing overwatering and supporting healthy roots." />
           <InfoCard icon="⭐" label="Difficulty" text="Basic — suitable for learners with foundational skills in 3D design and 3D printing." />
           <InfoCard icon="🕐" label="Project Length" text="~4 hours (excl. 3D printing time), plus additional time to monitor plant growth after the planter is used." />
-          <InfoCard icon="🧰" label="Equipment Required" text="Laptop with Tinkercad or Fusion 360, 3D printer, plant or seed, soil, water, measuring cup, pen & paper, camera." />
+          <InfoCard icon="🧰" label="Equipment Required" text="Laptop with Tinkercad, 3D printer, plant or seed, soil, water, measuring cup, pen & paper, camera." />
         </div>
       </Section>
 
@@ -171,10 +172,10 @@ export default function SelfWateringPlantersProject({ isPublic = false }) {
           Self-watering planters hold a reservoir of water at the bottom of an outer container. When soil dries out in the inner pot, it draws water in through small holes as required by the plant. This means no waterlogged roots and consistent moisture – meaning they can go days or even weeks without watering.
         </p>
         <p className="text-sm text-foreground/80 leading-relaxed">
-          We're now going to go through a tutorial to design a basic self-watering planter. This is going to act as the starting point of your own unique design! Select either the Tinkercad or Fusion 360 tutorial and follow it to design the example self-watering planter. There are options for both voice over instructions and text-based instructions so simply pick your preferred method of learning. When you complete the tutorial, don't 3D print the model just yet as we'll be improving it in the next section!
+          We're now going to go through a tutorial to design a basic self-watering planter. This is going to act as the starting point of your own unique design! Follow the Tinkercad tutorial below to design the example self-watering planter. When you complete the tutorial, don't 3D print the model just yet as we'll be improving it in the next section!
         </p>
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
-          <p className="text-xs text-amber-800">Tinkercad and Fusion 360 tutorial videos for this project are coming soon.</p>
+        <div className="rounded-2xl overflow-hidden border border-border/60 bg-black">
+          <video src={TINKERCAD_TUTORIAL_VIDEO} controls className="w-full max-h-96" />
         </div>
         <PortfolioNote>
           On Slide 4 (Self-Watering Planters), write a paragraph about self-watering planters. Explain how they work and what benefits they bring. Supplement this information with a visual diagram/drawing.
