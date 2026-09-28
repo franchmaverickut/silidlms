@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { SMART_CAR } from "@/data/smartcarData";
 import InteractiveWiringDiagram from "@/components/smartcar/InteractiveWiringDiagram";
 import SmartCarSimulator from "@/components/smartcar/SmartCarSimulator";
+import ProgramFlowSimulator from "@/components/smartcar/ProgramFlowSimulator";
 
 function Section({ title, icon, children, defaultOpen = false, accent = "blue" }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -277,16 +278,22 @@ export default function SmartCarProject({ isPublic = false }) {
         <SmartCarSimulator />
       </Section>
 
+      {/* Interactive Program Flows */}
+      <Section title="Interactive Program Flows — Step Through the Code Logic" icon="🔀" defaultOpen={false} accent="green">
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          These flowcharts match the actual Arduino sketches. Change the inputs and watch the active path light up, or press Step Through to walk the code one decision at a time.
+        </p>
+        <ProgramFlowSimulator />
+      </Section>
+
       {/* Projects A, B, C */}
       {d.projects.map((proj) => (
         <Section key={proj.key} title={proj.title} icon={proj.key === "A" ? "🚗" : proj.key === "B" ? "📏" : "🧩"} defaultOpen={false} accent={proj.key === "A" ? "green" : proj.key === "B" ? "purple" : "amber"}>
           {proj.howItWorks && <p className="text-sm text-foreground/80 leading-relaxed">{proj.howItWorks}</p>}
           {proj.flowchartImage && (
-            <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-4 flex items-center justify-center">
-                <img src={proj.flowchartImage} alt={proj.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
-              </div>
-              <p className="p-3 text-xs text-muted-foreground italic">{proj.flowchartCaption}</p>
+            <div className="space-y-2">
+              <ProgramFlowSimulator defaultFlow={proj.key} />
+              <p className="text-xs text-muted-foreground italic">{proj.flowchartCaption}</p>
             </div>
           )}
           {proj.diagrams && proj.diagrams.map((diagram, i) => (
@@ -332,11 +339,9 @@ export default function SmartCarProject({ isPublic = false }) {
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c1.mazeCaption}</p>
               </div>
               <p className="text-sm text-foreground/80 leading-relaxed">{proj.c1.workedExample}</p>
-              <div className="rounded-2xl overflow-hidden border border-border/60">
-                <div className="bg-muted/20 p-4 flex items-center justify-center">
-                  <img src={proj.c1.flowchartImage} alt={proj.c1.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
-                </div>
-                <p className="p-3 text-xs text-muted-foreground italic">{proj.c1.flowchartCaption}</p>
+              <div className="space-y-2">
+                <ProgramFlowSimulator defaultFlow="C1" />
+                <p className="text-xs text-muted-foreground italic">{proj.c1.flowchartCaption}</p>
               </div>
               <div className="space-y-3">
                 {proj.c1.steps.map(step => <StepCard key={step.num} step={step} />)}
@@ -354,11 +359,9 @@ export default function SmartCarProject({ isPublic = false }) {
                 </div>
                 <p className="p-3 text-xs text-muted-foreground italic">{proj.c2.scanCaption}</p>
               </div>
-              <div className="rounded-2xl overflow-hidden border border-border/60">
-                <div className="bg-muted/20 p-4 flex items-center justify-center">
-                  <img src={proj.c2.flowchartImage} alt={proj.c2.flowchartCaption} className="max-h-64 w-auto object-contain rounded-lg" />
-                </div>
-                <p className="p-3 text-xs text-muted-foreground italic">{proj.c2.flowchartCaption}</p>
+              <div className="space-y-2">
+                <ProgramFlowSimulator defaultFlow="C2" />
+                <p className="text-xs text-muted-foreground italic">{proj.c2.flowchartCaption}</p>
               </div>
               <div className="space-y-3">
                 {proj.c2.steps.map(step => <StepCard key={step.num} step={step} />)}
