@@ -86,6 +86,18 @@ function StepCard({ step }) {
             <p className="text-xs text-amber-800 leading-relaxed">{step.tip}</p>
           </div>
         )}
+        {step.warning && (
+          <div className="flex gap-2 items-start p-3 rounded-lg bg-red-50 border border-red-200">
+            <AlertTriangle size={14} className="text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-red-800 leading-relaxed">{step.warning}</p>
+          </div>
+        )}
+        {step.conclusion && (
+          <div className="flex gap-2 items-start p-3 rounded-lg bg-green-50 border border-green-200">
+            <Lightbulb size={14} className="text-green-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-green-800 leading-relaxed">{step.conclusion}</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -194,6 +206,94 @@ export default function SmartCarProject({ isPublic = false }) {
               </li>
             ))}
           </ul>
+        </div>
+      </Section>
+
+      {/* Part 2: 3D-Print the Chassis (Optional) */}
+      <Section title="Part 2. 3D-Print the Chassis (Optional)" icon="🖨️" defaultOpen={false} accent="purple">
+        <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.intro}</p>
+        <a href={d.chassisPrintZipUrl} download>
+          <Button variant="outline" className="w-full rounded-xl gap-2 border-purple-300 text-purple-700 hover:bg-purple-50">
+            <Download size={16} /> Download Chassis Print Files (ZIP)
+          </Button>
+        </a>
+        <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.thicknessNote}</p>
+
+        {/* Print files table */}
+        <div className="pt-1 space-y-2">
+          <h3 className="font-poppins font-bold text-sm text-foreground">The print files</h3>
+          <DataTable
+            headers={["File", "Size (mm)", "What it is", "Quantity"]}
+            rows={d.chassisPrint.printFiles}
+            renderRow={(row, i) => (
+              <tr key={i} className="hover:bg-muted/20 align-top">
+                <td className="px-4 py-2.5 font-mono text-xs font-medium text-foreground break-all">{row.file}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs whitespace-nowrap">{row.size}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.what}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs whitespace-nowrap">{row.qty}</td>
+              </tr>
+            )}
+          />
+          <div className="flex gap-2 items-start p-3 rounded-lg bg-blue-50 border border-blue-200">
+            <Lightbulb size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-blue-800 leading-relaxed">{d.chassisPrint.filesNote}</p>
+          </div>
+        </div>
+
+        {/* Choose your version */}
+        <div className="pt-2 space-y-2">
+          <h3 className="font-poppins font-bold text-sm text-foreground">Choose your version</h3>
+          <DataTable
+            headers={["Version", "Files to print", "Printer bed needed", "Choose it when"]}
+            rows={d.chassisPrint.versions}
+            renderRow={(row, i) => (
+              <tr key={i} className="hover:bg-muted/20 align-top">
+                <td className="px-4 py-2.5 font-poppins font-semibold text-foreground text-xs">{row.version}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.files}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.bed}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.when}</td>
+              </tr>
+            )}
+          />
+        </div>
+
+        {/* Print settings */}
+        <div className="pt-2 space-y-2">
+          <h3 className="font-poppins font-bold text-sm text-foreground">Recommended print settings</h3>
+          <DataTable
+            headers={["Setting", "Value"]}
+            rows={d.chassisPrint.printSettings}
+            renderRow={(row, i) => (
+              <tr key={i} className="hover:bg-muted/20 align-top">
+                <td className="px-4 py-2.5 font-medium text-foreground text-xs whitespace-nowrap">{row.setting}</td>
+                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.value}</td>
+              </tr>
+            )}
+          />
+        </div>
+
+        {/* Steps */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">Print and prepare the parts</h3>
+          {d.chassisPrint.steps.map(step => <StepCard key={step.num} step={step} />)}
+        </div>
+
+        {/* Compact 2WD */}
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">{d.chassisPrint.compact2wd.title}</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.compact2wd.desc}</p>
+          <ul className="space-y-2">
+            {d.chassisPrint.compact2wd.points.map((p, i) => (
+              <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+                <span className="text-purple-500 font-bold flex-shrink-0 mt-0.5">{p.label}:</span>
+                <span>{p.text}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex gap-2 items-start p-3 rounded-lg bg-amber-50 border border-amber-200">
+            <Lightbulb size={14} className="text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-800 leading-relaxed">{d.chassisPrint.compact2wd.tip}</p>
+          </div>
         </div>
       </Section>
 

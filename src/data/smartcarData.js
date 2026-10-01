@@ -40,6 +40,7 @@ export const SMART_CAR = {
   affiliation: "University of Science and Technology of Southern Philippines, Cagayan de Oro — College of Engineering and Architecture",
   docxUrl: "https://media.base44.com/files/public/69d386ad9523e2ce04536574/06c1a15ca_4WD_Smart_Car_Kit_Build_Module.docx",
   sketchesZipUrl: "https://media.base44.com/files/public/69d386ad9523e2ce04536574/ea64e875b_SmartCar_Sketches.zip",
+  chassisPrintZipUrl: "https://media.base44.com/files/public/69d386ad9523e2ce04536574/df8ba9f8b_SmartCar_Chassis_Print_Files.zip",
   kitImage: IMG.kitContents,
   intro: "This module follows the same pattern that popular maker sites such as Instructables use for robot car builds: a short introduction, a Supplies list with a photo of every part, then numbered steps, each with a picture and a few clear actions, followed by the code, a test, and a troubleshooting section. We keep that familiar order but add one important idea: build the car once, then change only the code and a few sensors for each project.",
   extraTools: [
@@ -69,6 +70,97 @@ export const SMART_CAR = {
     { name: "Dupont jumper wires", desc: "Female-female ribbon wires for all signal connections.", image: IMG.wires },
     { name: "USB cable, red/black wire, header pins", desc: "USB for programming; red/black wire for power; header strip for spare connections.", image: IMG.usb },
   ],
+  chassisPrint: {
+    intro: "If you have a 3D printer, you can print your own chassis plates and motor mounts. This is useful when an acrylic plate cracks, when you build extra cars for a class, or when you want a smaller two-wheel version. Skip this part if you are using the acrylic plates from the kit.",
+    thicknessNote: "All sizes below were measured directly from the supplied files. The chassis plates are 3 mm thick and have the same outline and hole pattern in every version, so the build steps in Part 3 still apply.",
+    filesNote: "Part A plus Part B make exactly the same outline as the one-piece plate. The halves are only there so the chassis fits on a smaller printer bed.",
+    printFiles: [
+      { file: "4WD_smart_buggy_chassis_1piece.stl", size: "150 × 257 × 3", what: "Complete 4WD plate in one piece.", qty: "2 (bottom and top deck)" },
+      { file: "4WD_smart_buggy_chassis_part_A.stl", size: "150 × 120 × 3", what: "Round-end half with one axle position. Has two dovetail tabs.", qty: "1 per plate" },
+      { file: "4WD_smart_buggy_chassis_part_B.stl", size: "150 × 151 × 3", what: "Other half with one axle position, the wide side tabs and two dovetail sockets.", qty: "1 per plate" },
+      { file: "motor_mount.step", size: "16 × 33 × 2.5", what: "Original T-shaped motor mount (CAD format).", qty: "8 for 4WD, 4 for 2WD" },
+      { file: "motor_mount.stl", size: "16 × 33 × 2.5", what: "Same mount converted to STL for slicers that cannot open STEP files (for example Cura).", qty: "same as above" },
+      { file: "motor_mount_x8_plate.stl", size: "79 × 72 × 2.5", what: "All 8 mounts arranged on one plate, ready to slice.", qty: "1" },
+    ],
+    versions: [
+      { version: "Option 1: One-piece 4WD", files: "One-piece plate ×2, motor mounts ×8", bed: "At least 256 × 256 mm with the plate turned 45°, or 260 mm+ straight", when: "You have a large printer and want the stiffest chassis." },
+      { version: "Option 2: Two-piece 4WD", files: "Part A ×2, Part B ×2, motor mounts ×8", bed: "180 × 180 mm or larger (one half per print)", when: "Your printer is smaller, such as a 220 × 220 mm bed." },
+      { version: "Option 3: Compact 2WD", files: "Part B ×2, motor mounts ×4, plus a ball caster (not in the kit)", bed: "180 × 180 mm or larger", when: "You want a smaller, cheaper car that turns more tightly." },
+    ],
+    printSettings: [
+      { setting: "Material", value: "PLA or PLA+ for most rooms. Use PETG if the car will sit in a hot vehicle or in direct sun, because PLA softens at about 55–60 °C." },
+      { setting: "Nozzle / layer height", value: "0.4 mm nozzle, 0.2 mm layers (15 layers for the 3 mm plate)." },
+      { setting: "Walls / top and bottom", value: "4 walls; 4 top and 4 bottom layers." },
+      { setting: "Infill", value: "Plates: 40%, gyroid or grid. Motor mounts: 100% (they are thin and carry the motor load)." },
+      { setting: "Supports", value: "None. Every part is flat." },
+      { setting: "Orientation", value: "Flat on the bed, exactly as the files open. Print the motor mounts lying flat, not standing up." },
+      { setting: "Bed adhesion", value: "Clean bed and a skirt. For PETG, or if the corners lift, add a 5 mm brim and peel it off afterwards." },
+      { setting: "Elephant-foot compensation", value: "0.1–0.2 mm. This keeps the first layer from spreading, which matters for the dovetail joint and the slots." },
+      { setting: "Estimated material (PLA)", value: "About 70 g for each one-piece plate, 30 g for Part A, 40 g for Part B, 11 g for 8 mounts. Your slicer gives the exact weight and time." },
+    ],
+    steps: [
+      {
+        num: "P1", title: "Load the files in your slicer", image: null,
+        bullets: [
+          "Open the files in your slicer (Cura, PrusaSlicer, OrcaSlicer or Bambu Studio).",
+          "Check the size after import. The files are in millimetres, so the plate must measure 150 mm wide. Do not rescale the plates.",
+          "PrusaSlicer, OrcaSlicer and Bambu Studio open motor_mount.step directly. In Cura, use motor_mount.stl or motor_mount_x8_plate.stl instead.",
+          "Option 1 on a 256 mm bed: rotate the plate 45° on the Z axis so it lies corner to corner, and turn off the brim. There is only about 3 mm spare on each side.",
+        ],
+      },
+      {
+        num: "P2", title: "Print the chassis plates",
+        bullets: [
+          "You need two plates: one for the bottom deck (motors, driver, battery) and one for the top deck (UNO, servo, sensors).",
+          "Option 1: print the one-piece plate twice.",
+          "Option 2: print Part A and Part B, then repeat for the second deck (4 prints in total).",
+          "Option 3: print Part B twice.",
+        ],
+        tip: "Let the bed cool before removing the plate. Bending a warm plate off the bed is the most common cause of a warped chassis.",
+      },
+      {
+        num: "P3", title: "Join Part A and Part B (Option 2 only)",
+        bullets: [
+          "The two dovetail tabs on Part A slide into the two sockets on Part B.",
+          "The files were modelled with no gap in the joint, so expect a very tight fit. Scrape off any first-layer flare (elephant foot) with a deburring tool or a small file until the parts slide together by hand.",
+          "Dry-fit first and check that the plate lies flat on the table.",
+          "Glue the joint with cyanoacrylate (super glue) or 5-minute epoxy. Press the plate flat on a table for 10 minutes while it sets.",
+        ],
+        tip: "The top deck joint should not sit directly over the bottom deck joint if you can avoid it. Turn the top plate end for end so the joints are on opposite sides of the standoffs.",
+      },
+      {
+        num: "P4", title: "Print and fit the motor mounts",
+        bullets: [
+          "Print 8 mounts for 4WD or 4 for 2WD, lying flat at 100% infill.",
+          "Each motor uses two mounts: an outer mount in the notch on the plate edge and an inner mount in the 4 × 12 mm slot. The gear motor sits between them and two long M3 screws pass through mount, motor and mount.",
+          "The foot (16 mm wide) rests on the top face of the plate; the narrower stem goes through the plate and holds the motor underneath.",
+          "The stem is 12.8 mm wide. It matches the 12.8 mm edge notch, but the inner slots measure 12.0 mm, so the inner mounts will not pass as printed. Either file about 0.4 mm off each side of the stem, or print the inner mounts with the X (width) scale set to 93%. That scaling does not move the screw holes.",
+        ],
+        warning: "Test fit before printing all of them.",
+      },
+      {
+        num: "P5", title: "Clean up the holes",
+        bullets: [
+          "The round mounting holes in the plate are 3.0–4.0 mm across, and the holes in the motor mounts are 3.0 mm. Printed holes usually come out slightly small.",
+          "Twist a 3.2 mm drill bit through the 3.0 mm holes by hand (or with a pin vise) so M3 screws pass freely.",
+          "Remove any strings or blobs from the slots so the line probes, standoffs and wires fit.",
+        ],
+        conclusion: "Your printed chassis is now ready. Continue with Part 3. Build the Base Car from Step 1, using the printed parts in place of the acrylic ones.",
+      },
+    ],
+    compact2wd: {
+      title: "Option 3: Building the compact 2WD",
+      desc: "The 2WD version uses one Part B for each deck, two TT motors with wheels at the round end, and a small ball caster at the dovetail end. The caster is not in the kit; any small ball caster that bolts on with M3 screws will do.",
+      points: [
+        { label: "Front of the car", text: "Treat the caster end as the front. The line probes then sit ahead of the drive wheels, which helps line following." },
+        { label: "Caster", text: "Bolt it under the bottom plate near the dovetail end, on the centre line. Use existing holes if they line up with your caster; otherwise drill two 3.2 mm holes. Add spacers under the caster until the plate sits level when the wheels are on." },
+        { label: "Wiring", text: "Keep the master pin map from Part 3. The left motor goes to OUT1/OUT2, the right motor to OUT3/OUT4. Only one motor per side, so there is no parallel pair." },
+        { label: "Direction check", text: "Because the front is now the caster end, run the Motor Test (Step 13). If the car drives wheels-first instead of caster-first, swap the two wires of each motor or set LEFT_INVERT and RIGHT_INVERT to true. If the left and right sides are swapped, exchange the two motor plugs between OUT1/OUT2 and OUT3/OUT4." },
+        { label: "Code", text: "All six sketches work unchanged. A 2WD car pivots faster, so re-tune the turn timings: TURN_MS (Project A), INCH_MS and TURN_CLEAR_MS (Project C1) and TURN90_MS and CELL_MS (Project C2)." },
+      ],
+      tip: "The 2WD battery and electronics share a smaller plate. Put the battery box on the bottom deck between the motors to keep the weight over the drive wheels, which gives better grip.",
+    },
+  },
   baseCar: {
     intro: "The base car is the same for all three projects. Follow the steps in order. The side view below shows where everything ends up.",
     sideViewImage: IMG.sideView,
