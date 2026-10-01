@@ -28,6 +28,14 @@ const IMG = {
   lineMazeFlow: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/78fe457a6_41a0f8ddf5e820afe8ec6591199cc7d7c525bef0.png",
   wallMaze: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/d53dc40cb_80f257ef1cb8c03969b1317b02d2065de55eca65.png",
   wallMazeFlow: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/abed1b2aa_1410ad98726805ce7ac2df447f76a01a55e911c8.png",
+  stl1piece: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/7673255de_4WD_smart_buggy_chassis_1piece.stl",
+  stlPartA: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/648fa7486_4WD_smart_buggy_chassis_part_A.stl",
+  stlPartB: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/1c7ec32c6_4WD_smart_buggy_chassis_part_B.stl",
+  stlMount: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/42945bf2b_motor_mount.stl",
+  figThreeWays: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/1cebea698_image1.png",
+  figBedFit: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/3d95e67e8_image2.png",
+  figDovetail: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/b65292387_image3.png",
+  figMountDims: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/ad235f379_image4.png",
 };
 
 export const SMART_CAR = {
@@ -74,6 +82,18 @@ export const SMART_CAR = {
     intro: "If you have a 3D printer, you can print your own chassis plates and motor mounts. This is useful when an acrylic plate cracks, when you build extra cars for a class, or when you want a smaller two-wheel version. Skip this part if you are using the acrylic plates from the kit.",
     thicknessNote: "All sizes below were measured directly from the supplied files. The chassis plates are 3 mm thick and have the same outline and hole pattern in every version, so the build steps in Part 3 still apply.",
     filesNote: "Part A plus Part B make exactly the same outline as the one-piece plate. The halves are only there so the chassis fits on a smaller printer bed.",
+    stlPreviews: [
+      { name: "4WD_smart_buggy_chassis_1piece.stl", url: IMG.stl1piece, label: "One-piece 4WD plate", size: "150 × 257 × 3" },
+      { name: "4WD_smart_buggy_chassis_part_A.stl", url: IMG.stlPartA, label: "Part A (round-end half)", size: "150 × 120 × 3" },
+      { name: "4WD_smart_buggy_chassis_part_B.stl", url: IMG.stlPartB, label: "Part B (dovetail half)", size: "150 × 151 × 3" },
+      { name: "motor_mount.stl", url: IMG.stlMount, label: "Motor mount", size: "16 × 33 × 2.5" },
+    ],
+    figures: {
+      threeWays: IMG.figThreeWays,
+      bedFit: IMG.figBedFit,
+      dovetail: IMG.figDovetail,
+      mountDims: IMG.figMountDims,
+    },
     printFiles: [
       { file: "4WD_smart_buggy_chassis_1piece.stl", size: "150 × 257 × 3", what: "Complete 4WD plate in one piece.", qty: "2 (bottom and top deck)" },
       { file: "4WD_smart_buggy_chassis_part_A.stl", size: "150 × 120 × 3", what: "Round-end half with one axle position. Has two dovetail tabs.", qty: "1 per plate" },
@@ -119,7 +139,7 @@ export const SMART_CAR = {
         tip: "Let the bed cool before removing the plate. Bending a warm plate off the bed is the most common cause of a warped chassis.",
       },
       {
-        num: "P3", title: "Join Part A and Part B (Option 2 only)",
+        num: "P3", title: "Join Part A and Part B (Option 2 only)", image: IMG.figDovetail,
         bullets: [
           "The two dovetail tabs on Part A slide into the two sockets on Part B.",
           "The files were modelled with no gap in the joint, so expect a very tight fit. Scrape off any first-layer flare (elephant foot) with a deburring tool or a small file until the parts slide together by hand.",
@@ -129,7 +149,7 @@ export const SMART_CAR = {
         tip: "The top deck joint should not sit directly over the bottom deck joint if you can avoid it. Turn the top plate end for end so the joints are on opposite sides of the standoffs.",
       },
       {
-        num: "P4", title: "Print and fit the motor mounts",
+        num: "P4", title: "Print and fit the motor mounts", image: IMG.figMountDims,
         bullets: [
           "Print 8 mounts for 4WD or 4 for 2WD, lying flat at 100% infill.",
           "Each motor uses two mounts: an outer mount in the notch on the plate edge and an inner mount in the 4 × 12 mm slot. The gear motor sits between them and two long M3 screws pass through mount, motor and mount.",
