@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ZipStlViewer from "@/components/maker/ZipStlViewer";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b57596a03_BalloonDragsters.png";
 const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/680a707f9_BalloonDragster-ExplainerVideo.mp4";
@@ -223,6 +224,7 @@ export default function BalloonDragstersProject({ isPublic = false }) {
         <a href={PIPE_STL_DOWNLOAD} download className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors">
           <Download size={15} /> Download Balloon Dragster Pipe STL
         </a>
+        <ZipStlViewer zipUrl={PIPE_STL_DOWNLOAD} label="Balloon Dragster Pipe" height={320} />
         <div className="space-y-3 pt-2">
           <p className="font-poppins font-bold text-sm text-foreground flex items-center gap-2">
             <span className="text-base">🖥️</span> TinkerCad Video

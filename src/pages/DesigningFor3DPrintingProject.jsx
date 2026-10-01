@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { COURSE_INFO, SECTIONS } from "@/components/design3d/designData";
 import DesignSectionCard from "@/components/design3d/DesignSectionCard";
+import ZipStlViewer from "@/components/maker/ZipStlViewer";
 
 function CollapsibleSection({ title, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -98,6 +99,9 @@ export default function DesigningFor3DPrintingProject() {
               >
                 <Download size={15} /> Download Model Set (ZIP)
               </a>
+            )}
+            {COURSE_INFO.modelSet.downloadUrl && (
+              <ZipStlViewer zipUrl={COURSE_INFO.modelSet.downloadUrl} label="Demo Model Set" height={340} />
             )}
           </div>
         </CollapsibleSection>

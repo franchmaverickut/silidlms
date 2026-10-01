@@ -3,14 +3,14 @@ import { Move3d, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 
-export default function STLViewer({ url, height = 320, className = "" }) {
+export default function STLViewer({ url, arrayBuffer, height = 320, className = "" }) {
   const mountRef = useRef(null);
   const sceneRef = useRef({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!url || !mountRef.current) return;
+    if ((!url && !arrayBuffer) || !mountRef.current) return;
 
     let animId;
     let renderer;
@@ -102,34 +102,44 @@ export default function STLViewer({ url, height = 320, className = "" }) {
       el.addEventListener("wheel", onWheel, { passive: false });
       el.addEventListener("contextmenu", onContextMenu);
 
-      // For GitHub/external URLs, route through our backend proxy to avoid CORS
-      const needsProxy = url.includes("raw.githubusercontent.com") || url.includes("github.com");
-      let loadUrl = url;
-      if (needsProxy) {
-        const res = await base44.functions.invoke("proxyStl", { url });
-        const blob = new Blob([res.data], { type: "model/stl" });
-        loadUrl = URL.createObjectURL(blob);
+      const addGeometry = (geometry) => {
+        geometry.center();
+        geometry.computeBoundingSphere();
+        const r = geometry.boundingSphere.radius || 50;
+        spherical.radius = r * 3;
+        grid.position.y = -(r * 0.9);
+        target.set(0, 0, 0);
+        updateCamera();
+
+        const mat = new THREE.MeshPhongMaterial({ color: 0x888888, specular: 0xaaaaaa, shininess: 60 });
+        const mesh = new THREE.Mesh(geometry, mat);
+        scene.add(mesh);
+        setLoading(false);
+      };
+
+      let loadUrl;
+      try {
+        if (arrayBuffer) {
+          addGeometry(new STLLoader().parse(arrayBuffer));
+        } else {
+          // For GitHub/external URLs, route through our backend proxy to avoid CORS
+          const needsProxy = url.includes("raw.githubusercontent.com") || url.includes("github.com");
+          loadUrl = url;
+          if (needsProxy) {
+            const res = await base44.functions.invoke("proxyStl", { url });
+            const blob = new Blob([res.data], { type: "model/stl" });
+            loadUrl = URL.createObjectURL(blob);
+          }
+          new STLLoader().load(
+            loadUrl,
+            addGeometry,
+            undefined,
+            () => setError("Failed to load STL. Make sure the URL is publicly accessible.")
+          );
+        }
+      } catch (e) {
+        setError("Failed to read STL geometry.");
       }
-
-      new STLLoader().load(
-        loadUrl,
-        (geometry) => {
-          geometry.center();
-          geometry.computeBoundingSphere();
-          const r = geometry.boundingSphere.radius;
-          spherical.radius = r * 3;
-          grid.position.y = -(r * 0.9);
-          target.set(0, 0, 0);
-          updateCamera();
-
-          const mat = new THREE.MeshPhongMaterial({ color: 0x888888, specular: 0xaaaaaa, shininess: 60 });
-          const mesh = new THREE.Mesh(geometry, mat);
-          scene.add(mesh);
-          setLoading(false);
-        },
-        undefined,
-        () => setError("Failed to load STL. Make sure the URL is publicly accessible.")
-      );
 
       // Animate
       const animate = () => {
@@ -165,7 +175,7 @@ export default function STLViewer({ url, height = 320, className = "" }) {
         }
       }
     };
-  }, [url, height]);
+  }, [url, arrayBuffer, height]);
 
   const resetView = () => {
     const { spherical, target, updateCamera } = sceneRef.current;

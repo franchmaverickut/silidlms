@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ZipStlViewer from "@/components/maker/ZipStlViewer";
 
 const COVER_IMG = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/9f8f426ef_FunctionalWrenches.png";
 const OVERVIEW_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/deca29b31_Wrenches-OverviewVideo.mp4";
@@ -108,9 +109,12 @@ export default function FunctionalWrenchesProject({ isPublic = false }) {
           <p>
             In this section, you'll be bringing your functional wrench to life with 3D design and 3D printing! The first step is to find a nut and bolt mechanism that you'd like to design a wrench for. This might be a fastener system you find around your home or alternatively an STL file can be downloaded here if you want to 3D print an example nut and bolt. You may scale this in your slicing software as you wish. Once 3D printed, it may be required to run sandpaper over both the nuts and bolts for a few seconds – this will make the threads run across each other more easily.
           </p>
-          <a href={NUT_BOLT_DOWNLOAD} download className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
-            <Download size={15} /> Download Nut &amp; Bolt STL
-          </a>
+          <div className="flex flex-wrap items-center gap-3">
+            <a href={NUT_BOLT_DOWNLOAD} download className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
+              <Download size={15} /> Download Nut &amp; Bolt STL
+            </a>
+          </div>
+          <ZipStlViewer zipUrl={NUT_BOLT_DOWNLOAD} label="Nut & Bolt Demo Model" height={320} />
           <p>
             Once your nut and bolt has been identified, select either the Tinkercad or Fusion 360 tutorial below and follow it to design your wrench. There are options for both voice over instructions and text-based instructions so simply pick your preferred method of learning.
           </p>
