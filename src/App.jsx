@@ -47,6 +47,7 @@ import SelfWateringPlantersProject from '@/pages/SelfWateringPlantersProject';
 import TinkercadFundamentalsProject from '@/pages/TinkercadFundamentalsProject';
 import DesigningFor3DPrintingProject from '@/pages/DesigningFor3DPrintingProject';
 import SmartCarProject from '@/pages/SmartCarProject';
+import ScrollToTop from "@/components/ScrollToTop";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -113,6 +114,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/share/course/:id" element={<PublicCourseViewer />} />
           <Route path="/share/maker/:id" element={<PublicMakerLessonViewer />} />
