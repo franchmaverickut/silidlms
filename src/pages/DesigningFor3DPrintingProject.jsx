@@ -38,14 +38,16 @@ function CollapsibleSection({ title, icon: Icon, children, defaultOpen = false }
 
 const FOLLOW_ICONS = { video: Video, printer: Printer, book: BookOpen };
 
-export default function DesigningFor3DPrintingProject() {
+export default function DesigningFor3DPrintingProject({ isPublic = false }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {/* Back link */}
-        <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ChevronDown size={16} className="rotate-90" /> Back to Maker Lessons
-        </Link>
+        {!isPublic && (
+          <Link to="/maker" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ChevronDown size={16} className="rotate-90" /> Back to Maker Lessons
+          </Link>
+        )}
 
         {/* Hero */}
         <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-700 p-8 text-white shadow-lg">

@@ -126,6 +126,10 @@ function App() {
           <Route path="/share/printing-industry" element={<PublicPrintingIndustry />} />
           <Route path="/share/printing-technologies" element={<PublicPrintingTechnologies />} />
           <Route path="/share/quick-clips" element={<PublicQuickClips />} />
+          <Route path="/share/functional-wrenches" element={<FunctionalWrenchesProject isPublic={true} />} />
+          <Route path="/share/balloon-dragsters" element={<BalloonDragstersProject isPublic={true} />} />
+          <Route path="/share/designing-for-3d-printing" element={<DesigningFor3DPrintingProject isPublic={true} />} />
+          <Route path="/share/smart-car-kit" element={<SmartCarProject isPublic={true} />} />
           <Route path="/share/tinkercad-fundamentals" element={<TinkercadFundamentalsProject isPublic={true} />} />
           <Route path="*" element={
             <AuthProvider>
