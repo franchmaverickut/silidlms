@@ -187,8 +187,8 @@ export default function SmartCarProject({ isPublic = false }) {
         <p className="text-sm text-muted-foreground leading-relaxed">Lay out every part on a clean table and tick it off. The photo is cut straight from the kit picture, so the parts should look the same as yours.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {d.parts.map((part, i) => (
-            <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex">
-              <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
+            <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-white">
+            <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
                 <img src={part.image} alt={part.name} className="max-h-20 w-auto h-auto object-contain rounded" />
               </div>
               <div className="p-3 space-y-1">
@@ -202,7 +202,7 @@ export default function SmartCarProject({ isPublic = false }) {
           <h3 className="font-poppins font-bold text-sm text-foreground mb-2">4WD Robot Chassis Parts</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {d.chassisAssembly.parts.map((part, i) => (
-              <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-card">
+              <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-white">
                 <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
                   {part.image ? (
                     <img src={part.image} alt={part.name} className="max-h-20 w-auto h-auto object-contain" />
