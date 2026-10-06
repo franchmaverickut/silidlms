@@ -36,6 +36,17 @@ const IMG = {
   figBedFit: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/3d95e67e8_image2.png",
   figDovetail: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/b65292387_image3.png",
   figMountDims: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/ad235f379_image4.png",
+  // 4WD Robot Chassis — illustrated assembly assets
+  partWheel: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/10e2ed303_Part_01_Wheel.png",
+  partChassisPlate: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/958d80217_Part_02_Chassis_Plate.png",
+  partEncoderDisc: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/3cf0073de_Part_03_Encoder_Disc.png",
+  partMotor: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/bff1b8680_Part_04_DC_Gear_Motor.png",
+  partLongScrew: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/065b76039_Part_05_Long_Screw.png",
+  asmStep01: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/71b30be4f_Step_01_Install_Motor_Brackets.png",
+  asmStep02: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/aaabe9fd5_Step_02_Position_Motors_and_Encoder_Discs.png",
+  asmStep03: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8e929dd5b_Step_03_Secure_Motors.png",
+  asmStep04: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/f41965710_Step_04_Attach_Wheels.png",
+  asmStep05: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/a5a11ecd9_Step_05_Add_Spacers_and_Upper_Chassis.png",
 };
 
 export const SMART_CAR = {
@@ -78,6 +89,28 @@ export const SMART_CAR = {
     { name: "Dupont jumper wires", desc: "Female-female ribbon wires for all signal connections.", image: IMG.wires },
     { name: "USB cable, red/black wire, header pins", desc: "USB for programming; red/black wire for power; header strip for spare connections.", image: IMG.usb },
   ],
+  chassisAssembly: {
+    intro: "Before wiring any electronics, build the mechanical chassis. These five steps assemble the 4WD robot base: brackets, motors, encoder discs, wheels, and the upper deck.",
+    parts: [
+      { name: "Wheel", image: IMG.partWheel, desc: "Rubber tire with a yellow five-spoke rim. Presses onto the motor shaft." },
+      { name: "Chassis Plate", image: IMG.partChassisPlate, desc: "Flat yellow acrylic plate with mounting holes. Two plates form the lower and upper decks." },
+      { name: "Encoder Disc", image: IMG.partEncoderDisc, desc: "Slotted disc that fits on the motor shaft for speed sensing." },
+      { name: "DC Gear Motor", image: IMG.partMotor, desc: "Yellow TT gear motor with silver gearbox. One per wheel." },
+      { name: "Long Screw", image: IMG.partLongScrew, desc: "Silver Phillips-head machine screw for mounting motors to brackets." },
+      { name: "Battery Holder", image: null, desc: "Holds the cells that power the motors and electronics." },
+      { name: "Motor Bracket", image: null, desc: "L-shaped bracket that clamps the motor to the chassis plate." },
+      { name: "Short Screw", image: null, desc: "Short machine screw for mounting boards and spacers." },
+      { name: "Hex Spacer", image: null, desc: "Brass standoff that joins the lower and upper chassis plates." },
+      { name: "Hex Nut", image: null, desc: "Hex nut for securing motor mounting screws." },
+    ],
+    steps: [
+      { num: 1, title: "Install motor brackets", image: IMG.asmStep01, desc: "Place the motor brackets in the matching lower chassis slots. Keep the axle openings facing the wheel positions." },
+      { num: 2, title: "Position motors and encoder discs", image: IMG.asmStep02, desc: "Fit one encoder disc to each motor shaft as shown in the kit instructions. Seat the four motors in their brackets." },
+      { num: 3, title: "Secure motors", image: IMG.asmStep03, desc: "Insert the motor mounting screws and tighten the nuts evenly. Check that the motors sit firmly and each shaft turns freely." },
+      { num: 4, title: "Attach wheels", image: IMG.asmStep04, desc: "Press each wheel onto its motor shaft. Support the motor while pressing and check that the wheels clear the chassis." },
+      { num: 5, title: "Add spacers and upper chassis", image: IMG.asmStep05, desc: "Fasten the spacers to the lower chassis. Align the upper plate with the spacers and secure it with screws. Check that the frame is stable." },
+    ],
+  },
   chassisPrint: {
     intro: "If you have a 3D printer, you can print your own chassis plates and motor mounts. This is useful when an acrylic plate cracks, when you build extra cars for a class, or when you want a smaller two-wheel version. Skip this part if you are using the acrylic plates from the kit.",
     thicknessNote: "All sizes below were measured directly from the supplied files. The chassis plates are 3 mm thick and have the same outline and hole pattern in every version, so the build steps in Part 3 still apply.",

@@ -210,6 +210,35 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
       </Section>
 
+      {/* 4WD Robot Chassis — Parts & Assembly */}
+      <Section title="4WD Robot Chassis — Parts & Assembly" icon="🔩" defaultOpen={true} accent="blue">
+        <p className="text-sm text-muted-foreground leading-relaxed">{d.chassisAssembly.intro}</p>
+        <div className="pt-1">
+          <h3 className="font-poppins font-bold text-sm text-foreground mb-2">Parts</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {d.chassisAssembly.parts.map((part, i) => (
+              <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm bg-card">
+                <div className="bg-muted/20 p-3 flex items-center justify-center h-24">
+                  {part.image ? (
+                    <img src={part.image} alt={part.name} className="max-h-20 w-auto object-contain" />
+                  ) : (
+                    <span className="text-3xl text-muted-foreground/30">🔩</span>
+                  )}
+                </div>
+                <div className="p-2.5 text-center">
+                  <p className="font-poppins font-semibold text-xs text-foreground">{part.name}</p>
+                  <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{part.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="pt-2 space-y-3">
+          <h3 className="font-poppins font-bold text-sm text-foreground">Assembly Steps</h3>
+          {d.chassisAssembly.steps.map(step => <StepCard key={step.num} step={step} />)}
+        </div>
+      </Section>
+
       {/* Part 2: 3D-Print the Chassis (Optional) */}
       <Section title="Part 2. 3D-Print the Chassis (Optional)" icon="🖨️" defaultOpen={false} accent="purple">
         <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.intro}</p>
