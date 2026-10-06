@@ -200,19 +200,19 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
         <div className="pt-2">
           <h3 className="font-poppins font-bold text-sm text-foreground mb-2">4WD Robot Chassis Parts</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {d.chassisAssembly.parts.map((part, i) => (
-              <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm bg-card">
-                <div className="bg-muted/20 p-3 flex items-center justify-center h-24">
+              <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-card">
+                <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
                   {part.image ? (
-                    <img src={part.image} alt={part.name} className="max-h-20 w-auto object-contain" />
+                    <img src={part.image} alt={part.name} className="max-h-20 w-auto h-auto object-contain" />
                   ) : (
                     <span className="text-3xl text-muted-foreground/30">🔩</span>
                   )}
                 </div>
-                <div className="p-2.5 text-center">
-                  <p className="font-poppins font-semibold text-xs text-foreground">{part.name}</p>
-                  <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{part.desc}</p>
+                <div className="p-4 space-y-1 flex flex-col justify-center">
+                  <p className="font-poppins font-bold text-xs text-foreground">{part.name}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{part.desc}</p>
                 </div>
               </div>
             ))}
