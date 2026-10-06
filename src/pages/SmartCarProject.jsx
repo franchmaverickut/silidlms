@@ -188,8 +188,8 @@ export default function SmartCarProject({ isPublic = false }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {d.parts.map((part, i) => (
             <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex">
-              <div className="bg-muted/20 p-3 flex items-center justify-center flex-shrink-0 w-28">
-                <img src={part.image} alt={part.name} className="max-h-24 w-auto object-contain rounded" />
+              <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
+                <img src={part.image} alt={part.name} className="max-h-20 w-auto h-auto object-contain rounded" />
               </div>
               <div className="p-3 space-y-1">
                 <p className="font-poppins font-bold text-xs text-foreground">{part.name}</p>
