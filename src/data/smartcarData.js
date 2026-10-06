@@ -203,7 +203,7 @@ export const SMART_CAR = {
           "Twist a 3.2 mm drill bit through the 3.0 mm holes by hand (or with a pin vise) so M3 screws pass freely.",
           "Remove any strings or blobs from the slots so the line probes, standoffs and wires fit.",
         ],
-        conclusion: "Your printed chassis is now ready. Continue with Part 3. Build the Base Car from Step 1, using the printed parts in place of the acrylic ones.",
+        conclusion: "Your printed chassis is now ready. Continue with Part 3. Build the Base Car from Step 6, using the printed parts in place of the acrylic ones.",
       },
     ],
     compact2wd: {
@@ -213,7 +213,7 @@ export const SMART_CAR = {
         { label: "Front of the car", text: "Treat the caster end as the front. The line probes then sit ahead of the drive wheels, which helps line following." },
         { label: "Caster", text: "Bolt it under the bottom plate near the dovetail end, on the centre line. Use existing holes if they line up with your caster; otherwise drill two 3.2 mm holes. Add spacers under the caster until the plate sits level when the wheels are on." },
         { label: "Wiring", text: "Keep the master pin map from Part 3. The left motor goes to OUT1/OUT2, the right motor to OUT3/OUT4. Only one motor per side, so there is no parallel pair." },
-        { label: "Direction check", text: "Because the front is now the caster end, run the Motor Test (Step 13). If the car drives wheels-first instead of caster-first, swap the two wires of each motor or set LEFT_INVERT and RIGHT_INVERT to true. If the left and right sides are swapped, exchange the two motor plugs between OUT1/OUT2 and OUT3/OUT4." },
+        { label: "Direction check", text: "Because the front is now the caster end, run the Motor Test (Step 18). If the car drives wheels-first instead of caster-first, swap the two wires of each motor or set LEFT_INVERT and RIGHT_INVERT to true. If the left and right sides are swapped, exchange the two motor plugs between OUT1/OUT2 and OUT3/OUT4." },
         { label: "Code", text: "All six sketches work unchanged. A 2WD car pivots faster, so re-tune the turn timings: TURN_MS (Project A), INCH_MS and TURN_CLEAR_MS (Project C1) and TURN90_MS and CELL_MS (Project C2)." },
       ],
       tip: "The 2WD battery and electronics share a smaller plate. Put the battery box on the bottom deck between the motors to keep the weight over the drive wheels, which gives better grip.",

@@ -165,7 +165,7 @@ export default function SmartCarProject({ isPublic = false }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           {[
             { part: "Part 1: Know Your Kit", task: "Identify every component from the kit photo and learn what it does." },
-            { part: "Part 2: Build the Base Car", task: "14 numbered steps: mechanical assembly, wiring to one master pin map, and two test sketches." },
+            { part: "Part 2: Build the Base Car", task: "19 numbered steps: mechanical chassis assembly, wiring to one master pin map, and two test sketches." },
             { part: "Part 3: Project A", task: "Obstacle Avoidance Car using the HC-SR04 on the servo \"neck\"." },
             { part: "Part 4: Project B", task: "Line-Following Robot using the 4-channel tracker with smooth PD steering." },
             { part: "Part 5: Project C", task: "Maze Solver: C1 black-line maze with shortest-path learning, and C2 wall maze with ultrasonic scanning." },
@@ -199,22 +199,7 @@ export default function SmartCarProject({ isPublic = false }) {
           ))}
         </div>
         <div className="pt-2">
-          <p className="font-poppins font-semibold text-sm text-foreground mb-2">Extra tools and materials (not in the kit)</p>
-          <ul className="space-y-2">
-            {d.extraTools.map((tool, i) => (
-              <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
-                <span className="text-blue-500 font-bold flex-shrink-0 mt-0.5">•</span> {tool}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* 4WD Robot Chassis — Parts & Assembly */}
-      <Section title="4WD Robot Chassis — Parts & Assembly" icon="🔩" defaultOpen={true} accent="blue">
-        <p className="text-sm text-muted-foreground leading-relaxed">{d.chassisAssembly.intro}</p>
-        <div className="pt-1">
-          <h3 className="font-poppins font-bold text-sm text-foreground mb-2">Parts</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground mb-2">4WD Robot Chassis Parts</h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {d.chassisAssembly.parts.map((part, i) => (
               <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm bg-card">
@@ -233,9 +218,15 @@ export default function SmartCarProject({ isPublic = false }) {
             ))}
           </div>
         </div>
-        <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">Assembly Steps</h3>
-          {d.chassisAssembly.steps.map(step => <StepCard key={step.num} step={step} />)}
+        <div className="pt-2">
+          <p className="font-poppins font-semibold text-sm text-foreground mb-2">Extra tools and materials (not in the kit)</p>
+          <ul className="space-y-2">
+            {d.extraTools.map((tool, i) => (
+              <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
+                <span className="text-blue-500 font-bold flex-shrink-0 mt-0.5">•</span> {tool}
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
 
@@ -352,11 +343,12 @@ export default function SmartCarProject({ isPublic = false }) {
           <p className="p-3 text-xs text-muted-foreground italic">{d.baseCar.sideViewCaption}</p>
         </div>
         <div className="space-y-4">
-          {d.baseCar.steps.map(step => <StepCard key={step.num} step={step} />)}
+          {d.chassisAssembly.steps.map(step => <StepCard key={'chassis-'+step.num} step={step} />)}
+          {d.baseCar.steps.map(step => <StepCard key={'base-'+step.num} step={{...step, num: step.num + 5}} />)}
         </div>
         {/* Power Wiring */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 11: Power Wiring</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 16: Power Wiring</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">Power is where most beginner cars fail, so read this step twice. All grounds must be connected together: battery minus, L298N GND and Arduino GND.</p>
           <DataTable
             headers={["Connection", "From", "To"]}
@@ -376,7 +368,7 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
         {/* Pin Map */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 12: Signal Wiring (Master Pin Map)</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 17: Signal Wiring (Master Pin Map)</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">Use the Dupont wires to connect everything below. This single pin map is used by all six sketches in this module.</p>
           <InteractiveWiringDiagram />
           <p className="text-xs text-muted-foreground italic">Figure 3. Interactive master wiring diagram — hover or click any wire.</p>
@@ -399,13 +391,13 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
         {/* Motor Test */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 13: Upload and run the Motor Test</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 18: Upload and run the Motor Test</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{d.baseCar.motorTestDesc}</p>
           <CodeBlock code={d.baseCar.motorTestCode} filename="00_MotorTest.ino" />
         </div>
         {/* Sensor Test */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 14: Upload and run the Sensor Test</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 19: Upload and run the Sensor Test</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{d.baseCar.sensorTestDesc}</p>
           <CodeBlock code={d.baseCar.sensorTestCode} filename="01_SensorTest.ino" />
         </div>
