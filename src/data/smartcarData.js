@@ -19,7 +19,7 @@ const IMG = {
   screws: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/26f83d21c_e47e85206e29ae6e752771df417780458873448a.png",
   wires: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/077c29ce4_Part_09_Dupont_Female_Female_Jumper_Wires.png",
   usb: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/f7ab64a71_39a466f22d44919106a5361c2742f97032b91e81.png",
-  sideView: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/b67eda711_9f4900fa36e7bde28e27362b1cdd08942417ba84.png",
+  sideView: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/c633d681c_image.png",
   wiring: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/322e81e8b_42d9d69bbbf3eb299d4889c8f79685dec0d28065.png",
   obstacleFlow: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/cb0388c65_acc011c4cce30436c78e52871bf9f5253e5d3914.png",
   lineSensors: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/6f4be1f80_2cafb46e4235b4c085b0a3f93eac56b5d3869891.png",
