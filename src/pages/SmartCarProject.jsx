@@ -12,6 +12,7 @@ import InteractiveWiringDiagram from "@/components/smartcar/InteractiveWiringDia
 import SmartCarSimulator from "@/components/smartcar/SmartCarSimulator";
 import ProgramFlowSimulator from "@/components/smartcar/ProgramFlowSimulator";
 import ChassisPrintStudio from "@/components/smartcar/ChassisPrintStudio";
+import KidPrintGuide from "@/components/smartcar/KidPrintGuide";
 import EchoExplorer from "@/components/smartcar/EchoExplorer";
 
 function Section({ title, kicker, icon, children, defaultOpen = false, accent = "blue" }) {
@@ -153,6 +154,8 @@ const ADVENTURE = [
   { n: 5, icon: "📏", title: "Game B: Follow the line", body: "Teach it to stick to a black tape path on the floor." },
   { n: 6, icon: "🧩", title: "Game C: Escape the maze", body: "Help it solve a maze and remember the shortest way out." },
 ];
+
+const KID_TO_STUDIO = { one: "onepiece", a: "partA", b: "partB", mount: "mount" };
 
 export default function SmartCarProject({ isPublic = false }) {
   const d = SMART_CAR;
@@ -301,8 +304,11 @@ export default function SmartCarProject({ isPublic = false }) {
         </a>
         <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.thicknessNote}</p>
 
-        <ChassisPrintStudio previews={d.chassisPrint.stlPreviews} />
-        <p className="text-xs text-muted-foreground italic">Use the 3D preview to turn each part and check its real shape and size against your printer bed before you print.</p>
+        <KidPrintGuide
+          preview={(part) => (
+            <ChassisPrintStudio previews={d.chassisPrint.stlPreviews} activeFile={KID_TO_STUDIO[part.id]} />
+          )}
+        />
 
         <div className="pt-2 space-y-3">
           <h3 className="font-poppins font-bold text-sm text-foreground">Print and prepare the parts</h3>

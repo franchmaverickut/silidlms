@@ -76,9 +76,12 @@ function buildParts(buildId) {
   return BUILDS.find((b) => b.id === buildId).parts;
 }
 
-export default function ChassisPrintStudio({ previews }) {
+export default function ChassisPrintStudio({ previews, activeFile }) {
   const [build, setBuild] = useState("big");
   const [activePart, setActivePart] = useState("onepiece");
+
+  const controlled = activeFile != null;
+  const currentPart = controlled ? activeFile : activePart;
 
   const chooseBuild = (id) => {
     setBuild(id);
@@ -87,8 +90,24 @@ export default function ChassisPrintStudio({ previews }) {
   };
 
   const visibleParts = PARTS.filter((p) => buildParts(build).includes(p.id));
-  const part = PARTS.find((p) => p.id === activePart);
-  const stl = previews[STL_INDEX[activePart]];
+  const part = PARTS.find((p) => p.id === currentPart);
+  const stl = previews[STL_INDEX[currentPart]];
+
+  // Controlled mode: the parent (KidPrintGuide) owns the build choice, the
+  // part tabs, the part card and the print settings, so here we render only
+  // the synced 3D viewer. Nothing (size, qty, setting) is duplicated.
+  if (controlled) {
+    return (
+      <div className="min-h-[340px] rounded-2xl border-2 border-purple-200 bg-gradient-to-b from-purple-50/60 to-white p-3 shadow-sm">
+        <STLViewer url={stl?.url} height={340} />
+        <div className="mt-2 flex items-center justify-center gap-1.5">
+          <MousePointerClick size={12} className="text-purple-400" />
+          <span className="text-xs text-muted-foreground">Drag to turn · scroll to zoom</span>
+        </div>
+        <p className="mt-1 text-center font-mono text-[11px] text-muted-foreground/80 break-all">{stl?.name}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

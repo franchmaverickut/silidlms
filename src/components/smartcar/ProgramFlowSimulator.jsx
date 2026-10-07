@@ -1,9 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Play, Pause, RotateCcw, StepForward } from "lucide-react";
 
-// ── Node styles (fill / active / stroke / text) ────────────
-// rx is derived from node type at render time (process:14, start/end:22).
 const STYLES = {
   start: { fill: "#dcfce7", active: "#bbf7d0", stroke: "#16a34a", text: "#14532d" },
   process: { fill: "#dbeafe", active: "#bfdbfe", stroke: "#2563eb", text: "#1e3a8a" },
@@ -11,709 +9,454 @@ const STYLES = {
   end: { fill: "#fee2e2", active: "#fecaca", stroke: "#dc2626", text: "#7f1d1d" },
 };
 
-// Edge format: { from, to, label?, side?: 'left'|'right', back? }
-// side 'left'/'right' = the branch leaves that side of the decision.
-// back = true routes the edge down the outside-left gutter (maze loop return).
-
-function nodeById(flow, id) {
-  return flow.nodes.find((n) => n.id === id);
+function n(id, label, type, x, y, w, h) {
+  return { id, label, type, x, y, w, h };
 }
 
-// For a "No" branch, pick the side it leaves from: trust the edge's `side`
-// when given, otherwise derive it from the target's x relative to the source.
-function noSide(edge, a, b) {
-  if (edge.side === "left") return "left";
-  if (edge.side === "right") return "right";
-  return b.x >= a.x ? "right" : "left";
-}
+const FLOWS = {
+  A: {
+    name: "Obstacle Avoidance",
+    w: 780,
+    h: 780,
+    defaults: { distance: 50, left: 40, right: 40 },
+    nodes: [
+      n("loop", "loop()", "start", 390, 46, 140, 40),
+      n("read", "d = distanceFiltered()\nmedian of 3 readings", "process", 390, 122, 220, 52),
+      n("stop_check", "d ≤ 25?", "decision", 390, 214, 156, 74),
+      n("avoid", "avoid()", "process", 150, 330, 130, 42),
+      n("slow_check", "d < 45?", "decision", 590, 330, 146, 74),
+      n("backup", "stop + backup\n300 ms", "process", 150, 414, 150, 50),
+      n("look", "right = lookAt(20°)\nleft = lookAt(160°)", "process", 150, 500, 180, 50),
+      n("both_check", "both < 25?", "decision", 150, 598, 156, 74),
+      n("turn_around", "turn 180°\nTURN_MS × 3", "process", 150, 710, 150, 50),
+      n("lr_check", "left > right?", "decision", 400, 598, 156, 74),
+      n("spin_left", "spin left\nTURN_MS", "process", 320, 710, 120, 48),
+      n("spin_right", "spin right\nTURN_MS", "process", 490, 710, 124, 48),
+      n("slow", "forward\n3/4 speed", "process", 500, 448, 130, 50),
+      n("cruise", "forward\nCRUISE_SPEED", "process", 670, 448, 140, 50),
+    ],
+    edges: [
+      { from: "loop", to: "read" },
+      { from: "read", to: "stop_check" },
+      { from: "stop_check", to: "avoid", label: "Yes", side: "left" },
+      { from: "stop_check", to: "slow_check", label: "No", side: "right" },
+      { from: "avoid", to: "backup" },
+      { from: "backup", to: "look" },
+      { from: "look", to: "both_check" },
+      { from: "both_check", to: "turn_around", label: "Yes" },
+      { from: "both_check", to: "lr_check", label: "No", side: "right" },
+      { from: "lr_check", to: "spin_left", label: "Yes", side: "left" },
+      { from: "lr_check", to: "spin_right", label: "No", side: "right" },
+      { from: "slow_check", to: "slow", label: "Yes", side: "left" },
+      { from: "slow_check", to: "cruise", label: "No", side: "right" },
+    ],
+    evaluate(i) {
+      const p = ["loop", "read", "stop_check"];
+      if (i.distance <= 25) {
+        p.push("avoid", "backup", "look", "both_check");
+        if (i.left < 25 && i.right < 25) p.push("turn_around");
+        else p.push("lr_check", i.left > i.right ? "spin_left" : "spin_right");
+      } else p.push("slow_check", i.distance < 45 ? "slow" : "cruise");
+      return p;
+    },
+    explain: {
+      loop: "The car checks the world again and again.",
+      read: "It beeps three times and keeps the middle number, so one bad ping does not scare it.",
+      stop_check: "25 cm or closer is too near. Stop and look for a way around.",
+      avoid: "Do not keep driving into the thing ahead.",
+      backup: "Reverse a little so the next look has room.",
+      look: "Turn the eye right, then left, and remember both distances.",
+      both_check: "If both sides are blocked too, turn all the way around.",
+      turn_around: "Spin about halfway around and try a new direction.",
+      lr_check: "Pick the side with more empty space.",
+      spin_left: "Left is more open, so spin left.",
+      spin_right: "Right is clearer, so spin right.",
+      slow_check: "Not an emergency. Still close enough to slow down?",
+      slow: "Something is ahead. Creep.",
+      cruise: "The road is open. Drive at full cruise speed.",
+    },
+  },
+  B: {
+    name: "Line Follower (PD)",
+    w: 760,
+    h: 700,
+    defaults: { s1: false, s2: true, s3: true, s4: false, lastError: 0 },
+    nodes: [
+      n("loop", "loop()", "start", 380, 46, 140, 40),
+      n("read", "seen = readLine(&err)\nerr = average weight of black sensors", "process", 380, 124, 250, 52),
+      n("seen0", "seen == 0?", "decision", 380, 222, 150, 74),
+      n("last_err", "lastError < 0?", "decision", 150, 350, 164, 74),
+      n("seen4", "seen == 4?", "decision", 590, 350, 150, 74),
+      n("search_l", "spin left\nsearch for line", "process", 70, 490, 140, 50),
+      n("search_r", "spin right\nsearch for line", "process", 230, 490, 146, 50),
+      n("pd", "correction = KP×err\n+ KD×(err − lastErr)", "process", 430, 490, 190, 52),
+      n("cross", "drive straight\ncross or finish", "process", 640, 490, 150, 50),
+      n("motor", "left = BASE + corr\nright = BASE − corr", "process", 430, 590, 180, 50),
+      n("back", "delay(5) → loop", "process", 380, 660, 160, 40),
+    ],
+    edges: [
+      { from: "loop", to: "read" },
+      { from: "read", to: "seen0" },
+      { from: "seen0", to: "last_err", label: "Yes", side: "left" },
+      { from: "seen0", to: "seen4", label: "No", side: "right" },
+      { from: "last_err", to: "search_l", label: "Yes", side: "left" },
+      { from: "last_err", to: "search_r", label: "No", side: "right" },
+      { from: "seen4", to: "cross", label: "Yes" },
+      { from: "seen4", to: "pd", label: "No", side: "left" },
+      { from: "pd", to: "motor" },
+      { from: "motor", to: "back" },
+      { from: "search_l", to: "back" },
+      { from: "search_r", to: "back" },
+      { from: "cross", to: "back" },
+    ],
+    evaluate(i) {
+      const seen = [i.s1, i.s2, i.s3, i.s4].filter(Boolean).length;
+      const p = ["loop", "read", "seen0"];
+      if (seen === 0) p.push("last_err", i.lastError < 0 ? "search_l" : "search_r", "back");
+      else if (seen === 4) p.push("seen4", "cross", "back");
+      else p.push("seen4", "pd", "motor", "back");
+      return p;
+    },
+    explain: {
+      loop: "Start of the fast line-follow loop.",
+      read: "Count how many eyes see black. Left eyes pull the error negative.",
+      seen0: "No eye sees the tape. The line is lost.",
+      last_err: "Search back toward the side where the tape was last seen.",
+      search_l: "The tape was to the left. Spin left.",
+      search_r: "The tape was to the right, or straight ahead. Spin right.",
+      seen4: "At least one eye sees the tape. Are all four black?",
+      cross: "All four black usually means a cross or the finish bar. Drive straight over it.",
+      pd: "Steer back to the tape. P fixes the miss. D stops a wild swing.",
+      motor: "Speed up the wheel on the far side so the car turns toward the tape.",
+      back: "Wait a tiny moment, then look again.",
+    },
+  },
+  C1: {
+    name: "Line Maze Solver (C1)",
+    w: 820,
+    h: 1020,
+    defaults: { replay: false, allBlack: false },
+    nodes: [
+      n("setup", "setup()", "start", 400, 46, 140, 40),
+      n("mode", "D12 == LOW?", "decision", 400, 136, 164, 76),
+      n("replay", "loadPath()\nfrom EEPROM", "process", 160, 262, 160, 52),
+      n("explore", "EXPLORE mode", "process", 640, 262, 156, 44),
+      n("follow", "followSegment()\nfollow the line until a\nbranch or a dead end", "process", 400, 390, 230, 64),
+      n("junction", "handleJunction()\ninch forward, then\ncheck left / straight / right", "process", 400, 500, 240, 64),
+      n("all_black", "all 4 black?", "decision", 400, 612, 168, 78),
+      n("finish", "FINISH\nsave path, blink LED", "end", 400, 748, 184, 52),
+      n("is_replay", "replay?", "decision", 660, 748, 146, 74),
+      n("choose", "chooseLeftHand\nL, then S, then R, then B\nrecord the decision", "process", 175, 900, 210, 64),
+      n("use_stored", "use path[i++]", "process", 660, 900, 150, 44),
+      n("simplify", "simplifyPath()\ncollapse xBx dead ends", "process", 175, 980, 196, 52),
+      n("turn", "turn(d)\nL / R / B / S", "process", 430, 980, 140, 50),
+    ],
+    edges: [
+      { from: "setup", to: "mode" },
+      { from: "mode", to: "replay", label: "Yes", side: "left" },
+      { from: "mode", to: "explore", label: "No", side: "right" },
+      { from: "replay", to: "follow" },
+      { from: "explore", to: "follow" },
+      { from: "follow", to: "junction" },
+      { from: "junction", to: "all_black" },
+      { from: "all_black", to: "finish", label: "Yes" },
+      { from: "all_black", to: "is_replay", label: "No", side: "right" },
+      { from: "is_replay", to: "choose", label: "No", side: "left" },
+      { from: "is_replay", to: "use_stored", label: "Yes" },
+      { from: "choose", to: "simplify" },
+      { from: "simplify", to: "turn" },
+      { from: "use_stored", to: "turn" },
+      { from: "turn", to: "follow", back: true },
+    ],
+    evaluate(i) {
+      const p = ["setup", "mode", i.replay ? "replay" : "explore", "follow", "junction", "all_black"];
+      if (i.allBlack) p.push("finish");
+      else p.push("is_replay", ...(i.replay ? ["use_stored"] : ["choose", "simplify"]), "turn");
+      return p;
+    },
+    explain: {
+      setup: "The car wakes up and checks the mode pin.",
+      mode: "A wire from D12 to GND means replay. No wire means explore.",
+      replay: "Read the short path saved last time.",
+      explore: "No saved path. Prefer left, and write every turn down.",
+      follow: "Stay on the tape until a branch or the tape disappears.",
+      junction: "Creep forward so the eyes sit on the crossing, then test left, straight, and right.",
+      all_black: "All four eyes black is the finish square, not a normal turn.",
+      finish: "Save the short path, blink the light, and stop.",
+      is_replay: "Not the finish. Replay reads the next saved letter. Explore must choose.",
+      choose: "Left if you can, else straight, else right, else turn around. Write that letter.",
+      simplify: "If the last three letters are xBx, replace them with one turn. LBL becomes S. That cuts the dead end.",
+      use_stored: "Take the next saved letter.",
+      turn: "Do L, R, B, or S, then follow the next piece of tape. The loop goes back to followSegment.",
+    },
+  },
+  C2: {
+    name: "Wall Maze Solver (C2)",
+    w: 780,
+    h: 860,
+    defaults: { left: 50, front: 50, right: 50 },
+    nodes: [
+      n("loop", "loop()", "start", 360, 46, 140, 40),
+      n("scan", "left = lookAt(175°)\nfront = lookAt(90°)\nright = lookAt(5°)", "process", 360, 124, 210, 62),
+      n("exit_check", "all > 150?", "decision", 360, 224, 156, 74),
+      n("exit", "EXIT reached\nstop forever", "end", 140, 350, 164, 50),
+      n("left_check", "left > 30?", "decision", 520, 350, 150, 74),
+      n("go_left", "spinLeft90()", "process", 300, 478, 140, 42),
+      n("front_check", "front > 30?", "decision", 580, 478, 154, 74),
+      n("go_straight", "go straight", "process", 400, 600, 130, 42),
+      n("right_check", "right > 30?", "decision", 620, 600, 154, 74),
+      n("go_right", "spinRight90()", "process", 500, 724, 140, 42),
+      n("uturn", "U-turn\nR90° × 2", "process", 680, 724, 120, 50),
+      n("forward", "forwardOneCell() → loop", "process", 430, 812, 210, 42),
+    ],
+    edges: [
+      { from: "loop", to: "scan" },
+      { from: "scan", to: "exit_check" },
+      { from: "exit_check", to: "exit", label: "Yes", side: "left" },
+      { from: "exit_check", to: "left_check", label: "No", side: "right" },
+      { from: "left_check", to: "go_left", label: "Yes", side: "left" },
+      { from: "left_check", to: "front_check", label: "No" },
+      { from: "front_check", to: "go_straight", label: "Yes", side: "left" },
+      { from: "front_check", to: "right_check", label: "No", side: "right" },
+      { from: "right_check", to: "go_right", label: "Yes", side: "left" },
+      { from: "right_check", to: "uturn", label: "No", side: "right" },
+      { from: "go_left", to: "forward" },
+      { from: "go_straight", to: "forward" },
+      { from: "go_right", to: "forward" },
+      { from: "uturn", to: "forward" },
+    ],
+    evaluate(i) {
+      const p = ["loop", "scan", "exit_check"];
+      if (i.left > 150 && i.front > 150 && i.right > 150) p.push("exit");
+      else {
+        p.push("left_check");
+        if (i.left > 30) p.push("go_left");
+        else {
+          p.push("front_check");
+          if (i.front > 30) p.push("go_straight");
+          else p.push("right_check", i.right > 30 ? "go_right" : "uturn");
+        }
+        p.push("forward");
+      }
+      return p;
+    },
+    explain: {
+      loop: "Start of a square. Look before you move.",
+      scan: "Point the eye left, forward, and right.",
+      exit_check: "If every way is wide open, this is the way out.",
+      exit: "Stop and stay stopped.",
+      left_check: "Left-hand rule: take an open left first.",
+      go_left: "Left is open. Turn left, then drive one square.",
+      front_check: "Left is a wall. Is straight open?",
+      go_straight: "Front is open. Keep going.",
+      right_check: "Left and front are walls. Check the right.",
+      go_right: "Only the right is open. Turn right.",
+      uturn: "Three walls. Turn around.",
+      forward: "Drive one square, then look again.",
+    },
+  },
+};
 
-// Label ("pill") position for a decision-branch edge.
-//  - Yes: on the vertical line just below the diamond's bottom point.
-//  - No:  on the horizontal segment just outside the diamond's side point.
-function pillPos(edge, flow) {
-  const a = nodeById(flow, edge.from);
-  const b = nodeById(flow, edge.to);
-  if (a.type !== "decision" || !edge.label) return null;
-  const aBottom = a.y + a.h / 2;
-  if (edge.label === "Yes") {
-    return { x: a.x, y: aBottom + 18 };
-  }
-  const side = noSide(edge, a, b);
-  const sx = side === "left" ? a.x - a.w / 2 : a.x + a.w / 2;
-  return { x: side === "left" ? sx - 44 : sx + 44, y: a.y };
+const FLOW_ORDER = ["A", "B", "C1", "C2"];
+
+function byId(flow, id) {
+  return flow.nodes.find((node) => node.id === id);
 }
 
 function route(edge, flow) {
-  const a = nodeById(flow, edge.from);
-  const b = nodeById(flow, edge.to);
-  const isDecision = a.type === "decision";
-  const isYes = edge.label === "Yes";
-  const isNo = edge.label === "No";
-
-  // Maze loop-return: run around the outside-left gutter, clear of every node.
-  if (edge.back) {
-    const x = 48;
-    return `M ${a.x - a.w / 2} ${a.y} H ${x} V ${b.y} H ${b.x - b.w / 2}`;
-  }
-
+  const a = byId(flow, edge.from);
+  const b = byId(flow, edge.to);
+  if (edge.back) return `M ${a.x - a.w / 2} ${a.y} H 36 V ${b.y} H ${b.x - b.w / 2}`;
   const aBottom = a.y + a.h / 2;
   const bTop = b.y - b.h / 2;
-
-  // Yes branch: leave the bottom point straight down, then bend if needed.
-  if (isDecision && isYes) {
-    if (Math.abs(a.x - b.x) < 8) return `M ${a.x} ${aBottom} V ${bTop}`;
-    const bend = Math.min(aBottom + 44, bTop - 6);
-    return `M ${a.x} ${aBottom} V ${bend} H ${b.x} V ${bTop}`;
-  }
-
-  // No branch: leave the side point sideways, then turn down into the target.
-  if (isDecision && isNo) {
-    const side = noSide(edge, a, b);
-    const sx = side === "left" ? a.x - a.w / 2 : a.x + a.w / 2;
-    const sy = a.y;
-    if (Math.abs(b.y - a.y) < 12) {
-      // Sibling decision at the same height: straight across into its side point.
-      const tx = side === "left" ? b.x + b.w / 2 : b.x - b.w / 2;
-      return `M ${sx} ${sy} H ${tx}`;
-    }
-    return `M ${sx} ${sy} H ${b.x} V ${bTop}`;
-  }
-
-  // Plain connector: bottom-center to top-center via a mid elbow
-  // (an optional `bend` overrides the elbow y to dodge an intermediate node).
-  if (Math.abs(a.x - b.x) < 8) return `M ${a.x} ${aBottom} V ${bTop}`;
-  const mid = edge.bend != null ? edge.bend : (aBottom + bTop) / 2;
+  if (!edge.side && Math.abs(a.x - b.x) < 8) return `M ${a.x} ${aBottom} V ${bTop}`;
+  const mid = aBottom + Math.max(28, (bTop - aBottom) * 0.42);
   return `M ${a.x} ${aBottom} V ${mid} H ${b.x} V ${bTop}`;
 }
 
-// Compute a viewBox that contains every node, edge label, and the maze
-// back-edge gutter, with 24px padding. Recalculated per flow on tab switch.
-function computeViewBox(flow) {
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  const pt = (x, y) => { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); };
-  const box = (x, y, w, h) => { pt(x, y); pt(x + w, y + h); };
-  flow.nodes.forEach((n) => { if (!n.hidden) box(n.x - n.w / 2, n.y - n.h / 2, n.w, n.h); });
-  flow.edges.forEach((e) => {
-    if (e.label && !e.back) {
-      const p = pillPos(e, flow);
-      if (p) box(p.x - 16, p.y - 9, 32, 16);
-    }
-    if (e.back) {
-      const a = nodeById(flow, e.from);
-      const b = nodeById(flow, e.to);
-      pt(48, a.y); pt(48, b.y);
-    }
-  });
-  const pad = 24;
-  return { x: minX - pad, y: minY - pad, w: (maxX - minX) + pad * 2, h: (maxY - minY) + pad * 2 };
+function labelPos(edge, flow) {
+  const a = byId(flow, edge.from);
+  if (edge.side === "left") return { x: a.x - a.w / 2 - 8, y: a.y - 8 };
+  if (edge.side === "right") return { x: a.x + a.w / 2 + 8, y: a.y - 8 };
+  return { x: a.x + 22, y: a.y + a.h / 2 + 16 };
 }
 
-function FlowNode({ node, active, dimmed }) {
-  const s = STYLES[node.type] || STYLES.process;
-  const on = active;
-  const dim = dimmed ? 0.35 : 1;
-  const sw = on ? 3.5 : 2;
-  const lines = String(node.label).split("\n");
-  const isDecision = node.type === "decision";
-  const rx = node.type === "process" ? 14 : 22;
-
+function Flowchart({ flow, active }) {
   return (
-    <g style={{ opacity: dim, transition: "opacity 0.2s" }}>
-      {isDecision ? (
-        <polygon
-          points={`${node.x},${node.y - node.h / 2} ${node.x + node.w / 2},${node.y} ${node.x},${node.y + node.h / 2} ${node.x - node.w / 2},${node.y}`}
-          fill={on ? s.active : s.fill}
-          stroke={s.stroke}
-          strokeWidth={sw}
-          strokeLinejoin="round"
-        />
-      ) : (
-        <rect
-          x={node.x - node.w / 2}
-          y={node.y - node.h / 2}
-          width={node.w}
-          height={node.h}
-          rx={rx}
-          fill={on ? s.active : s.fill}
-          stroke={s.stroke}
-          strokeWidth={sw}
-        />
-      )}
-      {lines.map((ln, i) => (
-        <text
-          key={i}
-          x={node.x}
-          y={node.y + (i - (lines.length - 1) / 2) * 13}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill={s.text}
-          style={{ fontSize: 11, fontWeight: on ? 800 : 650, fontFamily: "Poppins, sans-serif" }}
-        >
-          {ln}
-        </text>
-      ))}
-    </g>
-  );
-}
-
-function FlowEdge({ edge, flow, activePath }) {
-  const a = nodeById(flow, edge.from);
-  if (!a) return null;
-  const on = activePath?.has(edge.from) && activePath?.has(edge.to);
-  const color =
-    edge.label === "Yes" ? (on ? "#16a34a" : "#86efac") :
-    edge.label === "No" ? (on ? "#dc2626" : "#fca5a5") :
-    (on ? "#2563eb" : "#cbd5e1");
-  const marker =
-    edge.label === "Yes" ? "pfs-arrY" :
-    edge.label === "No" ? "pfs-arrN" :
-    (on ? "pfs-arrA" : "pfs-arr");
-  const sw = on ? 3.5 : 2;
-
-  const p = pillPos(edge, flow);
-  const lx = p ? p.x : a.x + 22;
-  const ly = p ? p.y : a.y + a.h / 2 + 14;
-
-  return (
-    <g>
-      <path
-        d={route(edge, flow)}
-        fill="none"
-        stroke={color}
-        strokeWidth={sw}
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        markerEnd={`url(#${marker})`}
-      />
-      {edge.label && !edge.back && (
-        <g>
-          <rect x={lx - 16} y={ly - 9} width="32" height="16" rx="8" fill={edge.label === "Yes" ? "#16a34a" : "#dc2626"} />
-          <text
-            x={lx}
-            y={ly}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="#fff"
-            style={{ fontSize: 10, fontWeight: 800, fontFamily: "Poppins, sans-serif" }}
-          >
-            {edge.label}
-          </text>
-        </g>
-      )}
-    </g>
-  );
-}
-
-function FlowchartSVG({ flow, activePath, stepMode }) {
-  const vb = useMemo(() => computeViewBox(flow), [flow]);
-  return (
-    <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-sky-50/70 to-white p-3 overflow-auto shadow-sm max-h-[600px]">
-      <svg
-        className="flow-chart-svg"
-        viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label="Program flowchart"
-      >
-        <defs>
-          <marker id="pfs-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <polygon points="0 0, 7 3, 0 6" fill="#94a3b8" />
+    <svg className="block h-auto w-full min-w-[640px]" viewBox={`0 0 ${flow.w} ${flow.h}`} role="img" aria-label={flow.name}>
+      <defs>
+        {[["arr", "#94a3b8"], ["arrA", "#2563eb"], ["arrY", "#16a34a"], ["arrN", "#dc2626"]].map(([id, fill]) => (
+          <marker key={id} id={id} markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <polygon points="0 0, 7 3, 0 6" fill={fill} />
           </marker>
-          <marker id="pfs-arrA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <polygon points="0 0, 7 3, 0 6" fill="#2563eb" />
-          </marker>
-          <marker id="pfs-arrY" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <polygon points="0 0, 7 3, 0 6" fill="#16a34a" />
-          </marker>
-          <marker id="pfs-arrN" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <polygon points="0 0, 7 3, 0 6" fill="#dc2626" />
-          </marker>
-        </defs>
-        {flow.edges.map((e, i) => (
-          <FlowEdge key={i} edge={e} flow={flow} activePath={activePath} />
         ))}
-        {flow.nodes.filter((n) => !n.hidden).map((n) => (
-          <FlowNode
-            key={n.id}
-            node={n}
-            active={activePath?.has(n.id)}
-            dimmed={stepMode && !activePath?.has(n.id)}
-          />
-        ))}
-      </svg>
-    </div>
-  );
-}
-
-// ── Flow 1: Obstacle Avoidance ─────────────────────────────
-const OBSTACLE_FLOW = {
-  name: "Obstacle Avoidance",
-  w: 760, h: 760,
-  nodes: [
-    { id: "loop", label: "loop()", type: "start", x: 380, y: 42, w: 140, h: 40 },
-    { id: "read", label: "d = distanceFiltered()\nmedian of 3 readings", type: "process", x: 380, y: 118, w: 210, h: 52 },
-    { id: "stop_check", label: "d ≤ 25?", type: "decision", x: 380, y: 210, w: 150, h: 72 },
-    { id: "avoid", label: "avoid()", type: "process", x: 150, y: 320, w: 130, h: 42 },
-    { id: "slow_check", label: "d < 45?", type: "decision", x: 560, y: 320, w: 140, h: 72 },
-    { id: "backup", label: "stop + backup\n300 ms", type: "process", x: 150, y: 400, w: 150, h: 50 },
-    { id: "cruise", label: "forward\nCRUISE_SPEED", type: "process", x: 700, y: 430, w: 140, h: 50 },
-    { id: "slow", label: "forward\n3/4 speed", type: "process", x: 470, y: 430, w: 130, h: 50 },
-    { id: "look", label: "right = lookAt(20°)\nleft = lookAt(160°)", type: "process", x: 150, y: 490, w: 180, h: 50 },
-    { id: "both_check", label: "both < 25?", type: "decision", x: 150, y: 585, w: 150, h: 72 },
-    { id: "turn_around", label: "turn 180°\nTURN_MS × 3", type: "process", x: 150, y: 710, w: 140, h: 50 },
-    { id: "lr_check", label: "left > right?", type: "decision", x: 380, y: 585, w: 150, h: 72 },
-    { id: "spin_left", label: "spin left\nTURN_MS", type: "process", x: 300, y: 690, w: 120, h: 48 },
-    { id: "spin_right", label: "spin right\nTURN_MS", type: "process", x: 520, y: 690, w: 120, h: 48 },
-  ],
-  edges: [
-    { from: "loop", to: "read" },
-    { from: "read", to: "stop_check" },
-    { from: "stop_check", to: "avoid", label: "Yes", side: "left" },
-    { from: "stop_check", to: "slow_check", label: "No", side: "right" },
-    { from: "avoid", to: "backup" },
-    { from: "backup", to: "look" },
-    { from: "look", to: "both_check" },
-    { from: "both_check", to: "turn_around", label: "Yes" },
-    { from: "both_check", to: "lr_check", label: "No", side: "right" },
-    { from: "lr_check", to: "spin_left", label: "Yes", side: "left" },
-    { from: "lr_check", to: "spin_right", label: "No", side: "right" },
-    { from: "slow_check", to: "slow", label: "Yes", side: "left" },
-    { from: "slow_check", to: "cruise", label: "No", side: "right" },
-  ],
-  evaluate: (i) => {
-    const p = ["loop", "read", "stop_check"];
-    if (i.distance <= 25) {
-      p.push("avoid", "backup", "look", "both_check");
-      if (i.left < 25 && i.right < 25) p.push("turn_around");
-      else p.push("lr_check", i.left > i.right ? "spin_left" : "spin_right");
-    } else {
-      p.push("slow_check", i.distance < 45 ? "slow" : "cruise");
-    }
-    return new Set(p);
-  },
-};
-
-// ── Flow 2: Line Follower (PD) ─────────────────────────────
-const LINE_FLOW = {
-  name: "Line Follower (PD)",
-  w: 720, h: 700,
-  nodes: [
-    { id: "loop", label: "loop()", type: "start", x: 360, y: 42, w: 140, h: 40 },
-    { id: "read", label: "seen = readLine(&err)\nerr = average weight of black sensors", type: "process", x: 360, y: 122, w: 250, h: 52 },
-    { id: "seen0", label: "seen == 0?", type: "decision", x: 360, y: 220, w: 150, h: 72 },
-    { id: "last_err", label: "lastError < 0?", type: "decision", x: 150, y: 340, w: 160, h: 72 },
-    { id: "seen4", label: "seen == 4?", type: "decision", x: 640, y: 340, w: 150, h: 72 },
-    { id: "search_l", label: "spin left\nsearch for line", type: "process", x: 80, y: 470, w: 140, h: 50 },
-    { id: "search_r", label: "spin right\nsearch for line", type: "process", x: 300, y: 470, w: 120, h: 50 },
-    { id: "cross", label: "drive straight\ncross or finish", type: "process", x: 640, y: 470, w: 150, h: 50 },
-    { id: "pd", label: "correction = KP×err\n+ KD×(err − lastErr)", type: "process", x: 460, y: 470, w: 150, h: 52 },
-    { id: "motor", label: "left = BASE + corr\nright = BASE − corr", type: "process", x: 820, y: 570, w: 180, h: 50 },
-    { id: "back", label: "delay(5) → loop", type: "process", x: 360, y: 660, w: 160, h: 40 },
-  ],
-  edges: [
-    { from: "loop", to: "read" },
-    { from: "read", to: "seen0" },
-    { from: "seen0", to: "last_err", label: "Yes", side: "left" },
-    { from: "seen0", to: "seen4", label: "No", side: "right" },
-    { from: "last_err", to: "search_l", label: "Yes", side: "left" },
-    { from: "last_err", to: "search_r", label: "No", side: "right" },
-    { from: "seen4", to: "cross", label: "Yes" },
-    { from: "seen4", to: "pd", label: "No", side: "left" },
-    { from: "pd", to: "motor" },
-    { from: "motor", to: "back" },
-    { from: "search_l", to: "back" },
-    { from: "search_r", to: "back" },
-    { from: "cross", to: "back" },
-  ],
-  evaluate: (i) => {
-    const seen = [i.s1, i.s2, i.s3, i.s4].filter(Boolean).length;
-    const p = ["loop", "read", "seen0"];
-    if (seen === 0) p.push("last_err", i.lastError < 0 ? "search_l" : "search_r", "back");
-    else if (seen === 4) p.push("seen4", "cross", "back");
-    else p.push("seen4", "pd", "motor", "back");
-    return new Set(p);
-  },
-};
-
-// ── Flow 3: Line Maze Solver (C1) ──────────────────────────
-const MAZE_LINE_FLOW = {
-  name: "Line Maze Solver (C1)",
-  w: 780, h: 980,
-  nodes: [
-    { id: "setup", label: "setup()", type: "start", x: 380, y: 40, w: 140, h: 40 },
-    { id: "mode", label: "D12 == LOW?", type: "decision", x: 380, y: 130, w: 160, h: 76 },
-    { id: "replay", label: "loadPath()\nfrom EEPROM", type: "process", x: 380, y: 250, w: 160, h: 52 },
-    { id: "explore", label: "EXPLORE mode", type: "process", x: 680, y: 130, w: 150, h: 44 },
-    { id: "follow", label: "followSegment()\nfollow the line until a\nbranch or a dead end", type: "process", x: 380, y: 360, w: 220, h: 62 },
-    { id: "junction", label: "handleJunction()\ninch forward, then\ncheck left / straight / right", type: "process", x: 380, y: 470, w: 230, h: 62 },
-    { id: "all_black", label: "all 4 black?", type: "decision", x: 380, y: 580, w: 160, h: 76 },
-    { id: "finish", label: "FINISH\nsave path, blink LED", type: "end", x: 380, y: 700, w: 180, h: 52 },
-    { id: "is_replay", label: "replay?", type: "decision", x: 680, y: 700, w: 140, h: 72 },
-    { id: "use_stored", label: "use path[i++]", type: "process", x: 680, y: 820, w: 150, h: 44 },
-    { id: "choose", label: "chooseLeftHand\nL, then S, then R, then B\nrecord the decision", type: "process", x: 900, y: 700, w: 170, h: 62 },
-    { id: "simplify", label: "simplifyPath()\ncollapse xBx dead ends", type: "process", x: 900, y: 820, w: 180, h: 52 },
-    { id: "turn", label: "turn(d)\nL / R / B / S", type: "process", x: 760, y: 920, w: 140, h: 50 },
-  ],
-  edges: [
-    { from: "setup", to: "mode" },
-    { from: "mode", to: "replay", label: "Yes", side: "left" },
-    { from: "mode", to: "explore", label: "No", side: "right" },
-    { from: "replay", to: "follow" },
-    { from: "explore", to: "follow", bend: 325 },
-    { from: "follow", to: "junction" },
-    { from: "junction", to: "all_black" },
-    { from: "all_black", to: "finish", label: "Yes" },
-    { from: "all_black", to: "is_replay", label: "No", side: "right" },
-    { from: "is_replay", to: "use_stored", label: "Yes" },
-    { from: "is_replay", to: "choose", label: "No", side: "right" },
-    { from: "choose", to: "simplify" },
-    { from: "simplify", to: "turn", side: "right" },
-    { from: "use_stored", to: "turn", side: "left" },
-    { from: "turn", to: "follow", back: true },
-  ],
-  evaluate: (i) => {
-    const p = ["setup", "mode", i.replay ? "replay" : "explore", "follow", "junction", "all_black"];
-    if (i.allBlack) p.push("finish");
-    else p.push("is_replay", i.replay ? "use_stored" : "choose", ...(i.replay ? [] : ["simplify"]), "turn");
-    return new Set(p);
-  },
-};
-
-// ── Flow 4: Wall Maze Solver (C2) ──────────────────────────
-const WALL_MAZE_FLOW = {
-  name: "Wall Maze Solver (C2)",
-  w: 760, h: 860,
-  nodes: [
-    { id: "loop", label: "loop()", type: "start", x: 300, y: 60, w: 140, h: 40 },
-    { id: "scan", label: "left = lookAt(175°)\nfront = lookAt(90°)\nright = lookAt(5°)", type: "process", x: 300, y: 110, w: 200, h: 62 },
-    { id: "exit_check", label: "all > 150?", type: "decision", x: 300, y: 180, w: 150, h: 72 },
-    { id: "exit", label: "EXIT reached\nstop forever", type: "end", x: 300, y: 300, w: 160, h: 50 },
-    { id: "left_check", label: "left > 30?", type: "decision", x: 520, y: 180, w: 150, h: 72 },
-    { id: "go_left", label: "spinLeft90()", type: "process", x: 520, y: 300, w: 140, h: 42 },
-    { id: "front_check", label: "front > 30?", type: "decision", x: 740, y: 180, w: 150, h: 72 },
-    { id: "go_straight", label: "go straight", type: "process", x: 740, y: 300, w: 130, h: 42 },
-    { id: "right_check", label: "right > 30?", type: "decision", x: 960, y: 180, w: 150, h: 72 },
-    { id: "go_right", label: "spinRight90()", type: "process", x: 960, y: 300, w: 140, h: 42 },
-    { id: "uturn", label: "U-turn\nR90° × 2", type: "process", x: 1180, y: 180, w: 120, h: 50 },
-    { id: "forward", label: "forwardOneCell() → loop", type: "process", x: 740, y: 460, w: 220, h: 42 },
-  ],
-  edges: [
-    { from: "loop", to: "scan" },
-    { from: "scan", to: "exit_check" },
-    { from: "exit_check", to: "exit", label: "Yes", side: "left" },
-    { from: "exit_check", to: "left_check", label: "No", side: "right" },
-    { from: "left_check", to: "go_left", label: "Yes", side: "left" },
-    { from: "left_check", to: "front_check", label: "No" },
-    { from: "front_check", to: "go_straight", label: "Yes", side: "left" },
-    { from: "front_check", to: "right_check", label: "No", side: "right" },
-    { from: "right_check", to: "go_right", label: "Yes", side: "left" },
-    { from: "right_check", to: "uturn", label: "No", side: "right" },
-    { from: "go_left", to: "forward" },
-    { from: "go_straight", to: "forward" },
-    { from: "go_right", to: "forward" },
-    { from: "uturn", to: "forward" },
-  ],
-  evaluate: (i) => {
-    const p = ["loop", "scan", "exit_check"];
-    if (i.left > 150 && i.front > 150 && i.right > 150) {
-      p.push("exit");
-    } else {
-      p.push("left_check");
-      if (i.left > 30) {
-        p.push("go_left");
-      } else {
-        p.push("front_check");
-        if (i.front > 30) {
-          p.push("go_straight");
-        } else {
-          p.push("right_check");
-          p.push(i.right > 30 ? "go_right" : "uturn");
-        }
-      }
-      p.push("forward");
-    }
-    return new Set(p);
-  },
-};
-
-const FLOWS = [
-  { id: "A", flow: OBSTACLE_FLOW },
-  { id: "B", flow: LINE_FLOW },
-  { id: "C1", flow: MAZE_LINE_FLOW },
-  { id: "C2", flow: WALL_MAZE_FLOW },
-];
-
-// ── Interactive input controls per flow ─────────────────────
-function ObstacleInputs({ inputs, setInputs }) {
-  return (
-    <div className="space-y-4">
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-sm font-bold text-slate-700">Distance ahead</span>
-          <span className="font-poppins font-extrabold text-blue-600 text-base">{inputs.distance} cm</span>
-        </div>
-        <input type="range" min="2" max="100" value={inputs.distance} onChange={(e) => setInputs({ ...inputs, distance: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#2563eb" }} />
-      </div>
-      {inputs.distance <= 25 ? (
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <div className="flex items-center justify-between mb-1.5"><span className="text-xs font-bold text-slate-700">Left scan</span><span className="font-poppins font-extrabold text-green-600">{inputs.left} cm</span></div>
-            <input type="range" min="2" max="100" value={inputs.left} onChange={(e) => setInputs({ ...inputs, left: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#16a34a" }} />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-1.5"><span className="text-xs font-bold text-slate-700">Right scan</span><span className="font-poppins font-extrabold text-orange-600">{inputs.right} cm</span></div>
-            <input type="range" min="2" max="100" value={inputs.right} onChange={(e) => setInputs({ ...inputs, right: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#ea580c" }} />
-          </div>
-        </div>
-      ) : (
-        <p className="text-xs text-slate-500 italic leading-relaxed">Bring distance to 25 cm or less to open the left and right scans.</p>
-      )}
-      <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 text-xs font-bold text-slate-700">
-        {inputs.distance <= 25
-          ? (inputs.left < 25 && inputs.right < 25 ? "Both sides blocked: turn around." : inputs.left > inputs.right ? "Left is more open: spin left." : "Right is clearer: spin right.")
-          : inputs.distance < 45 ? "Close, but safe: slow down." : "Clear ahead: cruise."}
-      </div>
-    </div>
-  );
-}
-
-function LineInputs({ inputs, setInputs }) {
-  const toggle = (key) => setInputs({ ...inputs, [key]: !inputs[key] });
-  const sensors = [
-    { key: "s1", label: "S1  w = −3", color: "#ef4444" },
-    { key: "s2", label: "S2  w = −1", color: "#f97316" },
-    { key: "s3", label: "S3  w = +1", color: "#16a34a" },
-    { key: "s4", label: "S4  w = +3", color: "#2563eb" },
-  ];
-  const seen = [inputs.s1, inputs.s2, inputs.s3, inputs.s4].filter(Boolean).length;
-  const weights = [-3, -1, 1, 3];
-  const sum = sensors.reduce((acc, s, i) => acc + (inputs[s.key] ? weights[i] : 0), 0);
-  const error = seen > 0 ? (sum / seen).toFixed(1) : "—";
-  return (
-    <div className="space-y-4">
-      <p className="text-xs font-bold text-slate-600" style={{ fontStyle: "normal" }}>Tap the sensors that see black.</p>
-      <div className="grid grid-cols-2 gap-2.5">
-        {sensors.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => toggle(s.key)}
-            className="kid-pill px-2 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors"
-            style={inputs[s.key] ? { background: s.color, borderColor: s.color, color: "#fff" } : { background: "#fff", borderColor: "#e2e8f0", color: "#475569" }}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
-      <div>
-        <div className="flex items-center justify-between mb-1.5"><span className="text-xs font-bold text-slate-700">Last error</span><span className="font-poppins font-extrabold text-slate-700">{inputs.lastError}</span></div>
-        <input type="range" min="-3" max="3" step="0.5" value={inputs.lastError} onChange={(e) => setInputs({ ...inputs, lastError: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#2563eb" }} />
-      </div>
-      <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 text-xs font-bold text-slate-700 leading-relaxed">
-        seen = {seen} · error = {error}<br />
-        {seen === 0 ? "Line lost: search using last error." : seen === 4 ? "All black: cross or finish." : "Partial line: PD follow."}
-      </div>
-    </div>
-  );
-}
-
-function MazeLineInputs({ inputs, setInputs }) {
-  return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        <button onClick={() => setInputs({ ...inputs, replay: false })} className={`kid-pill flex-1 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${!inputs.replay ? "bg-blue-500 text-white border-blue-600" : "bg-white text-slate-500 border-slate-200"}`}>EXPLORE</button>
-        <button onClick={() => setInputs({ ...inputs, replay: true })} className={`kid-pill flex-1 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${inputs.replay ? "bg-orange-500 text-white border-orange-600" : "bg-white text-slate-500 border-slate-200"}`}>REPLAY</button>
-      </div>
-      <button onClick={() => setInputs({ ...inputs, allBlack: !inputs.allBlack })} className={`kid-pill w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${inputs.allBlack ? "bg-blue-500 text-white border-blue-600" : "bg-white text-slate-500 border-slate-200"}`}>
-        <span className={`w-4 h-4 rounded-md border-2 ${inputs.allBlack ? "bg-white border-white" : "border-slate-300"}`} /> All 4 sensors black (FINISH)
-      </button>
-      <p className="text-xs text-slate-500 italic leading-relaxed">
-        {inputs.replay
-          ? "Replay follows the saved shortest path from memory."
-          : "Explore prefers left, records each turn, then removes dead ends with the xBx rule."}
-      </p>
-    </div>
-  );
-}
-
-function WallMazeInputs({ inputs, setInputs }) {
-  const dirs = [
-    { key: "left", label: "Left", color: "#16a34a", text: "text-green-600" },
-    { key: "front", label: "Front", color: "#2563eb", text: "text-blue-600" },
-    { key: "right", label: "Right", color: "#ea580c", text: "text-orange-600" },
-  ];
-  const msg = inputs.left > 150 && inputs.front > 150 && inputs.right > 150 ? "All open: EXIT reached."
-    : inputs.left > 30 ? "Left open: turn left."
-    : inputs.front > 30 ? "Front open: go straight."
-    : inputs.right > 30 ? "Right open: turn right."
-    : "Blocked on three sides: U-turn.";
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-4">
-        {dirs.map((s) => (
-          <div key={s.key}>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className={`text-sm font-bold ${s.text}`}>{s.label}</span>
-              <span className="font-poppins font-extrabold text-slate-700">{inputs[s.key]} cm</span>
-            </div>
-            <input type="range" min="5" max="200" value={inputs[s.key]} onChange={(e) => setInputs({ ...inputs, [s.key]: +e.target.value })} className="kid-slider w-full" style={{ "--knob": s.color }} />
-          </div>
-        ))}
-      </div>
-      <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 text-xs font-bold text-slate-700">{msg}</div>
-    </div>
-  );
-}
-
-const INPUT_CONFIGS = {
-  A: { defaults: { distance: 50, left: 40, right: 40 }, Comp: ObstacleInputs },
-  B: { defaults: { s1: false, s2: true, s3: true, s4: false, lastError: 0 }, Comp: LineInputs },
-  C1: { defaults: { replay: false, allBlack: false }, Comp: MazeLineInputs },
-  C2: { defaults: { left: 50, front: 50, right: 50 }, Comp: WallMazeInputs },
-};
-
-// Scoped CSS: slider + pill styling, and the flowchart SVG sizing (scoped to .flow-chart-svg only).
-const KID_CSS = `
-.kid-slider{-webkit-appearance:none;appearance:none;height:16px;border-radius:999px;background:#eef2f7;outline:none;border:2px solid #d8e1ec}
-.kid-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:999px;background:var(--knob,#2563eb);border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);cursor:pointer;transition:transform .1s}
-.kid-slider::-webkit-slider-thumb:active{transform:scale(1.15)}
-.kid-slider::-moz-range-thumb{width:30px;height:30px;border-radius:999px;background:var(--knob,#2563eb);border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);cursor:pointer}
-.kid-pill{transition:transform .1s}
-.kid-pill:active{transform:scale(.95)}
-.flow-chart-svg{display:block;width:100%;height:auto}
-`;
-
-function RobotFace() {
-  return (
-    <svg width="54" height="54" viewBox="0 0 64 64" aria-hidden="true" className="flex-shrink-0">
-      <line x1="32" y1="3" x2="32" y2="13" stroke="#ea580c" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="32" cy="6" r="4" fill="#f59e0b" />
-      <rect x="9" y="14" width="46" height="34" rx="13" fill="#ea580c" />
-      <rect x="5" y="25" width="6" height="12" rx="3" fill="#ea580c" />
-      <rect x="53" y="25" width="6" height="12" rx="3" fill="#ea580c" />
-      <circle cx="24" cy="28" r="4.5" fill="#fff" />
-      <circle cx="40" cy="28" r="4.5" fill="#fff" />
-      <circle cx="25" cy="29" r="2.2" fill="#1e293b" />
-      <circle cx="41" cy="29" r="2.2" fill="#1e293b" />
-      <path d="M24 38 Q32 44 40 38" stroke="#fff" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      </defs>
+      {flow.edges.map((edge) => {
+        const on = active.has(edge.from) && active.has(edge.to);
+        const color = edge.label === "Yes" ? (on ? "#16a34a" : "#86efac") : edge.label === "No" ? (on ? "#dc2626" : "#fca5a5") : on ? "#2563eb" : "#cbd5e1";
+        const marker = edge.label === "Yes" ? "arrY" : edge.label === "No" ? "arrN" : on ? "arrA" : "arr";
+        const pill = edge.label ? labelPos(edge, flow) : null;
+        return (
+          <g key={`${edge.from}-${edge.to}`}>
+            <path d={route(edge, flow)} fill="none" stroke={color} strokeWidth={on ? 3.5 : 2} strokeLinejoin="round" strokeLinecap="round" markerEnd={`url(#${marker})`} />
+            {pill && (
+              <g>
+                <rect x={pill.x - 16} y={pill.y - 9} width="32" height="16" rx="8" fill={edge.label === "Yes" ? "#16a34a" : "#dc2626"} />
+                <text x={pill.x} y={pill.y} textAnchor="middle" dominantBaseline="middle" fill="#fff" fontSize="10" fontWeight="800" fontFamily="Poppins, sans-serif">{edge.label}</text>
+              </g>
+            )}
+          </g>
+        );
+      })}
+      {flow.nodes.map((node) => {
+        const on = active.has(node.id);
+        const style = STYLES[node.type];
+        const lines = node.label.split("\n");
+        return (
+          <g key={node.id} opacity={active.size && !on ? 0.38 : 1}>
+            {node.type === "decision" ? (
+              <polygon points={`${node.x},${node.y - node.h / 2} ${node.x + node.w / 2},${node.y} ${node.x},${node.y + node.h / 2} ${node.x - node.w / 2},${node.y}`} fill={on ? style.active : style.fill} stroke={style.stroke} strokeWidth={on ? 3.5 : 2} strokeLinejoin="round" />
+            ) : (
+              <rect x={node.x - node.w / 2} y={node.y - node.h / 2} width={node.w} height={node.h} rx={node.type === "process" ? 14 : 22} fill={on ? style.active : style.fill} stroke={style.stroke} strokeWidth={on ? 3.5 : 2} />
+            )}
+            {lines.map((line, i) => (
+              <text key={line} x={node.x} y={node.y + (i - (lines.length - 1) / 2) * 13} textAnchor="middle" dominantBaseline="middle" fill={style.text} fontSize="11" fontWeight={on ? 800 : 650} fontFamily="Poppins, sans-serif">{line}</text>
+            ))}
+          </g>
+        );
+      })}
     </svg>
   );
 }
 
+function Controls({ id, inputs, setInputs }) {
+  if (id === "A") {
+    return (
+      <div className="space-y-4">
+        <label className="block text-sm font-bold text-slate-700">Distance ahead <span className="float-right text-blue-600">{inputs.distance} cm</span>
+          <input className="mt-2 w-full" type="range" min="2" max="100" value={inputs.distance} onChange={(e) => setInputs({ ...inputs, distance: +e.target.value })} />
+        </label>
+        {inputs.distance <= 25 && (
+          <div className="grid grid-cols-2 gap-3">
+            {[["left", "Left scan", "text-green-600"], ["right", "Right scan", "text-orange-600"]].map(([key, label, color]) => (
+              <label key={key} className="text-xs font-bold text-slate-700">{label} <span className={`float-right ${color}`}>{inputs[key]} cm</span>
+                <input className="mt-2 w-full" type="range" min="2" max="100" value={inputs[key]} onChange={(e) => setInputs({ ...inputs, [key]: +e.target.value })} />
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+  if (id === "B") {
+    const sensors = [["s1", "S1  −3"], ["s2", "S2  −1"], ["s3", "S3  +1"], ["s4", "S4  +3"]];
+    const seen = sensors.filter(([key]) => inputs[key]).length;
+    return (
+      <div className="space-y-3">
+        <p className="text-xs font-bold text-slate-600">Tap the eyes that see black tape.</p>
+        <div className="grid grid-cols-2 gap-2">
+          {sensors.map(([key, label]) => (
+            <button key={key} onClick={() => setInputs({ ...inputs, [key]: !inputs[key] })} className={`rounded-2xl border-2 px-3 py-2 text-xs font-bold ${inputs[key] ? "border-blue-600 bg-blue-500 text-white" : "border-slate-200 bg-white text-slate-500"}`}>{label}</button>
+          ))}
+        </div>
+        <label className="block text-xs font-bold text-slate-700">Last error <span className="float-right">{inputs.lastError}</span>
+          <input className="mt-2 w-full" type="range" min="-3" max="3" step="0.5" value={inputs.lastError} onChange={(e) => setInputs({ ...inputs, lastError: +e.target.value })} />
+        </label>
+        <p className="rounded-2xl border border-blue-200 bg-blue-50 p-3 text-xs font-bold text-slate-700">seen = {seen}. {seen === 0 ? "Tape lost." : seen === 4 ? "Cross or finish." : "Follow the tape."}</p>
+      </div>
+    );
+  }
+  if (id === "C1") {
+    return (
+      <div className="space-y-3">
+        <div className="flex gap-2">
+          <button onClick={() => setInputs({ ...inputs, replay: false })} className={`flex-1 rounded-2xl border-2 px-3 py-2 text-xs font-bold ${inputs.replay ? "border-slate-200 bg-white text-slate-500" : "border-blue-600 bg-blue-500 text-white"}`}>EXPLORE</button>
+          <button onClick={() => setInputs({ ...inputs, replay: true })} className={`flex-1 rounded-2xl border-2 px-3 py-2 text-xs font-bold ${inputs.replay ? "border-orange-600 bg-orange-500 text-white" : "border-slate-200 bg-white text-slate-500"}`}>REPLAY</button>
+        </div>
+        <button onClick={() => setInputs({ ...inputs, allBlack: !inputs.allBlack })} className={`w-full rounded-2xl border-2 px-3 py-2 text-xs font-bold ${inputs.allBlack ? "border-green-600 bg-green-500 text-white" : "border-slate-200 bg-white text-slate-500"}`}>All 4 sensors black (FINISH)</button>
+        <p className="text-xs italic leading-relaxed text-slate-500">{inputs.replay ? "Replay follows the saved short path." : "Explore prefers left, writes each turn, then cuts dead ends."}</p>
+      </div>
+    );
+  }
+  const msg = inputs.left > 150 && inputs.front > 150 && inputs.right > 150 ? "All open: this is the exit." : inputs.left > 30 ? "Left open: turn left." : inputs.front > 30 ? "Front open: go straight." : inputs.right > 30 ? "Right open: turn right." : "Three walls: turn around.";
+  return (
+    <div className="space-y-3">
+      {[["left", "Left"], ["front", "Front"], ["right", "Right"]].map(([key, label]) => (
+        <label key={key} className="block text-sm font-bold text-slate-700">{label} <span className="float-right">{inputs[key]} cm</span>
+          <input className="mt-2 w-full" type="range" min="5" max="200" value={inputs[key]} onChange={(e) => setInputs({ ...inputs, [key]: +e.target.value })} />
+        </label>
+      ))}
+      <p className="rounded-2xl border border-blue-200 bg-blue-50 p-3 text-xs font-bold text-slate-700">{msg}</p>
+    </div>
+  );
+}
+
 export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
-  const [activeFlow, setActiveFlow] = useState(defaultFlow);
-  const [inputs, setInputs] = useState(INPUT_CONFIGS[defaultFlow].defaults);
+  const [id, setId] = useState(defaultFlow);
+  const [inputs, setInputs] = useState(FLOWS[defaultFlow].defaults);
   const [stepMode, setStepMode] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
+  const [step, setStep] = useState(0);
   const [running, setRunning] = useState(false);
-  const timerRef = useRef(null);
-
-  const flow = FLOWS.find((f) => f.id === activeFlow).flow;
-  const fullPath = flow.evaluate(inputs);
-  const activePath = stepMode
-    ? new Set([...fullPath].slice(0, stepIndex + 1))
-    : fullPath;
-
-  const switchFlow = (id) => {
-    setActiveFlow(id);
-    setInputs(INPUT_CONFIGS[id].defaults);
-    setStepMode(false);
-    setStepIndex(0);
-    setRunning(false);
-  };
-
-  const startStep = () => {
-    setStepMode(true);
-    setStepIndex(0);
-    setRunning(true);
-  };
-
-  const stepNext = () => {
-    const pathArr = [...fullPath];
-    if (stepIndex < pathArr.length - 1) {
-      setStepIndex(stepIndex + 1);
-    } else {
-      setRunning(false);
-    }
-  };
+  const flow = FLOWS[id];
+  const path = useMemo(() => flow.evaluate(inputs), [flow, inputs]);
+  const shown = stepMode ? path.slice(0, step + 1) : path;
+  const active = new Set(shown);
+  const current = byId(flow, shown[shown.length - 1]);
 
   useEffect(() => {
-    if (running && stepMode) {
-      timerRef.current = setTimeout(() => {
-        const pathArr = [...fullPath];
-        if (stepIndex < pathArr.length - 1) {
-          setStepIndex(stepIndex + 1);
-        } else {
+    if (!running) return undefined;
+    const timer = setTimeout(() => {
+      setStep((value) => {
+        if (value >= path.length - 1) {
           setRunning(false);
+          return value;
         }
-      }, 850);
-    }
-    return () => clearTimeout(timerRef.current);
-  }, [running, stepMode, stepIndex, fullPath]);
+        return value + 1;
+      });
+    }, 850);
+    return () => clearTimeout(timer);
+  }, [running, step, path.length]);
 
-  const reset = () => {
+  const switchFlow = (next) => {
+    setId(next);
+    setInputs(FLOWS[next].defaults);
     setStepMode(false);
-    setStepIndex(0);
+    setStep(0);
     setRunning(false);
   };
 
-  const InputComp = INPUT_CONFIGS[activeFlow].Comp;
-
   return (
-    <div className="space-y-4">
-      <style>{KID_CSS}</style>
-      <p className="text-sm text-slate-600 leading-relaxed">
-        Move the knobs and watch the bright path light up. <span className="font-bold text-green-600">Green lines = "Yes"</span>, <span className="font-bold text-red-500">red lines = "No"</span>. Press Step to walk the robot through one choice at a time.
-      </p>
-
-      {/* Flow tabs */}
+    <div className="space-y-3">
+      <p className="text-sm leading-relaxed text-slate-600">Green is Yes and goes down. Red is No and leaves to the side. Change a sense, then walk one choice at a time.</p>
       <div className="flex flex-wrap gap-2">
-        {FLOWS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => switchFlow(f.id)}
-            className={`kid-pill px-4 py-2 rounded-2xl text-xs font-bold border-2 transition-colors ${
-              activeFlow === f.id ? "bg-blue-500 text-white border-blue-600 shadow" : "bg-white text-slate-600 border-slate-200 hover:border-blue-300"
-            }`}
-          >
-            {f.flow.name}
-          </button>
+        {FLOW_ORDER.map((key) => (
+          <button key={key} onClick={() => switchFlow(key)} className={`rounded-2xl border-2 px-4 py-2 text-xs font-bold ${id === key ? "border-blue-600 bg-blue-500 text-white" : "border-slate-200 bg-white text-slate-600"}`}>{FLOWS[key].name}</button>
         ))}
       </div>
-
-      {/* Controls */}
       <div className="flex flex-wrap items-center gap-2">
         {!stepMode ? (
-          <button onClick={startStep} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-green-500 text-white text-xs font-bold border-2 border-green-600 shadow hover:bg-green-600">
-            <Play size={14} /> Step Through
-          </button>
+          <button onClick={() => { setStepMode(true); setStep(0); setRunning(true); }} className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-green-600 bg-green-500 px-4 py-2 text-xs font-bold text-white"><Play size={14} /> Step through</button>
         ) : (
           <>
-            <button onClick={() => setRunning(!running)} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-blue-500 text-white text-xs font-bold border-2 border-blue-600 shadow hover:bg-blue-600">
-              {running ? <Pause size={14} /> : <Play size={14} />} {running ? "Pause" : "Auto-play"}
-            </button>
-            <button onClick={stepNext} disabled={running} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-orange-500 text-white text-xs font-bold border-2 border-orange-600 shadow hover:bg-orange-600 disabled:opacity-50">
-              <StepForward size={14} /> Next Step
-            </button>
+            <button onClick={() => setRunning((value) => !value)} className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-blue-600 bg-blue-500 px-4 py-2 text-xs font-bold text-white">{running ? <Pause size={14} /> : <Play size={14} />} {running ? "Pause" : "Auto-play"}</button>
+            <button disabled={running} onClick={() => setStep((value) => Math.min(path.length - 1, value + 1))} className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-orange-600 bg-orange-500 px-4 py-2 text-xs font-bold text-white disabled:opacity-50"><StepForward size={14} /> Next</button>
           </>
         )}
-        <button onClick={reset} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white text-slate-600 text-xs font-bold border-2 border-slate-200 hover:bg-slate-50">
-          <RotateCcw size={14} /> Reset
-        </button>
-        {stepMode && <span className="text-xs font-bold text-slate-500 ml-1">Step {stepIndex + 1} / {[...fullPath].length}</span>}
+        <button onClick={() => { setStepMode(false); setStep(0); setRunning(false); }} className="inline-flex items-center gap-1.5 rounded-2xl border-2 border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-600"><RotateCcw size={14} /> Reset</button>
+        <span className="text-xs font-bold text-slate-500">{stepMode ? `Step ${step + 1} / ${path.length}` : `${path.length} steps on this path`}</span>
       </div>
-
-      {/* Flowchart + Robot Controls */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.75fr] gap-4">
-        <FlowchartSVG flow={flow} activePath={activePath} stepMode={stepMode} />
-        <Card className="p-5 border-2 border-orange-200 bg-gradient-to-b from-orange-50/70 to-white shadow-sm">
-          <div className="flex items-center gap-3 mb-4 pb-3 border-b border-orange-200/60">
-            <RobotFace />
-            <div>
-              <p className="font-poppins font-extrabold text-base text-slate-800">Robot Controls</p>
-              <p className="text-xs text-slate-500">Change a sense, and the bright path updates.</p>
-            </div>
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.4fr)_300px]">
+        <div className="max-h-[720px] overflow-auto rounded-2xl border-2 border-blue-200 bg-sky-50/40 p-3">
+          <Flowchart flow={flow} active={active} />
+        </div>
+        <Card className="border-2 border-orange-200 bg-orange-50/40 p-4">
+          <p className="font-poppins text-base font-extrabold text-slate-800">Robot controls</p>
+          <p className="mb-3 text-xs text-slate-500">Change a sense. The bright path updates.</p>
+          <div className="mb-3 rounded-2xl border border-blue-200 bg-blue-50 p-3 text-sm leading-relaxed">
+            <strong>{current.label.replaceAll("\n", " ")}</strong>
+            <br />{flow.explain[current.id]}
           </div>
-          <InputComp inputs={inputs} setInputs={setInputs} />
+          <Controls id={id} inputs={inputs} setInputs={setInputs} />
         </Card>
       </div>
     </div>
