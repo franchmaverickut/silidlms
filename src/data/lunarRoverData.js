@@ -9,6 +9,19 @@ const STEP_IMG = {
   s8: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/84e6f406d_Step_08_Assemble_Mast.png",
   s9: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/1e084d6cf_Step_09_Mount_Mast_on_Chassis.png",
   s10: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/abbc00341_Step_10_Attach_Rover_Head.png",
+  s11: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/21f717acf_Step_11_Connect_Solar_Panel_Wires.png",
+  s12: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/5b5bdf333_Step_12_Mount_Solar_Panels_Completed_Rover.png",
+};
+
+const PART_IMG = {
+  p1: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6be0aed85_Part_01_Chassis_Plate.png",
+  p2: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/b815bd98a_Part_02_Motor_Retaining_Bracket.png",
+  p3: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/46fcec3dd_Part_03_Slotted_Panel.png",
+  p4: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/99dd5102a_Part_04_Angled_Solar_Support_A.png",
+  p5: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/dd9451bbf_Part_05_Angled_Solar_Support_B.png",
+  p6: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/2127c085a_Part_06_Mast_Rail_A.png",
+  p7: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/251a77063_Part_07_Mast_Rail_B.png",
+  p8: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/e306b403e_Part_08_Windowed_Mast_Frame.png",
 };
 
 export const LUNAR_ROVER = {
@@ -21,14 +34,14 @@ export const LUNAR_ROVER = {
   intro:
     "The Solar Lunar Rover is a simple solar-powered car you build from laser-cut wooden panels, two axles, a small motor, two gears and two solar panels. Follow the steps in order. Each step has a picture and a short instruction. Tick the Completed box when you finish a step so you can track your progress.",
   parts: [
-    { name: "Chassis Plate", icon: "🟫", desc: "Main base that holds all the parts." },
-    { name: "Motor Retaining Bracket", icon: "🔩", desc: "Clips over the motor to hold it down." },
-    { name: "Slotted Panel", icon: "🪵", desc: "Side panel with cut-out slots." },
-    { name: "Angled Solar Support A", icon: "📐", desc: "Holds one solar panel at an angle." },
-    { name: "Angled Solar Support B", icon: "📐", desc: "Holds the other solar panel." },
-    { name: "Mast Rail A", icon: "📏", desc: "Long support arm for the mast." },
-    { name: "Mast Rail B", icon: "📏", desc: "Second mast support arm." },
-    { name: "Windowed Mast Frame", icon: "🪟", desc: "Tall vertical frame with a window cut-out." },
+    { name: "Chassis Plate", image: PART_IMG.p1, desc: "Main base that holds all the parts." },
+    { name: "Motor Retaining Bracket", image: PART_IMG.p2, desc: "Clips over the motor to hold it down." },
+    { name: "Slotted Panel", image: PART_IMG.p3, desc: "Side panel with cut-out slots." },
+    { name: "Angled Solar Support A", image: PART_IMG.p4, desc: "Holds one solar panel at an angle." },
+    { name: "Angled Solar Support B", image: PART_IMG.p5, desc: "Holds the other solar panel." },
+    { name: "Mast Rail A", image: PART_IMG.p6, desc: "Long support arm for the mast." },
+    { name: "Mast Rail B", image: PART_IMG.p7, desc: "Second mast support arm." },
+    { name: "Windowed Mast Frame", image: PART_IMG.p8, desc: "Tall vertical frame with a window cut-out." },
     { name: "Slotted Panel", icon: "🪵", desc: "Panel with cut-out slots for assembly." },
     { name: "Double Slot Panel", icon: "🪵", desc: "Panel with two slots for joining." },
     { name: "Tabbed Panel A", icon: "🪵", desc: "Panel with connecting tabs." },
@@ -53,7 +66,7 @@ export const LUNAR_ROVER = {
     { num: 8, title: "Assemble the mast", image: STEP_IMG.s8, desc: "Join the windowed frame and the two long support rails as shown in the kit instructions. Check that the tabs are fully seated." },
     { num: 9, title: "Mount the mast", image: STEP_IMG.s9, desc: "Align the mast tabs with the chassis slots and press the mast assembly into place." },
     { num: 10, title: "Attach the rover head", image: STEP_IMG.s10, desc: "Fit the assembled head onto the mast attachment points. Check that the head and mast are secure." },
-    { num: 11, title: "Connect solar panel wires", image: null, desc: "Follow the supplied kit wiring arrangement: join both red panel leads with the red motor lead, and both black panel leads with the black motor lead. Keep the two junctions separate and insulated. Check panel polarity before connecting." },
-    { num: 12, title: "Mount panels and test", image: null, desc: "Attach one solar panel to each support using the supplied double-sided tape. Keep wires clear of the wheels and gears. Place the rover in direct sunlight and check its movement." },
+    { num: 11, title: "Connect solar panel wires", image: STEP_IMG.s11, desc: "Follow the supplied kit wiring arrangement: join both red panel leads with the red motor lead, and both black panel leads with the black motor lead. Keep the two junctions separate and insulated. Check panel polarity before connecting." },
+    { num: 12, title: "Mount panels and test", image: STEP_IMG.s12, desc: "Attach one solar panel to each support using the supplied double-sided tape. Keep wires clear of the wheels and gears. Place the rover in direct sunlight and check its movement." },
   ],
 };

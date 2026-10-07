@@ -113,8 +113,12 @@ export default function LunarRoverProject({ isPublic = false }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {d.parts.map((part, i) => (
             <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-white">
-              <div className="w-20 h-20 flex-shrink-0 bg-muted/30 flex items-center justify-center text-3xl">
-                {part.icon}
+              <div className="w-20 h-20 flex-shrink-0 bg-white flex items-center justify-center p-2">
+                {part.image ? (
+                  <img src={part.image} alt={part.name} className="max-h-16 w-auto h-auto object-contain" />
+                ) : (
+                  <span className="text-3xl">{part.icon}</span>
+                )}
               </div>
               <div className="p-3 space-y-0.5 flex flex-col justify-center">
                 <p className="font-poppins font-bold text-xs text-foreground">{part.name}</p>
