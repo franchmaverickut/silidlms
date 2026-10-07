@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Play, Pause, RotateCcw, StepForward } from "lucide-react";
 
@@ -39,6 +39,30 @@ function route(edge, flow) {
   }
   const mid = (aBottom + bTop) / 2;
   return `M ${a.x} ${aBottom} V ${mid} H ${b.x} V ${bTop}`;
+}
+
+// Compute a viewBox that contains every node, edge label, and the maze
+// back-edge gutter, with 24px padding. Recalculated per flow on tab switch.
+function computeViewBox(flow) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  const pt = (x, y) => { minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); };
+  const box = (x, y, w, h) => { pt(x, y); pt(x + w, y + h); };
+  flow.nodes.forEach((n) => { if (!n.hidden) box(n.x - n.w / 2, n.y - n.h / 2, n.w, n.h); });
+  flow.edges.forEach((e) => {
+    if (e.label && !e.back) {
+      const a = nodeById(flow, e.from);
+      const lx = e.side === "left" ? a.x - 28 : e.side === "right" ? a.x + 28 : a.x + 22;
+      const ly = a.y + a.h / 2 + 14;
+      box(lx - 16, ly - 9, 32, 16);
+    }
+    if (e.back) {
+      const a = nodeById(flow, e.from);
+      const b = nodeById(flow, e.to);
+      pt(48, a.y); pt(48, b.y);
+    }
+  });
+  const pad = 24;
+  return { x: minX - pad, y: minY - pad, w: (maxX - minX) + pad * 2, h: (maxY - minY) + pad * 2 };
 }
 
 function FlowNode({ node, active, dimmed }) {
@@ -137,11 +161,13 @@ function FlowEdge({ edge, flow, activePath }) {
 }
 
 function FlowchartSVG({ flow, activePath, stepMode }) {
+  const vb = useMemo(() => computeViewBox(flow), [flow]);
   return (
-    <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-sky-50/70 to-white p-3 overflow-auto shadow-sm max-h-[760px]">
+    <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-sky-50/70 to-white p-3 overflow-auto shadow-sm max-h-[600px]">
       <svg
         className="flow-chart-svg"
-        viewBox={`0 0 ${flow.w} ${flow.h}`}
+        viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label="Program flowchart"
       >
@@ -509,7 +535,7 @@ const KID_CSS = `
 .kid-slider::-moz-range-thumb{width:30px;height:30px;border-radius:999px;background:var(--knob,#2563eb);border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);cursor:pointer}
 .kid-pill{transition:transform .1s}
 .kid-pill:active{transform:scale(.95)}
-.flow-chart-svg{display:block;width:100%;height:auto;min-width:560px}
+.flow-chart-svg{display:block;width:100%;height:auto}
 `;
 
 function RobotFace() {
@@ -633,7 +659,7 @@ export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
       </div>
 
       {/* Flowchart + Robot Controls */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.75fr] gap-4">
         <FlowchartSVG flow={flow} activePath={activePath} stepMode={stepMode} />
         <Card className="p-5 border-2 border-orange-200 bg-gradient-to-b from-orange-50/70 to-white shadow-sm">
           <div className="flex items-center gap-3 mb-4 pb-3 border-b border-orange-200/60">
