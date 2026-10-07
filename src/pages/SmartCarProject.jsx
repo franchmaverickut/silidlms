@@ -11,7 +11,7 @@ import { SMART_CAR } from "@/data/smartcarData";
 import InteractiveWiringDiagram from "@/components/smartcar/InteractiveWiringDiagram";
 import SmartCarSimulator from "@/components/smartcar/SmartCarSimulator";
 import ProgramFlowSimulator from "@/components/smartcar/ProgramFlowSimulator";
-import ChassisStlPreview from "@/components/smartcar/ChassisStlPreview";
+import ChassisPrintStudio from "@/components/smartcar/ChassisPrintStudio";
 import EchoExplorer from "@/components/smartcar/EchoExplorer";
 
 function Section({ title, kicker, icon, children, defaultOpen = false, accent = "blue" }) {
@@ -301,77 +301,8 @@ export default function SmartCarProject({ isPublic = false }) {
         </a>
         <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.thicknessNote}</p>
 
-        <div className="pt-1 space-y-2">
-          <h3 className="font-poppins font-bold text-sm text-foreground">The print files</h3>
-          <DataTable
-            headers={["File", "Size (mm)", "What it is", "Quantity"]}
-            rows={d.chassisPrint.printFiles}
-            renderRow={(row, i) => (
-              <tr key={i} className="hover:bg-muted/20 align-top">
-                <td className="px-4 py-2.5 font-mono text-xs font-medium text-foreground break-all">{row.file}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs whitespace-nowrap">{row.size}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.what}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs whitespace-nowrap">{row.qty}</td>
-              </tr>
-            )}
-          />
-          <div className="flex gap-2 items-start p-3 rounded-lg bg-blue-50 border border-blue-200">
-            <Lightbulb size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-blue-800 leading-relaxed">{d.chassisPrint.filesNote}</p>
-          </div>
-          <ChassisStlPreview files={d.chassisPrint.stlPreviews} />
-          <p className="text-xs text-muted-foreground italic">Figure 3. No separate bed-fit image is needed. Use the interactive 3D preview above to check each file's real shape and size against your printer bed before you print.</p>
-        </div>
-
-        <div className="pt-2 space-y-2">
-          <h3 className="font-poppins font-bold text-sm text-foreground">Choose your version</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-3 flex items-center justify-center">
-                <img src={d.chassisPrint.figures.option1} alt="Option 1 one-piece 4WD" className="max-h-64 w-auto object-contain rounded-lg" />
-              </div>
-              <p className="p-3 text-xs text-muted-foreground italic">Figure 2a. Option 1: one-piece 4WD plate, 150 × 257 mm.</p>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-3 flex items-center justify-center">
-                <img src={d.chassisPrint.figures.option2} alt="Option 2 two-piece 4WD" className="max-h-64 w-auto object-contain rounded-lg" />
-              </div>
-              <p className="p-3 text-xs text-muted-foreground italic">Figure 2b. Option 2: Part A and Part B join with a dovetail, 150 × 120 + 151 mm.</p>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-3 flex items-center justify-center">
-                <img src={d.chassisPrint.figures.option3} alt="Option 3 compact 2WD" className="max-h-64 w-auto object-contain rounded-lg" />
-              </div>
-              <p className="p-3 text-xs text-muted-foreground italic">Figure 2c. Option 3: compact 2WD uses Part B plus a ball caster, 150 × 151 mm.</p>
-            </div>
-          </div>
-          <DataTable
-            headers={["Version", "Files to print", "Printer bed needed", "Choose it when"]}
-            rows={d.chassisPrint.versions}
-            renderRow={(row, i) => (
-              <tr key={i} className="hover:bg-muted/20 align-top">
-                <td className="px-4 py-2.5 font-poppins font-semibold text-foreground text-xs">{row.version}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.files}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.bed}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.when}</td>
-              </tr>
-            )}
-          />
-        </div>
-
-        <div className="pt-2 space-y-2">
-          <h3 className="font-poppins font-bold text-sm text-foreground">Recommended print settings</h3>
-          <DataTable
-            headers={["Setting", "Value"]}
-            rows={d.chassisPrint.printSettings}
-            renderRow={(row, i) => (
-              <tr key={i} className="hover:bg-muted/20 align-top">
-                <td className="px-4 py-2.5 font-medium text-foreground text-xs whitespace-nowrap">{row.setting}</td>
-                <td className="px-4 py-2.5 text-muted-foreground text-xs">{row.value}</td>
-              </tr>
-            )}
-          />
-        </div>
+        <ChassisPrintStudio previews={d.chassisPrint.stlPreviews} />
+        <p className="text-xs text-muted-foreground italic">Use the 3D preview to turn each part and check its real shape and size against your printer bed before you print.</p>
 
         <div className="pt-2 space-y-3">
           <h3 className="font-poppins font-bold text-sm text-foreground">Print and prepare the parts</h3>
