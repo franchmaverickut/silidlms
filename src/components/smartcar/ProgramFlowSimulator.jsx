@@ -19,25 +19,70 @@ function nodeById(flow, id) {
   return flow.nodes.find((n) => n.id === id);
 }
 
+// For a "No" branch, pick the side it leaves from: trust the edge's `side`
+// when given, otherwise derive it from the target's x relative to the source.
+function noSide(edge, a, b) {
+  if (edge.side === "left") return "left";
+  if (edge.side === "right") return "right";
+  return b.x >= a.x ? "right" : "left";
+}
+
+// Label ("pill") position for a decision-branch edge.
+//  - Yes: on the vertical line just below the diamond's bottom point.
+//  - No:  on the horizontal segment just outside the diamond's side point.
+function pillPos(edge, flow) {
+  const a = nodeById(flow, edge.from);
+  const b = nodeById(flow, edge.to);
+  if (a.type !== "decision" || !edge.label) return null;
+  const aBottom = a.y + a.h / 2;
+  if (edge.label === "Yes") {
+    return { x: a.x, y: aBottom + 18 };
+  }
+  const side = noSide(edge, a, b);
+  const sx = side === "left" ? a.x - a.w / 2 : a.x + a.w / 2;
+  return { x: side === "left" ? sx - 44 : sx + 44, y: a.y };
+}
+
 function route(edge, flow) {
   const a = nodeById(flow, edge.from);
   const b = nodeById(flow, edge.to);
+  const isDecision = a.type === "decision";
+  const isYes = edge.label === "Yes";
+  const isNo = edge.label === "No";
+
+  // Maze loop-return: run around the outside-left gutter, clear of every node.
   if (edge.back) {
-    const x = 48; // outside-left gutter
+    const x = 48;
     return `M ${a.x - a.w / 2} ${a.y} H ${x} V ${b.y} H ${b.x - b.w / 2}`;
   }
+
   const aBottom = a.y + a.h / 2;
   const bTop = b.y - b.h / 2;
-  if (Math.abs(a.x - b.x) < 8 && !edge.side) {
-    return `M ${a.x} ${aBottom} V ${bTop}`;
+
+  // Yes branch: leave the bottom point straight down, then bend if needed.
+  if (isDecision && isYes) {
+    if (Math.abs(a.x - b.x) < 8) return `M ${a.x} ${aBottom} V ${bTop}`;
+    const bend = Math.min(aBottom + 44, bTop - 6);
+    return `M ${a.x} ${aBottom} V ${bend} H ${b.x} V ${bTop}`;
   }
-  if (edge.side === "left" || edge.side === "right") {
-    const midY = a.y + (b.y - a.y) * 0.45;
-    if (b.y > a.y + 20) {
-      return `M ${a.x} ${aBottom} V ${midY} H ${b.x} V ${bTop}`;
+
+  // No branch: leave the side point sideways, then turn down into the target.
+  if (isDecision && isNo) {
+    const side = noSide(edge, a, b);
+    const sx = side === "left" ? a.x - a.w / 2 : a.x + a.w / 2;
+    const sy = a.y;
+    if (Math.abs(b.y - a.y) < 12) {
+      // Sibling decision at the same height: straight across into its side point.
+      const tx = side === "left" ? b.x + b.w / 2 : b.x - b.w / 2;
+      return `M ${sx} ${sy} H ${tx}`;
     }
+    return `M ${sx} ${sy} H ${b.x} V ${bTop}`;
   }
-  const mid = (aBottom + bTop) / 2;
+
+  // Plain connector: bottom-center to top-center via a mid elbow
+  // (an optional `bend` overrides the elbow y to dodge an intermediate node).
+  if (Math.abs(a.x - b.x) < 8) return `M ${a.x} ${aBottom} V ${bTop}`;
+  const mid = edge.bend != null ? edge.bend : (aBottom + bTop) / 2;
   return `M ${a.x} ${aBottom} V ${mid} H ${b.x} V ${bTop}`;
 }
 
@@ -50,10 +95,8 @@ function computeViewBox(flow) {
   flow.nodes.forEach((n) => { if (!n.hidden) box(n.x - n.w / 2, n.y - n.h / 2, n.w, n.h); });
   flow.edges.forEach((e) => {
     if (e.label && !e.back) {
-      const a = nodeById(flow, e.from);
-      const lx = e.side === "left" ? a.x - 28 : e.side === "right" ? a.x + 28 : a.x + 22;
-      const ly = a.y + a.h / 2 + 14;
-      box(lx - 16, ly - 9, 32, 16);
+      const p = pillPos(e, flow);
+      if (p) box(p.x - 16, p.y - 9, 32, 16);
     }
     if (e.back) {
       const a = nodeById(flow, e.from);
@@ -127,8 +170,9 @@ function FlowEdge({ edge, flow, activePath }) {
     (on ? "pfs-arrA" : "pfs-arr");
   const sw = on ? 3.5 : 2;
 
-  const lx = edge.side === "left" ? a.x - 28 : edge.side === "right" ? a.x + 28 : a.x + 22;
-  const ly = a.y + a.h / 2 + 14;
+  const p = pillPos(edge, flow);
+  const lx = p ? p.x : a.x + 22;
+  const ly = p ? p.y : a.y + a.h / 2 + 14;
 
   return (
     <g>
@@ -212,14 +256,14 @@ const OBSTACLE_FLOW = {
     { id: "avoid", label: "avoid()", type: "process", x: 150, y: 320, w: 130, h: 42 },
     { id: "slow_check", label: "d < 45?", type: "decision", x: 560, y: 320, w: 140, h: 72 },
     { id: "backup", label: "stop + backup\n300 ms", type: "process", x: 150, y: 400, w: 150, h: 50 },
-    { id: "cruise", label: "forward\nCRUISE_SPEED", type: "process", x: 640, y: 430, w: 140, h: 50 },
+    { id: "cruise", label: "forward\nCRUISE_SPEED", type: "process", x: 700, y: 430, w: 140, h: 50 },
     { id: "slow", label: "forward\n3/4 speed", type: "process", x: 470, y: 430, w: 130, h: 50 },
     { id: "look", label: "right = lookAt(20°)\nleft = lookAt(160°)", type: "process", x: 150, y: 490, w: 180, h: 50 },
     { id: "both_check", label: "both < 25?", type: "decision", x: 150, y: 585, w: 150, h: 72 },
-    { id: "turn_around", label: "turn 180°\nTURN_MS × 3", type: "process", x: 150, y: 690, w: 140, h: 50 },
+    { id: "turn_around", label: "turn 180°\nTURN_MS × 3", type: "process", x: 150, y: 710, w: 140, h: 50 },
     { id: "lr_check", label: "left > right?", type: "decision", x: 380, y: 585, w: 150, h: 72 },
     { id: "spin_left", label: "spin left\nTURN_MS", type: "process", x: 300, y: 690, w: 120, h: 48 },
-    { id: "spin_right", label: "spin right\nTURN_MS", type: "process", x: 470, y: 690, w: 120, h: 48 },
+    { id: "spin_right", label: "spin right\nTURN_MS", type: "process", x: 520, y: 690, w: 120, h: 48 },
   ],
   edges: [
     { from: "loop", to: "read" },
@@ -258,13 +302,13 @@ const LINE_FLOW = {
     { id: "read", label: "seen = readLine(&err)\nerr = average weight of black sensors", type: "process", x: 360, y: 122, w: 250, h: 52 },
     { id: "seen0", label: "seen == 0?", type: "decision", x: 360, y: 220, w: 150, h: 72 },
     { id: "last_err", label: "lastError < 0?", type: "decision", x: 150, y: 340, w: 160, h: 72 },
-    { id: "seen4", label: "seen == 4?", type: "decision", x: 560, y: 340, w: 150, h: 72 },
+    { id: "seen4", label: "seen == 4?", type: "decision", x: 640, y: 340, w: 150, h: 72 },
     { id: "search_l", label: "spin left\nsearch for line", type: "process", x: 80, y: 470, w: 140, h: 50 },
-    { id: "search_r", label: "spin right\nsearch for line", type: "process", x: 230, y: 470, w: 140, h: 50 },
-    { id: "cross", label: "drive straight\ncross or finish", type: "process", x: 560, y: 470, w: 150, h: 50 },
-    { id: "pd", label: "correction = KP×err\n+ KD×(err − lastErr)", type: "process", x: 400, y: 470, w: 160, h: 52 },
-    { id: "motor", label: "left = BASE + corr\nright = BASE − corr", type: "process", x: 400, y: 570, w: 180, h: 50 },
-    { id: "back", label: "delay(5) → loop", type: "process", x: 360, y: 650, w: 160, h: 40 },
+    { id: "search_r", label: "spin right\nsearch for line", type: "process", x: 300, y: 470, w: 120, h: 50 },
+    { id: "cross", label: "drive straight\ncross or finish", type: "process", x: 640, y: 470, w: 150, h: 50 },
+    { id: "pd", label: "correction = KP×err\n+ KD×(err − lastErr)", type: "process", x: 460, y: 470, w: 150, h: 52 },
+    { id: "motor", label: "left = BASE + corr\nright = BASE − corr", type: "process", x: 820, y: 570, w: 180, h: 50 },
+    { id: "back", label: "delay(5) → loop", type: "process", x: 360, y: 660, w: 160, h: 40 },
   ],
   edges: [
     { from: "loop", to: "read" },
@@ -296,32 +340,32 @@ const MAZE_LINE_FLOW = {
   name: "Line Maze Solver (C1)",
   w: 780, h: 980,
   nodes: [
-    { id: "setup", label: "setup()", type: "start", x: 390, y: 42, w: 140, h: 40 },
-    { id: "mode", label: "D12 == LOW?", type: "decision", x: 390, y: 130, w: 160, h: 76 },
-    { id: "replay", label: "loadPath()\nfrom EEPROM", type: "process", x: 160, y: 250, w: 160, h: 52 },
-    { id: "explore", label: "EXPLORE mode", type: "process", x: 620, y: 250, w: 150, h: 44 },
-    { id: "follow", label: "followSegment()\nfollow the line until a\nbranch or a dead end", type: "process", x: 390, y: 360, w: 220, h: 62 },
-    { id: "junction", label: "handleJunction()\ninch forward, then\ncheck left / straight / right", type: "process", x: 390, y: 470, w: 230, h: 62 },
-    { id: "all_black", label: "all 4 black?", type: "decision", x: 390, y: 580, w: 160, h: 76 },
-    { id: "finish", label: "FINISH\nsave path, blink LED", type: "end", x: 390, y: 700, w: 180, h: 52 },
-    { id: "is_replay", label: "replay?", type: "decision", x: 620, y: 700, w: 140, h: 72 },
-    { id: "choose", label: "chooseLeftHand\nL, then S, then R, then B\nrecord the decision", type: "process", x: 160, y: 820, w: 200, h: 62 },
-    { id: "use_stored", label: "use path[i++]", type: "process", x: 620, y: 820, w: 150, h: 44 },
-    { id: "simplify", label: "simplifyPath()\ncollapse xBx dead ends", type: "process", x: 160, y: 920, w: 190, h: 52 },
-    { id: "turn", label: "turn(d)\nL / R / B / S", type: "process", x: 390, y: 920, w: 140, h: 50 },
+    { id: "setup", label: "setup()", type: "start", x: 380, y: 40, w: 140, h: 40 },
+    { id: "mode", label: "D12 == LOW?", type: "decision", x: 380, y: 130, w: 160, h: 76 },
+    { id: "replay", label: "loadPath()\nfrom EEPROM", type: "process", x: 380, y: 250, w: 160, h: 52 },
+    { id: "explore", label: "EXPLORE mode", type: "process", x: 680, y: 130, w: 150, h: 44 },
+    { id: "follow", label: "followSegment()\nfollow the line until a\nbranch or a dead end", type: "process", x: 380, y: 360, w: 220, h: 62 },
+    { id: "junction", label: "handleJunction()\ninch forward, then\ncheck left / straight / right", type: "process", x: 380, y: 470, w: 230, h: 62 },
+    { id: "all_black", label: "all 4 black?", type: "decision", x: 380, y: 580, w: 160, h: 76 },
+    { id: "finish", label: "FINISH\nsave path, blink LED", type: "end", x: 380, y: 700, w: 180, h: 52 },
+    { id: "is_replay", label: "replay?", type: "decision", x: 680, y: 700, w: 140, h: 72 },
+    { id: "use_stored", label: "use path[i++]", type: "process", x: 680, y: 820, w: 150, h: 44 },
+    { id: "choose", label: "chooseLeftHand\nL, then S, then R, then B\nrecord the decision", type: "process", x: 900, y: 700, w: 170, h: 62 },
+    { id: "simplify", label: "simplifyPath()\ncollapse xBx dead ends", type: "process", x: 900, y: 820, w: 180, h: 52 },
+    { id: "turn", label: "turn(d)\nL / R / B / S", type: "process", x: 760, y: 920, w: 140, h: 50 },
   ],
   edges: [
     { from: "setup", to: "mode" },
     { from: "mode", to: "replay", label: "Yes", side: "left" },
     { from: "mode", to: "explore", label: "No", side: "right" },
     { from: "replay", to: "follow" },
-    { from: "explore", to: "follow" },
+    { from: "explore", to: "follow", bend: 325 },
     { from: "follow", to: "junction" },
     { from: "junction", to: "all_black" },
     { from: "all_black", to: "finish", label: "Yes" },
     { from: "all_black", to: "is_replay", label: "No", side: "right" },
     { from: "is_replay", to: "use_stored", label: "Yes" },
-    { from: "is_replay", to: "choose", label: "No", side: "left" },
+    { from: "is_replay", to: "choose", label: "No", side: "right" },
     { from: "choose", to: "simplify" },
     { from: "simplify", to: "turn", side: "right" },
     { from: "use_stored", to: "turn", side: "left" },
@@ -340,18 +384,18 @@ const WALL_MAZE_FLOW = {
   name: "Wall Maze Solver (C2)",
   w: 760, h: 860,
   nodes: [
-    { id: "loop", label: "loop()", type: "start", x: 380, y: 42, w: 140, h: 40 },
-    { id: "scan", label: "left = lookAt(175°)\nfront = lookAt(90°)\nright = lookAt(5°)", type: "process", x: 380, y: 122, w: 200, h: 62 },
-    { id: "exit_check", label: "all > 150?", type: "decision", x: 380, y: 220, w: 150, h: 72 },
-    { id: "exit", label: "EXIT reached\nstop forever", type: "end", x: 160, y: 340, w: 160, h: 50 },
-    { id: "left_check", label: "left > 30?", type: "decision", x: 520, y: 340, w: 150, h: 72 },
-    { id: "go_left", label: "spinLeft90()", type: "process", x: 300, y: 460, w: 140, h: 42 },
-    { id: "front_check", label: "front > 30?", type: "decision", x: 560, y: 460, w: 150, h: 72 },
-    { id: "go_straight", label: "go straight", type: "process", x: 380, y: 580, w: 130, h: 42 },
-    { id: "right_check", label: "right > 30?", type: "decision", x: 600, y: 580, w: 150, h: 72 },
-    { id: "go_right", label: "spinRight90()", type: "process", x: 500, y: 700, w: 140, h: 42 },
-    { id: "uturn", label: "U-turn\nR90° × 2", type: "process", x: 680, y: 700, w: 120, h: 50 },
-    { id: "forward", label: "forwardOneCell() → loop", type: "process", x: 420, y: 800, w: 200, h: 42 },
+    { id: "loop", label: "loop()", type: "start", x: 300, y: 60, w: 140, h: 40 },
+    { id: "scan", label: "left = lookAt(175°)\nfront = lookAt(90°)\nright = lookAt(5°)", type: "process", x: 300, y: 110, w: 200, h: 62 },
+    { id: "exit_check", label: "all > 150?", type: "decision", x: 300, y: 180, w: 150, h: 72 },
+    { id: "exit", label: "EXIT reached\nstop forever", type: "end", x: 300, y: 300, w: 160, h: 50 },
+    { id: "left_check", label: "left > 30?", type: "decision", x: 520, y: 180, w: 150, h: 72 },
+    { id: "go_left", label: "spinLeft90()", type: "process", x: 520, y: 300, w: 140, h: 42 },
+    { id: "front_check", label: "front > 30?", type: "decision", x: 740, y: 180, w: 150, h: 72 },
+    { id: "go_straight", label: "go straight", type: "process", x: 740, y: 300, w: 130, h: 42 },
+    { id: "right_check", label: "right > 30?", type: "decision", x: 960, y: 180, w: 150, h: 72 },
+    { id: "go_right", label: "spinRight90()", type: "process", x: 960, y: 300, w: 140, h: 42 },
+    { id: "uturn", label: "U-turn\nR90° × 2", type: "process", x: 1180, y: 180, w: 120, h: 50 },
+    { id: "forward", label: "forwardOneCell() → loop", type: "process", x: 740, y: 460, w: 220, h: 42 },
   ],
   edges: [
     { from: "loop", to: "scan" },
