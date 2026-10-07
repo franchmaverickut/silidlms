@@ -236,7 +236,7 @@ const LINE_FLOW = {
     { id: "search_l", label: "spin left\nsearch for line", type: "process", x: 80, y: 470, w: 140, h: 50 },
     { id: "search_r", label: "spin right\nsearch for line", type: "process", x: 230, y: 470, w: 140, h: 50 },
     { id: "cross", label: "drive straight\ncross or finish", type: "process", x: 560, y: 470, w: 150, h: 50 },
-    { id: "pd", label: "correction = KP×err\n+ KD×(err − lastErr)", type: "process", x: 400, y: 470, w: 190, h: 52 },
+    { id: "pd", label: "correction = KP×err\n+ KD×(err − lastErr)", type: "process", x: 400, y: 470, w: 160, h: 52 },
     { id: "motor", label: "left = BASE + corr\nright = BASE − corr", type: "process", x: 400, y: 570, w: 180, h: 50 },
     { id: "back", label: "delay(5) → loop", type: "process", x: 360, y: 650, w: 160, h: 40 },
   ],
