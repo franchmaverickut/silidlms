@@ -8,11 +8,11 @@ import { Play, Pause, RotateCcw, StepForward } from "lucide-react";
 // Flow: { name, nodes, edges, inputs, evaluate(inputs) -> Set<nodeId active path>, startId }
 
 const NODE_STYLE = {
-  terminal: { fill: "#e8f5e9", stroke: "#2e7d32", rx: 22 },
-  process: { fill: "#e3f2fd", stroke: "#1565c0", rx: 8 },
-  decision: { fill: "#fff8e1", stroke: "#f9a825", rx: 4 },
-  start: { fill: "#e8f5e9", stroke: "#2e7d32", rx: 22 },
-  end: { fill: "#ffebee", stroke: "#c62828", rx: 22 },
+  terminal: { fill: "#dcfce7", active: "#bbf7d0", stroke: "#16a34a", rx: 26, text: "#14532d" },
+  process: { fill: "#dbeafe", active: "#bfdbfe", stroke: "#2563eb", rx: 16, text: "#1e3a8a" },
+  decision: { fill: "#ffedd5", active: "#fed7aa", stroke: "#ea580c", rx: 12, text: "#7c2d12" },
+  start: { fill: "#dcfce7", active: "#bbf7d0", stroke: "#16a34a", rx: 26, text: "#14532d" },
+  end: { fill: "#fee2e2", active: "#fecaca", stroke: "#dc2626", rx: 26, text: "#7f1d1d" },
 };
 
 function FlowNode({ node, active, dimmed }) {
@@ -20,14 +20,19 @@ function FlowNode({ node, active, dimmed }) {
   const isDecision = node.type === "decision";
   const w = node.w || 140;
   const h = node.h || (isDecision ? 50 : 36);
+  const fill = active ? style.active : style.fill;
+  const stroke = style.stroke;
+  const sw = active ? 4.5 : 3;
+  const lines = String(node.label).split("\n");
   return (
-    <g style={{ opacity: dimmed ? 0.35 : 1, transition: "opacity 0.3s" }}>
+    <g style={{ opacity: dimmed ? 0.4 : 1, transition: "opacity 0.3s" }}>
       {isDecision ? (
         <polygon
           points={`${node.x},${node.y - h / 2} ${node.x + w / 2},${node.y} ${node.x},${node.y + h / 2} ${node.x - w / 2},${node.y}`}
-          fill={active ? "#fff3b0" : style.fill}
-          stroke={active ? "#e65100" : style.stroke}
-          strokeWidth={active ? 3 : 1.5}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={sw}
+          strokeLinejoin="round"
         />
       ) : (
         <rect
@@ -36,21 +41,24 @@ function FlowNode({ node, active, dimmed }) {
           width={w}
           height={h}
           rx={style.rx}
-          fill={active ? "#bbdefb" : style.fill}
-          stroke={active ? "#0d47a1" : style.stroke}
-          strokeWidth={active ? 3 : 1.5}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={sw}
         />
       )}
-      <text
-        x={node.x}
-        y={node.y + 1}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#212121"
-        style={{ fontSize: 9, fontWeight: active ? 700 : 500, fontFamily: "monospace" }}
-      >
-        {node.label}
-      </text>
+      {lines.map((ln, i) => (
+        <text
+          key={i}
+          x={node.x}
+          y={node.y + (i - (lines.length - 1) / 2) * 11 + 1}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill={style.text}
+          style={{ fontSize: 10, fontWeight: active ? 800 : 600, fontFamily: "Poppins, sans-serif" }}
+        >
+          {ln}
+        </text>
+      ))}
     </g>
   );
 }
@@ -84,26 +92,45 @@ function FlowEdge({ edge, nodes, activePath }) {
     }
   }
 
+  const lbl = edge.label;
+  const color =
+    lbl === "Yes" ? (isActive ? "#16a34a" : "#86efac") :
+    lbl === "No"  ? (isActive ? "#dc2626" : "#fca5a5") :
+                    (isActive ? "#2563eb" : "#cbd5e1");
+  const marker =
+    lbl === "Yes" ? (isActive ? "arrow-yes-a" : "arrow-yes") :
+    lbl === "No"  ? (isActive ? "arrow-no-a" : "arrow-no") :
+                    (isActive ? "arrow-plain-a" : "arrow-plain");
+  const sw = isActive ? 4 : 2.5;
+  const labelBg = lbl === "Yes" ? "#16a34a" : lbl === "No" ? "#dc2626" : null;
+  const lx = from.x + (edge.side === "no" ? (edge.dir === "right" ? 26 : -26) : 14);
+  const ly = from.y + (edge.side === "no" ? -6 : 16);
+
   return (
     <g>
       <path
         d={path}
         fill="none"
-        stroke={isActive ? "#e65100" : "#90a4ae"}
-        strokeWidth={isActive ? 2.5 : 1.2}
-        strokeOpacity={isActive ? 1 : 0.5}
-        markerEnd="url(#arrowhead)"
+        stroke={color}
+        strokeWidth={sw}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        markerEnd={`url(#${marker})`}
       />
-      {edge.label && (
-        <text
-          x={from.x + (edge.side === "no" ? (edge.dir === "right" ? 25 : -25) : 12)}
-          y={from.y + (edge.side === "no" ? -5 : 15)}
-          textAnchor={edge.side === "no" ? (edge.dir === "right" ? "start" : "end") : "start"}
-          fill={isActive ? "#e65100" : "#78909c"}
-          style={{ fontSize: 8, fontWeight: 600 }}
-        >
-          {edge.label}
-        </text>
+      {lbl && (
+        <g>
+          {labelBg && <rect x={lx - 13} y={ly - 7} width="26" height="14" rx="7" fill={labelBg} />}
+          <text
+            x={lx}
+            y={ly}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill={labelBg ? "#ffffff" : color}
+            style={{ fontSize: 8.5, fontWeight: 800, fontFamily: "Poppins, sans-serif" }}
+          >
+            {lbl}
+          </text>
+        </g>
       )}
     </g>
   );
@@ -111,15 +138,14 @@ function FlowEdge({ edge, nodes, activePath }) {
 
 function FlowchartSVG({ flow, activePath, height = 520 }) {
   return (
-    <div className="rounded-xl border border-border/60 bg-slate-50/50 p-3 overflow-x-auto">
+    <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-sky-50/70 to-white p-3 overflow-x-auto shadow-sm">
       <svg viewBox={`0 0 400 ${height}`} className="w-full" style={{ minWidth: 380 }}>
         <defs>
-          <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-            <polygon points="0 0, 6 2.5, 0 5" fill="#90a4ae" />
-          </marker>
-          <marker id="arrowhead-active" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-            <polygon points="0 0, 6 2.5, 0 5" fill="#e65100" />
-          </marker>
+          {[["arrow-yes", "#86efac"], ["arrow-yes-a", "#16a34a"], ["arrow-no", "#fca5a5"], ["arrow-no-a", "#dc2626"], ["arrow-plain", "#cbd5e1"], ["arrow-plain-a", "#2563eb"]].map(([id, c]) => (
+            <marker key={id} id={id} markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 7 3, 0 6" fill={c} />
+            </marker>
+          ))}
         </defs>
         {flow.edges.map((e, i) => (
           <FlowEdge key={i} edge={e} nodes={flow.nodes} activePath={activePath} />
@@ -360,20 +386,23 @@ const FLOWS = [
 // ── Interactive input controls per flow ─────────────────────
 function ObstacleInputs({ inputs, setInputs }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div>
-        <label className="text-xs font-medium text-foreground">Distance ahead: <span className="text-primary font-bold">{inputs.distance} cm</span></label>
-        <input type="range" min="2" max="100" value={inputs.distance} onChange={(e) => setInputs({ ...inputs, distance: +e.target.value })} className="w-full accent-primary" />
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-sm font-bold text-slate-700">Distance ahead</span>
+          <span className="font-poppins font-extrabold text-blue-600 text-base">{inputs.distance} cm</span>
+        </div>
+        <input type="range" min="2" max="100" value={inputs.distance} onChange={(e) => setInputs({ ...inputs, distance: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#2563eb" }} />
       </div>
       {inputs.distance <= 25 && (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-medium text-foreground">Left scan: <span className="text-primary font-bold">{inputs.left} cm</span></label>
-            <input type="range" min="2" max="100" value={inputs.left} onChange={(e) => setInputs({ ...inputs, left: +e.target.value })} className="w-full accent-primary" />
+            <div className="flex items-center justify-between mb-1.5"><span className="text-xs font-bold text-slate-700">Left scan</span><span className="font-poppins font-extrabold text-green-600">{inputs.left} cm</span></div>
+            <input type="range" min="2" max="100" value={inputs.left} onChange={(e) => setInputs({ ...inputs, left: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#16a34a" }} />
           </div>
           <div>
-            <label className="text-xs font-medium text-foreground">Right scan: <span className="text-primary font-bold">{inputs.right} cm</span></label>
-            <input type="range" min="2" max="100" value={inputs.right} onChange={(e) => setInputs({ ...inputs, right: +e.target.value })} className="w-full accent-primary" />
+            <div className="flex items-center justify-between mb-1.5"><span className="text-xs font-bold text-slate-700">Right scan</span><span className="font-poppins font-extrabold text-orange-600">{inputs.right} cm</span></div>
+            <input type="range" min="2" max="100" value={inputs.right} onChange={(e) => setInputs({ ...inputs, right: +e.target.value })} className="kid-slider w-full" style={{ "--knob": "#ea580c" }} />
           </div>
         </div>
       )}
@@ -384,35 +413,35 @@ function ObstacleInputs({ inputs, setInputs }) {
 function LineInputs({ inputs, setInputs }) {
   const toggle = (key) => setInputs({ ...inputs, [key]: !inputs[key] });
   const sensors = [
-    { key: "s1", label: "S1 (w=−3)", color: "bg-red-500" },
-    { key: "s2", label: "S2 (w=−1)", color: "bg-orange-500" },
-    { key: "s3", label: "S3 (w=+1)", color: "bg-green-500" },
-    { key: "s4", label: "S4 (w=+3)", color: "bg-blue-500" },
+    { key: "s1", label: "S1 (w=-3)", color: "bg-red-400", ring: "border-red-400" },
+    { key: "s2", label: "S2 (w=-1)", color: "bg-orange-400", ring: "border-orange-400" },
+    { key: "s3", label: "S3 (w=+1)", color: "bg-green-400", ring: "border-green-400" },
+    { key: "s4", label: "S4 (w=+3)", color: "bg-blue-400", ring: "border-blue-400" },
   ];
   const seen = [inputs.s1, inputs.s2, inputs.s3, inputs.s4].filter(Boolean).length;
   const weights = [-3, -1, 1, 3];
   const sum = sensors.reduce((acc, s, i) => acc + (inputs[s.key] ? weights[i] : 0), 0);
   const error = seen > 0 ? (sum / seen).toFixed(1) : "—";
   return (
-    <div className="space-y-3">
-      <p className="text-xs text-muted-foreground">Toggle which sensors see black (the line):</p>
-      <div className="grid grid-cols-2 gap-2">
+    <div className="space-y-4">
+      <p className="text-xs font-bold text-slate-600">Tap the sensors that see the black line:</p>
+      <div className="grid grid-cols-2 gap-2.5">
         {sensors.map((s) => (
           <button
             key={s.key}
             onClick={() => toggle(s.key)}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-medium transition-colors ${
-              inputs[s.key] ? `${s.color} text-white border-transparent` : "bg-muted/40 text-muted-foreground border-border/40"
+            className={`kid-pill flex items-center gap-2 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${
+              inputs[s.key] ? `${s.color} text-white ${s.ring}` : "bg-white text-slate-500 border-slate-200"
             }`}
           >
-            <span className={`w-3 h-3 rounded-full ${inputs[s.key] ? "bg-white" : "bg-muted-foreground/30"}`} />
+            <span className={`w-3.5 h-3.5 rounded-full ${inputs[s.key] ? "bg-white" : "bg-slate-300"}`} />
             {s.label}
           </button>
         ))}
       </div>
-      <div className="rounded-lg bg-muted/40 border border-border/40 p-2.5 font-mono text-xs space-y-0.5">
-        <p>seen = {seen} → {seen === 0 ? "line lost" : seen === 4 ? "cross/finish" : "follow"}</p>
-        <p>error = {error}</p>
+      <div className="rounded-2xl bg-blue-50 border-2 border-blue-200 p-3 font-mono text-xs space-y-0.5">
+        <p className="text-slate-700">seen = {seen} → {seen === 0 ? "line lost" : seen === 4 ? "cross/finish" : "follow"}</p>
+        <p className="text-slate-700">error = {error}</p>
       </div>
     </div>
   );
@@ -420,59 +449,52 @@ function LineInputs({ inputs, setInputs }) {
 
 function MazeLineInputs({ inputs, setInputs }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="flex gap-2">
-        <button
-          onClick={() => setInputs({ ...inputs, replay: false })}
-          className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${!inputs.replay ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground"}`}
-        >
-          EXPLORE (D12 open)
-        </button>
-        <button
-          onClick={() => setInputs({ ...inputs, replay: true })}
-          className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${inputs.replay ? "bg-primary text-primary-foreground" : "bg-muted/40 text-muted-foreground"}`}
-        >
-          REPLAY (D12→GND)
-        </button>
+        <button onClick={() => setInputs({ ...inputs, replay: false })} className={`kid-pill flex-1 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${!inputs.replay ? "bg-blue-500 text-white border-blue-600" : "bg-white text-slate-500 border-slate-200"}`}>EXPLORE</button>
+        <button onClick={() => setInputs({ ...inputs, replay: true })} className={`kid-pill flex-1 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${inputs.replay ? "bg-orange-500 text-white border-orange-600" : "bg-white text-slate-500 border-slate-200"}`}>REPLAY</button>
       </div>
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" checked={inputs.allBlack} onChange={(e) => setInputs({ ...inputs, allBlack: e.target.checked })} className="accent-primary" />
-        <span className="text-xs font-medium text-foreground">All 4 sensors black (FINISH square)</span>
-      </label>
-      <p className="text-xs text-muted-foreground italic">
+      <button onClick={() => setInputs({ ...inputs, allBlack: !inputs.allBlack })} className={`kid-pill w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-2xl border-2 text-xs font-bold transition-colors ${inputs.allBlack ? "bg-green-500 text-white border-green-600" : "bg-white text-slate-500 border-slate-200"}`}>
+        <span className={`w-4 h-4 rounded-md border-2 ${inputs.allBlack ? "bg-white border-white" : "border-slate-300"}`} /> All 4 sensors black (FINISH)
+      </button>
+      <p className="text-xs text-slate-500 italic leading-relaxed">
         {inputs.replay
-          ? "Replay mode: the car follows the saved shortest path from EEPROM."
-          : "Explore mode: the car uses the Left-Hand Rule and records each turn, then simplifies dead ends (x B y → single turn)."}
+          ? "Replay mode: the car follows the saved shortest path from memory."
+          : "Explore mode: the car uses the Left-Hand Rule and records each turn, then removes dead ends."}
       </p>
     </div>
   );
 }
 
 function WallMazeInputs({ inputs, setInputs }) {
+  const dirs = [
+    { key: "left", label: "Left", color: "#16a34a", text: "text-green-600" },
+    { key: "front", label: "Front", color: "#2563eb", text: "text-blue-600" },
+    { key: "right", label: "Right", color: "#ea580c", text: "text-orange-600" },
+  ];
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { key: "left", label: "Left", color: "text-green-600" },
-          { key: "front", label: "Front", color: "text-blue-600" },
-          { key: "right", label: "Right", color: "text-orange-600" },
-        ].map((s) => (
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4">
+        {dirs.map((s) => (
           <div key={s.key}>
-            <label className={`text-xs font-bold ${s.color}`}>{s.label}: {inputs[s.key]}cm</label>
-            <input type="range" min="5" max="200" value={inputs[s.key]} onChange={(e) => setInputs({ ...inputs, [s.key]: +e.target.value })} className="w-full accent-primary" />
+            <div className="flex items-center justify-between mb-1.5">
+              <span className={`text-sm font-bold ${s.text}`}>{s.label}</span>
+              <span className="font-poppins font-extrabold text-slate-700">{inputs[s.key]} cm</span>
+            </div>
+            <input type="range" min="5" max="200" value={inputs[s.key]} onChange={(e) => setInputs({ ...inputs, [s.key]: +e.target.value })} className="kid-slider w-full" style={{ "--knob": s.color }} />
           </div>
         ))}
       </div>
-      <div className="rounded-lg bg-muted/40 border border-border/40 p-2.5 font-mono text-xs">
+      <div className="rounded-2xl bg-blue-50 border-2 border-blue-200 p-3 text-xs font-bold text-slate-700">
         {inputs.left > 150 && inputs.front > 150 && inputs.right > 150
-          ? "→ All open: EXIT reached!"
+          ? "All open: EXIT reached!"
           : inputs.left > 30
-          ? "→ LEFT open: turn left"
+          ? "LEFT open: turn left"
           : inputs.front > 30
-          ? "→ FRONT open: go straight"
+          ? "FRONT open: go straight"
           : inputs.right > 30
-          ? "→ RIGHT open: turn right"
-          : "→ Blocked: U-turn"}
+          ? "RIGHT open: turn right"
+          : "Blocked: U-turn"}
       </div>
     </div>
   );
@@ -484,6 +506,33 @@ const INPUT_CONFIGS = {
   C1: { defaults: { replay: false, allBlack: false }, Comp: MazeLineInputs },
   C2: { defaults: { left: 50, front: 50, right: 50 }, Comp: WallMazeInputs },
 };
+
+const KID_CSS = `
+.kid-slider{-webkit-appearance:none;appearance:none;height:16px;border-radius:999px;background:#eef2f7;outline:none;border:2px solid #d8e1ec}
+.kid-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:999px;background:var(--knob,#2563eb);border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);cursor:pointer;transition:transform .1s}
+.kid-slider::-webkit-slider-thumb:active{transform:scale(1.15)}
+.kid-slider::-moz-range-thumb{width:30px;height:30px;border-radius:999px;background:var(--knob,#2563eb);border:4px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);cursor:pointer}
+.kid-pill{transition:transform .1s}
+.kid-pill:active{transform:scale(.95)}
+`;
+
+function RobotFace({ color = "#2563eb" }) {
+  return (
+    <svg width="58" height="58" viewBox="0 0 64 64" className="flex-shrink-0">
+      <line x1="32" y1="3" x2="32" y2="13" stroke={color} strokeWidth="3" strokeLinecap="round" />
+      <circle cx="32" cy="6" r="4" fill="#f59e0b" />
+      <rect x="9" y="14" width="46" height="34" rx="13" fill={color} />
+      <rect x="5" y="25" width="6" height="12" rx="3" fill={color} />
+      <rect x="53" y="25" width="6" height="12" rx="3" fill={color} />
+      <circle cx="24" cy="28" r="4.5" fill="#fff" />
+      <circle cx="40" cy="28" r="4.5" fill="#fff" />
+      <circle cx="25" cy="29" r="2.2" fill="#1e293b" />
+      <circle cx="41" cy="29" r="2.2" fill="#1e293b" />
+      <path d="M24 38 Q32 44 40 38" stroke="#fff" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+      <rect x="26" y="48" width="12" height="4" rx="2" fill="#fff" opacity="0.85" />
+    </svg>
+  );
+}
 
 export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
   const [activeFlow, setActiveFlow] = useState(defaultFlow);
@@ -547,8 +596,9 @@ export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        These flowcharts match the actual code logic. Adjust the inputs below and watch the active path light up — or press Step to walk through the execution one node at a time.
+      <style>{KID_CSS}</style>
+      <p className="text-sm text-slate-600 leading-relaxed">
+        Move the knobs and watch the bright path light up. <span className="font-bold text-green-600">Green lines = "Yes"</span>, <span className="font-bold text-red-500">red lines = "No"</span>. Press Step to walk the robot through one choice at a time.
       </p>
 
       {/* Flow tabs */}
@@ -557,11 +607,11 @@ export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
           <button
             key={f.id}
             onClick={() => switchFlow(f.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-              activeFlow === f.id ? "bg-primary text-primary-foreground" : "bg-muted/40 text-foreground/70 hover:bg-muted/60"
+            className={`kid-pill px-4 py-2 rounded-2xl text-xs font-bold border-2 transition-colors ${
+              activeFlow === f.id ? "bg-blue-500 text-white border-blue-600 shadow" : "bg-white text-slate-600 border-slate-200 hover:border-blue-300"
             }`}
           >
-            {f.id}: {f.flow.name}
+            {f.flow.name}
           </button>
         ))}
       </div>
@@ -569,30 +619,36 @@ export default function ProgramFlowSimulator({ defaultFlow = "A" }) {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-2">
         {!stepMode ? (
-          <button onClick={startStep} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90">
-            <Play size={13} /> Step Through
+          <button onClick={startStep} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-green-500 text-white text-xs font-bold border-2 border-green-600 shadow hover:bg-green-600">
+            <Play size={14} /> Step Through
           </button>
         ) : (
           <>
-            <button onClick={() => setRunning(!running)} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90">
-              {running ? <Pause size={13} /> : <Play size={13} />} {running ? "Pause" : "Auto-play"}
+            <button onClick={() => setRunning(!running)} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-blue-500 text-white text-xs font-bold border-2 border-blue-600 shadow hover:bg-blue-600">
+              {running ? <Pause size={14} /> : <Play size={14} />} {running ? "Pause" : "Auto-play"}
             </button>
-            <button onClick={stepNext} disabled={running} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/60 text-foreground text-xs font-medium hover:bg-muted/80 disabled:opacity-50">
-              <StepForward size={13} /> Next Step
+            <button onClick={stepNext} disabled={running} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-orange-500 text-white text-xs font-bold border-2 border-orange-600 shadow hover:bg-orange-600 disabled:opacity-50">
+              <StepForward size={14} /> Next Step
             </button>
           </>
         )}
-        <button onClick={reset} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/40 text-foreground/70 text-xs font-medium hover:bg-muted/60">
-          <RotateCcw size={13} /> Reset
+        <button onClick={reset} className="kid-pill inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white text-slate-600 text-xs font-bold border-2 border-slate-200 hover:bg-slate-50">
+          <RotateCcw size={14} /> Reset
         </button>
-        {stepMode && <span className="text-xs text-muted-foreground">Step {stepIndex + 1} / {[...fullPath].length}</span>}
+        {stepMode && <span className="text-xs font-bold text-slate-500 ml-1">Step {stepIndex + 1} / {[...fullPath].length}</span>}
       </div>
 
-      {/* Flowchart + inputs */}
+      {/* Flowchart + Robot Controls */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <FlowchartSVG flow={flow} activePath={activePath} height={flowHeight} />
-        <Card className="p-4 border-border/60 shadow-sm">
-          <p className="font-poppins font-bold text-sm text-foreground mb-3">Simulated Inputs</p>
+        <Card className="p-5 border-2 border-orange-200 bg-gradient-to-b from-orange-50/70 to-white shadow-sm">
+          <div className="flex items-center gap-3 mb-4 pb-3 border-b border-orange-200/60">
+            <RobotFace color="#ea580c" />
+            <div>
+              <p className="font-poppins font-extrabold text-base text-slate-800">Robot Controls</p>
+              <p className="text-xs text-slate-500">Twist the knobs to change what the robot senses</p>
+            </div>
+          </div>
           <InputComp inputs={inputs} setInputs={setInputs} />
         </Card>
       </div>
