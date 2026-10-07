@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronDown, ChevronUp, Download, Clock, Cpu, Wrench, BookOpen, Lightbulb, AlertTriangle, Code, Zap } from "lucide-react";
+import {
+  ChevronLeft, ChevronDown, ChevronUp, Download, Clock, Cpu, Wrench,
+  BookOpen, Lightbulb, AlertTriangle, Code, Zap, Eye, Brain, Car as CarIcon,
+  Map, Sparkles, Rocket,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SMART_CAR } from "@/data/smartcarData";
@@ -8,16 +12,26 @@ import InteractiveWiringDiagram from "@/components/smartcar/InteractiveWiringDia
 import SmartCarSimulator from "@/components/smartcar/SmartCarSimulator";
 import ProgramFlowSimulator from "@/components/smartcar/ProgramFlowSimulator";
 import ChassisStlPreview from "@/components/smartcar/ChassisStlPreview";
+import EchoExplorer from "@/components/smartcar/EchoExplorer";
 
-function Section({ title, icon, children, defaultOpen = false, accent = "blue" }) {
+function Section({ title, kicker, icon, children, defaultOpen = false, accent = "blue" }) {
   const [open, setOpen] = useState(defaultOpen);
-  const accentBg = { blue: "bg-blue-50/50 border-blue-200", green: "bg-green-50/50 border-green-200", purple: "bg-purple-50/50 border-purple-200", amber: "bg-amber-50/50 border-amber-200" }[accent] || "bg-blue-50/50 border-blue-200";
+  const accentBg = {
+    blue: "bg-blue-50/50 border-blue-200",
+    green: "bg-green-50/50 border-green-200",
+    purple: "bg-purple-50/50 border-purple-200",
+    amber: "bg-amber-50/50 border-amber-200",
+    sky: "bg-sky-50/50 border-sky-200",
+  }[accent];
   return (
     <Card className={`overflow-hidden border ${accentBg} shadow-sm`}>
       <button onClick={() => setOpen(o => !o)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-muted/30 transition-colors text-left">
         <div className="flex items-center gap-2.5">
           <span className="text-base">{icon}</span>
-          <span className="font-poppins font-bold text-base text-foreground">{title}</span>
+          <div className="flex flex-col">
+            {kicker && <span className="text-[10px] uppercase tracking-wide font-bold text-muted-foreground">{kicker}</span>}
+            <span className="font-poppins font-bold text-base text-foreground">{title}</span>
+          </div>
         </div>
         {open ? <ChevronUp size={18} className="text-muted-foreground" /> : <ChevronDown size={18} className="text-muted-foreground" />}
       </button>
@@ -26,8 +40,9 @@ function Section({ title, icon, children, defaultOpen = false, accent = "blue" }
   );
 }
 
+// Kid-friendly code block: collapsed by default, labelled for older builders.
 function CodeBlock({ code, filename }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const handleCopy = () => { navigator.clipboard?.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); };
   return (
@@ -46,6 +61,11 @@ function CodeBlock({ code, filename }) {
           </button>
         </div>
       </div>
+      {!open && (
+        <button onClick={() => setOpen(true)} className="w-full px-4 py-2.5 bg-slate-100 text-xs text-slate-500 hover:bg-slate-200 transition-colors text-left">
+          🔒 For older builders — tap to {open ? "hide" : "show"} the code
+        </button>
+      )}
       {open && (
         <pre className="bg-slate-900 text-slate-100 text-xs leading-relaxed p-4 overflow-x-auto max-h-[600px]"><code>{code}</code></pre>
       )}
@@ -119,6 +139,21 @@ function DataTable({ headers, rows, renderRow }) {
   );
 }
 
+const HOW_CARDS = [
+  { icon: <Eye size={22} className="text-sky-600" />, color: "bg-sky-50 border-sky-200", title: "It SEES", body: "The car has an ultrasonic eye that sends a tiny sound beep we cannot hear. It listens for the echo. If the echo comes back fast, something is close!" },
+  { icon: <Brain size={22} className="text-purple-600" />, color: "bg-purple-50 border-purple-200", title: "It THINKS", body: "A small computer called Arduino is the brain. You write instructions for it, like 'if too close, stop and turn'. The brain decides what to do." },
+  { icon: <CarIcon size={22} className="text-blue-600" />, color: "bg-blue-50 border-blue-200", title: "It MOVES", body: "The brain tells the wheels to roll forward, backward, or turn. A part called the motor driver gives the wheels the power they need to spin." },
+];
+
+const ADVENTURE = [
+  { n: 1, icon: "📦", title: "Know your parts", body: "Lay out every piece and match it to its picture." },
+  { n: 2, icon: "🖨️", title: "Print the chassis", body: "If you have a 3D printer, print the plates (or use the kit plates)." },
+  { n: 3, icon: "🔧", title: "Build the base car", body: "Screw, plug and wire it up once. Then it is ready for all three games." },
+  { n: 4, icon: "🚗", title: "Game A: Dodge walls", body: "Make it drive and steer away from anything in its way." },
+  { n: 5, icon: "📏", title: "Game B: Follow the line", body: "Teach it to stick to a black tape path on the floor." },
+  { n: 6, icon: "🧩", title: "Game C: Escape the maze", body: "Help it solve a maze and remember the shortest way out." },
+];
+
 export default function SmartCarProject({ isPublic = false }) {
   const d = SMART_CAR;
   return (
@@ -130,21 +165,21 @@ export default function SmartCarProject({ isPublic = false }) {
       )}
 
       {/* Hero */}
-      <div className="relative rounded-3xl overflow-hidden min-h-[300px] shadow-xl">
+      <div className="relative rounded-3xl overflow-hidden min-h-[320px] shadow-xl">
         <img src={d.kitImage} alt={d.title} className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent" />
         <div className="relative z-10 p-7 md:p-10 flex flex-col gap-4 h-full justify-end">
           <div className="flex flex-wrap gap-2">
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-600 text-white">Robotics</span>
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-sm">Arduino</span>
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white">Beginner–Intermediate</span>
+            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-600 text-white">For young makers</span>
           </div>
-          <h1 className="font-poppins font-bold text-3xl md:text-5xl text-white leading-tight">{d.title}</h1>
-          <p className="text-white/80 text-sm md:text-base max-w-xl">{d.subtitle}</p>
-          <div className="flex flex-wrap gap-5 text-white/70 text-sm">
+          <h1 className="font-poppins font-bold text-3xl md:text-5xl text-white leading-tight">Build a robot car that thinks!</h1>
+          <p className="text-white/90 text-sm md:text-base max-w-xl">Your car can dodge walls, follow a line, and even escape a maze. Build it once, then teach it three cool games.</p>
+          <div className="flex flex-wrap gap-5 text-white/80 text-sm">
             <span className="flex items-center gap-1.5"><Clock size={15} /> {d.buildTime}</span>
             <span className="flex items-center gap-1.5"><Cpu size={15} /> {d.software}</span>
-            <span className="flex items-center gap-1.5"><Wrench size={15} /> 3 Projects</span>
+            <span className="flex items-center gap-1.5"><Wrench size={15} /> 3 Games</span>
           </div>
         </div>
       </div>
@@ -153,42 +188,68 @@ export default function SmartCarProject({ isPublic = false }) {
       <div className="grid grid-cols-1 gap-3">
         <a href={d.sketchesZipUrl} download>
           <Button variant="outline" className="w-full rounded-xl gap-2 border-blue-300 text-blue-700 hover:bg-blue-50">
-            <Download size={16} /> Download Arduino Sketches (ZIP)
+            <Download size={16} /> Get the Arduino code (ZIP)
           </Button>
         </a>
       </div>
 
-      {/* How to Use */}
-      <Card className="p-6 border-border/60 shadow-sm space-y-3">
-        <h2 className="font-poppins font-bold text-lg text-foreground flex items-center gap-2"><BookOpen size={18} /> How to Use This Module</h2>
-        <p className="text-sm text-foreground/80 leading-relaxed">{d.intro}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-          {[
-            { part: "Part 1: Know Your Kit", task: "Identify every component from the kit photo and learn what it does." },
-            { part: "Part 2: Build the Base Car", task: "19 numbered steps: mechanical chassis assembly, wiring to one master pin map, and two test sketches." },
-            { part: "Part 3: Project A", task: "Obstacle Avoidance Car using the HC-SR04 on the servo \"neck\"." },
-            { part: "Part 4: Project B", task: "Line-Following Robot using the 4-channel tracker with smooth PD steering." },
-            { part: "Part 5: Project C", task: "Maze Solver: C1 black-line maze with shortest-path learning, and C2 wall maze with ultrasonic scanning." },
-            { part: "Part 6: Troubleshooting", task: "Symptoms, causes and fixes, plus the full pin map and references." },
-          ].map((row, i) => (
-            <div key={i} className="p-3 rounded-lg bg-muted/30 border border-border/40">
-              <p className="font-poppins font-semibold text-xs text-foreground">{row.part}</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{row.task}</p>
+      {/* Meet your robot car */}
+      <Card className="p-6 border-border/60 shadow-sm space-y-4">
+        <div className="flex items-center gap-2">
+          <Sparkles size={18} className="text-primary" />
+          <h2 className="font-poppins font-bold text-lg text-foreground">Meet your robot car</h2>
+        </div>
+        <p className="text-sm text-foreground/80 leading-relaxed">A robot car is just three things working together. Get these three ideas and the rest is easy!</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {HOW_CARDS.map((c, i) => (
+            <div key={i} className={`rounded-2xl border ${c.color} p-4 space-y-2`}>
+              <div className="flex items-center gap-2">
+                {c.icon}
+                <span className="font-poppins font-bold text-sm text-foreground">{c.title}</span>
+              </div>
+              <p className="text-xs text-foreground/80 leading-relaxed">{c.body}</p>
             </div>
           ))}
         </div>
-        <p className="text-sm text-foreground/80 leading-relaxed pt-1">
-          Every project uses the same wiring, so you never need to rewire the car between projects. Only the sketch you upload changes. All six sketches use only libraries that come with the Arduino IDE.
-        </p>
       </Card>
 
-      {/* Part 1: Know Your Kit */}
-      <Section title="Part 1. Know Your Kit (Supplies)" icon="📦" defaultOpen={true} accent="blue">
-        <p className="text-sm text-muted-foreground leading-relaxed">Lay out every part on a clean table and tick it off. The photo is cut straight from the kit picture, so the parts should look the same as yours.</p>
+      {/* Try it: how the car sees */}
+      <Section title="Try it: how your car sees" kicker="Play before you build" icon="👁️" defaultOpen={true} accent="sky">
+        <p className="text-sm text-foreground/80 leading-relaxed">Before you build, play with the car's eye. Move the wall and watch how the car knows when to stop. This is exactly how the real sensor works.</p>
+        <EchoExplorer />
+      </Section>
+
+      {/* Your build adventure */}
+      <Section title="Your build adventure" kicker="The plan" icon="🗺️" defaultOpen={true} accent="blue">
+        <p className="text-sm text-foreground/80 leading-relaxed">{d.intro}</p>
+        <p className="text-sm text-foreground/80 leading-relaxed">Here is the whole adventure in six little steps. Tap a section below to open it and start building.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {ADVENTURE.map((s) => (
+            <div key={s.n} className="rounded-2xl border border-border/60 p-4 flex gap-3 items-start bg-white">
+              <span className="px-2.5 py-1 rounded-full bg-blue-600 text-white text-xs font-bold flex-shrink-0">{s.n}</span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{s.icon}</span>
+                  <p className="font-poppins font-bold text-xs text-foreground">{s.title}</p>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{s.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-2 items-start p-3 rounded-lg bg-blue-50 border border-blue-200">
+          <Lightbulb size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+          <p className="text-xs text-blue-800 leading-relaxed">Build the car ONCE. Then you only change the code for each game, you never rewire it. The code for older builders is hidden in little boxes you can open when you are ready.</p>
+        </div>
+      </Section>
+
+      {/* Stage 1: Know Your Kit */}
+      <Section title="Stage 1. Know your parts" kicker="What is in the box?" icon="📦" defaultOpen={true} accent="blue">
+        <p className="text-sm text-muted-foreground leading-relaxed">Lay every part on a clean table and tick it off. Your parts should look like the pictures.</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {d.parts.map((part, i) => (
             <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-white">
-            <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
+              <div className="w-28 h-28 flex-shrink-0 bg-white flex items-center justify-center p-3">
                 <img src={part.image} alt={part.name} className="max-h-20 w-auto h-auto object-contain rounded" />
               </div>
               <div className="p-3 space-y-1">
@@ -199,7 +260,7 @@ export default function SmartCarProject({ isPublic = false }) {
           ))}
         </div>
         <div className="pt-2">
-          <h3 className="font-poppins font-bold text-sm text-foreground mb-2">4WD Robot Chassis Parts</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground mb-2">The chassis pieces (the frame)</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {d.chassisAssembly.parts.map((part, i) => (
               <div key={i} className="rounded-xl border border-border/60 overflow-hidden shadow-sm flex bg-white">
@@ -219,7 +280,7 @@ export default function SmartCarProject({ isPublic = false }) {
           </div>
         </div>
         <div className="pt-2">
-          <p className="font-poppins font-semibold text-sm text-foreground mb-2">Extra tools and materials (not in the kit)</p>
+          <p className="font-poppins font-semibold text-sm text-foreground mb-2">Extra tools you also need (not in the kit)</p>
           <ul className="space-y-2">
             {d.extraTools.map((tool, i) => (
               <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
@@ -230,17 +291,16 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
       </Section>
 
-      {/* Part 2: 3D-Print the Chassis (Optional) */}
-      <Section title="Part 2. 3D-Print the Chassis (Optional)" icon="🖨️" defaultOpen={false} accent="purple">
+      {/* Stage 2: 3D-Print the Chassis */}
+      <Section title="Stage 2. Print the chassis (optional)" kicker="If you have a 3D printer" icon="🖨️" defaultOpen={false} accent="purple">
         <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.intro}</p>
         <a href={d.chassisPrintZipUrl} download>
           <Button variant="outline" className="w-full rounded-xl gap-2 border-purple-300 text-purple-700 hover:bg-purple-50">
-            <Download size={16} /> Download Chassis Print Files (ZIP)
+            <Download size={16} /> Download the print files (ZIP)
           </Button>
         </a>
         <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.thicknessNote}</p>
 
-        {/* Print files table */}
         <div className="pt-1 space-y-2">
           <h3 className="font-poppins font-bold text-sm text-foreground">The print files</h3>
           <DataTable
@@ -263,7 +323,6 @@ export default function SmartCarProject({ isPublic = false }) {
           <p className="text-xs text-muted-foreground italic">Figure 3. No separate bed-fit image is needed. Use the interactive 3D preview above to check each file's real shape and size against your printer bed before you print.</p>
         </div>
 
-        {/* Choose your version */}
         <div className="pt-2 space-y-2">
           <h3 className="font-poppins font-bold text-sm text-foreground">Choose your version</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -300,7 +359,6 @@ export default function SmartCarProject({ isPublic = false }) {
           />
         </div>
 
-        {/* Print settings */}
         <div className="pt-2 space-y-2">
           <h3 className="font-poppins font-bold text-sm text-foreground">Recommended print settings</h3>
           <DataTable
@@ -315,13 +373,11 @@ export default function SmartCarProject({ isPublic = false }) {
           />
         </div>
 
-        {/* Steps */}
         <div className="pt-2 space-y-3">
           <h3 className="font-poppins font-bold text-sm text-foreground">Print and prepare the parts</h3>
           {d.chassisPrint.steps.map(step => <StepCard key={step.num} step={step} />)}
         </div>
 
-        {/* Compact 2WD */}
         <div className="pt-2 space-y-3">
           <h3 className="font-poppins font-bold text-sm text-foreground">{d.chassisPrint.compact2wd.title}</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{d.chassisPrint.compact2wd.desc}</p>
@@ -340,8 +396,8 @@ export default function SmartCarProject({ isPublic = false }) {
         </div>
       </Section>
 
-      {/* Part 2: Build the Base Car */}
-      <Section title="Part 2. Build the Base Car" icon="🔧" defaultOpen={false} accent="blue">
+      {/* Stage 3: Build the Base Car */}
+      <Section title="Stage 3. Build the base car" kicker="Screw, plug, wire" icon="🔧" defaultOpen={false} accent="blue">
         <p className="text-sm text-muted-foreground leading-relaxed">{d.baseCar.intro}</p>
         <div className="rounded-2xl overflow-hidden border border-border/60">
           <div className="bg-muted/20 p-4 flex items-center justify-center">
@@ -353,10 +409,9 @@ export default function SmartCarProject({ isPublic = false }) {
           {d.chassisAssembly.steps.map(step => <StepCard key={'chassis-'+step.num} step={step} />)}
           {d.baseCar.steps.map(step => <StepCard key={'base-'+step.num} step={{...step, num: step.num + 5}} />)}
         </div>
-        {/* Power Wiring */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 16: Power Wiring</h3>
-          <p className="text-sm text-foreground/80 leading-relaxed">Power is where most beginner cars fail, so read this step twice. All grounds must be connected together: battery minus, L298N GND and Arduino GND.</p>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 16: Connect the power</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">Power is where most cars fail, so read this twice. All the grounds (minus wires) must join together.</p>
           <DataTable
             headers={["Connection", "From", "To"]}
             rows={d.baseCar.powerWiring}
@@ -373,12 +428,11 @@ export default function SmartCarProject({ isPublic = false }) {
             <p className="text-xs text-red-800 leading-relaxed">{d.baseCar.powerCaution}</p>
           </div>
         </div>
-        {/* Pin Map */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 17: Signal Wiring (Master Pin Map)</h3>
-          <p className="text-sm text-foreground/80 leading-relaxed">Use the Dupont wires to connect everything below. This single pin map is used by all six sketches in this module.</p>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 17: Wire the signals (the one master map)</h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">Use the jumper wires to connect everything below. This same map is used by all three games, so you only wire once.</p>
           <InteractiveWiringDiagram />
-          <p className="text-xs text-muted-foreground italic">Figure 3. Interactive master wiring diagram — hover or click any wire.</p>
+          <p className="text-xs text-muted-foreground italic">Figure 3. Tap any wire to see what it does.</p>
           <DataTable
             headers={["Module pin", "Shield / UNO pin", "Wire colour", "Used in"]}
             rows={d.baseCar.pinMap}
@@ -396,43 +450,36 @@ export default function SmartCarProject({ isPublic = false }) {
             <p className="text-xs text-amber-800 leading-relaxed">{d.baseCar.pinMapNote}</p>
           </div>
         </div>
-        {/* Motor Test */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 18: Upload and run the Motor Test</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 18: Test the motors</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{d.baseCar.motorTestDesc}</p>
           <CodeBlock code={d.baseCar.motorTestCode} filename="00_MotorTest.ino" />
         </div>
-        {/* Sensor Test */}
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 19: Upload and run the Sensor Test</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">STEP 19: Test the sensors</h3>
           <p className="text-sm text-foreground/80 leading-relaxed">{d.baseCar.sensorTestDesc}</p>
           <CodeBlock code={d.baseCar.sensorTestCode} filename="01_SensorTest.ino" />
         </div>
         <div className="flex gap-2 items-start p-3 rounded-lg bg-green-50 border border-green-200">
-          <Lightbulb size={14} className="text-green-600 flex-shrink-0 mt-0.5" />
+          <Rocket size={14} className="text-green-600 flex-shrink-0 mt-0.5" />
           <p className="text-xs text-green-800 leading-relaxed">{d.baseCar.baseCarTip}</p>
         </div>
       </Section>
 
-      {/* Interactive Simulations */}
-      <Section title="Interactive Simulations — Understand the Math & Science" icon="⚡" defaultOpen={false} accent="purple">
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          Before uploading code, explore how each algorithm works. Adjust the sliders and watch the math change in real time.
-        </p>
+      {/* Explore: how it works */}
+      <Section title="Explore: how the maths works" kicker="Play and learn" icon="⚡" defaultOpen={false} accent="purple">
+        <p className="text-sm text-muted-foreground leading-relaxed">Before you upload code, play with these. Move the sliders and watch how distance, speed and steering change in real time.</p>
         <SmartCarSimulator />
       </Section>
 
-      {/* Interactive Program Flows */}
-      <Section title="Interactive Program Flows — Step Through the Code Logic" icon="🔀" defaultOpen={false} accent="green">
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          These flowcharts match the actual Arduino sketches. Change the inputs and watch the active path light up, or press Step Through to walk the code one decision at a time.
-        </p>
+      <Section title="Explore: follow the code logic" kicker="Step through the thinking" icon="🔀" defaultOpen={false} accent="green">
+        <p className="text-sm text-muted-foreground leading-relaxed">These maps match the real code. Change the inputs and watch the bright path, or press Step Through to walk it one choice at a time.</p>
         <ProgramFlowSimulator />
       </Section>
 
-      {/* Projects A, B, C */}
+      {/* Games A, B, C */}
       {d.projects.map((proj) => (
-        <Section key={proj.key} title={proj.title} icon={proj.key === "A" ? "🚗" : proj.key === "B" ? "📏" : "🧩"} defaultOpen={false} accent={proj.key === "A" ? "green" : proj.key === "B" ? "purple" : "amber"}>
+        <Section key={proj.key} title={proj.title} kicker={`Game ${proj.key}`} icon={proj.key === "A" ? "🚗" : proj.key === "B" ? "📏" : "🧩"} defaultOpen={false} accent={proj.key === "A" ? "green" : proj.key === "B" ? "purple" : "amber"}>
           {proj.howItWorks && <p className="text-sm text-foreground/80 leading-relaxed">{proj.howItWorks}</p>}
           {proj.flowchartImage && (
             <div className="space-y-2">
@@ -521,7 +568,7 @@ export default function SmartCarProject({ isPublic = false }) {
           {proj.code && <CodeBlock code={proj.code} filename={proj.key === "A" ? "A_ObstacleAvoidance.ino" : proj.key === "B" ? "B_LineFollower.ino" : ""} />}
           {proj.tuningTable && (
             <div className="pt-2 space-y-3">
-              <h3 className="font-poppins font-bold text-sm text-foreground">Tuning Guide</h3>
+              <h3 className="font-poppins font-bold text-sm text-foreground">Tuning guide</h3>
               <DataTable
                 headers={["Setting", "Default", "Effect when increased"]}
                 rows={proj.tuningTable}
@@ -537,7 +584,7 @@ export default function SmartCarProject({ isPublic = false }) {
           )}
           {proj.challenges && (
             <div className="pt-2 space-y-2">
-              <h3 className="font-poppins font-bold text-sm text-foreground flex items-center gap-2"><Lightbulb size={14} /> Challenges</h3>
+              <h3 className="font-poppins font-bold text-sm text-foreground flex items-center gap-2"><Rocket size={14} /> Try these next</h3>
               <ul className="space-y-2">
                 {proj.challenges.map((c, i) => (
                   <li key={i} className="flex gap-2.5 text-sm text-foreground/80 leading-relaxed">
@@ -550,10 +597,11 @@ export default function SmartCarProject({ isPublic = false }) {
         </Section>
       ))}
 
-      {/* Part 6: Troubleshooting */}
-      <Section title="Part 6. Troubleshooting and Reference" icon="🛠️" defaultOpen={false} accent="amber">
+      {/* Oops: Troubleshooting */}
+      <Section title="Oops! Troubleshooting" kicker="When something is wrong" icon="🛠️" defaultOpen={false} accent="amber">
+        <p className="text-sm text-muted-foreground leading-relaxed">Cars acting weird? Find your problem in the list below and try the fix.</p>
         <DataTable
-          headers={["Symptom", "Likely cause", "Fix"]}
+          headers={["What is wrong", "Likely cause", "How to fix it"]}
           rows={d.troubleshooting}
           renderRow={(row, i) => (
             <tr key={i} className="hover:bg-muted/20">
@@ -564,9 +612,9 @@ export default function SmartCarProject({ isPublic = false }) {
           )}
         />
         <div className="pt-2 space-y-3">
-          <h3 className="font-poppins font-bold text-sm text-foreground">Sketch files in this module</h3>
+          <h3 className="font-poppins font-bold text-sm text-foreground">The code files in this kit</h3>
           <DataTable
-            headers={["Sketch", "Purpose"]}
+            headers={["Sketch", "What it does"]}
             rows={d.sketchList}
             renderRow={(row, i) => (
               <tr key={i} className="hover:bg-muted/20">
