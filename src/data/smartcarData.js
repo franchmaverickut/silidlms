@@ -34,6 +34,9 @@ const IMG = {
   stlMount: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/42945bf2b_motor_mount.stl",
   figThreeWays: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/1cebea698_image1.png",
   figBedFit: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/3d95e67e8_image2.png",
+  figOption1: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/1c0382456_Option_1_One_Piece_4WD_Dimensions.png",
+  figOption2: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8aef97bf9_Option_2_Two_Piece_4WD_Part_A_and_B_Dimensions.png",
+  figOption3: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/1fa68907f_Option_3_Compact_2WD_Dimensions.png",
   figDovetail: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/b65292387_image3.png",
   figMountDims: "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/ad235f379_image4.png",
   // 4WD Robot Chassis — illustrated assembly assets
@@ -122,6 +125,9 @@ export const SMART_CAR = {
     figures: {
       threeWays: IMG.figThreeWays,
       bedFit: IMG.figBedFit,
+      option1: IMG.figOption1,
+      option2: IMG.figOption2,
+      option3: IMG.figOption3,
       dovetail: IMG.figDovetail,
       mountDims: IMG.figMountDims,
     },

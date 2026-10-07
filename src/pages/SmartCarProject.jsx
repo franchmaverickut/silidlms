@@ -260,23 +260,30 @@ export default function SmartCarProject({ isPublic = false }) {
             <p className="text-xs text-blue-800 leading-relaxed">{d.chassisPrint.filesNote}</p>
           </div>
           <ChassisStlPreview files={d.chassisPrint.stlPreviews} />
+          <p className="text-xs text-muted-foreground italic">Figure 3. No separate bed-fit image is needed. Use the interactive 3D preview above to check each file's real shape and size against your printer bed before you print.</p>
         </div>
 
         {/* Choose your version */}
         <div className="pt-2 space-y-2">
           <h3 className="font-poppins font-bold text-sm text-foreground">Choose your version</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-4 flex items-center justify-center">
-                <img src={d.chassisPrint.figures.threeWays} alt="Three ways to use the files" className="max-h-56 w-auto object-contain rounded-lg" />
+              <div className="bg-muted/20 p-3 flex items-center justify-center">
+                <img src={d.chassisPrint.figures.option1} alt="Option 1 one-piece 4WD" className="max-h-64 w-auto object-contain rounded-lg" />
               </div>
-              <p className="p-3 text-xs text-muted-foreground italic">Figure 2. The three ways to use the files. Dimensions are taken from the STL files.</p>
+              <p className="p-3 text-xs text-muted-foreground italic">Figure 2a. Option 1: one-piece 4WD plate, 150 × 257 mm.</p>
             </div>
             <div className="rounded-2xl overflow-hidden border border-border/60">
-              <div className="bg-muted/20 p-4 flex items-center justify-center">
-                <img src={d.chassisPrint.figures.bedFit} alt="How each file fits on bed sizes" className="max-h-56 w-auto object-contain rounded-lg" />
+              <div className="bg-muted/20 p-3 flex items-center justify-center">
+                <img src={d.chassisPrint.figures.option2} alt="Option 2 two-piece 4WD" className="max-h-64 w-auto object-contain rounded-lg" />
               </div>
-              <p className="p-3 text-xs text-muted-foreground italic">Figure 3. How each file fits on common bed sizes.</p>
+              <p className="p-3 text-xs text-muted-foreground italic">Figure 2b. Option 2: Part A and Part B join with a dovetail, 150 × 120 + 151 mm.</p>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-border/60">
+              <div className="bg-muted/20 p-3 flex items-center justify-center">
+                <img src={d.chassisPrint.figures.option3} alt="Option 3 compact 2WD" className="max-h-64 w-auto object-contain rounded-lg" />
+              </div>
+              <p className="p-3 text-xs text-muted-foreground italic">Figure 2c. Option 3: compact 2WD uses Part B plus a ball caster, 150 × 151 mm.</p>
             </div>
           </div>
           <DataTable
