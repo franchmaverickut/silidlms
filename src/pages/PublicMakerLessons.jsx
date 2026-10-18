@@ -22,6 +22,7 @@ const HARDCODED_STEM = [
   { href: "/share/maker/69ec1418ba193ce56e0c5863", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/6b2dca797_Whistles.png", title: "Whistles", desc: "Design and build functional whistles while exploring sound and airflow", badges: [{ label: "3D Printing", color: "bg-orange-500" }, { label: "Intermediate", color: "bg-amber-500" }, { label: "STEM", color: "bg-white/20" }] },
   { href: "/share/maker/69ec1418ba193ce56e0c5864", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/8906f1ab3_SuspensionBridges.png", title: "Suspension Bridges", desc: "Design and model a suspension bridge to understand structural engineering concepts", badges: [{ label: "3D Printing", color: "bg-orange-500" }, { label: "Intermediate", color: "bg-amber-500" }, { label: "STEM", color: "bg-white/20" }] },
   { href: "/share/lunar-rover", img: "https://media.base44.com/images/public/69d386ad9523e2ce04536574/5b5bdf333_Step_12_Mount_Solar_Panels_Completed_Rover.png", title: "Solar Lunar Rover", desc: "3D-print every part and build a sun-powered rover with gears, a motor and solar panels.", badges: [{ label: "3D Printing", color: "bg-amber-500" }, { label: "Beginner", color: "bg-green-600" }, { label: "STEM", color: "bg-white/20" }] },
+  { href: "/share/getting-started-3d-printing", img: "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/8c10815bf_GettingStartedwithYour3DPrinter-IntroVideo.mp4", title: "Getting Started with Your 3D Printer", desc: "Learn the fundamentals of FFF 3D printing through videos, then take a quiz and earn a certificate.", badges: [{ label: "Course", color: "bg-orange-500" }, { label: "Beginner", color: "bg-green-600" }, { label: "STEM", color: "bg-white/20" }], isVideo: true },
 ];
 
 async function fetchGallery() {
@@ -77,14 +78,20 @@ const ProjectCard = memo(function ProjectCard({ title, description, img, href, s
 });
 
 // ── Hardcoded static card (same markup style as LMS) ────────────────────────
-function StaticHeroCard({ href, img, alt, badges, title, description }) {
+function StaticHeroCard({ href, img, alt, badges, title, description, isVideo }) {
   return (
     <Link to={href} className="block group">
       <div className="relative rounded-2xl overflow-hidden h-44 shadow-sm border border-gray-200 hover:shadow-md transition-all">
-        <img src={img} alt={alt} loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          onError={e => { e.currentTarget.style.display = "none"; }}
-        />
+        {isVideo ? (
+          <video src={img} muted preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <img src={img} alt={alt} loading="lazy"
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={e => { e.currentTarget.style.display = "none"; }}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
         <div className="relative z-10 p-5 h-full flex flex-col justify-end">
           <div className="flex gap-2 mb-2">
@@ -147,7 +154,7 @@ export default function PublicMakerLessons() {
 
           {/* All STEM projects — fully hardcoded for reliability */}
           {HARDCODED_STEM.map(p => (
-            <StaticHeroCard key={p.href} href={p.href} img={p.img} alt={p.title} badges={p.badges} title={p.title} description={p.desc} />
+            <StaticHeroCard key={p.href} href={p.href} img={p.img} alt={p.title} badges={p.badges} title={p.title} description={p.desc} isVideo={p.isVideo} />
           ))}
         </section>
 

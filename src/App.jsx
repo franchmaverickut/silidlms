@@ -48,6 +48,7 @@ import TinkercadFundamentalsProject from '@/pages/TinkercadFundamentalsProject';
 import DesigningFor3DPrintingProject from '@/pages/DesigningFor3DPrintingProject';
 import SmartCarProject from '@/pages/SmartCarProject';
 import LunarRoverProject from '@/pages/LunarRoverProject';
+import GettingStartedProject from '@/pages/GettingStartedProject';
 import ScrollToTop from "@/components/ScrollToTop";
 
 const AuthenticatedApp = () => {
@@ -106,6 +107,7 @@ const AuthenticatedApp = () => {
       <Route path="/maker/designing-for-3d-printing" element={<DesigningFor3DPrintingProject />} />
       <Route path="/maker/smart-car-kit" element={<SmartCarProject />} />
       <Route path="/maker/lunar-rover" element={<LunarRoverProject />} />
+      <Route path="/maker/getting-started-3d-printing" element={<GettingStartedProject />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
@@ -135,6 +137,7 @@ function App() {
           <Route path="/share/designing-for-3d-printing" element={<DesigningFor3DPrintingProject isPublic={true} />} />
           <Route path="/share/smart-car-kit" element={<SmartCarProject isPublic={true} />} />
           <Route path="/share/lunar-rover" element={<LunarRoverProject isPublic={true} />} />
+          <Route path="/share/getting-started-3d-printing" element={<GettingStartedProject isPublic={true} />} />
           <Route path="/share/tinkercad-fundamentals" element={<TinkercadFundamentalsProject isPublic={true} />} />
           <Route path="*" element={
             <AuthProvider>
