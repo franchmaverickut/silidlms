@@ -174,50 +174,6 @@ export default function MakerLessons() {
             </div>
           ))}
 
-          {/* Community Feature Projects */}
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pt-2">Community Projects</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* RC Car */}
-            <div className="relative group">
-              <Link to="/maker/69ddcb95e60c3666ca2a34f8" className="block">
-                <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                  <img src="https://media.base44.com/images/public/69d386ad9523e2ce04536574/91c30fc60_CoverPhoto1.jpg" alt="3D Printed RC Car" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                  <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                    <div className="flex gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-orange-500 text-white">3D Printing</span>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-600 text-white">Advanced</span>
-                    </div>
-                    <h3 className="font-poppins font-bold text-base text-white">3D Printed RC Car</h3>
-                    <p className="text-white/70 text-xs">Design, print, and assemble a fully functional RC car.</p>
-                  </div>
-                </div>
-              </Link>
-              <button onClick={() => copyShare("maker/69ddcb95e60c3666ca2a34f8", "3D RC Car")} className="absolute top-2 right-2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-                <Share2 size={11} /> Share
-              </button>
-            </div>
-            {/* uArm */}
-            <div className="relative group">
-              <Link to="/maker/69ddcb95e60c3666ca2a34f9" className="block">
-                <div className="relative rounded-2xl overflow-hidden h-40 shadow-sm border border-border/60 hover:shadow-md transition-all">
-                  <img src="https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/8764ae1e8_IMG_0296.jpeg" alt="UArm Miniature Palletizing Robot Arm" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-                  <div className="relative z-10 p-5 h-full flex flex-col justify-end">
-                    <div className="flex gap-2 mb-2">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-600 text-white">Robotics</span>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-red-600 text-white">Advanced</span>
-                    </div>
-                    <h3 className="font-poppins font-bold text-base text-white">UArm Palletizing Robot Arm</h3>
-                    <p className="text-white/70 text-xs">Build a miniature robotic arm with Arduino.</p>
-                  </div>
-                </div>
-              </Link>
-              <button onClick={() => copyShare("maker/69ddcb95e60c3666ca2a34f9", "UArm Robot Arm")} className="absolute top-2 right-2 z-20 bg-black/50 hover:bg-black/70 text-white rounded-lg px-2 py-1 text-xs flex items-center gap-1 backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
-                <Share2 size={11} /> Share
-              </button>
-            </div>
-          </div>
         </div>
       )}
 
