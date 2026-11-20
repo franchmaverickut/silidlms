@@ -82,6 +82,12 @@
     .lesson-item { display: flex; align-items: center; gap: 14px; padding: 12px 22px; border-bottom: 1px solid #f5f0eb; transition: background 0.12s; }
     .lesson-item:last-child { border-bottom: none; }
     .lesson-item:hover { background: #faf8f5; }
+    .topic-row { cursor: pointer; user-select: none; }
+    .topic-row:hover { filter: brightness(0.97); }
+    .topic-row:focus-visible { outline: 2px solid #f97316; outline-offset: -2px; }
+    .topic-chevron { margin-left: auto; color: #b45309; font-size: 16px; transition: transform 0.2s; flex-shrink: 0; }
+    .topic-row.open .topic-chevron { transform: rotate(180deg); }
+    .lesson-item.topic-hidden { display: none; }
     .lesson-num { width: 26px; height: 26px; border-radius: 50%; background: #fff7ed; border: 1px solid #fed7aa; color: #f97316; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Poppins', sans-serif; }
     .lesson-type-icon { font-size: 14px; flex-shrink: 0; width: 20px; text-align: center; }
     .lesson-info { flex: 1; min-width: 0; }
@@ -108,7 +114,8 @@
     @media print {
       body { background: white; }
       .section-body { display: block !important; }
-      .chevron { display: none; }
+      .chevron, .topic-chevron { display: none; }
+      .lesson-item.topic-hidden { display: flex !important; }
     }
   </style>
 </head>
@@ -675,6 +682,53 @@
     body.classList.toggle('open', !isOpen);
     chevron.classList.toggle('open', !isOpen);
   }
+
+  // Make each topic row (T1, T2, …) expand/collapse the lessons below it.
+  document.querySelectorAll('.lessons-list').forEach(function (list) {
+    var current = null;
+    Array.prototype.forEach.call(list.children, function (li) {
+      var num = li.querySelector('.lesson-num');
+      var isTopic = num && /^T\d/.test(num.textContent.trim());
+      if (isTopic) {
+        current = { row: li, lessons: [] };
+        li.classList.add('topic-row');
+        li.setAttribute('role', 'button');
+        li.setAttribute('tabindex', '0');
+        li.setAttribute('aria-expanded', 'false');
+        var chev = document.createElement('span');
+        chev.className = 'topic-chevron';
+        chev.textContent = '▾';
+        li.appendChild(chev);
+        (function (topic) {
+          var toggle = function () {
+            var open = !topic.row.classList.contains('open');
+            topic.row.classList.toggle('open', open);
+            topic.row.setAttribute('aria-expanded', String(open));
+            topic.lessons.forEach(function (l) { l.classList.toggle('topic-hidden', !open); });
+          };
+          li.addEventListener('click', function () { if (topic.lessons.length) toggle(); });
+          li.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+          });
+        })(current);
+      } else if (current) {
+        current.lessons.push(li);
+        li.classList.add('topic-hidden');
+      }
+    });
+    // Topic rows with no lessons beneath them don't need a toggle.
+    list.querySelectorAll('.topic-row').forEach(function (row) {
+      var next = row.nextElementSibling;
+      if (!next || next.classList.contains('topic-row')) {
+        row.classList.remove('topic-row');
+        row.removeAttribute('role');
+        row.removeAttribute('tabindex');
+        row.removeAttribute('aria-expanded');
+        var c = row.querySelector('.topic-chevron');
+        if (c) c.remove();
+      }
+    });
+  });
 </script>
 </body>
 </html>
