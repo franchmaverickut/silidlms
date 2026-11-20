@@ -2,36 +2,48 @@ import { useState } from "react";
 import { CheckCircle2, XCircle, Trophy, RotateCcw, Award, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QUIZ } from "@/data/gettingStartedData";
+import { jsPDF } from "jspdf";
+import { loadLogoDataUrl } from "@/lib/watermark";
 
 const PASS_PERCENT = 70;
 
-function downloadCertificate(scorePercent) {
-  const name = "Maker";
-  const date = new Date().toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-  const lines = [
-    "CERTIFICATE OF COMPLETION",
-    "",
-    "This certifies that",
-    name,
-    "has successfully completed the course",
-    '"Getting Started with Your 3D Printer"',
-    "",
-    `Final Score: ${scorePercent}%`,
-    `Date: ${date}`,
-    "",
-    "SilidLMS Maker Curriculum",
-  ];
-  const blob = new Blob([lines.join("\n")], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "3D-Printer-Certificate.txt";
-  a.click();
-  URL.revokeObjectURL(url);
+async function downloadCertificate(scorePercent) {
+  const date = new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  const logo = await loadLogoDataUrl();
+  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+  const W = 297;
+
+  // Faint centered watermark
+  doc.setGState(new doc.GState({ opacity: 0.07 }));
+  doc.addImage(logo, "PNG", W / 2 - 90, 70, 180, 70);
+  doc.setGState(new doc.GState({ opacity: 1 }));
+
+  // Header logo
+  doc.addImage(logo, "PNG", W / 2 - 25, 14, 50, 19.5);
+
+  doc.setTextColor(31, 36, 46);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(28);
+  doc.text("CERTIFICATE OF COMPLETION", W / 2, 58, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(14);
+  doc.text("This certifies that", W / 2, 78, { align: "center" });
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(24);
+  doc.text("Maker", W / 2, 94, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(14);
+  doc.text("has successfully completed the course", W / 2, 110, { align: "center" });
+  doc.setFont("helvetica", "bold");
+  doc.text('"Getting Started with Your 3D Printer"', W / 2, 122, { align: "center" });
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.text(`Final Score: ${scorePercent}%     Date: ${date}`, W / 2, 142, { align: "center" });
+  doc.setFontSize(10);
+  doc.setTextColor(120, 120, 120);
+  doc.text("SilidLMS Maker Curriculum  |  Content by LIVRO Systems Inc.", W / 2, 190, { align: "center" });
+
+  doc.save("3D-Printer-Certificate.pdf");
 }
 
 export default function GettingStartedQuiz() {

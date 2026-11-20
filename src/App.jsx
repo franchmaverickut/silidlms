@@ -50,6 +50,7 @@ import SmartCarProject from '@/pages/SmartCarProject';
 import LunarRoverProject from '@/pages/LunarRoverProject';
 import GettingStartedProject from '@/pages/GettingStartedProject';
 import ScrollToTop from "@/components/ScrollToTop";
+import ContentWatermark from "@/components/ContentWatermark";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -119,6 +120,7 @@ function App() {
     <QueryClientProvider client={queryClientInstance}>
       <Router>
         <ScrollToTop />
+        <ContentWatermark />
         <Routes>
           <Route path="/share/course/:id" element={<PublicCourseViewer />} />
           <Route path="/share/maker/:id" element={<PublicMakerLessonViewer />} />

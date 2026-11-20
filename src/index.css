@@ -92,6 +92,27 @@
   body {
     @apply bg-background text-foreground font-inter;
   }
+
+  /* LIVRO watermark: small corner logo over every playable video and video embed.
+     :where() keeps specificity at zero so existing positioning classes still win. */
+  :where(*:has(> video[controls]), *:has(> iframe[src*="youtube"]), *:has(> iframe[src*="vimeo"]), *:has(> iframe[src*="drive.google"])) {
+    position: relative;
+  }
+  *:has(> video[controls])::after,
+  *:has(> iframe[src*="youtube"])::after,
+  *:has(> iframe[src*="vimeo"])::after,
+  *:has(> iframe[src*="drive.google"])::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 88px;
+    height: 35px;
+    background: url("https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/66c2d2db7_livro-logo.png") center / contain no-repeat;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 5;
+  }
   h1, h2, h3, h4, h5, h6 {
     @apply font-poppins;
   }
