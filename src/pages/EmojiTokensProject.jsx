@@ -18,7 +18,8 @@ const IMG_STEP3 = "https://media.base44.com/images/public/69d386ad9523e2ce045365
 const IMG_STEP4 = "https://media.base44.com/images/public/69d386ad9523e2ce04536574/18dcd4486_STEP4-Use.png";
 
 const PORTFOLIO_URL = "https://docs.google.com/presentation/d/1MwPTeClDyl_uXPpKisTIxu1HIAhkJGHwmh4Ksf4sfZI/edit?slide=id.g1c4697c0878_0_68#slide=id.g1c4697c0878_0_68";
-const TUTORIAL_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9d7cd95ce_EmojiTokens-ExplainerVideof.mp4";
+const INTRO_VIDEO = "https://media.base44.com/videos/public/69d386ad9523e2ce04536574/9d7cd95ce_EmojiTokens-ExplainerVideof.mp4";
+const TUTORIAL_VIDEO = "https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/48d9db32b_EmojiTokens-TinkercadTutorial.mp4";
 
 function Section({ title, icon, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -114,6 +115,9 @@ export default function EmojiTokensProject({ isPublic = false }) {
         <p className="text-xs text-muted-foreground mt-3 italic">
           * This project guides you through the design process using a series of design methods. If you'd like to adapt the project or challenge yourself to take an alternative approach, feel free to select different methods from the Design Method Toolkit.
         </p>
+        <div className="rounded-2xl overflow-hidden aspect-video bg-black mt-4">
+          <video src={INTRO_VIDEO} className="w-full h-full" controls preload="metadata" title="Emoji Tokens Introduction Video" />
+        </div>
       </Card>
 
       {/* Criteria + Constraints */}
@@ -182,7 +186,7 @@ export default function EmojiTokensProject({ isPublic = false }) {
             className="w-full h-full"
             controls
             preload="metadata"
-            title="Emoji Tokens Explainer Video"
+            title="Emoji Tokens Tinkercad Tutorial"
           />
         </div>
       </Section>
