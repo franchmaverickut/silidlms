@@ -109,7 +109,8 @@
     width: 88px;
     height: 35px;
     background: url("https://base44.app/api/apps/69d386ad9523e2ce04536574/files/mp/public/69d386ad9523e2ce04536574/66c2d2db7_livro-logo.png") center / contain no-repeat;
-    opacity: 0.6;
+    opacity: 0.25;
+    filter: grayscale(1);
     pointer-events: none;
     z-index: 5;
   }
