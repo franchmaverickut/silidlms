@@ -1,0 +1,1236 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Round 2WD Smart Car</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&family=Lexend:wght@400;600;700&display=swap">
+<style>
+/* Layout: a design review sheet. The 3D model fills the left (top on phones),
+   the review panel sits beside it. Same paper look as the 4WD manual:
+   white stock, black line art, one signal-orange highlight for printed parts. */
+:root {
+  --paper: #fbfbf8;
+  --sheet: #ffffff;
+  --ink: #161616;
+  --ink-2: #4b4b46;
+  --ink-3: #8a8a84;
+  --rule: #dddcd5;
+  --wash: #f2f1ec;
+  --accent: #ef5a1c;
+  --accent-ink: #b8400e;
+  --accent-soft: #ffe6da;
+  --ok: #12804a;
+  --ok-soft: #e3f4ea;
+  --warn-soft: #fff3d6;
+  --warn-ink: #8a5a00;
+  --font-display: "Lexend", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --line: 1.5px solid var(--ink);
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 15.5px; line-height: 1.45; overflow: hidden; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+#app { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.topbar { display: flex; align-items: center; gap: 10px; padding-block: 8px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); background: var(--sheet); border-bottom: var(--line); min-width: 0; }
+.brand { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.brand b { font-family: var(--font-display); font-weight: 700; font-size: 15px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand span { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg { display: inline-flex; border: var(--line); border-radius: 999px; overflow: hidden; flex: none; }
+.seg button { border: 0; background: transparent; padding: 5px 10px; font-family: var(--font-display); font-size: 12px; font-weight: 600; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.chipbtn { border: var(--line); background: #fff; border-radius: 999px; padding: 5px 11px; font-family: var(--font-display); font-size: 12px; font-weight: 600; cursor: pointer; }
+.chipbtn[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+.stage { min-height: 0; display: grid; grid-template-rows: minmax(0, 55fr) minmax(0, 45fr); }
+.viewport { position: relative; min-height: 0; overflow: hidden; background: var(--paper); }
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+.overlay { position: absolute; z-index: 3; display: flex; gap: 6px; flex-wrap: wrap; }
+.views { top: 10px; left: var(--gutter-l); right: var(--gutter-r); }
+.views .chipbtn { background: rgba(255,255,255,0.94); }
+.views .chipbtn[aria-pressed="true"] { background: var(--ink); }
+.explode { left: var(--gutter-l); right: var(--gutter-r); bottom: 10px; align-items: center; background: rgba(255,255,255,0.92); border: 1px solid var(--rule); border-radius: 12px; padding: 6px 10px; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); }
+.explode label { white-space: nowrap; }
+.explode input { flex: 1; min-width: 80px; accent-color: var(--accent); }
+.pick { position: absolute; z-index: 3; top: 52px; left: var(--gutter-l); max-width: min(320px, calc(100% - 32px)); background: var(--ink); color: #fff; border-radius: 8px; padding: 6px 10px; font-size: 13px; line-height: 1.3; pointer-events: none; }
+.pick small { display: block; color: #c9c9c3; font-family: var(--font-mono); font-size: 11px; }
+.tags { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.tag { position: absolute; transform: translate(-50%, -100%); margin-top: -8px; font-family: var(--font-mono); font-weight: 600; font-size: 12px; line-height: 1; background: var(--ink); color: #fff; padding: 4px 6px; border-radius: 6px; white-space: nowrap; }
+.tag::after { content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%); border: 5px solid transparent; border-bottom: 0; border-top-color: var(--ink); }
+.tag.hot { background: var(--accent); }
+.tag.hot::after { border-top-color: var(--accent); }
+.nogl { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; font-family: var(--font-display); color: var(--ink-2); }
+
+.sheet { background: var(--sheet); border-top: var(--line); min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.sheet-inner { padding-block: 16px 28px; padding-left: var(--gutter-l); padding-right: var(--gutter-r); display: flex; flex-direction: column; gap: 22px; }
+section.blk { display: grid; gap: 10px; min-width: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.eyebrow .chip { background: var(--accent); color: #fff; border-radius: 4px; padding: 1px 6px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 16px; margin: 0; text-wrap: balance; }
+p { margin: 0; max-width: 62ch; }
+.muted { color: var(--ink-2); font-size: 14px; }
+
+.specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: var(--line); border-radius: 10px; overflow: hidden; }
+.specs div { padding: 8px 10px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.specs div:nth-child(3n) { border-right: 0; }
+.specs div:nth-last-child(-n+3) { border-bottom: 0; }
+.specs b { display: block; font-family: var(--font-display); font-size: 18px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.specs span { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-2); letter-spacing: 0.03em; }
+
+.list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.row { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 8px 2px; border-bottom: 1px solid var(--rule); background: transparent; border-left: 0; border-right: 0; border-top: 0; text-align: left; cursor: pointer; width: 100%; }
+.row:hover { background: var(--wash); }
+.row .q { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.row .n { min-width: 0; }
+.row .n small { display: block; color: var(--ink-2); font-size: 13px; line-height: 1.35; }
+.row .t { font-family: var(--font-mono); font-size: 10.5px; padding: 2px 6px; border-radius: 4px; white-space: nowrap; align-self: center; }
+.t.print { background: var(--accent); color: #fff; }
+.t.kit { background: var(--wash); color: var(--ink-2); border: 1px solid var(--rule); }
+.t.new { background: var(--warn-soft); color: var(--warn-ink); border: 1px solid #e8cf8f; }
+
+.projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.proj { border: var(--line); border-radius: 10px; padding: 9px 11px; display: grid; gap: 3px; background: #fff; min-width: 0; }
+.proj b { font-family: var(--font-display); font-size: 14.5px; }
+.proj p { font-size: 13.5px; color: var(--ink-2); line-height: 1.35; }
+.proj .uses { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink); }
+
+.checks { display: grid; gap: 6px; }
+.chk { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: start; font-size: 14px; }
+.chk i { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 12px; color: #fff; background: var(--ok); }
+.chk.tight i { background: #d99a00; }
+.chk code { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; color: var(--ink-2); }
+.decide { border: 1.5px solid var(--accent-ink); background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; }
+.decide ol { margin: 0; padding-left: 20px; display: grid; gap: 5px; font-size: 14px; }
+.why { border-left: 3px solid var(--accent); padding-left: 10px; font-size: 14.5px; }
+
+@media (min-width: 960px) {
+  .stage { grid-template-columns: minmax(0, 1fr) 440px; grid-template-rows: minmax(0, 1fr); }
+  .sheet { border-top: 0; border-left: var(--line); }
+}
+@media (max-width: 420px) { .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); } .specs div:nth-child(3n) { border-right: 1px solid var(--rule); } .specs div:nth-child(2n) { border-right: 0; } .specs div:nth-last-child(-n+3) { border-bottom: 1px solid var(--rule); } .specs div:nth-last-child(-n+2) { border-bottom: 0; } }
+</style>
+
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <b>Round 2WD Smart Car</b>
+      <span>Design review · rev A · from the 4WD + L298N parts</span>
+    </div>
+    <div class="seg" role="group" aria-label="Drawing style">
+      <button type="button" id="modeLine" aria-pressed="false">Line</button>
+      <button type="button" id="modeColor" aria-pressed="true">Color</button>
+    </div>
+  </header>
+  <main class="stage">
+    <section class="viewport" id="viewport" aria-label="3D model of the 2WD car">
+      <canvas id="gl" tabindex="-1"></canvas>
+      <div class="tags" id="tags"></div>
+      <div class="overlay views" role="group" aria-label="Views">
+        <button type="button" class="chipbtn" data-view="iso" aria-pressed="true">3/4</button>
+        <button type="button" class="chipbtn" data-view="front" aria-pressed="false">Front</button>
+        <button type="button" class="chipbtn" data-view="side" aria-pressed="false">Side</button>
+        <button type="button" class="chipbtn" data-view="top" aria-pressed="false">Top</button>
+        <button type="button" class="chipbtn" data-view="under" aria-pressed="false">Under</button>
+        <button type="button" class="chipbtn" id="tTop" aria-pressed="false">Hide top deck</button>
+        <button type="button" class="chipbtn" id="tDims" aria-pressed="false">Dimensions</button>
+      </div>
+      <div class="pick" id="pick" hidden></div>
+      <div class="overlay explode">
+        <label for="ex">Explode</label>
+        <input type="range" id="ex" min="0" max="1" step="0.01" value="0">
+        <button type="button" class="chipbtn" id="tPrint" aria-pressed="false">Show printed parts</button>
+      </div>
+    </section>
+    <aside class="sheet" id="sheet">
+      <div class="sheet-inner" id="sheetInner"></div>
+    </aside>
+  </main>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+const DEG = Math.PI / 180;
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('car4wd.' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('car4wd.' + k, JSON.stringify(v)); } catch (e) { /* storage blocked */ } }
+};
+
+const LAYER_MAIN = 0;   // opaque parts: drawn in the id/normal pass and the color pass
+const LAYER_GUIDE = 1;  // dashed guide lines and edge lines: color pass only
+const LAYER_XRAY = 2;   // see-through acrylic in color mode: color pass only
+
+/* Palettes. "line" is the paper manual; "color" is the real kit. */
+const PALETTE = {
+  line: {
+    clear: '#ffffff', yellow: '#ffffff', black: '#e2e2dd', blackAcrylic: '#dcdcd6', brass: '#f4f4ef',
+    steel: '#f1f1ec', alu: '#f4f4f0', motorYellow: '#ffffff', can: '#f0f0eb', capWhite: '#ffffff',
+    tire: '#d8d8d2', rim: '#ffffff', pcbBlack: '#e6e6e1', pcbBlue: '#f3f3ef', connector: '#ffffff',
+    header: '#d9d9d3', chip: '#cfcfc9', servo: '#f6f6f2', cell: '#ececE6', gasket: '#d6d6d0',
+    sensorDark: '#d4d4ce', ledClear: '#ffffff', pot: '#f0f0ea', silver: '#f2f2ed', film: '#f6efe2',
+    wireRed: '#d9d9d4', wireBlack: '#cfcfc9', ribbon: '#d6d6d0', horn: '#ffffff', ldr: '#e9e9e4'
+  },
+  color: {
+    clear: '#dfeef5', yellow: '#f4c20d', black: '#26272a', blackAcrylic: '#17181a', brass: '#c9a24d',
+    steel: '#a9afb5', alu: '#b8bec5', motorYellow: '#f6d21b', can: '#c4c8cc', capWhite: '#f1f1ee',
+    tire: '#2a2b2e', rim: '#f5c518', pcbBlack: '#1e2023', pcbBlue: '#1f63b3', connector: '#f2efe6',
+    header: '#1a1a1c', chip: '#2c2d30', servo: '#2b5bd0', cell: '#1d7fe0', gasket: '#202124',
+    sensorDark: '#151517', ledClear: '#e9f4ff', pot: '#2f6fe0', silver: '#c9ced3', film: '#e9c9a0',
+    wireRed: '#d8322a', wireBlack: '#222326', ribbon: '#8a5cc7', horn: '#f3f3f0', ldr: '#c9873a'
+  }
+};
+const ACCENT = new THREE.Color('#ef5a1c');
+const ACCENT_SOFT = new THREE.Color('#ffd9c6');
+const INK = new THREE.Color('#161616');
+const PAPER = new THREE.Color('#fbfbf8');
+
+function toonRamp(levels) {
+  const data = new Uint8Array(levels.length * 4);
+  levels.forEach((v, i) => { const c = Math.round(v * 255); data.set([c, c, c, 255], i * 4); });
+  const tex = new THREE.DataTexture(data, levels.length, 1, THREE.RGBAFormat);
+  tex.minFilter = tex.magFilter = THREE.NearestFilter;
+  tex.needsUpdate = true;
+  return tex;
+}
+const RAMP = { line: toonRamp([0.80, 0.90, 1.0]), color: toonRamp([0.56, 0.78, 0.94, 1.0]) };
+
+/* Material cache: kind × mode × state(base / new / flash). */
+const matCache = new Map();
+function partMaterial(kind, mode, state) {
+  const key = kind + '|' + mode + '|' + state;
+  let m = matCache.get(key);
+  if (m) return m;
+  const base = new THREE.Color((PALETTE[mode][kind]) || '#ff00ff');
+  let col = base.clone();
+  if (state === 'new') col = mode === 'line' ? ACCENT_SOFT.clone() : base.clone().lerp(ACCENT, 0.42);
+  if (state === 'flash') col = mode === 'line' ? ACCENT.clone().lerp(new THREE.Color('#ffffff'), 0.25) : base.clone().lerp(ACCENT, 0.75);
+  m = new THREE.MeshToonMaterial({ color: col, gradientMap: RAMP[mode] });
+  if (kind === 'clear' && mode === 'color') {
+    m.transparent = true; m.opacity = state === 'base' ? 0.32 : 0.55; m.depthWrite = false; m.side = THREE.DoubleSide;
+  }
+  if ((kind === 'ledClear' || kind === 'glue') && mode === 'color') { m.transparent = true; m.opacity = kind === 'glue' ? 0.7 : 0.85; }
+  matCache.set(key, m);
+  return m;
+}
+
+/* ---------------- line-art pipeline (id + normal pass → edges) ---------------- */
+const ID_VERT = `
+varying vec3 vN;
+void main() {
+  vN = normalize(normalMatrix * normal);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`;
+const ID_FRAG = `
+uniform float uId;
+varying vec3 vN;
+void main() {
+  vec3 n = normalize(vN);
+  if (!gl_FrontFacing) n = -n;
+  gl_FragColor = vec4(n * 0.5 + 0.5, uId);
+}`;
+const COMP_VERT = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+const COMP_FRAG = `
+uniform sampler2D tColor; uniform sampler2D tId; uniform sampler2D tDepth;
+uniform vec2 texel; uniform float thick; uniform float near; uniform float far;
+uniform vec3 ink; uniform float inkMix;
+varying vec2 vUv;
+float invDepth(vec2 uv) {
+  float z = texture2D(tDepth, uv).x;
+  float n = z * 2.0 - 1.0;
+  float lin = 2.0 * near * far / (far + near - n * (far - near));
+  return 1.0 / lin;
+}
+void main() {
+  vec2 ox = vec2(texel.x * thick, 0.0);
+  vec2 oy = vec2(0.0, texel.y * thick);
+  vec4 c0 = texture2D(tId, vUv);
+  float idEdge = 0.0;
+  float nEdge = 0.0;
+  vec2 offs[8];
+  offs[0] = ox; offs[1] = -ox; offs[2] = oy; offs[3] = -oy;
+  offs[4] = ox + oy; offs[5] = ox - oy; offs[6] = -ox + oy; offs[7] = -ox - oy;
+  vec3 n0 = c0.rgb * 2.0 - 1.0;
+  for (int i = 0; i < 8; i++) {
+    vec4 ci = texture2D(tId, vUv + offs[i] * (i < 4 ? 1.0 : 0.72));
+    idEdge += step(0.002, abs(ci.a - c0.a));
+    vec3 ni = ci.rgb * 2.0 - 1.0;
+    if (ci.a > 0.0 && c0.a > 0.0) nEdge += smoothstep(0.30, 0.55, 1.0 - dot(n0, ni));
+  }
+  float w = invDepth(vUv);
+  float lap = abs(invDepth(vUv - ox) + invDepth(vUv + ox) - 2.0 * w) + abs(invDepth(vUv - oy) + invDepth(vUv + oy) - 2.0 * w);
+  float dEdge = (c0.a > 0.0) ? smoothstep(0.004, 0.012, lap / max(w, 1e-6)) : 0.0;
+  float e = max(smoothstep(0.0, 3.0, idEdge), max(smoothstep(0.0, 2.5, nEdge), dEdge));
+  vec4 col = texture2D(tColor, vUv);
+  gl_FragColor = linearToOutputTexel(vec4(mix(col.rgb, ink, clamp(e, 0.0, 1.0) * inkMix), 1.0));
+}`;
+
+class InkPipeline {
+  constructor(renderer) {
+    this.r = renderer;
+    this.size = new THREE.Vector2(1, 1);
+    this.rtId = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
+    this.rtId.depthTexture = new THREE.DepthTexture(1, 1);
+    this.rtId.depthTexture.type = THREE.UnsignedIntType;
+    this.rtColor = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
+    this.idMat = new THREE.ShaderMaterial({ vertexShader: ID_VERT, fragmentShader: ID_FRAG, uniforms: { uId: { value: 0 } }, side: THREE.DoubleSide, blending: THREE.NoBlending });
+    this.comp = new THREE.ShaderMaterial({
+      vertexShader: COMP_VERT, fragmentShader: COMP_FRAG, depthTest: false, depthWrite: false,
+      uniforms: {
+        tColor: { value: this.rtColor.texture }, tId: { value: this.rtId.texture }, tDepth: { value: this.rtId.depthTexture },
+        texel: { value: new THREE.Vector2() }, thick: { value: 1 }, near: { value: 1 }, far: { value: 1000 },
+        ink: { value: INK.clone() }, inkMix: { value: 1 }
+      }
+    });
+    this.quadScene = new THREE.Scene();
+    this.quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    this.quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.comp));
+  }
+  setSize(w, h, dpr) {
+    const W = Math.max(1, Math.floor(w * dpr)), H = Math.max(1, Math.floor(h * dpr));
+    if (W === this.size.x && H === this.size.y) return;
+    this.size.set(W, H);
+    this.rtId.setSize(W, H);
+    this.rtColor.setSize(W, H);
+    this.comp.uniforms.texel.value.set(1 / W, 1 / H);
+    this.comp.uniforms.thick.value = Math.max(1, dpr * 0.95);
+  }
+  render(scene, camera, opts = {}) {
+    const r = this.r;
+    const prevClear = r.getClearColor(new THREE.Color());
+    const prevAlpha = r.getClearAlpha();
+    // pass 1: per-part id + normals (+ depth)
+    const idMat = this.idMat;
+    scene.overrideMaterial = idMat;
+    camera.layers.set(LAYER_MAIN);
+    r.setRenderTarget(this.rtId);
+    r.setClearColor(0x8080ff, 0);
+    r.clear(true, true, true);
+    r.render(scene, camera);
+    // pass 2: shaded color
+    scene.overrideMaterial = null;
+    camera.layers.enableAll();
+    r.setRenderTarget(this.rtColor);
+    r.setClearColor(opts.background || PAPER, 1);
+    r.clear(true, true, true);
+    r.render(scene, camera);
+    // pass 3: composite with ink edges
+    this.comp.uniforms.near.value = camera.near;
+    this.comp.uniforms.far.value = camera.far;
+    this.comp.uniforms.inkMix.value = opts.inkMix ?? 1;
+    r.setRenderTarget(opts.target || null);
+    r.render(this.quadScene, this.quadCam);
+    r.setRenderTarget(null);
+    r.setClearColor(prevClear, prevAlpha);
+  }
+}
+
+/* Physical light units (r155+): Lambert divides by π, so intensities carry a π.
+   Ambient 0.28 + key 0.72 keeps white parts between ~0.85 and 1.0 in the line drawing. */
+function addLights(sc) {
+  sc.add(new THREE.AmbientLight(0xffffff, 0.28 * Math.PI));
+  const key = new THREE.DirectionalLight(0xffffff, 0.72 * Math.PI);
+  key.position.set(220, 420, -260);
+  sc.add(key);
+}
+
+/* Every mesh gets a stable id used by the edge pass (distinct ids → outline between parts). */
+let PID = 0;
+function tagMesh(mesh, kind) {
+  mesh.userData.kind = kind;
+  PID = (PID % 250) + 1;
+  mesh.userData.pid = (PID + 2) / 255;
+  mesh.onBeforeRender = (r, s, c, g, material) => {
+    if (material && material.uniforms && material.uniforms.uId) {
+      material.uniforms.uId.value = mesh.userData.pid;
+      material.uniformsNeedUpdate = true;
+    }
+  };
+  mesh.layers.set(LAYER_MAIN);
+  return mesh;
+}
+function mesh(geo, kind) {
+  const m = new THREE.Mesh(geo, partMaterial(kind, 'line', 'base'));
+  return tagMesh(m, kind);
+}
+
+/* ---------------- tiny tween engine ---------------- */
+const tweens = new Set();
+function tween(dur, onUpdate, onDone, delay = 0) {
+  const t = { start: performance.now() + delay, dur: Math.max(1, dur), onUpdate, onDone, dead: false };
+  tweens.add(t);
+  return t;
+}
+function stepTweens(now) {
+  let active = false;
+  for (const t of tweens) {
+    if (t.dead) { tweens.delete(t); continue; }
+    if (now < t.start) { active = true; continue; }
+    const k = clamp((now - t.start) / t.dur, 0, 1);
+    t.onUpdate(k);
+    if (k >= 1) { tweens.delete(t); t.onDone && t.onDone(); } else active = true;
+  }
+  return active;
+}
+function killTweens() { for (const t of tweens) t.dead = true; tweens.clear(); }
+
+function box(w, h, d, kind, x = 0, y = 0, z = 0) {
+  const m = mesh(new THREE.BoxGeometry(w, h, d), kind);
+  m.position.set(x, y, z);
+  return m;
+}
+function cyl(r, len, kind, axis = 'y', x = 0, y = 0, z = 0, seg = 24, rTop = r) {
+  const g = new THREE.CylinderGeometry(rTop, r, len, seg);
+  if (axis === 'x') g.rotateZ(-Math.PI / 2);
+  if (axis === 'z') g.rotateX(Math.PI / 2);
+  const m = mesh(g, kind);
+  m.position.set(x, y, z);
+  return m;
+}
+function grp(...kids) { const g = new THREE.Group(); kids.flat().forEach(k => k && g.add(k)); return g; }
+const V2 = (x, z) => new THREE.Vector2(x, -z);   // plate sketch helper: shape-y = -car z
+
+/* Flat sketch → extruded slab lying on y ∈ [0, t]. */
+function slab(shape, t, kind) {
+  const g = new THREE.ExtrudeGeometry(shape, { depth: t, bevelEnabled: false, curveSegments: 24 });
+  g.rotateX(-Math.PI / 2);
+  return mesh(g, kind);
+}
+function rectPath(x0, z0, x1, z1) {
+  const p = new THREE.Path();
+  p.moveTo(x0, -z0); p.lineTo(x1, -z0); p.lineTo(x1, -z1); p.lineTo(x0, -z1); p.closePath();
+  return p;
+}
+function circlePath(x, z, r) { const p = new THREE.Path(); p.absarc(x, -z, r, 0, Math.PI * 2, true); return p; }
+
+const SCREW_SPEC = { M3: { hr: 2.75, hh: 1.9, r: 1.45 }, M2: { hr: 1.9, hh: 1.4, r: 0.95 }, M16: { hr: 1.5, hh: 1.1, r: 0.78 } };
+function screw(size, len, detailed = false) {
+  const s = SCREW_SPEC[size];
+  const head = new THREE.LatheGeometry([
+    new THREE.Vector2(0, 0), new THREE.Vector2(s.hr, 0), new THREE.Vector2(s.hr, s.hh * 0.45),
+    new THREE.Vector2(s.hr * 0.78, s.hh * 0.92), new THREE.Vector2(0, s.hh)
+  ], 20);
+  const g = grp(mesh(head, 'steel'), cyl(s.r, len, 'steel', 'y', 0, -len / 2, 0, 14));
+  const slot = s.hr * 1.2;
+  g.add(box(slot, 0.3, 0.35, 'chip', 0, s.hh * 0.98, 0), box(0.35, 0.3, slot, 'chip', 0, s.hh * 0.98, 0));
+  if (detailed) {
+    const pitch = size === 'M3' ? 0.75 : 0.5;
+    for (let y = -1.2; y > -len + 0.4; y -= pitch) {
+      const t = mesh(new THREE.TorusGeometry(s.r, 0.13, 4, 18), 'steel');
+      t.rotation.x = Math.PI / 2; t.position.y = y; g.add(t);
+    }
+  }
+  g.userData.screw = { size, len };
+  return g;   // head sits on y = 0, shank points down -y
+}
+function nut(size) {
+  const af = size === 'M3' ? 5.5 : size === 'M2' ? 4 : 3.2;
+  const t = size === 'M3' ? 2.4 : size === 'M2' ? 1.6 : 1.3;
+  const hole = size === 'M3' ? 1.55 : size === 'M2' ? 1.05 : 0.85;
+  const r = af / Math.sqrt(3);
+  const sh = new THREE.Shape();
+  for (let i = 0; i < 6; i++) { const a = Math.PI / 6 + i * Math.PI / 3; i ? sh.lineTo(r * Math.cos(a), r * Math.sin(a)) : sh.moveTo(r * Math.cos(a), r * Math.sin(a)); }
+  sh.closePath();
+  const hp = new THREE.Path(); hp.absarc(0, 0, hole, 0, Math.PI * 2, true); sh.holes.push(hp);
+  const g = new THREE.ExtrudeGeometry(sh, { depth: t, bevelEnabled: false, curveSegments: 16 });
+  g.rotateX(-Math.PI / 2);
+  return grp(mesh(g, 'steel'));   // y ∈ [0, t]
+}
+function gasket(h = 3) {
+  const sh = new THREE.Shape(); sh.absarc(0, 0, 3, 0, Math.PI * 2, false);
+  const hp = new THREE.Path(); hp.absarc(0, 0, 1.65, 0, Math.PI * 2, true); sh.holes.push(hp);
+  const g = new THREE.ExtrudeGeometry(sh, { depth: h, bevelEnabled: false, curveSegments: 20 });
+  g.rotateX(-Math.PI / 2);
+  return grp(mesh(g, 'gasket'));
+}
+function pillar(len) {
+  const r = 5 / Math.sqrt(3);
+  const g = grp(cyl(r, len, 'brass', 'y', 0, len / 2, 0, 6));
+  return g;   // y ∈ [0, len]
+}
+function aluBlock() {
+  // 16 × 22.5 × 8 mm; through-holes along z, tapped holes in the bottom face
+  return grp(box(16, 22.5, 8, 'alu', 0, 0, 0),
+    cyl(1.6, 8.2, 'chip', 'z', 0, 7.5, 0, 12), cyl(1.6, 8.2, 'chip', 'z', 0, -7.5, 0, 12));
+}
+
+/* ---------------- TT gear motor (+ wheel) ---------------- */
+// Local frame: shaft on the z axis at the origin, motor can toward +x, outer side +z.
+function ttMotor() {
+  const g = new THREE.Group();
+  g.add(box(37, 22.5, 18.8, 'motorYellow', 7.5, 0, 0));
+  g.add(box(6, 7, 3, 'motorYellow', -14, 0, 0));
+  const can = cyl(10, 23, 'can', 'x', 37.5, 0, 0, 28); can.scale.z = 0.8; g.add(can);
+  g.add(cyl(8.5, 4, 'capWhite', 'x', 51, 0, 0, 24));
+  g.add(cyl(3, 1.6, 'capWhite', 'x', 53.8, 0, 0, 16));
+  g.add(box(1.2, 3, 1.6, 'steel', 53.6, 6.2, 0), box(1.2, 3, 1.6, 'steel', 53.6, -6.2, 0));
+  g.add(cyl(2.7, 36, 'capWhite', 'z', 0, 0, 0, 16));
+  return g;
+}
+function motorUnit(withBlock = true) {
+  const g = ttMotor();
+  const parts = { motor: g, block: null, screws: [], nuts: [] };
+  if (withBlock) {
+    const b = aluBlock(); b.position.set(20, 0, -9.4 - 4); g.add(b); parts.block = b;
+    [7.5, -7.5].forEach(y => {
+      const s = screw('M3', 30); s.rotation.x = Math.PI / 2; s.position.set(20, y, 9.4 + 0.01); g.add(s); parts.screws.push(s);
+      const n = nut('M3'); n.rotation.x = -Math.PI / 2; n.position.set(20, y, -17.4); g.add(n); parts.nuts.push(n);
+    });
+  }
+  return parts;
+}
+function wheel() {
+  const tireProfile = [[22.5, -12], [28.5, -13], [31.4, -11.6], [32.5, -8], [32.5, 8], [31.4, 11.6], [28.5, 13], [22.5, 12]]
+    .map(([r, y]) => new THREE.Vector2(r, y));
+  tireProfile.push(new THREE.Vector2(22.5, -12));
+  const tg = new THREE.LatheGeometry(tireProfile, 56); tg.rotateX(Math.PI / 2);
+  const g = grp(mesh(tg, 'tire'));
+  const rimProfile = [[22.6, -10], [19.5, -10], [19.5, 9], [22.6, 9]].map(([r, y]) => new THREE.Vector2(r, y));
+  rimProfile.push(new THREE.Vector2(22.6, -10));
+  const rg = new THREE.LatheGeometry(rimProfile, 48); rg.rotateX(Math.PI / 2);
+  g.add(mesh(rg, 'rim'));
+  g.add(cyl(6.5, 14, 'rim', 'z', 0, 0, 0, 24));
+  for (let i = 0; i < 5; i++) {
+    const a = i * (Math.PI * 2 / 5);
+    const sp = box(14, 5.2, 3, 'rim', 0, 0, 5.5);
+    sp.position.set(Math.cos(a) * 12.8, Math.sin(a) * 12.8, 5.5); sp.rotation.z = a; g.add(sp);
+  }
+  g.add(box(4, 1.6, 0.4, 'chip', 0, 0, 7.05));   // D-shaped axle hole hint
+  return g;   // axis on z, outer face +z
+}
+
+function headerPins(n, kind = 'steel', len = 6, dir = 'x') {
+  const g = new THREE.Group();
+  for (let i = 0; i < n; i++) {
+    const off = (i - (n - 1) / 2) * 2.54;
+    const p = dir === 'x' ? box(len, 0.64, 0.64, kind, 0, 0, off) : box(0.64, len, 0.64, kind, off, 0, 0);
+    g.add(p);
+  }
+  return g;
+}
+
+function ultrasonic() {       // HC-SR04: board faces +x, pins point down
+  const g = grp(box(1.6, 20, 45, 'pcbBlue'));
+  [-13, 13].forEach(z => {
+    g.add(cyl(8, 12.2, 'silver', 'x', 6.9, 1, z, 32));
+    g.add(cyl(6.1, 0.6, 'sensorDark', 'x', 13.1, 1, z, 28));
+  });
+  g.add(box(3.4, 4.5, 11, 'silver', 2.5, 6.4, 0));
+  g.add(box(2.4, 2.5, 10.2, 'header', -2, -8.8, 0));
+  const pins = headerPins(4, 'steel', 7, 'y'); pins.rotation.y = Math.PI / 2; pins.position.set(-2, -13, 0); g.add(pins);
+  g.userData.pinEnd = new THREE.Vector3(-2, -16.5, 0);
+  return g;
+}
+
+function servo() {            // SG90: shaft on y axis at origin; flange top at y = 0
+  const g = new THREE.Group();
+  g.add(box(12.2, 22.7, 22.8, 'servo', 0, -15.9 + 22.7 / 2 - 2.5 + 2.5, 5.5));
+  g.add(box(12.2, 2.5, 32.3, 'servo', 0, -1.25, 5.5));
+  g.add(cyl(5.9, 4, 'servo', 'y', 0, 8.8, 0, 24));
+  g.add(cyl(2.6, 2.4, 'servo', 'y', 0, 10.2, 7, 16));
+  g.add(cyl(2.4, 3.2, 'horn', 'y', 0, 12.4, 0, 16));
+  const lead = box(2.8, 4, 1.2, 'ribbon', 0, -12, 17.5); g.add(lead);
+  g.userData.shaftTop = 14;
+  return g;
+}
+function servoHorn() {
+  return grp(cyl(3.6, 3.4, 'horn', 'y', 0, 1.7, 0, 18), box(19, 1.6, 4.6, 'horn', -8, 0.8, 0));
+}
+
+function unoBoard() {         // local x = u − 34.3 (USB edge at −x), local z = v − 26.65, PCB on y ∈ [0, 1.6]
+  const g = grp(box(68.6, 1.6, 53.3, 'pcbBlack', 0, 0.8, 0));
+  const at = (u, v) => [u - 34.3, v - 26.65];
+  const add = (w, h, d, kind, u, v, y) => { const [x, z] = at(u, v); g.add(box(w, h, d, kind, x, y, z)); };
+  add(16.2, 11, 12, 'silver', 1.8, 15.5, 1.6 + 5.5);         // USB-B
+  add(13.8, 11, 9, 'header', 5.1, 45.5, 1.6 + 5.5);          // DC jack
+  add(35.5, 4, 7.6, 'chip', 49, 36, 1.6 + 2);                // ATmega328P
+  add(2.5, 8.5, 25.5, 'header', 30, 2.6, 1.6 + 4.25);        // digital headers (seen as one strip)
+  add(2.5, 8.5, 20.3, 'header', 54, 2.6, 1.6 + 4.25);
+  add(2.5, 8.5, 20.3, 'header', 37.5, 50.7, 1.6 + 4.25);     // power
+  add(2.5, 8.5, 15.2, 'header', 57.5, 50.7, 1.6 + 4.25);     // analog
+  g.children.slice(-4).forEach(m => { m.rotation.y = Math.PI / 2; });
+  add(6, 3.5, 6, 'header', 6, 3.5, 1.6 + 1.75);              // reset button
+  add(4, 2, 2, 'ledClear', 6, 3.5, 1.6 + 3.8);
+  return g;
+}
+function unoHolesLocal() { return [[13.97, 50.8], [15.24, 2.54], [66.04, 45.72], [66.04, 17.78]]; }
+
+function batteryBox(withCells = false) {   // 2 × 18650 holder, long axis on z
+  const g = new THREE.Group();
+  g.add(box(41, 2, 77, 'black', 0, 1, 0));
+  g.add(box(2, 13, 77, 'black', -19.5, 6.5, 0), box(2, 13, 77, 'black', 19.5, 6.5, 0));
+  g.add(box(41, 20, 3, 'black', 0, 10, -37), box(41, 20, 3, 'black', 0, 10, 37));
+  g.add(box(2, 9, 70, 'black', 0, 6.5, 0));
+  if (withCells) {
+    [-9.6, 9.6].forEach(x => { g.add(cyl(9.2, 65, 'cell', 'z', x, 11.2, 0, 28)); g.add(cyl(3.2, 1.6, 'silver', 'z', x, 11.2, 33.2, 16)); });
+  }
+  return g;
+}
+function cells() {
+  const g = new THREE.Group();
+  [-9.6, 9.6].forEach(x => { g.add(cyl(9.2, 65, 'cell', 'z', x, 11.2, 0, 28)); g.add(cyl(3.2, 1.6, 'silver', 'z', x, 11.2, 33.2, 16)); });
+  return g;
+}
+
+Object.assign(PALETTE.line, { redPcb: '#f2f2ed', heatsink: '#dadad4', glue: '#fbfbf7', wireGray: '#d5d5cf', wireMagenta: '#d0d0ca',
+  shieldBlue: '#f3f3ef', yellowHdr: '#ffffff', potWhite: '#ffffff', tape: '#4a4a47' });
+Object.assign(PALETTE.color, { redPcb: '#c62a2f', heatsink: '#202124', glue: '#eef2ee', wireGray: '#8d9196', wireMagenta: '#c2399b',
+  shieldBlue: '#1d5aa6', yellowHdr: '#f3cf1d', potWhite: '#f2f2ee', tape: '#151517' });
+
+/* Clear T-type motor bracket: y = 0 at the plate's top face, thickness along z. */
+function tBracket(stem = true) {
+  const pts = stem ? [[-6.4, -5.5], [6.4, -5.5], [6.4, 0], [8, 0], [8, 24.5], [-8, 24.5], [-8, 0], [-6.4, 0]]
+                   : [[-8, 0], [8, 0], [8, 24.5], [-8, 24.5]];
+  const s = new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(x, y)));
+  [3.75, 18.75].forEach(y => { const h = new THREE.Path(); h.absarc(0, y, 1.6, 0, Math.PI * 2, true); s.holes.push(h); });
+  const g = new THREE.ExtrudeGeometry(s, { depth: 2.5, bevelEnabled: false, curveSegments: 12 });
+  g.translate(0, 0, -1.25);
+  return grp(mesh(g, 'clear'));
+}
+
+/* L298N module. Local: +x toward the heatsink edge, +z toward OUT3/OUT4, PCB on y ∈ [0, 1.6].
+   Pin and terminal spots (x, z) where wires land: */
+const L298_PINS = {
+  IN1: [-18.4, 4.94], IN2: [-18.4, 7.48], IN3: [-18.4, 10.02], IN4: [-18.4, 12.56],
+  OUT1: [-5.01, -21.6], OUT2: [-10.09, -21.6], OUT4: [-3.91, 21.6], OUT3: [-8.99, 21.6],
+  '12V': [-21.6, -12.73], GND: [-21.6, -7.65], '5V': [-21.6, -2.57]
+};
+function l298nModule() {
+  const g = grp(box(43, 1.6, 43, 'redPcb', 0, 0.8, 0));
+  [[-18.4, -18.4], [-18.4, 18.4], [18.4, -18.4], [18.4, 18.4]].forEach(([x, z]) => g.add(cyl(1.6, 1.7, 'chip', 'y', x, 0.8, z, 12)));
+  g.add(box(4.5, 20, 19.5, 'chip', 5.5, 11.6, 0));                         // L298 behind the heatsink
+  g.add(box(2, 25, 23, 'heatsink', 8.75, 14.1, 0));
+  for (let i = 0; i < 6; i++) g.add(box(11.5, 25, 1.3, 'heatsink', 15.5, 14.1, -10.85 + i * 4.34));
+  const term = (n, cx, cz, alongX, face) => {                               // blue screw terminals
+    const L = n * 5.08;
+    g.add(alongX ? box(L, 10, 8, 'pot', cx, 6.6, cz) : box(8, 10, L, 'pot', cx, 6.6, cz));
+    for (let i = 0; i < n; i++) {
+      const o = (i - (n - 1) / 2) * 5.08, sx = alongX ? cx + o : cx, sz = alongX ? cz : cz + o;
+      g.add(cyl(1.7, 0.6, 'steel', 'y', sx, 11.9, sz, 14));
+      g.add(alongX ? box(3.2, 3.2, 0.4, 'chip', sx, 5.6, cz + face * 4.05) : box(0.4, 3.2, 3.2, 'chip', cx + face * 4.05, 5.6, sz));
+    }
+  };
+  term(2, -7.55, -17.5, true, -1);                                          // OUT1 (front), OUT2
+  term(2, -6.45, 17.5, true, 1);                                            // OUT4 (front), OUT3
+  term(3, -17.5, -7.65, false, -1);                                         // 12V, GND, 5V: wires enter from the back
+  g.add(box(2.5, 2.5, 15.5, 'header', -18.4, 2.85, 8.75));                  // ENA IN1 IN2 IN3 IN4 ENB
+  [2.4, 15.1].forEach(z => g.add(box(2.5, 2.5, 2.5, 'header', -15.9, 2.85, z)));
+  [2.4, 4.94, 7.48, 10.02, 12.56, 15.1].forEach(z => g.add(box(0.64, 6, 0.64, 'steel', -18.4, 7.1, z)));
+  [2.4, 15.1].forEach(z => g.add(box(0.64, 6, 0.64, 'steel', -15.9, 7.1, z)));
+  g.add(box(2.5, 2.5, 5, 'header', -9, 2.85, -7.3));                        // 5V-EN pins
+  const caps = [box(5, 6, 2.6, 'header', -17.15, 7.6, 2.4), box(5, 6, 2.6, 'header', -17.15, 7.6, 15.1), box(2.6, 6, 5, 'header', -9, 7.6, -7.3)];
+  caps.forEach(c => g.add(c));
+  g.userData.caps = caps;
+  g.add(cyl(3.15, 11, 'chip', 'y', -12.3, 7.1, 7.8, 18), cyl(3.15, 11, 'chip', 'y', -3.8, 7.1, -5.4, 18));
+  g.add(box(6.5, 2.3, 6, 'chip', -3.8, 2.75, 7.3), box(2, 1, 1.2, 'ledClear', -12, 2.1, -14.5));
+  [13, 9.3, 5.6, 1.9].forEach(x => [-1, 1].forEach(sd => g.add(box(2.4, 1.6, 4, 'chip', x, 2.4, sd * 17.7))));
+  return g;
+}
+
+/* UNO in its clear case (the case's lid is left off so the board stays visible).
+   Board frame: x along the board (USB at −x), z from the digital edge (−z); tray floor at y = 0. */
+function unoInCase() {
+  const g = grp(box(76, 1.5, 60, 'clear', 0, 0.75, 0));
+  g.add(box(76, 6, 1.5, 'clear', 0, 4.5, -29.25), box(76, 6, 1.5, 'clear', 0, 4.5, 29.25));
+  g.add(box(1.5, 6, 57, 'clear', 37.25, 4.5, 0), box(1.5, 2, 57, 'clear', -37.25, 2.5, 0));
+  unoHolesLocal().forEach(([u, v]) => g.add(cyl(2.4, 3, 'clear', 'y', u - 34.3, 3, v - 26.65, 14)));
+  const b = unoBoard(); b.position.y = 4.5; g.add(b);
+  return g;
+}
+
+/* Small rocker switch; flange top at y = 2, rocker above, solder tabs below. */
+function rockerSwitch() {
+  const g = grp(box(13, 11, 8.5, 'black', 0, -5.5, 0), box(15, 2, 10.5, 'black', 0, 1, 0));
+  const rk = box(11, 3, 7, 'black', 0, 3.4, 0); rk.rotation.z = -0.2; g.add(rk);
+  rk.add(box(1.2, 0.3, 3, 'capWhite', -3, 1.55, 0));
+  g.add(box(0.8, 5, 3, 'steel', -3, -13, 0), box(0.8, 5, 3, 'steel', 3, -13, 0));
+  g.userData.rocker = rk;
+  return g;
+}
+function glueBlob(rx = 3.2, h = 1.6, rz = 3.2) {          // hot-glue dome, base at y = 0
+  const m = mesh(new THREE.SphereGeometry(1, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), 'glue');
+  m.scale.set(rx, h, rz);
+  return grp(m);
+}
+function servoHorn2() {                                    // two-sided arm, top face at y = 3.4
+  return grp(cyl(3.6, 3.4, 'horn', 'y', 0, 1.7, 0, 18), box(32, 1.6, 4.6, 'horn', 0, 2.6, 0));
+}
+function wire3(points, kind, r = 0.55, plugs = {}) {      // one smooth wire, optional plug housings [centre, size]
+  const curve = new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.5);
+  const g = grp(mesh(new THREE.TubeGeometry(curve, 96, r, 7, false), kind));
+  ['a', 'b'].forEach(k => {
+    if (!plugs[k]) return;
+    const [c, s] = plugs[k];
+    const m = box(s[0], s[1], s[2], 'header', c.x, c.y, c.z);
+    if (k === 'a' && plugs.keepA) m.userData.keep = true;      // already plugged in before this step
+    g.add(m);
+  });
+  return g;
+}
+
+const SH5 = {
+  w: 68.6, h: 56,
+  rowsD: { G: 17.4, V: 19.8, S: 22.4 }, rowsA: { G: 31.3, V: 33.7, S: 36.3 },
+  blocks: [
+    [['AREF', 5.0], ['GND', 8.0], ['D13', 11.0], ['D12', 14.0]],
+    [['D11', 21.0], ['D10', 24.0], ['D9', 27.0], ['D8', 30.0]],
+    [['D7', 36.5], ['D6', 39.5], ['D5', 42.5], ['D4', 45.5]],
+    [['D3', 52.2], ['D2', 55.2], ['D1', 58.2], ['D0', 61.2]]
+  ],
+  colA: { A0: 19.6, A1: 22.6, A2: 25.6, A3: 28.6, A4: 31.6, A5: 34.6 },
+  uart: { v: 33.0, pins: [['TX', 43.6], ['RX', 46.7], ['-', 49.8], ['+', 52.9]] },
+  iic: { v: 38.7, pins: [['SCL', 43.6], ['SDA', 46.7], ['-', 49.8], ['+', 52.9]] },
+  sel: [8.2, 42.7], reset: [5.8, 34.8], term: [6.75, 50]
+};
+SH5.colD = Object.fromEntries(SH5.blocks.flat());
+function shieldUV(name, row = 'S') {                     // 'D4', 'A1', 'IIC+', 'IIC-' → [u, v]
+  if (name.startsWith('IIC')) return [SH5.iic.pins.find(p => p[0] === name.slice(3))[1], SH5.iic.v];
+  if (/^A\d$/.test(name)) return [SH5.colA[name], SH5.rowsA[row]];
+  return [SH5.colD[name], SH5.rowsD[row]];
+}
+function sensorShieldV5() {        // UNO-local frame (x = u − 34.3, z = v − 26.65), PCB on y ∈ [0, 1.6]
+  const g = new THREE.Group();
+  const P = (u, v) => [u - 34.3, v - 26.65];
+  const add = (w, h, d, kind, u, v, y) => { const [x, z] = P(u, v); const m = box(w, h, d, kind, x, y, z); g.add(m); return m; };
+  const pinUp = (u, v) => add(0.64, 6, 0.64, 'steel', u, v, 7.1);
+  add(SH5.w, 1.6, SH5.h, 'shieldBlue', SH5.w / 2, SH5.h / 2, 0.8);
+  add(48, 2.5, 2.5, 'header', 43, 2.54, -1.25);           // pins down into the UNO's headers
+  add(40, 2.5, 2.5, 'header', 45, 50.8, -1.25);
+  const gvs = (cols, rows) => {                            // black base, then G, V, S pins per column
+    const us = cols.map(c => c[1]), vs = Object.values(rows);
+    add(us[us.length - 1] - us[0] + 2.8, 2.5, vs[2] - vs[0] + 2.8, 'header', (us[0] + us[us.length - 1]) / 2, (vs[0] + vs[2]) / 2, 2.85);
+    us.forEach(u => vs.forEach(v => pinUp(u, v)));
+  };
+  SH5.blocks.forEach(b => gvs(b, SH5.rowsD));
+  gvs(Object.entries(SH5.colA), SH5.rowsA);
+  [SH5.uart, SH5.iic].forEach(hd => { add(12.2, 2.5, 2.8, 'header', 48.25, hd.v, 2.85); hd.pins.forEach(([, u]) => pinUp(u, hd.v)); });
+  add(2.8, 8.5, 15.4, 'header', 60.7, 34.2, 5.85);         // APC220 socket
+  add(2.8, 2.5, 15.4, 'header', 66.0, 33.6, 2.85);         // Bluetooth pins
+  for (let i = 0; i < 6; i++) pinUp(66.0, 27.3 + i * 2.54);
+  add(31.5, 9, 9.7, 'header', 25.85, 7.85, 6.1);           // LCD boxed headers
+  add(19.1, 9, 9.7, 'header', 52.65, 7.85, 6.1);
+  add(6, 3.5, 6, 'header', SH5.reset[0], SH5.reset[1], 3.35);
+  { const [x, z] = P(...SH5.reset); g.add(cyl(1.7, 1.2, 'chip', 'y', x, 5.7, z, 14)); }
+  add(2.6, 2.5, 5.2, 'header', SH5.sel[0], SH5.sel[1], 2.85);
+  g.userData.selCap = add(2.8, 5, 5.4, 'connector', SH5.sel[0], SH5.sel[1], 5.6);   // SEL jumper cap
+  add(9.5, 10, 10.5, 'pot', SH5.term[0], SH5.term[1], 6.6);                     // screw terminal
+  [47.5, 52.5].forEach(v => { const [x, z] = P(SH5.term[0], v); g.add(cyl(1.7, 0.6, 'steel', 'y', x, 11.9, z, 14)); });
+  add(18.6, 2.5, 2.8, 'header', 27.75, 53.6, 2.85);        // SD+
+  for (let i = 0; i < 6; i++) pinUp(19.9 + i * 3.14, 53.6);
+  add(12.2, 2.5, 2.8, 'header', 58.3, 53.6, 2.85);         // URF01
+  for (let i = 0; i < 4; i++) pinUp(53.6 + i * 3.14, 53.6);
+  add(1.6, 0.8, 0.8, 'ledClear', 18.4, 45.1, 2.0);         // PWR LED
+  return g;
+}
+
+/* ---------------- 4-channel IR board and probes ---------------- */
+/* Board, local: +x = the four 3-pin probe headers, PCB on y ∈ [0, 1.6].
+   Channels run IN4 … IN1 from −z to +z, on both headers. */
+const IRB = { inZ: [-15.75, -5.25, 5.25, 15.75], outZ: [4.25, 6.79, 9.33, 11.87, 14.41, 16.95] };   // out: IN4 IN3 IN2 IN1 GND VCC
+function irBoard4() {
+  const g = grp(box(40, 1.6, 42, 'redPcb', 0, 0.8, 0));
+  IRB.inZ.forEach(z => {
+    g.add(box(2.5, 2.5, 7.6, 'yellowHdr', 18.5, 2.85, z));
+    [-2.54, 0, 2.54].forEach(d => g.add(box(6.5, 0.64, 0.64, 'steel', 23, 2.85, z + d)));
+    g.add(box(6.5, 4.5, 6.5, 'pot', 11, 3.85, z), cyl(2.3, 1, 'potWhite', 'y', 11, 6.6, z, 16));
+  });
+  g.add(box(2.5, 2.5, 15.24, 'yellowHdr', -18.5, 2.85, 10.6));
+  IRB.outZ.forEach(z => g.add(box(6.5, 0.64, 0.64, 'steel', -23, 2.85, z)));
+  g.add(box(3.9, 1.5, 8.7, 'chip', 0, 2.35, 0));                                         // LM339
+  [-16, -8, 0, 8, 16].forEach(z => g.add(box(1.6, 0.8, 1, 'ledClear', -11, 2.0, z)));   // D5 … D1
+  [-18.5, 18.5].forEach(z => g.add(cyl(1.6, 1.7, 'chip', 'y', 0, 0.8, z, 12)));         // mounting holes
+  return g;
+}
+function irProbe() {      // hole at the origin, +x = the two LEDs (bent down), −x = OUT GND VCC pins
+  const g = grp(box(13, 1.6, 13, 'redPcb', 0, 0.8, 0), cyl(1.6, 1.7, 'chip', 'y', 0, 0.8, 0, 12));
+  g.add(box(2.5, 2.5, 7.6, 'yellowHdr', -5.2, 2.85, 0));
+  [-2.54, 0, 2.54].forEach(d => g.add(box(6.5, 0.64, 0.64, 'steel', -9.7, 2.85, d)));
+  [-4.6, 4.6].forEach(z => g.add(box(1.6, 0.6, 3.2, 'chip', -1, 1.9, z)));
+  [[3.2, 'sensorDark'], [-3.2, 'ledClear']].forEach(([z, kind]) => {                    // receiver, emitter
+    [-1.27, 1.27].forEach(d => g.add(box(3.2, 0.5, 0.5, 'steel', 8.1, 0.8, z + d), box(0.5, 5.1, 0.5, 'steel', 9.5, -1.75, z + d)));
+    g.add(cyl(2.9, 1, kind, 'y', 9.5, -4.8, z, 18), cyl(2.5, 7.6, kind, 'y', 9.5, -9.1, z, 18));
+  });
+  return g;
+}
+
+Object.assign(PALETTE.line, { wireYellow: '#dcdcd6', wireGreen: '#d3d3cd', wireBlue: '#cbcbc5', wireOrange: '#d9d9d3', wireBrown: '#c9c9c3', tie: '#cfcfc9' });
+Object.assign(PALETTE.color, { wireYellow: '#f1c40f', wireGreen: '#2e9e4f', wireBlue: '#2b67d6', wireOrange: '#f08a1c', wireBrown: '#7a4a2a', tie: '#1b1b1d' });
+
+
+/* ------------------------------------------------------------------ *
+ *  Round 2WD edition. Car frame: +x forward, +y up, +z right, mm.
+ *  Two 3D-printed Ø180 decks on the kit's 30 mm standoffs, the axle on
+ *  the centre line, a ball caster at the back, IR probes on a printed
+ *  shelf under the nose.
+ * ------------------------------------------------------------------ */
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+Object.assign(PALETTE.line, { printed: '#ffffff', ball: '#eeeeea' });
+Object.assign(PALETTE.color, { printed: '#2e3034', ball: '#cfd4d9' });
+
+const R = 90, T = 3;
+const BOT_U = 43.75, BOT_T = BOT_U + T;          // motors hang under the bottom deck
+const ST = 30, TOP_U = BOT_T + ST, TOP_T = TOP_U + T;
+const MZ = 47, WZ = 75, BX = -20;                // motor centre, wheel centre, bracket x
+const STANDOFFS = [[50, -55], [50, 55], [-62, -48], [-62, 48]];
+const HOLDER_X = -55, IRB_X = 48, UNO_X = -15, SERVO_X = 62, ROCKER = [-30, 58], CASTER_X = -78;
+const PROBE_X = 71, PROBE_Z = [-27, -9, 9, 27];
+const SHELF_TOP = 22;
+const L298_Y = BOT_T + 1.5;
+const HOLE_A = [-18, -46], HOLE_B = [12, 46];     // wire holes in the top deck
+const HY = TOP_T + 2.5 + 11.8, SY = HY + 3.4 + 10; // servo arm and sensor heights
+
+/* ---------- printed parts ---------- */
+function deckShape(wells) {
+  if (!wells) { const s = new THREE.Shape(); s.absarc(0, 0, R, 0, Math.PI * 2, false); return s; }
+  const pts = [];
+  const arc = (a0, a1) => { const n = Math.ceil(Math.abs(a1 - a0) / (3 * DEG)); for (let i = 0; i <= n; i++) { const t = a0 + (a1 - a0) * i / n; pts.push([R * Math.cos(t), R * Math.sin(t)]); } };
+  const a = Math.atan2(Math.sqrt(R * R - 38 * 38), 38);
+  arc(-a, a); pts.push([38, 59], [-38, 59]);
+  arc(Math.PI - a, Math.PI + a); pts.push([-38, -59], [38, -59]);
+  return new THREE.Shape(pts.map(([x, z]) => V2(x, z)));
+}
+const rect = (x0, z0, x1, z1) => rectPath(Math.min(x0, x1), Math.min(z0, z1), Math.max(x0, x1), Math.max(z0, z1));
+function bottomDeck() {
+  const s = deckShape(true);
+  STANDOFFS.forEach(([x, z]) => s.holes.push(circlePath(x, z, 1.7)));
+  [-1, 1].forEach(sd => [-10.65, 10.65].forEach(dz => s.holes.push(rect(BX - 6.6, sd * MZ + dz - 1.5, BX + 6.6, sd * MZ + dz + 1.5))));
+  [-1, 1].forEach(sd => s.holes.push(circlePath(-30, sd * 44, 5)));            // motor wires
+  [-11, 11].forEach(z => s.holes.push(circlePath(CASTER_X, z, 1.7)));           // caster post
+  [-37, 37].forEach(z => s.holes.push(circlePath(70, z, 1.7)));                 // probe shelf
+  s.holes.push(rect(78, -28, 84, 28));                                          // probe cables
+  [-18.5, 18.5].forEach(z => s.holes.push(circlePath(IRB_X, z, 1.7)));          // IR board (optional screws)
+  return slab(s, T, 'printed');
+}
+function topDeck() {
+  const s = deckShape(false);
+  STANDOFFS.forEach(([x, z]) => s.holes.push(circlePath(x, z, 1.7)));
+  s.holes.push(rect(SERVO_X - 17.5, -6.6, SERVO_X + 6.5, 6.6));                 // servo slot
+  s.holes.push(rect(ROCKER[0] - 6.6, ROCKER[1] - 4.4, ROCKER[0] + 6.6, ROCKER[1] + 4.4));   // switch cutout
+  [HOLE_A, HOLE_B].forEach(([x, z]) => s.holes.push(circlePath(x, z, 7)));
+  [-84, -78, -72, -66, -60, -54].forEach(x => { const L = Math.min(Math.sqrt(R * R - x * x) - 9, 36); s.holes.push(rect(x - 1.5, -L, x + 1.5, L)); });
+  [24, 30, 36].forEach(x => s.holes.push(rect(x - 1.5, -22, x + 1.5, 22)));
+  return slab(s, T, 'printed');
+}
+function probeShelf() {
+  const g = new THREE.Group();
+  [-1, 1].forEach(sd => {
+    g.add(box(16, 3, 6, 'printed', 70, BOT_U - 1.5, sd * 37));                 // tab under the deck
+    g.add(box(3, BOT_U - 3 - SHELF_TOP, 6, 'printed', 63.5, (BOT_U - 3 + SHELF_TOP) / 2, sd * 37));
+  });
+  g.add(box(15.5, 3, 80, 'printed', 69.75, SHELF_TOP - 1.5, 0));
+  return g;
+}
+function casterPost() {
+  return grp(box(16, 3, 32, 'printed', 0, BOT_U - 1.5, 0), cyl(9, BOT_U - 3 - 16, 'printed', 'y', 0, (BOT_U - 3 + 16) / 2, 0, 28),
+    cyl(10.5, 11, 'printed', 'y', 0, 10.5, 0, 28));
+}
+
+/* ---------- assembly ---------- */
+const ROOT = new THREE.Group();
+const PARTS = [];
+function reg(obj, parent, o) {
+  parent.add(obj);
+  const p = { obj, parent, key: o.key, name: o.name, note: o.note || '', src: o.src || 'kit', ex: o.ex ? V(...o.ex) : V(0, 0, 0),
+    top: !!o.top, wire: !!o.wire, final: obj.position.clone() };
+  obj.userData.part = p;
+  PARTS.push(p);
+  return p;
+}
+const at = (obj, x, y, z, rx = 0, ry = 0, rz = 0) => { obj.position.set(x, y, z); obj.rotation.set(rx, ry, rz); return obj; };
+const EX_TOP = [0, 95, 0], EX_STAND = [0, 48, 0], EX_ON = [0, 22, 0], EX_UNDER = [0, -38, 0];
+
+function build() {
+  /* bottom deck and what hangs under it */
+  reg(at(bottomDeck(), 0, BOT_U, 0), ROOT, { key: 'deckB', name: 'Bottom deck', note: 'Printed. Ø180 × 3 mm, two wheel wells', src: 'print' });
+  [-1, 1].forEach(sd => {
+    const u = at(new THREE.Group(), 0, 32.5, sd * MZ);
+    u.add(at(ttMotor(), 0, 0, 0, 0, Math.PI, 0));
+    reg(u, ROOT, { key: 'motor', name: sd < 0 ? 'Left TT motor' : 'Right TT motor', note: 'From the 4WD kit (2 of 4)', ex: [0, -36, sd * 18] });
+    [-10.65, 10.65].forEach(dz => reg(at(tBracket(true), BX, BOT_U - 32.5, dz, Math.PI, 0, 0), u, { key: 'tbracket', name: 'T-bracket', note: 'From the 4WD kit (4 of 8)' }));
+    [-7.5, 7.5].forEach(y => {
+      reg(at(screw('M3', 30), BX, y, -sd * 11.9, -sd * Math.PI / 2), u, { key: 'm3x30', name: 'M3 × 30 screw', note: 'Through bracket, motor, bracket' });
+      reg(at(nut('M3'), BX, y, sd * 11.9, sd * Math.PI / 2), u, { key: 'nut', name: 'M3 nut' });
+    });
+    reg(at(wheel(), 0, 32.5, sd * WZ, 0, sd < 0 ? Math.PI : 0, 0), ROOT, { key: 'wheel', name: 'Wheel Ø65', note: 'From the 4WD kit (2 of 4)', ex: [0, -36, sd * 60] });
+  });
+  reg(at(casterPost(), CASTER_X, 0, 0), ROOT, { key: 'caster', name: 'Caster post', note: 'Printed. Holds a 16 mm ball', src: 'print', ex: [0, -52, 0] });
+  reg(at(grp(mesh(new THREE.SphereGeometry(8, 28, 18), 'ball')), CASTER_X, 8, 0), ROOT, { key: 'ball', name: '16 mm steel ball', note: 'New item: the only part not in the kit', src: 'new', ex: [0, -70, 0] });
+  [-11, 11].forEach(z => {
+    reg(at(screw('M3', 10), CASTER_X, BOT_T, z), ROOT, { key: 'm3x10', name: 'M3 × 10 screw', ex: [0, 30, 0] });
+    reg(at(nut('M3'), CASTER_X, BOT_U - 3 - 2.4, z), ROOT, { key: 'nut', name: 'M3 nut', ex: [0, -52, 0] });
+  });
+  reg(at(probeShelf(), 0, 0, 0), ROOT, { key: 'shelf', name: 'Probe shelf', note: 'Printed. Holds the 4 IR probes 9 mm above the floor', src: 'print', ex: EX_UNDER });
+  [-37, 37].forEach(z => {
+    reg(at(screw('M3', 10), 70, BOT_T, z), ROOT, { key: 'm3x10', name: 'M3 × 10 screw', ex: [0, 30, 0] });
+    reg(at(nut('M3'), 70, BOT_U - 3 - 2.4, z), ROOT, { key: 'nut', name: 'M3 nut', ex: EX_UNDER });
+  });
+  PROBE_Z.forEach(z => {
+    reg(at(irProbe(), PROBE_X, SHELF_TOP, z), ROOT, { key: 'probe', name: 'IR probe', note: 'From the build (4)', ex: [0, -60, 0] });
+    reg(at(screw('M3', 10), PROBE_X, SHELF_TOP + 1.6, z), ROOT, { key: 'm3x10', name: 'M3 × 10 screw', ex: [0, -54, 0] });
+    reg(at(nut('M3'), PROBE_X, SHELF_TOP - 3 - 2.4, z), ROOT, { key: 'nut', name: 'M3 nut', ex: [0, -66, 0] });
+  });
+
+  /* on the bottom deck */
+  [[-14, -14], [-14, 14], [14, -14], [14, 14]].forEach(([dx, dz]) => reg(at(glueBlob(), dx, BOT_T, dz), ROOT, { key: 'glue', name: 'Hot glue', ex: EX_ON }));
+  reg(at(l298nModule(), 0, L298_Y, 0), ROOT, { key: 'l298n', name: 'L298N motor driver', note: 'From the build. Heatsink faces forward', ex: EX_ON });
+  [[-14, -17], [-14, 17], [14, -17], [14, 17]].forEach(([dx, dz]) => reg(at(glueBlob(3, 1.2, 3), IRB_X + dx, BOT_T, dz), ROOT, { key: 'glue', name: 'Hot glue', ex: EX_ON }));
+  reg(at(irBoard4(), IRB_X, BOT_T + 1.2, 0), ROOT, { key: 'irboard', name: '4-channel IR board', note: 'From the build. Knobs reachable from the front gap', ex: EX_ON });
+  [[-10, -24], [-10, 24], [10, -24], [10, 24]].forEach(([dx, dz]) => reg(at(glueBlob(3.4, 1.2, 3.4), HOLDER_X + dx, BOT_T, dz), ROOT, { key: 'glue', name: 'Hot glue', ex: EX_ON }));
+  reg(at(batteryBox(true), HOLDER_X, BOT_T + 1, 0), ROOT, { key: 'holder', name: '2 × 18650 holder + cells', note: 'From the build. Sits over the caster', ex: EX_ON });
+
+  /* standoffs */
+  STANDOFFS.forEach(([x, z]) => {
+    reg(at(pillar(ST), x, BOT_T, z), ROOT, { key: 'standoff', name: 'Brass standoff M3 × 30', note: 'From the 4WD kit (4 of 6)', ex: EX_STAND });
+    reg(at(screw('M3', 10), x, BOT_U, z, Math.PI), ROOT, { key: 'm3x10', name: 'M3 × 10 screw', ex: [0, -30, 0] });
+    reg(at(screw('M3', 10), x, TOP_T, z), ROOT, { key: 'm3x10', name: 'M3 × 10 screw', ex: [0, 120, 0], top: true });
+  });
+
+  /* top deck */
+  reg(at(topDeck(), 0, TOP_U, 0), ROOT, { key: 'deckT', name: 'Top deck', note: 'Printed. Ø180 × 3 mm, servo slot, switch cutout, vents', src: 'print', ex: EX_TOP, top: true });
+  [[-24, -30], [-24, 30], [24, -30], [24, 30]].forEach(([dx, dz]) => reg(at(glueBlob(3.6, 1.2, 3.6), UNO_X + dx, TOP_T, dz), ROOT, { key: 'glue', name: 'Hot glue', ex: EX_TOP, top: true }));
+  const unoCase = at(unoInCase(), UNO_X, TOP_T + 1, 0, 0, Math.PI / 2, 0);
+  reg(unoCase, ROOT, { key: 'uno', name: 'Arduino UNO in its clear case', note: 'From the build. USB faces the right side', ex: [0, 112, 0], top: true });
+  reg(at(sensorShieldV5(), 0, 17.1, 0), unoCase, { key: 'shield', name: 'Sensor Shield v5.0', note: 'From the build' });
+  reg(at(servo(), SERVO_X, TOP_T + 2.5, 0, 0, -Math.PI / 2, 0), ROOT, { key: 'servo', name: 'SG90 servo', note: 'From the build. Drops into the deck slot', ex: EX_TOP, top: true });
+  [-22.5, 11.5].forEach(dx => reg(at(glueBlob(2.6, 1.8, 4), SERVO_X + dx, TOP_T, 0), ROOT, { key: 'glue', name: 'Hot glue', ex: EX_TOP, top: true }));
+  reg(at(servoHorn2(), SERVO_X, HY, 0, 0, Math.PI / 2, 0), ROOT, { key: 'us', name: 'Servo arm', ex: [0, 125, 0], top: true });
+  reg(at(glueBlob(2.2, 2.2, 12), SERVO_X - 2.4, HY + 3.4, 0), ROOT, { key: 'us', name: 'Hot glue', ex: [0, 130, 0], top: true });
+  reg(at(ultrasonic(), SERVO_X, SY, 0, Math.PI, 0, 0), ROOT, { key: 'us', name: 'HC-SR04 ultrasonic sensor', note: 'From the build. Scans left, ahead, right', ex: [0, 135, 0], top: true });
+  reg(at(rockerSwitch(), ROCKER[0], TOP_T, ROCKER[1]), ROOT, { key: 'rocker', name: 'Rocker switch', note: 'From the build. Snaps into the top deck', ex: EX_TOP, top: true });
+
+  buildWires();
+}
+
+/* ---------- wires (shown when the car is assembled) ---------- */
+const SH_TIP_Y = TOP_T + 1 + 17.1 + 10.1;
+function sp(name, row = 'S') { const [u, v] = shieldUV(name, row); return V(UNO_X + (v - 26.65), SH_TIP_Y, 34.3 - u); }
+function lp(name) { const [x, z] = L298_PINS[name]; return V(x, L298_Y + (/^IN/.test(name) ? 10.1 : 5.6), z); }
+const FEM = a => [V(a.x, a.y + 1, a.z), [2.6, 14, 2.6]];
+function wire(pts, kind, o = {}) { return reg(wire3(pts, kind, o.r || 0.55, o.plugs || {}), ROOT, { key: o.key || 'wire', name: o.name || 'Wire', note: o.note || '', wire: true, top: o.top !== false }); }
+function buildWires() {
+  const ha = V(HOLE_A[0], TOP_T + 1, HOLE_A[1]), hb = V(HOLE_B[0], TOP_T + 1, HOLE_B[1]);
+  // motors: left to OUT1 / OUT2, right to OUT4 / OUT3
+  [-1, 1].forEach(sd => [['wireRed', sd < 0 ? 'OUT1' : 'OUT4', 6.2], ['wireBlack', sd < 0 ? 'OUT2' : 'OUT3', -6.2]].forEach(([kind, out, dy], k) => {
+    const e = lp(out);
+    wire([V(-53.6, 32.5 + dy, sd * MZ), V(-50, 40, sd * (MZ - 2)), V(-31 + k * 2, 40, sd * 44), V(-30 + k * 2, BOT_T + 1, sd * 44), V(-22, BOT_T + 9, sd * 34),
+      V(e.x, e.y + 8, e.z + sd * 6), V(e.x, e.y + 1, e.z + sd * 2), e], kind, { r: 0.6, top: false, key: 'motorwire', name: `Motor wire to ${out}` });
+  }));
+  // driver inputs to D4 to D7
+  [['IN1', 'D4', 'wireOrange'], ['IN2', 'D5', 'wireBlack'], ['IN3', 'D6', 'wireGreen'], ['IN4', 'D7', 'wireBlue']].forEach(([pin, d, kind], k) => {
+    const a = lp(pin), b = sp(d);
+    wire([V(a.x, a.y + 8, a.z), V(a.x - 2, a.y + 13, a.z - 8), V(-20 + k, TOP_U - 6, -40), V(ha.x + k * 1.6 - 2.4, ha.y, ha.z + k), V(-16, TOP_T + 18, -30),
+      V(b.x - 6, b.y + 20, b.z - 4), V(b.x, b.y + 8, b.z)], kind, { plugs: { a: FEM(a), b: FEM(b) }, name: `${pin} to ${d}` });
+  });
+  // battery through the switch to 12V, black to GND, then 5V and GND up to the shield
+  const v12 = lp('12V'), gnd = lp('GND'), v5 = lp('5V'), ip = sp('IIC+'), im = sp('IIC-');
+  wire([V(HOLDER_X + 9.6, BOT_T + 12, 37), V(HOLDER_X + 12, BOT_T + 18, 46), V(-36, TOP_U - 4, 56), V(ROCKER[0] - 3, TOP_T - 13, ROCKER[1])], 'wireRed', { r: 0.7, name: 'Battery + to switch' });
+  wire([V(ROCKER[0] + 3, TOP_T - 13, ROCKER[1]), V(-26, BOT_T + 12, 44), V(-26, BOT_T + 9, 10), V(v12.x - 8, v12.y + 1, v12.z), v12], 'wireRed', { r: 0.7, name: 'Switch to 12V' });
+  wire([V(HOLDER_X - 9.6, BOT_T + 12, 37), V(-46, BOT_T + 16, 44), V(-30, BOT_T + 8, 20), V(gnd.x - 8, gnd.y + 1, gnd.z), gnd], 'wireBlack', { r: 0.7, top: false, name: 'Battery to GND' });
+  wire([V(v5.x, v5.y + 1, v5.z), V(v5.x - 5, v5.y + 12, v5.z - 8), V(-22, TOP_U - 5, -42), V(ha.x - 3, ha.y, ha.z - 3), V(-6, TOP_T + 18, -30), V(ip.x, ip.y + 22, ip.z), V(ip.x, ip.y + 8, ip.z)], 'wireRed', { plugs: { b: FEM(ip) }, name: '5V to shield IIC +' });
+  wire([V(gnd.x, gnd.y + 1, gnd.z + 0.6), V(gnd.x - 5, gnd.y + 12, gnd.z - 10), V(-21, TOP_U - 5, -44), V(ha.x + 3, ha.y, ha.z - 3), V(-4, TOP_T + 15, -30), V(im.x, im.y + 20, im.z), V(im.x, im.y + 8, im.z)], 'wireBlack', { plugs: { b: FEM(im) }, name: 'GND to shield IIC −' });
+  // servo plug onto D10
+  [['wireBrown', 'G', -1.3], ['wireRed', 'V', 0], ['wireOrange', 'S', 1.3]].forEach(([kind, row, dz]) => {
+    const b = sp('D10', row);
+    wire([V(SERVO_X - 17.5, TOP_T - 9.5, dz), V(SERVO_X - 17, TOP_T + 1, dz), V(SERVO_X - 22, TOP_T + 14, dz + 4), V(b.x + 10, b.y + 18, b.z + dz * 0.4), V(b.x, b.y + 8, b.z)], kind, { r: 0.5, name: `Servo ${row} to D10` });
+  });
+  // ultrasonic to A1 / A2
+  [['VCC', -3.81, 'A1', 'V', 'wireRed'], ['Trig', -1.27, 'A1', 'S', 'wireGreen'], ['Echo', 1.27, 'A2', 'S', 'wireBlue'], ['GND', 3.81, 'A1', 'G', 'wireBlack']].forEach(([nm, z, pin, row, kind]) => {
+    const a = V(SERVO_X - 2, SY + 16.5, z), b = sp(pin, row);
+    wire([V(a.x, a.y + 7.5, a.z), V(a.x - 3, a.y + 17, a.z * 1.3), V(38, a.y + 6, (a.z + b.z) / 2), V(b.x + 10, b.y + 24, b.z), V(b.x, b.y + 8, b.z)], kind, { plugs: { a: [V(a.x, a.y + 0.5, a.z), [2.6, 14, 2.6]], b: FEM(b) }, name: `Sensor ${nm} to ${pin} ${row}` });
+  });
+  // IR board outputs up through the right-hand hole to A0, A3, A4, A5
+  const yb = BOT_T + 1.2 + 2.85;
+  [['A0', 'S', 'wireGreen'], ['A3', 'S', 'wireBlue'], ['A4', 'S', 'wireOrange'], ['A5', 'S', 'wireMagenta'], ['A0', 'G', 'wireBlack'], ['A0', 'V', 'wireRed']].forEach(([pin, row, kind], j) => {
+    const z0 = IRB.outZ[j], b = sp(pin, row);
+    wire([V(IRB_X - 23, yb, z0), V(IRB_X - 30, yb + 3, z0 + 6), V(16, TOP_U - 8, 40 + j * 0.6), V(hb.x - 3 + j * 1.2, hb.y, hb.z - 2 + j * 0.6), V(6, TOP_T + 16, 34), V(b.x + 4, b.y + 20, b.z + 6), V(b.x, b.y + 8, b.z)],
+      kind, { r: 0.5, plugs: { a: [V(IRB_X - 26.5, yb, z0), [7, 2.6, 2.6]], b: FEM(b) }, name: `IR board to ${pin} ${row}` });
+  });
+  // probe cables: board front headers down through the slot to the shelf
+  PROBE_Z.forEach((zp, i) => {
+    const zb = IRB.inZ[i], g = new THREE.Group();
+    ['wireYellow', 'wireBlack', 'wireRed'].forEach((kind, k) => {
+      const db = (k - 1) * 2.54, dp = (1 - k) * 2.54;
+      g.add(...wire3([V(IRB_X + 26.25, yb, zb + db), V(78, yb + 3, zb + db), V(81, BOT_T - 2, (zb + zp) / 2 + db), V(81, 36, zp + dp), V(70, 29, zp + dp), V(PROBE_X - 12.95, SHELF_TOP + 2.85, zp + dp)], kind, 0.5).children);
+    });
+    reg(g, ROOT, { key: 'wire', name: '3-pin probe cable', note: 'From the build (4)', wire: true });
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ *  Runtime
+ * ------------------------------------------------------------------ */
+const $ = id => document.getElementById(id);
+const viewportEl = $('viewport'), canvas = $('gl');
+let renderer = null, ink = null, scene = null, camera = null, controls = null;
+let MODE = store.get('r2wd.mode', 'color') === 'line' ? 'line' : 'color';
+let FLOOR = null;
+let EXPLODE = 0, HIDE_TOP = false, SHOW_PRINT = false, SHOW_DIMS = false;
+
+function initScene() {
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false }); } catch (e) { renderer = null; }
+  if (!renderer || !renderer.capabilities.isWebGL2) {
+    const d = document.createElement('div'); d.className = 'nogl';
+    d.textContent = 'This device cannot show the 3D view. The review notes still apply.';
+    viewportEl.appendChild(d); renderer = null; return false;
+  }
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  ink = new InkPipeline(renderer);
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(24, 1, 8, 5000);
+  addLights(scene);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.25 * Math.PI); fill.position.set(-200, -260, 200); scene.add(fill);
+  build();
+  scene.add(ROOT);
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(170, 64), new THREE.MeshBasicMaterial({ color: 0xeeede6, transparent: true, opacity: 0.55, depthWrite: false }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -0.3; floor.layers.set(LAYER_GUIDE); floor.renderOrder = -1;
+  scene.add(floor);
+  FLOOR = floor;
+  controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true; controls.dampingFactor = 0.09; controls.rotateSpeed = 0.8;
+  controls.minDistance = 120; controls.maxDistance = 1600;
+  controls.addEventListener('change', requestRender);
+  controls.addEventListener('start', () => setViewPressed(null));
+  new ResizeObserver(resize).observe(viewportEl);
+  return true;
+}
+function renderDPR() { return Math.min(2, Math.max(1.5, window.devicePixelRatio || 1)); }
+function resize() {
+  if (!renderer) return;
+  const w = Math.max(1, viewportEl.clientWidth), h = Math.max(1, viewportEl.clientHeight), dpr = renderDPR();
+  renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); ink.setSize(w, h, dpr);
+  camera.aspect = w / h; camera.updateProjectionMatrix(); requestRender();
+}
+let needsRender = true, looping = false;
+function requestRender() { needsRender = true; if (!looping && renderer) { looping = true; requestAnimationFrame(frame); } }
+function frame(now) {
+  const animating = stepTweens(now);
+  const moved = controls.update();
+  if (needsRender || animating || moved) { ink.render(scene, camera, { inkMix: MODE === 'color' ? 0.8 : 1 }); updateTags(); needsRender = false; }
+  if (animating || moved || tweens.size) requestAnimationFrame(frame); else looping = false;
+}
+
+/* materials */
+function ownMeshes(p, fn) {
+  const walk = o => { if (o !== p.obj && o.userData.part) return; if (o.isMesh) fn(o); o.children.forEach(walk); };
+  walk(p.obj);
+}
+function stateOf(p) { return SHOW_PRINT && (p.src === 'print' || p.src === 'new') ? 'new' : 'base'; }
+function paint(p, state) { ownMeshes(p, m => { m.material = partMaterial(m.userData.kind, MODE, state || stateOf(p)); }); }
+function applyMode(mode) {
+  MODE = mode; store.set('r2wd.mode', mode);
+  $('modeLine').setAttribute('aria-pressed', String(mode === 'line'));
+  $('modeColor').setAttribute('aria-pressed', String(mode === 'color'));
+  if (!renderer) return;
+  PARTS.forEach(p => paint(p));
+  requestRender();
+}
+function applyLayout() {
+  PARTS.forEach(p => {
+    const offset = p.parent === ROOT ? p.ex.clone().multiplyScalar(EXPLODE) : V(0, 0, 0);
+    p.obj.position.copy(p.final).add(offset);
+    p.obj.visible = !(HIDE_TOP && p.top) && !(p.wire && EXPLODE > 0.02);
+  });
+  if (FLOOR) FLOOR.visible = EXPLODE < 0.02;
+  requestRender();
+}
+
+/* camera */
+const VIEWS = { iso: { t: [0, 52, 0], d: 640, az: -38, el: 24 }, front: { t: [0, 55, 0], d: 600, az: 0, el: 6 }, side: { t: [0, 55, 0], d: 620, az: 90, el: 4 },
+  top: { t: [0, 40, 0], d: 620, az: 0, el: 89 }, under: { t: [0, 30, 0], d: 600, az: -30, el: -52 } };
+function camPose(c) {
+  let d = c.d; const aspect = camera.aspect;
+  if (aspect < 1.25) d *= Math.pow(1.25 / Math.max(aspect, 0.5), 0.8);
+  const az = c.az * DEG, el = c.el * DEG, t = V(...c.t);
+  return { pos: V(t.x + d * Math.cos(el) * Math.cos(az), t.y + d * Math.sin(el), t.z + d * Math.cos(el) * Math.sin(az)), t };
+}
+let camTween = null;
+function flyCamera(c, animate = true) {
+  if (!camera) return;
+  const { pos, t } = camPose(c);
+  if (camTween) camTween.dead = true;
+  if (!animate || REDUCED) { camera.position.copy(pos); controls.target.copy(t); controls.update(); requestRender(); return; }
+  const p0 = camera.position.clone(), t0 = controls.target.clone();
+  camTween = tween(800, k => { const e = ease(k); camera.position.lerpVectors(p0, pos, e); controls.target.lerpVectors(t0, t, e); });
+  requestRender();
+}
+function setViewPressed(v) { document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === v))); }
+
+/* tags for dimensions */
+let activeTags = [];
+const tagLayer = $('tags');
+function setTags(list) {
+  tagLayer.innerHTML = '';
+  activeTags = list.map(([pos, text, hot]) => { const el = document.createElement('div'); el.className = 'tag' + (hot ? ' hot' : ''); el.textContent = text; tagLayer.appendChild(el); return { el, pos: V(...pos) }; });
+  updateTags();
+}
+const _v = new THREE.Vector3();
+function updateTags() {
+  if (!camera || !activeTags.length) return;
+  const w = viewportEl.clientWidth, h = viewportEl.clientHeight;
+  activeTags.forEach(({ el, pos }) => {
+    _v.copy(pos).project(camera);
+    el.style.display = _v.z < 1 && Math.abs(_v.x) < 1.05 && Math.abs(_v.y) < 1.05 ? '' : 'none';
+    el.style.left = ((_v.x + 1) / 2 * w).toFixed(1) + 'px'; el.style.top = ((1 - _v.y) / 2 * h).toFixed(1) + 'px';
+  });
+}
+
+/* click a part to name it */
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let downAt = null, pickTimer = 0;
+function pickAt(e) {
+  const r = canvas.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObject(ROOT, true).find(h => h.object.visible && isShown(h.object));
+  const box = $('pick');
+  if (!hit) { box.hidden = true; return; }
+  let o = hit.object; while (o && !o.userData.part) o = o.parent;
+  if (!o) return;
+  const p = o.userData.part;
+  box.innerHTML = `${p.name}${p.note ? `<small>${p.note}</small>` : ''}`;
+  box.hidden = false;
+  flashKey(p.key, p);
+  clearTimeout(pickTimer); pickTimer = setTimeout(() => { box.hidden = true; }, 4000);
+}
+function isShown(o) { while (o) { if (!o.visible) return false; o = o.parent; } return true; }
+function flashKey(key, only) {
+  if (!renderer) return;
+  const list = only ? [only] : PARTS.filter(p => p.key === key);
+  list.forEach(p => paint(p, 'flash'));
+  requestRender();
+  tween(900, () => {}, () => { list.forEach(p => paint(p)); requestRender(); });
+}
+
+/* ------------------------------------------------------------------ *
+ *  Review sheet
+ * ------------------------------------------------------------------ */
+const PRINTED = [
+  ['deckB', 1, 'Bottom deck', 'Ø180 × 3 mm. Wheel wells, slots for the four T-bracket tabs, caster and shelf holes'],
+  ['deckT', 1, 'Top deck', 'Ø180 × 3 mm. Servo slot, switch cutout, two wire holes, vents'],
+  ['shelf', 1, 'Probe shelf', 'Hangs under the nose. Holds the four IR probes so the LEDs sit 9 mm above the floor'],
+  ['caster', 1, 'Caster post', 'Rear support with a cup for a 16 mm ball']
+];
+const KIT = [
+  ['motor', '2', 'TT gear motors', '2 of the 4'], ['wheel', '2', 'Wheels', '2 of the 4'], ['tbracket', '4', 'T-brackets', '4 of the 8, with 4 M3 × 30 and 4 nuts'],
+  ['standoff', '4', 'Brass standoffs M3 × 30', '4 of the 6'], ['m3x10', '16', 'M3 × 10 screws', 'All 16: standoffs 8, probes 4, shelf 2, caster 2'],
+  ['nut', '12', 'M3 nuts', 'All 12'], ['l298n', '1', 'L298N driver', 'ENA and ENB jumpers stay on'], ['uno', '1', 'UNO in clear case', 'With the Sensor Shield v5.0'],
+  ['us', '1', 'HC-SR04 on the SG90 arm', 'Same glued arm as the 4WD build'], ['servo', '1', 'SG90 servo', 'Glued in the deck slot'],
+  ['irboard', '1', '4-channel IR board', 'With 4 probes and 4 three-pin cables'], ['holder', '1', '2 × 18650 holder', 'Plus 2 cells'],
+  ['rocker', '1', 'Rocker switch', 'Now in the top deck, reachable'], ['wire', '16', 'Jumpers', '14 F-F and 2 M-F, as before']
+];
+const PROJECTS = [
+  ['Obstacle avoidance', 'The sensor scans left, ahead and right. The car turns on the spot toward the open side.', 'HC-SR04 · servo D10'],
+  ['Line following', 'Four probes under the nose read the tape. Two wheels steer more sharply than four.', 'A0 A3 A4 A5'],
+  ['Line maze', 'The outer probes spot T-junctions, crosses and dead ends. It spins 90° or 180° in place and solves by the left-hand rule.', 'Probes + spin turns'],
+  ['Wall maze', 'At each cell the sensor looks left, ahead and right. The round body cannot snag on corners while it turns.', 'Corridors 25 cm or wider'],
+  ['Table edge guard', 'When the probes lose the floor it stops and backs away from the edge.', 'Probes'],
+  ['Follow me', 'Keeps your hand about 15 cm in front of the sensor.', 'HC-SR04']
+];
+
+function specs() {
+  const b = new THREE.Box3();
+  PARTS.forEach(p => { if (!p.wire && p.obj.visible) b.expandByObject(p.obj); });
+  const s = b.getSize(V(0, 0, 0));
+  return [[Math.round(s.x), 'length, mm'], [Math.round(s.z), 'width, mm'], [Math.round(s.y), 'height, mm'],
+    [2 * WZ, 'track, mm'], [(BOT_U).toFixed(0), 'deck clearance, mm'], [SHELF_TOP - 3, 'shelf clearance, mm']];
+}
+function renderSheet() {
+  const sp = renderer ? specs() : [[180, 'length, mm'], [180, 'width, mm'], [125, 'height, mm'], [150, 'track, mm'], [44, 'deck clearance, mm'], [19, 'shelf clearance, mm']];
+  const heat = (TOP_U - (L298_Y + 26.6)).toFixed(1);
+  const bat = (TOP_U - (BOT_T + 1 + 20.4)).toFixed(1);
+  const led = (SHELF_TOP - 12.9).toFixed(0);
+  const h = [];
+  h.push(`<section class="blk">
+    <div class="eyebrow"><span class="chip">Rev A</span><span>for approval before STL export</span></div>
+    <h1>Round 2WD Smart Car</h1>
+    <p class="muted">The electronics from your 4WD + L298N build on two round printed decks, like the car in your photo. Two motors drive, a ball caster carries the back. Tap any part in the model to name it.</p>
+    <div class="specs">${sp.map(([b, t]) => `<div><b>${b}</b><span>${t}</span></div>`).join('')}</div>
+  </section>`);
+  h.push(`<section class="blk">
+    <h2>Why this layout</h2>
+    <p class="why">The axle sits on the centre line of a round body, so the car turns in place without sweeping outside its own Ø180 circle. That is what maze runs need. The battery rides over the caster, which keeps the weight about 25 mm behind the axle (estimated), so the car rests on the caster instead of tipping onto its nose.</p>
+  </section>`);
+  h.push(`<section class="blk">
+    <h2>Same projects</h2>
+    <div class="projects">${PROJECTS.map(([t, d, u]) => `<div class="proj"><b>${t}</b><p>${d}</p><span class="uses">${u}</span></div>`).join('')}</div>
+    <p class="muted">The 4WD sketch runs as is, since every pin stays the same. Each driver channel now powers one motor instead of two.</p>
+  </section>`);
+  h.push(`<section class="blk">
+    <h2>Parts to print</h2>
+    <div class="list">${PRINTED.map(([k, q, n, d]) => `<button type="button" class="row" data-key="${k}"><span class="q">${q}</span><span class="n">${n}<small>${d}</small></span><span class="t print">STL</span></button>`).join('')}
+      <button type="button" class="row" data-key="ball"><span class="q">1</span><span class="n">16 mm steel ball<small>The only new item. A glass marble of the same size also works.</small></span><span class="t new">buy</span></button>
+    </div>
+  </section>`);
+  h.push(`<section class="blk">
+    <h2>Reused from the 4WD build</h2>
+    <div class="list">${KIT.map(([k, q, n, d]) => `<button type="button" class="row" data-key="${k}"><span class="q">${q}</span><span class="n">${n}<small>${d}</small></span><span class="t kit">kit</span></button>`).join('')}</div>
+    <p class="muted">Left over: 2 motors, 2 wheels, 4 T-brackets, 2 standoffs and the clear acrylic plates.</p>
+  </section>`);
+  h.push(`<section class="blk">
+    <h2>Fit checks</h2>
+    <div class="checks">
+      <div class="chk"><i>✓</i><span>Wheels sit inside the Ø180 outline</span><code>0 mm out</code></div>
+      <div class="chk"><i>✓</i><span>Probe LEDs above the floor</span><code>${led} mm</code></div>
+      <div class="chk"><i>✓</i><span>Battery cells to the top deck</span><code>${bat} mm</code></div>
+      <div class="chk tight"><i>!</i><span>L298N heatsink to the top deck</span><code>${heat} mm</code></div>
+      <div class="chk tight"><i>!</i><span>Motor bracket nuts to the wheel rims</span><code>0.7 mm</code></div>
+    </div>
+  </section>`);
+  h.push(`<section class="blk">
+    <div class="decide">
+      <h2>Before I make the STL files</h2>
+      <ol>
+        <li>Your printer bed must take a 180 mm circle. Smaller bed? I can shrink the decks to Ø160 and move the battery.</li>
+        <li>The heatsink gap is tight. I can add 5 mm printed spacers on the standoffs for more room.</li>
+        <li>Caster: printed post with a 16 mm ball, or a cup sized for a store-bought ½ inch ball caster?</li>
+        <li>Reply in chat with "approved" or the changes you want.</li>
+      </ol>
+    </div>
+  </section>`);
+  $('sheetInner').innerHTML = h.join('');
+  $('sheetInner').querySelectorAll('[data-key]').forEach(b => b.addEventListener('click', () => flashKey(b.dataset.key)));
+}
+
+function dimTags() {
+  return [[[0, TOP_T + 4, -R], 'Ø180 deck'], [[0, 70, WZ], 'wheel Ø65'], [[0, 70, -WZ], `track ${2 * WZ}`], [[-40, BOT_U - 4, 0], `${BOT_U.toFixed(0)} mm clearance`],
+    [[CASTER_X, 2, 0], '16 mm ball', true], [[PROBE_X + 10, 12, PROBE_Z[3]], `LEDs ${(SHELF_TOP - 12.9).toFixed(0)} mm up`], [[SERVO_X, SY + 30, 0], 'sensor on servo']];
+}
+
+function start() {
+  const ok = initScene();
+  applyMode(MODE);
+  if (ok) { resize(); flyCamera(VIEWS.iso, false); applyLayout(); }
+  renderSheet();
+  $('modeLine').addEventListener('click', () => applyMode('line'));
+  $('modeColor').addEventListener('click', () => applyMode('color'));
+  document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => { setViewPressed(b.dataset.view); flyCamera(VIEWS[b.dataset.view]); }));
+  $('ex').addEventListener('input', e => { EXPLODE = Number(e.target.value); if (EXPLODE > 0 && SHOW_DIMS) toggleDims(false); applyLayout(); });
+  $('tTop').addEventListener('click', e => { HIDE_TOP = !HIDE_TOP; e.currentTarget.setAttribute('aria-pressed', String(HIDE_TOP)); e.currentTarget.textContent = HIDE_TOP ? 'Show top deck' : 'Hide top deck'; applyLayout(); });
+  $('tPrint').addEventListener('click', e => { SHOW_PRINT = !SHOW_PRINT; e.currentTarget.setAttribute('aria-pressed', String(SHOW_PRINT)); PARTS.forEach(p => paint(p)); requestRender(); });
+  const toggleDims = on => { SHOW_DIMS = on; $('tDims').setAttribute('aria-pressed', String(on)); setTags(on ? dimTags() : []); if (on && EXPLODE) { EXPLODE = 0; $('ex').value = 0; applyLayout(); } requestRender(); };
+  $('tDims').addEventListener('click', () => toggleDims(!SHOW_DIMS));
+  if (ok) {
+    canvas.addEventListener('pointerdown', e => { downAt = [e.clientX, e.clientY]; });
+    canvas.addEventListener('pointerup', e => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 5) pickAt(e); downAt = null; });
+  }
+}
+start();
+</script>
+</body></html>
